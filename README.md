@@ -1,6 +1,6 @@
 # MultiPy
 
-A powerful tool to research, build, and optimise multipliers.
+Powerful tools for building, testing, and analysing multiplier designs. 
 
 
 # Why?
@@ -53,9 +53,10 @@ Full list TBD.
 
 - [ ] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
 - [ ] Find optimal data structure for combinational multiply stages 
-- [ ] Standardise templates
-- [ ] Find optimal file format: parquet? postgre? json will not scale
+- [ ] Standardise templates 
+- [ ] Find optimal file format: parquet?
 - [ ] Custom reduction stage templates
+
 - [ ] 8-bit unsaturated multiply
 - [ ] 8-bit saturated multiply
 

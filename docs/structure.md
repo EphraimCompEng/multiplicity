@@ -87,7 +87,7 @@ In the [original](first/init/) program data was stored in json and could easily 
 
 - [ ] Find optimal data structure for combinational multiply stages
 
-### Templates
+### Simple Templates
 
 As mentioned above, each stage recieves a template to dictate how partial products are grouped and operated on. 
 
@@ -120,7 +120,7 @@ Note that the "first" bit of each layer is ignored in the addition - these bits 
 
 
 
-### [ CSA: 3 -> 4 ]
+### [ CSA: 3 -> 2 ]
 
 
 Another a reduction layer could use [CSAs](https://en.wikipedia.org/wiki/Carry-save_adder) used a simple array to define the reduction layer.
@@ -138,33 +138,7 @@ Another a reduction layer could use [CSAs](https://en.wikipedia.org/wiki/Carry-s
   #ZZZZZZZ|Z-------    "Z"  ] #ZZZZZZZ|Z-------
 ```
 
-Here, each CSA reduced 3 inputs to 2 inputs. The output is reordered to mirror how each bit of the CSA calculation is distributed, plus swapping the leftover bit to fit the distribution. For more information see [reduction](link/to/reduction).
+Here, each CSA reduced 3 inputs to 2. The output is reordered to mirror how each bit of the CSA calculation is distributed, plus swapping the leftover bit to fit the distribution. For more information see [reduction](link/to/reduction).
 
 
-As you can see the MultiPy can distinguish between reduction using adder or CSAs by the run of a given string.
-<!--
-
-```
-
-    Here are scenarios I want to like to test:
-
-    Type I
-    a) Input values < 255
-    b) Input pairs which do not cross overflow threshold during
-       AND-matrix
-
-       overflow|valid
-       --------+-----------
-        -------|00000000
-        ------0|0000000-
-        -----00|000000--
-        ----000|00000---
-        ---0000|0000----
-        --00000|000-----
-        -000000|00------
-        0000000|0-------
-
-    c) Input pairs which overflow in partial product reduction
-
-
-```-->
+As you can see the MultiPy can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable more complex templates matrices can be used.

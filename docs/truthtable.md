@@ -1,5 +1,4 @@
 # Truth Table
-___
 
 
 Finding edge cases is vital when optimising anything. For binary circuit, this challenge grows exponentially as more and inputs and bits are involved. To clear all possible edge cases we need to iterate through all possible inputs and make sure the circuit is behaving correctly.
