@@ -1,23 +1,21 @@
-# Multiplier Lab
+# MultiPy
 
 A powerful tool to research, build, and optimise multipliers.
 
 
 # Why?
 
-
 Generating and analysing multiplier designs by hand is labour intensive, even for small datasets. For entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this becomes close to impossible after 8-bits.
 
-Multiplier Lab aims to be a general tool for:
+MultiPy aims to be a general tool for:
 
 - Building partial product reduction layers
-- Generate entire truth tables of custom multipliers
+- Generate complete truth tables of custom multipliers
 - Analyse and plot trends across entire datasets 
-- Track a bits, columns, rows of reduction stages
+- Track bits, columns, rows of reduction stages
 
 
 # Documentation
-
 
 [link/to/documentation](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs)
 
@@ -34,7 +32,7 @@ Use [sphinx](https://www.sphinx-doc.org/en/master/)?
 
 ???{
 
--> Configure [TOML](https://toml.io/en/) file? and or use CLI to configure the TOML? -> main.py uses TOML to set variables
+-> Configure [TOML](https://toml.io/) file? and or use CLI to configure the TOML? -> main.py uses TOML to set variables
 
 -> Choose default dataset or build own [Parquet](https://github.com/apache/parquet-format)?
 
@@ -53,8 +51,8 @@ Full list TBD.
 
 # Roadmap
 
-- [ ] Manage dependencies and automatically resolve them
-- [ ] Find optimal data structure for combinational multiply stages
+- [ ] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
+- [ ] Find optimal data structure for combinational multiply stages 
 - [ ] Standardise templates
 - [ ] Find optimal file format: parquet? postgre? json will not scale
 - [ ] Custom reduction stage templates

@@ -88,7 +88,46 @@ Templates need to be simple enough to configure, possibly in a CLI but the main 
 
 - [ ] Standardise templates
 
+[ Adder: 2 -> 1 ]
+The naive reduction layer used a simple array to define the reduction layer. Each letter identifies bits to be grouped into a "cells". In this case, these cells would represent:
+```
+  [ Template Gen. ] [ Array ] [ Output         ]
+  --------|WWWWWWW0 [  "W",                
+  ------#W|WWWWWWW-    "W"     ------#W|WWWWWWW-       
+                                  
+  ------XX|XXXXX0--    "X",              
+  ----#XXX|XXXXX---    "X",    ----#XXX|XXXXX---       
+                                  
+  ----YYYY|YYY0----    "Y",              
+  --#YYYYY|YYY-----    "Y",     -#YYYYY|YYY-----         
+                                  
+  --ZZZZZZ|Z0------    "Z",              
+  #ZZZZZZZ|Z-------    "Z"  ]   ZZZZZZZ|Z-------           
+```
 
+Note that the "first" bit of each layer is ignored in the addition - these bits will never generate a carry as the input would be 1 + 0 or 0 + 0. Unlike the "last" bit which has the potential to carry from previous bits, with the final possible carry represented with "#". Also note that these caracters are only used for positional information. Other alphabetical characters can be used in the same style.
+
+
+
+[ CSA: 3 -> 4 ]
+Another a reduction layer could use [CSAs](https://en.wikipedia.org/wiki/Carry-save_adder) used a simple array to define the reduction layer.
+```
+  [ Template      ] [ Array ] [ Output        ]
+  --------|xXxXxXx0 [  "X",  
+  ------#X|xXxXxXx-    "X",   ------0X|xXxXxXx-  
+  ------0X|xXxXxX--    "X",   ------Xx|XxXxXx--  
+
+  -----yYy|YyYy0---    "Y", 
+  ---#YyYy|YyYy----    "Y",   ---0YyYy|YyYy----  
+  ---0YyYy|YyY-----    "Y",   ---YyYyY|yYy-----
+
+  --ZZZZZZ|Z0------    "Z",  
+  #ZZZZZZZ|Z-------    "Z"  ] #ZZZZZZZ|Z-------
+```
+Here, each CSA reduced 3 inputs to 2 inputs. The output is reordered to mirror how each bit of the CSA calculation is distributed, plus swapping the leftover bit to fit the distribution. For more information see [reduction](link/to/reduction).
+
+
+As you can see the MultiPy can distinguish between reduction using adder or CSAs by the run of a given string.
 <!--
 
 ```
