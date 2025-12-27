@@ -1,10 +1,10 @@
 # Multiplier Lab
 
 A powerful tool to research, build, and optimise multipliers.
-___
+
 
 # Why?
-___
+
 
 Generating and analysing multiplier designs by hand is labour intensive, even for small datasets. For entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this becomes close to impossible after 8-bits.
 
@@ -17,9 +17,9 @@ Multiplier Lab aims to be a general tool for:
 
 
 # Documentation
-____
 
-[link/to/documentation]
+
+[link/to/documentation](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs)
 
 ???{
 
@@ -30,7 +30,7 @@ Use [sphinx](https://www.sphinx-doc.org/en/master/)?
 }
 
 # Setup
-___
+
 
 ???{
 
@@ -42,7 +42,7 @@ ___
 }
 
 # Dependencies
-___
+
 | database | math    | visualization |
 |:-------- |:------- |:------------- |
 | [Parquet](https://github.com/apache/parquet-format)  | [NumPy](https://numpy.org/)   | [Matplotlib](https://matplotlib.org/ )   |
@@ -52,7 +52,7 @@ ___
 Full list TBD.
 
 # Roadmap
-___
+
 - [ ] Manage dependencies and automatically resolve them
 - [ ] Find optimal data structure for combinational multiply stages
 - [ ] Standardise templates
