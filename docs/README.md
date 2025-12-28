@@ -8,13 +8,11 @@ This project was initially focused on how [saturation](https://en.wikipedia.org/
 
 Generating and analysing designs by hand is labour intensive even for small datasets. For entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this becomes close to impossible after 8-bits.
 
-# Custom Algorithms
-
-## Combinational Multipliers
+# Algorithms
 
 The first "stage" of s combinational multiplier creates all possible partial products. These producs are then reduced across multiple stages using a range of methods. Eventually all products are reduced to one output.
 
-A [Wallice tree](https://en.wikipedia.org/wiki/Wallice_tree) is one of many stategies to multiply values. Let's multiply 11 * 12: 
+A [Wallice tree](https://en.wikipedia.org/wiki/Wallice_tree) is one of many multplication stategies. Let's multiply 11 * 12: 
 
 ```
 11 * 12 -> 0b1011 * 0b1100
@@ -40,14 +38,30 @@ Note that for any multiplication the output can be upto **2x** the input width.
 ## Saturation
 
 Using the 11 * 12 example above, if the output was saturated to 4-bits, the result would be 15 since the maximum value is 0b1111 -> 15.
-Typically, saturation restricts the output bit width to the input bit width. 
+Typically, saturation restricts the output bit width to the input bit width: x-bits --> 2x-bits -(clamp)-> x-bits. Multiplications which produce an [overflow](https://en.wikipedia.org/wiki/Integer_overflow) trigger a signal to flood the output bits to 1, resulting in the maximum value of the bit width. 
 
-This project will work towards:
-  - 8-bit with and without saturation 
-  - 16-bit with saturation
+As demonstrated in the example above:
+```
+11 * 12 -> 0b1011 * 0b1100 -> 0b10000100 -[Clamp=4b]-> 0b1111
+```
+
+Most of the complex templates will be directed to find optiisation strategies to make te most of saturation. Many overflow edge cases can be found very early in the reduction process, while some are harder to isolate. MultiPy has the tools to find these tougher cases. 
 
   
+
+
+# Analysis
+
+
+
+
+
+
+
 # Templates
 
 
-#
+
+
+
+### Further Reading
