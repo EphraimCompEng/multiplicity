@@ -4,3 +4,7 @@
 
 # [Compiled source]
 *.py[ocd]
+
+
+# uv
+.python-version

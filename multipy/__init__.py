@@ -1,4 +1,9 @@
-from multipy.core import *
+from multipy.core import (
+    NpEncoder,
+    and_matrix,
+    operand_test_list,
+
+)
 
 
 """
@@ -36,8 +41,3 @@ Copy vs in-place
 ----------------
 ??? TBD ???
 """
-
-
-__all__ = [
-    'core'
-]
