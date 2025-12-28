@@ -51,16 +51,26 @@ Full list TBD.
 
 # Roadmap
 
+Starting point:
 - [ ] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
-- [ ] Find optimal data structure for combinational multiply stages 
+- [ ] Find optimal data structure for reduction stages 
 - [ ] Standardise templates 
-- [ ] Find optimal file format: parquet?
+- [x] Find optimal file format: parquet?
 - [ ] Custom reduction stage templates
+- [ ] Automatic version control (MAJOR.MINOR.PATCH)
 
+Basic functionality; templates, generate, analyse:
 - [ ] 8-bit unsaturated multiply
 - [ ] 8-bit saturated multiply
+- [ ] Basic visualisation of bit ranges
 
-Only after: optimal data structure, file formats and standardisation of loading and storing data, is a achieved can 16-bit can be attempted. The potential dataset of 16-bit+ multipliers becomes astronomical and the program must be rebust enough to deal with this efficiently.
+The potential dataset of 16-bit+ multipliers becomes astronomical and the program must be robust enough to deal with this efficiently. Only after: data structures, file formats, and efficient I/O are established and working well, MultiPy tackle:
+- [ ] Multiprocessing support to handle higher bit-widths
 - [ ] 16-bit unsaturated multiply
 - [ ] 16-bit saturated multiply
-- [ ] 32-bit saturated multiply
+- [ ] Heatmaps? plots? Advanced visualisation 
+
+Once the library is stable and optimised:
+- [ ] "Timing" stages/templates/multipliers -- User defined latencies  
+- [ ] 32-bit saturated multiply?
+- [ ] Use [cython](https://cython.org/)? [numba](https://numba.pydata.org/)? for more performance?
