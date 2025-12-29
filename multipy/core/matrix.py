@@ -37,8 +37,8 @@ class MpMatrix:
             raise ValueError("Operand bit width exceeds matrix bit width")
 
         # convert to binary, removing '0b' and padding with zeros
-        a = bin(operand_a)[2:].zfill(self.bits)
         # b is reversed to bring LSB to the top of matrix
+        a = bin(operand_a)[2:].zfill(self.bits)
         b = bin(operand_b)[2:].zfill(self.bits)[::-1]
         i = 0
         matrix = []
