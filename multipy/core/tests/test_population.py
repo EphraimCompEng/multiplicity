@@ -2,7 +2,6 @@
 # Import Modules Without Error #
 ################################
 
-from numpy.matlib import test
 import multipy as mp
 
 def test_empty_matrix():
