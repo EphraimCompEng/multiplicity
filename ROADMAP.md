@@ -21,6 +21,12 @@ Basic functionality; templates, generate, analyse:
 - [ ] Truth table generation -> Parquet
 - [ ] Basic analysis/visualisation of bit ranges
 
+## Documentation
+
+- [ ] Setup Github Wiki with [typst](https://typst.app/)? [sphinx](https://www.sphinx-doc.org/en/master/)?
+- [ ] Improve and provide a focused overview of features 
+- [ ] Provide academic sources
+
 ## Optimisation
 The sheer amount of data produced for 16-bit+ multiplier truth tables becomes astronomical. The program must be robust enough to deal with this efficiently before tackling:
 - [ ] Testing suite

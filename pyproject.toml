@@ -1,7 +1,7 @@
 [project]
 name = "multipy"
-version = "0.0.0"
-description = "A powerful tool to research, build, and optimise multipliers."
+version = "0.1.0"
+description = "A powerful tool to build, test, and analyse multiplier designs."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
