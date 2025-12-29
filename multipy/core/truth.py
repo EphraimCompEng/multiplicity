@@ -1,14 +1,6 @@
 #####################################
-# Generates Multiplier Truth Tables #
+# Generate Multiplier Truth Tables #
 #####################################
-
-
-
-
-
-
-
-
 
 
 from functools import cache
@@ -136,7 +128,7 @@ def push_json(dictionary):
     pass
 
 @cache # Once again, never used timings to test how much this helped
-def main() -> None: # Build the json
+def generate() -> None: # Build the json
     """
 
     Here are scenarios I want to like to test:
@@ -193,4 +185,4 @@ def main() -> None: # Build the json
     # pprint(matrix)
 
 if __name__ == "__main__":
-    main()
+    generate()
