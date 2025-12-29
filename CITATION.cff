@@ -7,7 +7,7 @@ authors:
     family-names: Madugba
 repository-code: 'https://github.com/EphraimCompEng/multipy'
 abstract: >-
-  MultiPy provides tools for: building multiplication
+  MultiPy is a library for: building multiplication
   algorithms, generating truth tables and fine-grain
   analysis.
 keywords:
