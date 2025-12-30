@@ -30,9 +30,9 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
     if min_input <= 0 or min_output <= 0:
         raise ValueError("Minimum input and output values must be greater than zero.")
     if min_input > max_input:
-        raise ValueError("Minimum input value must be less than or equal to maximum input value.")
+        raise ValueError("Minimum input value greater than maximum input value.")
     if min_output > max_output:
-        raise ValueError("Minimum output value must be less than or equal to maximum output value.")
+        raise ValueError("Minimum output greater than maximum output value.")
 
     gen1 = (b for b in range(min_input, max_input + 1))
     k = 0

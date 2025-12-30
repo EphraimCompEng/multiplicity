@@ -63,3 +63,19 @@ Here, each CSA reduced 3 inputs to 2. The output is reordered to mirror how each
 
 
 As you can see the MultiPy can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable complex templates, matrices can be used.
+
+
+
+
+```
+    FEDCBA9876543210| bit
+    ----------------+-----
+    ________00000000|  0
+    _______00000000_|  1
+    ______00000000__|  2
+    _____00000000___|  3
+    ____00000000____|  4
+    ___00000000_____|  5
+    __00000000______|  6
+    _00000000_______|  7
+```
