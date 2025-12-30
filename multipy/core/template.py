@@ -24,9 +24,7 @@ int or strings, as long as they follow the "run" principle.
 Complex templates require a more rigorous approach.
 
 """
-from calendar import c
-from tempfile import template
-from typing import Any, Text
+from typing import Any
 import multipy as mp
 import string
 
