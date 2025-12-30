@@ -94,10 +94,9 @@ Complex templates require a more rigorous approach.
 ## Complex Templates
 
 
-Simple templates used a vector, internally these are translated to a hard coded complex template. Complex templates are matrices outligning what operations occur and where they occur. They also have a range of tools inaccessible to simple templates:
+Simple templates used a vector, internally these are translated to a hard coded complex template. Complex templates are matrices outligning what operations occur and where they occur. They also have a range of tools inaccessible to simple templates, such as user defined positions for CSAs, Adders, Decoders and Bit-Mapping.
 
-- User defined positions for CSAs, Adders, Decoders and Bit-Mapping 
-- 
+
 
 
 
@@ -106,13 +105,14 @@ Simple templates used a vector, internally these are translated to a hard coded 
 
 Json is availiable for small truthtables and quickly visualising designs
 Parquet is recommended for large truth tables and intensive analysis   
-<!--Databases are a possibility i the future.-->
 
 ### Further Reading
 
 MultiPy:
-[Structures]()
-[Algorithms]()
-[Analysis]()
+[Structures](https://github.com/EphraimCompEng/multipy/tree/master/docs/structures)
+[Algorithms](https://github.com/EphraimCompEng/multipy/tree/master/docs/algorithms)
+[Analysis](https://github.com/EphraimCompEng/multipy/tree/master/docs/analysis)
 
 Multiplication:
+
+Useful video: Sanjay Vidhyadharan, "[Advanced VLSI Design: Arithmetic Circuits:  Part-2](https://youtu.be/yZbLL1q76X8)"

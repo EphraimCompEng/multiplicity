@@ -3,23 +3,25 @@
 
 Starting point:
 - [x] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
-- [ ] Find optimal data structure for reduction stages
+- [x] Find optimal data structure for reduction stages
 - [x] Standardise templates 
 - [x] Find optimal file format: [Parquet](https://parquet.apache.org/)
 - [x] Custom reduction stage templates 
-- [ ] Automatic version control (MAJOR.MINOR.PATCH)
-- [ ] **Basic** testing
+- [x] Automatic version control (MAJOR.MINOR.PATCH) -- uv
+- [x] **Basic** testing
 
 ## Algorithm
 Wallace Tree multipliers will be the first focus of the library, before moving onto [Dadda](https://en.wikipedia.org/wiki/Dadda_multiplier) and signed multipliers.
 
-Basic functionality; templates, generate, analyse:
+Basic functionality; "simple templates", generate, analyse:
 
-- [ ] 8-bit unsaturated template -- built-in
 - [ ] 8-bit unsaturated multiply 
-- [ ] 8-bit saturated multiply -- naive
+- [ ] 8-bit unsaturated multiply
+- [ ] 8-bit saturated multiply 
+- [x] Truth table generation -> ~Parquet~ json
+- [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
-- [ ] Basic analysis/visualisation of bit ranges
+- [ ] Basic analysis/visualisation of bit ranges]
 
 ## Documentation
 
@@ -29,7 +31,7 @@ Basic functionality; templates, generate, analyse:
 
 ## Optimisation
 The sheer amount of data produced for 16-bit+ multiplier truth tables becomes astronomical. The program must be robust enough to deal with this efficiently before tackling:
-- [ ] Testing suite
+- [ ] Testing suite - Pytest
 - [ ] Multiprocessing support to handle higher bit-widths
 - [ ] 16-bit unsaturated multiply
 - [ ] 16-bit saturated multiply
