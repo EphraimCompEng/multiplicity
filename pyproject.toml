@@ -4,6 +4,4 @@ version = "0.0.0"
 description = "A powerful tool to build, test, and analyse multiplier designs."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "numpy>=2.4.0",
-]
+dependencies = []

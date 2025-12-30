@@ -22,26 +22,12 @@ Documentation continues to grow with the project. Resouces for usage, general th
 For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
 
 
-<!--- [Installation](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs/installation.md)
-- [Usage](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs/usage.md)
-- [API Reference](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs/api_reference.md)-->
-
-
 <!--
 Use [sphinx](https://www.sphinx-doc.org/en/master/)?
 -->
 
 
 # Setup
-
-### PIP
-```
-pip install multipy
-```
-
-```
-<how to install module from source>
-```
 
 ```Python3
 >>> import multipy as mp

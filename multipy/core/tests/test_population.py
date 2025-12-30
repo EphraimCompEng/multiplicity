@@ -24,9 +24,9 @@ def test_build_matrix():
     mult_by_zero_b = mp.Matrix(8)
     # exceed_matrix  = mp.Matrix(8)
 
-    matrix.build_matrix(0, 0)
-    mult_by_zero_a.build_matrix(0, 42)
-    mult_by_zero_b.build_matrix(42, 0)
+    matrix.build_matrix(0, 0, 8)
+    mult_by_zero_a.build_matrix(0, 42, 8)
+    mult_by_zero_b.build_matrix(42, 0, 8)
     assert matrix.bits   == mult_by_zero_a.bits
     assert matrix.bits   == mult_by_zero_b.bits
     # print(vars(matrix))
@@ -36,8 +36,8 @@ def test_build_matrix():
 def test_agorithm():
     temp1 = mp.Matrix(8) # Placeholder for template
     temp2 = mp.Matrix(8) # Placeholder for template
-    alg   = mp.Algorithm()
     arg   = [temp1, temp2]
+    alg   = mp.Algorithm(temp1)
     alg.populate(arg)
 
     print(alg.bits)

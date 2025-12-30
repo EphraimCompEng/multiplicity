@@ -1,10 +1,13 @@
 # [Environmental]
 
+
+*.egg-info
+
 # not finalised and could cause issues
-.venv
+*.venv
 
 # Redundant
-.python-version
+*.python-version
 
 # [Compiled source]
 *.py[ocd]

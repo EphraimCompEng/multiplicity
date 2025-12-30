@@ -1,8 +1,8 @@
-from multipy.core.matrix import (
+from .core.matrix import (
     Matrix,
 )
 
-from multipy.core.algorithm import (
+from .core.algorithm import (
     Algorithm
 )
 
@@ -12,8 +12,12 @@ from .core.truth import (
     truth_table,
 )
 
-from multipy.core.template import (
+from .core.template import (
     Template
+)
+
+from .io.lazy_json import (
+    json_pretty_store,
 )
 
 
@@ -63,4 +67,5 @@ __all__ = [
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
+    'json_pretty_store',
 ]
