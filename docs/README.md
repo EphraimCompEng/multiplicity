@@ -62,13 +62,13 @@ Most of the complex templates will be directed to find optiisation strategies to
 
 Describing how each stages reduces partial products.
 
-## Simple Templates
+## Simple Templates -- Patterns
 
-Simple templates should be represented as a list with each element on
+Patterns should be represented as a list with each element on
 a new line, this makes it clear how each layer is reduced:
 (Becomes tedious for 16-bit+, that said, complex templates will be 100x worse dependng on the coplexity)
 ```py
->>> my_simple_template = [
+>>> my_pattern = [
     1,
     1,
     2,
@@ -83,6 +83,9 @@ a new line, this makes it clear how each layer is reduced:
 The "run" of a given element determines where adders, run=2, or a
 combination of CSAs and HAs, run=3, are used. Elements can be
 int or strings, as long as they follow the "run" principle.
+
+E.g: 
+my_pattern's first run is equal to 2, it's second is 3.
 
 Complex templates require a more rigorous approach.
 
