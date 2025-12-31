@@ -1,6 +1,6 @@
-
-# Returns Algorithm Objects Using Templates #
-#############################################
+#########################################
+# Algorithm Are Defined Using Templates #
+#########################################
 """
 An algorithm is the application of multiple templates until no partial
 products are left.
@@ -21,9 +21,9 @@ decoders, flooding and sneaky tricks like using carry-in(cin) on adders.
 
 
 from typing import Any
-from .matrix import Matrix
+import multipy as mp
 
-class Algorithm(Matrix):
+class Algorithm(mp.Matrix):
     """
     A given algorithm is created on top of a zero initialised Logical
     AND matrix. The first operation in the algorithm must populate
@@ -31,7 +31,7 @@ class Algorithm(Matrix):
     """
 
 
-    def __init__(self, matrix: Matrix) -> None:
+    def __init__(self, matrix: mp.Matrix) -> None:
         self.algorithm = {}
         self.bits = 0
         self.populate(matrix)
@@ -43,7 +43,7 @@ class Algorithm(Matrix):
         consistent bitwidth.
         """
 
-        if isinstance(arg, Matrix): # warp matrix in list to reuse code
+        if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg] # list(arg) throws error -- implement __iter___?
         elif not(isinstance(arg, list)):
             raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
@@ -57,14 +57,14 @@ class Algorithm(Matrix):
 
 
     @classmethod
-    def step(cls, matrix: Matrix) -> None:
+    def step(cls, matrix: mp.Matrix) -> None:
         """
         Take youngest template, apply to matrix, remove template
         """
         ...
 
     @classmethod
-    def trim(cls, matrix: Matrix) -> None:
+    def trim(cls, matrix: mp.Matrix) -> None:
         """
         Trim empty rows from a matrix
         """
