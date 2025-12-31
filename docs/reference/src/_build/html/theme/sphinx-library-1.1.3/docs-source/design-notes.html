@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Design Notes &#8212; MultiPy 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="design-notes">
+<h1>Design Notes<a class="headerlink" href="#design-notes" title="Link to this heading">¶</a></h1>
+<p>While bold colors, shadows, “materials”, and heavy syntax highlighting are “in”
+right now, there is something to be said for the simplicity of a black-and-white
+printed book. Even programming books are somehow highly legible despite the lack
+of colors and UI chrome that adorn our editors.</p>
+<p>How can it be that a black and white book is equally or sometimes more legible
+than a richly formatted web page? This theme is partly a personal project to
+explore that question.</p>
+<p>My answer is the use of whitespace and good typography.</p>
+<section id="use-of-whitespace">
+<h2>Use of Whitespace<a class="headerlink" href="#use-of-whitespace" title="Link to this heading">¶</a></h2>
+<p>The theme was initially laid out to mimic metrics commonly used in a small
+paperback or hardback novel. This means a relatively small page size and
+surprisingly ample margin on all sides of the page. In order to better simulate
+a “page”, or focused area of content, the sidebar and non-content areas have
+been dimmed slightly but not so much as to be distracting. This helps to create
+a “page” rather than a sea of white.</p>
+<p>The second use of whitespace is in the type itself — in between the lines.
+Line and paragraph spacing is ample. The goal is not to cram too much within the
+focus area (we have an infinite amount of web page so there is no point trying
+to cram dozens of lines together).</p>
+</section>
+<section id="use-of-color">
+<h2>Use of Color<a class="headerlink" href="#use-of-color" title="Link to this heading">¶</a></h2>
+<p>Choosing fonts featuring interesting italics enabled a unique way to implement
+admonitions, quotes, etc. using only type and white space — no colors, boxes,
+or borders. This practice also aligns with the simple look of the printed page.</p>
+<p>While highly saturated syntax highlighting of code snippets is often sought out
+by developers, this theme takes the opposite approach instead using muted drab
+colors sparingly. Syntax highlighting does aid readability in longer code
+snippets, so it shouldn’t necessarily be disabled. I think the muted colors
+strike a good balance between readability without being distracting. Thanks to
+the Trac project for providing inspiration based on their color scheme included
+with Pygments.</p>
+<p>If you find that you prefer candy-colored syntax highlighting and color-coded
+admonitions, then this theme is certainly not for you.</p>
+</section>
+<section id="ligatures-kerning-punctuation">
+<h2>Ligatures, Kerning, Punctuation<a class="headerlink" href="#ligatures-kerning-punctuation" title="Link to this heading">¶</a></h2>
+<p>Special care has been taken to configure the theme to maximize use of the
+typeface’s features. This includes enabling automatic hyphenation at line breaks
+to keep the flow and rhythm of the text moving and enabling both common and
+contextual ligatures using the browser’s font rendering abilities. Both of these
+are common in print, but for some reason have been mostly forgotten in the
+electronic realm.</p>
+<p>Sphinx also excellently converts punctuation such as “smart quotes”, en– and
+em— dashes, etc. The browser additionally allows finely controlling the
+underline using OpenType features — so we can create faint underlines which
+become bolder upon hover, and underlines that leave space around descenders to
+create an appearance more pleasing to the eye.</p>
+</section>
+<section id="choosing-the-typefaces">
+<h2>Choosing the Typefaces<a class="headerlink" href="#choosing-the-typefaces" title="Link to this heading">¶</a></h2>
+<p>The specific typefaces chosen have been vetted among hundreds of freely
+available alternatives, each selected for being the highest performing across
+many areas including: legibility, metrics, kerning abilities, ligatures,
+contrast between weights, quality of italics, and general appearance.</p>
+<p>Special care has been taken to ensure the <code class="docutils literal notranslate"><span class="pre">-native</span></code> stacks look equally good
+on Windows, macOS, and various GNU/Linux distributions. Often times this means
+at least a dozen fallbacks are specified to match up to all sorts of conditions
+including which applications are installed (MS Office, LibreOffice, Gnome, KDE),
+common font packages (Bitstream, URW, Ghostscript, GNU fonts), and even distro
+specifics such as the branded Ubuntu or Red Hat fonts.</p>
+</section>
+<section id="typeface-notes">
+<h2>Typeface Notes<a class="headerlink" href="#typeface-notes" title="Link to this heading">¶</a></h2>
+<p><strong>Academy</strong> — “Computer Modern” is the gold standard here, and frankly a
+beautiful typeface. In order to facilitate this I have created a <a class="reference external" href="https://github.com/vsalvino/computer-modern">web font
+version</a> distributed via
+jsDeliver CDN.  “Computer Modern Typewriter” is used for monospace needs as it
+has a uniquely ornate appearance despite being a fixed width type. The fallback
+and native version uses a similar modernist (early 20th-century) typeface,
+Century (and various similar fallbacks).</p>
+<p><strong>Book</strong> — “Crimson Pro” was the font that opened the rabbit hole. Many
+characteristics of this type make it totally reminiscent of a printed book.
+After all, it was quite literally designed to be an on-screen font for textbooks
+and editorial content. “Courier Prime”, a fantastic rendition of Courier with
+script-like italics, is used for monospace needs. The native version uses
+Georgia (or Georgia Pro, a <em>much</em> nicer version of Georgia included with Windows
+10) which provide a similar reading experience.</p>
+<p><strong>Engineer</strong> — “IBM Plex Serif” provides a really unique cross between a
+traditional serif and a slab serif, which makes for a more practical alternative
+to the flowery Computer Modern, without losing the air of formality.
+Corresponding “IBM Plex Mono” is used for monospace needs. Cambria and Charter
+are used for the fallback and native version as they both have a sturdy upright
+appearance with clean cut serifs.</p>
+<p><strong>Humanist</strong> — “Fira Sans” was selected due to its unique but very legible
+appearance. Softer alternatives such as Source Sans Pro were considered, but
+Fira Sans has a slightly darker weight which helps it look good even on
+low-resolution low-contrast screens. I think its unique glyphs nicely accentuate
+the “human” part of “humanist”. Corresponding “Fira Mono” is used for monospace
+needs. The fallback and native version uses Trebuchet MS due to it being a
+web-safe font, and also having a similar dark weight with good legibility.</p>
+<p><strong>Swiss</strong> — “Inter” is an excellent choice here, due to its clear inspiration
+from Helvetica, but actually made more legible thanks to its wider characters
+and looser spacing. “Robot Mono” is used for monospace needs as it has a
+similarly geometric appearance. Fallbacks and native version ranges from
+Helvetica Neue, Arial Nova (a <em>much</em> nicer version of Arial included with
+Windows 10), Roboto, and Nimbus Sans (a forgotten but quite good Helvetica
+alternative which is commonly available in various GNU/Linux operating systems).</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MultiPy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">multipy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Ephraim Madugba.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../_sources/theme/sphinx-library-1.1.3/docs-source/design-notes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
