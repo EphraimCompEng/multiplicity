@@ -17,7 +17,7 @@ MultiPy provides tools for:
 
 # Documentation
 
-Documentation continues to grow with the project. Resouces for usage, general theory and implementations of algorithms using MultiPy can be found throughout the repository. 
+Documentation continues to grow with the project. Resouces for usage, general theory and implementations using MultiPy can be found in this repository. 
 
 For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
 
@@ -29,8 +29,12 @@ Use [sphinx](https://www.sphinx-doc.org/en/master/)?
 
 # Setup
 
-```Python3
->>> import multipy as mp
+
+```sh
+pip install -i https://test.pypi.org/simple/ multipy
+```
+```Python
+import multipy as mp
 ```
 
 # Dependencies
