@@ -22,11 +22,6 @@ Documentation continues to grow with the project. Resouces for usage, general th
 For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
 
 
-<!--
-Use [sphinx](https://www.sphinx-doc.org/en/master/)?
--->
-
-
 # Setup
 
 
