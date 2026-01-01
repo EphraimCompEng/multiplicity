@@ -53,13 +53,13 @@ class Algorithm(mp.Matrix):
     def split(cls, matrix: mp.Matrix, rows: int) -> list[mp.Matrix]:
         """
         Returns list of slices via progressive allocation.
-        
+
         Append n contiguous slices of matrix, each containing x rows.
         If not enough rows, progress to rows-1 -> row-2 -> ...
         """
         x = 0
         if len(matrix) - (x * rows) < rows:
-            
+            ...
         ...
 
     @classmethod
