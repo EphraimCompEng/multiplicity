@@ -38,7 +38,7 @@ variables_to_export = [
     "project",
     "copyright",
     "release",
-    "stable"
+    "stable",
 ]
 
 frozen_locals = dict(locals())
