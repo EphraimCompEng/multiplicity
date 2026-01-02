@@ -1,18 +1,54 @@
-name: Deploy Sphinx documentation to Pages
+# Build Sphinx and deploy to gh-pages
+name: "Sphinx: Render docs"
 
 on:
   push:
-    branches: [master] # branch to trigger deployment
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  pages:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - id: deployment
-      uses: sphinx-notes/pages@v3
-      with:
-        publish: false
-    - uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{ steps.deployment.outputs.artifact }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Create venv & install deps
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
+      - name: Build Sphinx
+        run: |
+          .venv/bin/sphinx-build -b html -E ../docs/reference/src ../docs/reference/build
+
+
+
+      # - name: Build Sphinx (Makefile)
+      #   run: |
+      #     # If you use the default Sphinx Makefile inside docs/, this will build to docs/_build/html
+      #     make -C docs html
+      #   continue-on-error: false
+
+      # Alternative build step if your sources are docs/ (no Makefile) or you want explicit sphinx-build:
+      # - name: Build Sphinx (sphinx-build)
+      #   run: |
+      #     sphinx-build -b html docs/reference/src docs/build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/
+          publish_branch: gh-pages
