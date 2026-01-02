@@ -10,7 +10,7 @@ The Problem
 -----------
 Generating and analysing multiplier designs by hand is labour intensive, even for small datasets, for entire `truth tables <https://en.wikipedia.org/wiki/Truth_table>`__, this is close to impossible.
 
-MultiPy provides tools for:
+MultiPy is built to streamline this process:
 
 - Custom partial product reduction via `templates <https://github.com/EphraimCompEng/multipy/blob/master/docs/structures/templates.md>`__
 - Generating complete truth tables

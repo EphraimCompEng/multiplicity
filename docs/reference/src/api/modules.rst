@@ -1,4 +1,4 @@
-MultiPy
+multipy
 =======
 
 .. toctree::

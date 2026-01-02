@@ -6,15 +6,12 @@ Changelog
 
 
 
-
 v0.1
 ====
 
 
-
+--
 `v0.1.0 <https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0>`_
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.
 

@@ -1,4 +1,4 @@
-MultiPy package
+multipy package
 ===============
 
 Subpackages
@@ -19,8 +19,3 @@ Module contents
    :members:
    :show-inheritance:
    :undoc-members:
-
-   multipy.core
-   multipy.datasets
-   multipy.io
-   multipy.tests

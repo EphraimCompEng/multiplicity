@@ -7,7 +7,7 @@ A powerful tool to build, test, and analyse multiplier designs.
 
 Generating and analysing multiplier designs by hand is labour intensive, even for small datasets, for entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this is close to impossible.
 
-MultiPy provides tools for:
+MultiPy is built to streamline:
 
 - Custom partial product reduction via [templates](https://github.com/EphraimCompEng/multipy/blob/master/docs/structures/templates.md)
 - Generating complete truth tables   
