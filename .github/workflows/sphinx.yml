@@ -33,20 +33,7 @@ jobs:
 
       - name: Build Sphinx
         run: |
-          .venv/bin/sphinx-build -b html -E ../docs/reference/src ../docs/reference/build
-
-
-
-      # - name: Build Sphinx (Makefile)
-      #   run: |
-      #     # If you use the default Sphinx Makefile inside docs/, this will build to docs/_build/html
-      #     make -C docs html
-      #   continue-on-error: false
-
-      # Alternative build step if your sources are docs/ (no Makefile) or you want explicit sphinx-build:
-      # - name: Build Sphinx (sphinx-build)
-      #   run: |
-      #     sphinx-build -b html docs/reference/src docs/build
+          .venv/bin/sphinx-build -b html -E ./reference/src ./reference/build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
