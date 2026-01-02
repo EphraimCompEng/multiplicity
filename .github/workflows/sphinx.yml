@@ -31,7 +31,7 @@ jobs:
           .venv/bin/pip install -r requirements.txt
       - name: Build Sphinx
         run: |
-          .venv/bin/sphinx-build -b html -E ./src ./build
+          .venv/bin/sphinx-build -b html -E .docs/reference/src .docs/reference/build
 
 
 
