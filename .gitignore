@@ -7,5 +7,4 @@
 *.deprecated
 # [Compiled source]
 *.py[ocd]
-build/
 dist/

@@ -31,9 +31,9 @@ jobs:
           .venv/bin/pip install -r requirements.txt
           .venv/bin/pip install -i https://test.pypi.org/simple/ multipy
 
-      - name: Build Sphinx
-        run: |
-          .venv/bin/sphinx-build -b html -E docs/reference/src docs/reference/build
+      # - name: Build Sphinx
+      #   run: |
+      #     .venv/bin/sphinx-build -b html -E docs/reference/src docs/reference/build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
