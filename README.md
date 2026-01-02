@@ -17,7 +17,8 @@ MultiPy is built to streamline:
 
 # Documentation
 
-Documentation continues to grow with the project. Resouces for usage, general theory and implementations using MultiPy can be found in this repository. 
+Resouces for usage, general theory and implementations can be found in this repository. 
+For the API Reference head to MultiPy's documentation [site]() 
 
 For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
 
