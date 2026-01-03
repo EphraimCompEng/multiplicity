@@ -43,8 +43,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start.html">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guide.html#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html#v0-1">v0.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
@@ -97,17 +97,17 @@
 <span class="sd">    A map matrix holds signed hexadecimal numbers representing a vertical</span>
 <span class="sd">    offset for a given bit when applied to an algorithm.</span>
 
-<span class="sd">    [map]\t   [matrix]\t[effect]\n</span>
-<span class="sd">    00 02 01\t _ 0 1\t  _ 1 _\n</span>
-<span class="sd">    00 FF 00\t 0 1 _\t  0 _ 1\n</span>
-<span class="sd">    00 00 00\t _ _ _\t  _ 0 _\n</span>
+<span class="sd">    [matrix] || [map---] || [effect]</span>
+<span class="sd">     _ 0 1 &gt; || 00 02 01 || &gt; _ 1 _</span>
+<span class="sd">     0 1 _ &gt; || 00 FF 00 || &gt; 0 _ 1</span>
+<span class="sd">     _ _ _ &gt; || 00 00 00 || &gt; _ 0 _</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="o">...</span></div>
 
 
-<div class="viewcode-block" id="dadda_map">
-<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.core.map.dadda_map">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dadda_map</span><span class="p">():</span>
+<div class="viewcode-block" id="build_dadda_map">
+<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.core.map.build_dadda_map">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_dadda_map</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return map to collect partial products into an upside down triangle:</span>
 <span class="sd">    a prerequisite for the dadda algorithm.</span>

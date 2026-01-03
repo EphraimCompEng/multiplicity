@@ -26,10 +26,20 @@ class Algorithm(mp.Matrix):
 
 
     def __init__(self, matrix: mp.Matrix) -> None:
+        self.bits      = 0
+        self.state     = 0
+        self.stages    = len(self.algorithm)
+        self.matrix    = matrix
+        self.result    = {}
         self.algorithm = {}
-        self.bits = 0
-        self.populate(matrix)
-        self.stages = len(self.algorithm)
+        # self.populate(matrix) # -- Reactor
+
+    def __repr__(self) -> str:
+        pretty = ""
+        print()
+        for i, t in self.algorithm.items():
+            pretty += f"S{i}:\n" + str(t) + "\n"
+        return pretty
 
     def populate(self, arg: Any) -> None:
         """
@@ -39,16 +49,32 @@ class Algorithm(mp.Matrix):
 
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg] # list(arg) throws error -- implement __iter___?
-        elif not(isinstance(arg, list)):
+        elif not(isinstance(all(arg), list)):
             raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
 
-        bit = arg[0].bits if (self.bits == 0) else self.bits
+        self.bits = arg[0].bits if (self.bits == 0) else self.bits # intialise
         for template in arg:
-            if template.bits != bit:
-                raise ValueError("All templates must have consistent bitwidth.")
-            self.algorithm[len(self.algorithm)] = template
-        self.bits = bit
 
+            # This test should be inside Template class------------------------- #
+            if template.bits != self.bits:                                       #
+                raise ValueError("All templates must have consistent bitwidth.") #
+            # ------------------------------------------------------------------ #
+
+            self.algorithm[len(self.algorithm)] = template
+
+
+
+    def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
+        ...
+
+    def step(self, matrix: mp.Matrix) -> None:
+        """
+        Take template[internal_state], apply to matrix, advance internal_state
+        """
+        ...
+
+
+    # Used to
     @classmethod
     def split(cls, matrix: mp.Matrix, rows: int):
         """
@@ -63,9 +89,9 @@ class Algorithm(mp.Matrix):
         ...
 
     @classmethod
-    def step(cls, matrix: mp.Matrix) -> None:
+    def reduce(cls):
         """
-        Take youngest template, apply to matrix, remove template
+        Takes a template, splits
         """
         ...
 
@@ -76,9 +102,10 @@ class Algorithm(mp.Matrix):
         """
         ...
 
-    def __repr__(self) -> str:
-        pretty = ""
-        print()
-        for i, t in self.algorithm.items():
-            pretty += f"S{i}:\n" + str(t) + "\n"
-        return pretty
+
+    @classmethod
+    def exec(cls):
+        """
+        Run algorithm with a single set of intputs then reset internal state
+        """
+        ...

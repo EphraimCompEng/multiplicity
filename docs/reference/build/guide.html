@@ -46,8 +46,8 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="start.html">Get Started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#v0-1">v0.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
@@ -80,24 +80,44 @@
 <span id="guide"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading"></a></h1>
 <p>soon™</p>
 <p>(below is an incomplete guide which will grow with the project.)</p>
-<p>setup:</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#setup"><span class="std std-ref">Setup</span></a></p></li>
+<li><p><a class="reference internal" href="#reduce"><span class="std std-ref">Reduce</span></a></p></li>
+<li><p><a class="reference internal" href="#map"><span class="std std-ref">Map</span></a></p></li>
+<li><p><a class="reference internal" href="#define-algorithm"><span class="std std-ref">Define Algorithm</span></a></p></li>
+<li><p><a class="reference internal" href="#use-algorithm"><span class="std std-ref">Use Algorithm</span></a></p></li>
+</ul>
+<p><strong>Setup</strong></p>
 <ul class="simple">
 <li><p>import multipy as mp</p></li>
-<li><p>define matrix size</p></li>
+<li><p>create matrix</p></li>
 <li><p>create algorithm object</p></li>
-<li><p>create and store templates in algorithm</p></li>
 </ul>
-<p>Algorithm process:
-0: Generate logical AND matrix
-1: split matrix
-2: apply template, update state
-3: generate result
-4: optionally apply map
-5: update matrix
-6: GOTO 1:</p>
+<p><strong>Reduce &amp; Map</strong></p>
+<ul class="simple">
+<li><p>create patterns and templates</p></li>
+<li><p>create maps</p></li>
+<li></li>
+</ul>
+<p><strong>Define Algorithm</strong></p>
+<p><strong>Generate Truth table</strong></p>
+<p>MultiPy focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.</p>
+<p>Recommended resources before starting:</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Binary_multiplier">Binary Multipliers</a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Wallace_tree">Wallace Tree</a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference external" href="https://youtu.be/4FwESTOVT-o/">Teman, A. Fast Multipliers</a></p></li>
+</ul>
+</td></tr></table>
 </section>
 <section id="setup">
-<h1>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h1>
+<span id="id1"></span><h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>First, import multipy and decide on a bitwidth for our algorithm, to keep it simple let’s pick 4-bits:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># 4-bit logical AND matrix</span>
@@ -116,16 +136,19 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">matrix</span></code> is a “structure” used to generate the logical AND matrix, aka partial products, for a given set of inputs. It also tells the algorithm <em>where</em> each partial product is located.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To populated an AND matrix without an Algorithm object use:</p>
+<p>To populate an AND matrix without an Algorithm object use:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="n">operand_a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">operand_b</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>Next, create an algorithm object.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Algorithm</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">first_alg</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Algorithm</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The Algorithm object will hold the templates that define a given algorithm. It also holds an internal state to track which template it should use next.</p>
+</section>
+<section id="reduce">
+<span id="id2"></span><h2>Reduce<a class="headerlink" href="#reduce" title="Link to this heading"></a></h2>
 <p>Now let’s make some templates. This involves figuring out where you want to place:</p>
 <ul class="simple">
 <li><p>Carry Save Adders – CSA (Half Adders, HA, are automtically placed when using simple templates) [3 to 2]</p></li>
@@ -133,11 +156,17 @@
 </ul>
 <p>and in the future:</p>
 <ul class="simple">
-<li><p>Decoders – [n to n-k]</p></li>
 <li><p>Greedy Adders – Adder which makes use of carry in (cin) [2 to 1]</p></li>
 </ul>
-<p>All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to Multipy.
-Decoders are an exception and can potentially reduce a set of partial products by more than 1.</p>
+<p>Collectively these are arithmetic units. All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to Multipy.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Decoders are an exception and can potentially reduce a set of partial products by more than 1.</p>
+<ul class="simple">
+<li><p>Decoders – [n to n-k]</p></li>
+</ul>
+<p>They encode specialised operations based on bit position, count, unary count, etc. Decoders are in the <a class="reference external" href="roadmap">roadmap</a>.</p>
+</div>
 <p>To inform the algorithm on how a given template reduces groups of partial products, an array of characters, or pattern is used:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">a</span><span class="p">,</span>      <span class="c1"># +-</span>
@@ -149,20 +178,74 @@ Decoders are an exception and can potentially reduce a set of partial products b
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Multipy will allow you to make any algorithm, even if it’s sub-optimal.</p>
+<p>It is recommended to write patterns vertically to make it clear how rows are effected.</p>
 </div>
-<p>For this 4-bit multiplier algorithm it will take 3 rounds, minimum, of reductions to reach out final output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1st:    2nd:    3rd:    output:
-a
-a       c
+<p>For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach out final output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Patterns for each stage of first_alg
+
+1st:    2nd:    3rd:    output:
+
+a       _       _
+a       c       _
 a       c       d
 b       c       d       x
 </pre></div>
 </div>
-<p>Each step needs a pattern or a template. Let’s turn our first pattern into a template:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each arithmetic unit will output to the top of its “run”. The next section covers how to “map” these outputs.</p>
+</div>
+</section>
+<section id="map">
+<span id="id3"></span><h2>Map<a class="headerlink" href="#map" title="Link to this heading"></a></h2>
+<p>Each step of an algorithm needs a pattern or a template, but it also needs to regoup their partial products before using the next template. This is where maps come in.</p>
+<p>First, note that bits can only move vertically as moving horizontally changes it’s value. Therefore, each map value is a signed hexadecimal number.
+For simple maps, the map value represents an entire row rather than a specific bit.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Maps for each stage of first_alg
+
+1st:    2nd:    3rd:
+
+FF      __      __
+FF      FF      __
+00      FF      00
+00      00      00
 </pre></div>
 </div>
+<p>Here’s the breakdown of this example:</p>
+<p>1st stage - the first two rows of the result are being move by -1 == FF.</p>
+<p>2nd stage - each row of the result will be moved again by -1 == FF.</p>
+<p>3rd stage - No moves required, as long as output is within the matrix.</p>
+<p>Algorithms use a template to produce a result, which is then “mapped” to the next template. Each Adder/CSA/etc. needs to know where it should output in relation to the next template.
+This means as long as output is mapped to input the final output (x from the pattern example) can be anywhere within the matrix.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In other words, these are also valid algorithms:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Another valid algorithm               # Another
+
+1st:    2nd:    3rd:    output:         1st:    2nd:    3rd:    output:
+
+a       c       d       x               a       c
+a       c       d                       a       c       d       x
+a       c                               a       c       d
+b                                       b
+
+# maps                                  # maps
+
+
+00      00      00                      00      FF      __
+00      00      00                      00      FF      00
+00      00      __                      00      00      00
+01      __      __                      01      __      __
+</pre></div>
+</div>
+</div>
+</section>
+<section id="define-algorithm">
+<span id="id4"></span><h2>Define Algorithm<a class="headerlink" href="#define-algorithm" title="Link to this heading"></a></h2>
+</section>
+<section id="use-algorithm">
+<span id="id5"></span><h2>Use Algorithm<a class="headerlink" href="#use-algorithm" title="Link to this heading"></a></h2>
+</section>
 </section>
 
 

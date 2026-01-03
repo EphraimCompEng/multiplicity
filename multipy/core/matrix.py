@@ -16,13 +16,7 @@ class Matrix:
 
     def __empty_matrix(self) -> list[list[Any]]:
         """
-        Build a logic AND matrix for a bitwidth of self.bits. For example:
-        >>> self.bits = 4
-        >>> build_matrix()
-        [['_','_','_','_',0,0,0,0],
-         ['_','_','_',0,0,0,0,'_'],
-         ['_','_',0,0,0,0,'_','_'],
-         ['_',0,0,0,0,'_','_','_']]
+        Build a wallace tree style logic AND matrix for a bitwidth of self.bits.
         """
         row = [0]*self.bits
         matrix = []
@@ -54,12 +48,12 @@ class Matrix:
     @classmethod
     def pretty(cls, matrix: list[list[Any]]) -> str:
         """
-        Format self.matrix as a string:
+        Format matrix as a string:
 
-        "____0000\n
-         ___0000_\n
-         __0000__\n
-         _0000___"
+        >>> ____0000
+        >>> ___0000_
+        >>> __0000__
+        >>> _0000___
         """
         pretty_ = ""
         for i in matrix:

@@ -11,11 +11,11 @@ print(sys.path)
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'MultiPy'
+project   = 'MultiPy'
 copyright = '2025, Ephraim Madugba'
-author = 'Ephraim Madugba'
-release = mp.MP_VERSION
-stable = 'v' + ".".join(release.split('.')[:2])
+author    = 'Ephraim Madugba'
+release   = mp.MP_VERSION
+stable    = 'v' + ".".join(release.split('.')[:2])
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

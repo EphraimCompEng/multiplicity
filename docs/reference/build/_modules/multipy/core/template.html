@@ -43,8 +43,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start.html">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guide.html#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html#v0-1">v0.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
@@ -124,10 +124,10 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span> <span class="c1"># Carry Save Adder -&gt; (template, result)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns template &quot;slices&quot; for a csa reduction and the resulting slice.\n</span>
-<span class="sd">    [slice]\t [csa]\t\t[result]\n</span>
-<span class="sd">    ____0000 ____AaAa         \n</span>
-<span class="sd">    ___0000_ ___aAaA_ __AaAaAa\n</span>
-<span class="sd">    __0000__ __AaAa__ __aAaA__\n</span>
+<span class="sd">    [slice-] || [csa---] || [result]</span>
+<span class="sd">    ____0000 || ____AaAa || __AaAaAa</span>
+<span class="sd">    ___0000_ || ___aAaA_ || __aAaA__</span>
+<span class="sd">    __0000__ || __AaAa__ || ________</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">template_slice</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid template slice: must be 3 rows&quot;</span><span class="p">)</span>
@@ -160,9 +160,9 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span> <span class="c1"># Carry Save Adder -&gt; (template, result)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns template &quot;slices&quot; for addition and the resulting slice.\n</span>
-<span class="sd">    [slice ]\t[adder]\t[result]\n</span>
-<span class="sd">    ___0000_ ___aAaA_\n</span>
-<span class="sd">    __0000__ __AaAa__ _aAaAaA_\n</span>
+<span class="sd">    [slice ] || [adder-] || [result]</span>
+<span class="sd">    ___0000_ || ___aAaA_ || _aAaAaA_</span>
+<span class="sd">    __0000__ || __AaAa__ || ________</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">template_slice</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid template slice: must be 2 rows&quot;</span><span class="p">)</span>
@@ -172,11 +172,14 @@
     <span class="n">result</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
     <span class="n">adder_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">template_slice</span><span class="p">)</span> <span class="c1"># ensure no references</span>
 
-    <span class="c1">### TODO</span>
-    <span class="c1"># tff + char startegy can be replace with an infinite generator:</span>
-    <span class="c1"># while True: yield outputs char.upper(); yeild char.lower</span>
-    <span class="c1"># make and add to _utils?</span>
-    <span class="n">tff</span> <span class="o">=</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="n">char</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="c1"># Toggle flip flop</span>
+    <span class="c1"># -- TODO ------------------------------------------------------ #</span>
+    <span class="c1"># tff + char startegy can be replace with an infinite generator: #</span>
+    <span class="c1"># while True: yield outputs char.upper(); yeild char.lower       #</span>
+    <span class="c1"># make and add to _utils?                                        #</span>
+    <span class="n">tff</span> <span class="o">=</span> <span class="p">(</span><span class="n">char</span> <span class="o">==</span> <span class="n">char</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="c1"># Toggle flip flop                  #</span>
+    <span class="c1"># -------------------------------------------------------------- #</span>
+
+
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="c1"># For int in template slice, map possible ADD operands to adder_slice</span>
         <span class="c1"># Then map possible outputs to result</span>
@@ -209,10 +212,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">p_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">pretty_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">:</span>
-            <span class="n">p_str</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="w"> </span><span class="n">p_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="si">}</span><span class="s2">&quot;</span></div>
+            <span class="n">pretty_str</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="w"> </span><span class="n">pretty_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 <div class="viewcode-block" id="Template">
@@ -221,11 +224,13 @@
     <span class="c1"># import string</span>
     <span class="c1"># cell = (ch for ch in string.ascii_lowercase)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> <span class="c1"># Complex or simple</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">map</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> <span class="c1"># Complex or simple</span>
         <span class="n">valid_range</span>  <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">SUPPORTED_BITWIDTHS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">len</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span>     <span class="o">=</span> <span class="nb">map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span>  <span class="o">=</span> <span class="n">result</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="kc">None</span>
+
 
         <span class="c1"># length of any template represents it&#39;s bitwidth</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">template</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_range</span><span class="p">:</span>

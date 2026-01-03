@@ -43,10 +43,10 @@ def build_csa(
 ) -> tuple[list, list]: # Carry Save Adder -> (template, result)
     """
     Returns template "slices" for a csa reduction and the resulting slice.\n
-    [slice]\t [csa]\t\t[result]\n
-    ____0000 ____AaAa         \n
-    ___0000_ ___aAaA_ __AaAaAa\n
-    __0000__ __AaAa__ __aAaA__\n
+    [slice-] || [csa---] || [result]
+    ____0000 || ____AaAa || __AaAaAa
+    ___0000_ || ___aAaA_ || __aAaA__
+    __0000__ || __AaAa__ || ________
     """
     if len(template_slice) != 3:
         raise ValueError("Invalid template slice: must be 3 rows")
@@ -76,9 +76,9 @@ def build_adder(
 ) -> tuple[list, list]: # Carry Save Adder -> (template, result)
     """
     Returns template "slices" for addition and the resulting slice.\n
-    [slice ]\t[adder]\t[result]\n
-    ___0000_ ___aAaA_\n
-    __0000__ __AaAa__ _aAaAaA_\n
+    [slice ] || [adder-] || [result]
+    ___0000_ || ___aAaA_ || _aAaAaA_
+    __0000__ || __AaAa__ || ________
     """
     if len(template_slice) != 2:
         raise ValueError("Invalid template slice: must be 2 rows")
@@ -88,11 +88,14 @@ def build_adder(
     result = [['_']*n]
     adder_slice = copy.copy(template_slice) # ensure no references
 
-    ### TODO
-    # tff + char startegy can be replace with an infinite generator:
-    # while True: yield outputs char.upper(); yeild char.lower
-    # make and add to _utils?
-    tff = (char == char.lower()) # Toggle flip flop
+    # -- TODO ------------------------------------------------------ #
+    # tff + char startegy can be replace with an infinite generator: #
+    # while True: yield outputs char.upper(); yeild char.lower       #
+    # make and add to _utils?                                        #
+    tff = (char == char.lower()) # Toggle flip flop                  #
+    # -------------------------------------------------------------- #
+
+
     for i in range(n):
         # For int in template slice, map possible ADD operands to adder_slice
         # Then map possible outputs to result
@@ -122,20 +125,22 @@ class Pattern:
         self.pattern = pattern
 
     def __str__(self):
-        p_str = ""
+        pretty_str = ""
         for p in self.pattern:
-            p_str += " " + p + "\n"
-        return f"{'['+ p_str[1:-2]+']'}"
+            pretty_str += " " + p + "\n"
+        return f"{'['+ pretty_str[1:-2]+']'}"
 
 class Template:
     # import string
     # cell = (ch for ch in string.ascii_lowercase)
 
-    def __init__(self, template: list[Any], result: Any = None): # Complex or simple
+    def __init__(self, template: list[Any], result: Any = None, map: Any = None): # Complex or simple
         valid_range  = mp.SUPPORTED_BITWIDTHS
         self.len     = len(template)
+        self.map     = map
         self.result  = result
         self.pattern = None
+
 
         # length of any template represents it's bitwidth
         if len(template) not in valid_range:

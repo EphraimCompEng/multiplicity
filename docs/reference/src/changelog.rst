@@ -3,15 +3,35 @@
 Changelog
 =========
 
+.. toctree::
+   :maxdepth: 2
 
+   v0.1
+
+.. _v0.1.1: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1
+.. _v0.1.0: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0
 
 
 v0.1
 ====
 
+`v0.1.1 <v0.1.1>`_
+~~~~~~~~~~~~~~~~~~
 
---
-`v0.1.0 <https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0>`_
+This patch is focused on documentation and testing the api reference site locally
+
+Updates:
+
+    - progress towards an online api reference site
+    - Improved landing page and overall site layout
+    - Scripts apidoc.sh and build.sh to automate syncing and creating the sphinx site
+    - Added sphinx-rtd-theme
+    - minimal additions to codebase, mostly outlining future functionality
+
+
+
+`v0.1.0 <v0.1.0>`_
+~~~~~~~~~~~~~~~~~~
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.
 

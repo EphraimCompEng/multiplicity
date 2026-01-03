@@ -10,7 +10,7 @@ Starting point:
 - [x] Automatic version control (MAJOR.MINOR.PATCH) -- uv
 - [x] **Basic** testing
 
-## Structure
+## Structures
 
 The entire library functions via three structures: Algorithms which initialise a Matrix which are then subsequesntly reduced by templates.
 - [x] Algorithm, Matrix and Template classes formalised
@@ -18,7 +18,7 @@ The entire library functions via three structures: Algorithms which initialise a
 - [x] simple templates 
 - [ ] Complex templates 
 - [ ] Simple reduction
-- [ ] Comples reduction
+- [ ] Complex reduction
 - [ ] Simple row map
 - [ ] Complete map matrix
 - [ ] Algorithm.state and .step()
@@ -34,20 +34,20 @@ Basic functionality; "simple templates", generate, analyse:
 - [ ] 8-bit saturated multiply [Built-in]
 - [x] Truth table generation -> ~Parquet~ json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
-- [x] Truth table generation -> Parquet
+- [ ] Truth table generation -> Parquet
 - [ ] Basic analysis/visualisation of bit ranges]
 
-\* Note: once built-in functions and classes are operational, hand crafted templates and maps will also be functional.
+\* Note: once built-in functions and classes are operational, hand crafted templates and maps will be be functional.
 simple templates -> internally called patters, form -> complex templates.
 
 ## Documentation
 
 - [x] Sphinx implementation
-- [ ] Setup sphinx -> web based API reference
+- [x] Setup sphinx -> web based API reference
 - [ ] Setup Github Wiki? For theory / internal systems
 - [ ] Improve API ref site with nicer HTML/CSS
 - [ ] Add markdown(.md) Functionality to API ref
-- [ ] Improve and provide a focused overview of features 
+- [ ] Fill out a complete user guide 
 - [ ] Provide academic sources for algorithm docs
 
 ## Optimisation
@@ -73,6 +73,8 @@ Supported algoithms:
 
 # Advanced Functionality
 Once the library is stable and optimised:
+- [ ] Decoder with custom encodings
+- [ ] Optional Booth encoding instead of AND matrix
 - [ ] "Timing" stages/templates/multipliers -- User defined latencies
-- [ ] 32-bit unsaturated multiply?
-- [ ] 32-bit saturated multiply?
+- [ ] 32-bit ?
+- [ ] 64-bit ?

@@ -43,8 +43,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start.html">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guide.html#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html#v0-1">v0.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
@@ -94,13 +94,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__empty_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Build a logic AND matrix for a bitwidth of self.bits. For example:</span>
-<span class="sd">        &gt;&gt;&gt; self.bits = 4</span>
-<span class="sd">        &gt;&gt;&gt; build_matrix()</span>
-<span class="sd">        [[&#39;_&#39;,&#39;_&#39;,&#39;_&#39;,&#39;_&#39;,0,0,0,0],</span>
-<span class="sd">         [&#39;_&#39;,&#39;_&#39;,&#39;_&#39;,0,0,0,0,&#39;_&#39;],</span>
-<span class="sd">         [&#39;_&#39;,&#39;_&#39;,0,0,0,0,&#39;_&#39;,&#39;_&#39;],</span>
-<span class="sd">         [&#39;_&#39;,0,0,0,0,&#39;_&#39;,&#39;_&#39;,&#39;_&#39;]]</span>
+<span class="sd">        Build a wallace tree style logic AND matrix for a bitwidth of self.bits.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
@@ -137,12 +131,12 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">pretty</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Format self.matrix as a string:</span>
+<span class="sd">        Format matrix as a string:</span>
 
-<span class="sd">        &quot;____0000\n</span>
-<span class="sd">         ___0000_\n</span>
-<span class="sd">         __0000__\n</span>
-<span class="sd">         _0000___&quot;</span>
+<span class="sd">        &gt;&gt;&gt; ____0000</span>
+<span class="sd">        &gt;&gt;&gt; ___0000_</span>
+<span class="sd">        &gt;&gt;&gt; __0000__</span>
+<span class="sd">        &gt;&gt;&gt; _0000___</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pretty_</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">:</span>
