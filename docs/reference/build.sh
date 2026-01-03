@@ -13,4 +13,4 @@ set -euo pipefail
 rm -rf build
 
 # -E ignore cached environment; -a write all files
-sphinx-build -b html -E -a ./src ./build
+sphinx-build -b html  src build
