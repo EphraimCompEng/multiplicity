@@ -102,18 +102,21 @@
 <li class="toctree-l2"><a class="reference internal" href="multipy.core.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multipy.core.html#module-multipy.core.algorithm">multipy.core.algorithm module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.exec"><code class="docutils literal notranslate"><span class="pre">Algorithm.exec()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.populate"><code class="docutils literal notranslate"><span class="pre">Algorithm.populate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.reduce"><code class="docutils literal notranslate"><span class="pre">Algorithm.reduce()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.split"><code class="docutils literal notranslate"><span class="pre">Algorithm.split()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.step"><code class="docutils literal notranslate"><span class="pre">Algorithm.step()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.trim"><code class="docutils literal notranslate"><span class="pre">Algorithm.trim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="multipy.core.html#multipy.core.algorithm.Algorithm.truth"><code class="docutils literal notranslate"><span class="pre">Algorithm.truth()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="multipy.core.html#module-multipy.core.map">multipy.core.map module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multipy.core.html#multipy.core.map.build_dadda_map"><code class="docutils literal notranslate"><span class="pre">build_dadda_map()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multipy.core.html#multipy.core.map.build_map"><code class="docutils literal notranslate"><span class="pre">build_map()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multipy.core.html#multipy.core.map.build_simple_map"><code class="docutils literal notranslate"><span class="pre">build_simple_map()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.html#multipy.core.map.dadda_map"><code class="docutils literal notranslate"><span class="pre">dadda_map()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="multipy.core.html#module-multipy.core.matrix">multipy.core.matrix module</a><ul>
@@ -171,10 +174,22 @@
 AND matrix. The first operation in the algorithm must populate
 this matrix with partial products.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="multipy.Algorithm.exec">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.exec" title="Link to this definition"></a></dt>
+<dd><p>Run algorithm with a single set of intputs then reset internal state</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="multipy.Algorithm.populate">
 <span class="sig-name descname"><span class="pre">populate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.populate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.populate" title="Link to this definition"></a></dt>
 <dd><p>Adds template(s) to an existing algorithm. All templates must be of
 consistent bitwidth.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="multipy.Algorithm.reduce">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reduce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.reduce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.reduce" title="Link to this definition"></a></dt>
+<dd><p>Takes a template, splits</p>
 </dd></dl>
 
 <dl class="py method">
@@ -187,8 +202,8 @@ If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multipy.Algorithm.step">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multipy.core.html#multipy.core.matrix.Matrix" title="multipy.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.step" title="Link to this definition"></a></dt>
-<dd><p>Take youngest template, apply to matrix, remove template</p>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multipy.core.html#multipy.core.matrix.Matrix" title="multipy.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.step" title="Link to this definition"></a></dt>
+<dd><p>Take template[internal_state], apply to matrix, advance internal_state</p>
 </dd></dl>
 
 <dl class="py method">
@@ -196,6 +211,11 @@ If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multipy.core.html#multipy.core.matrix.Matrix" title="multipy.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.trim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.trim" title="Link to this definition"></a></dt>
 <dd><p>Trim empty rows from a matrix</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="multipy.Algorithm.truth">
+<span class="sig-name descname"><span class="pre">truth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multipy.core.html#multipy.core.matrix.Matrix" title="multipy.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multipy.core.html#multipy.core.template.Template" title="multipy.core.template.Template"><span class="pre">Template</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multipy/core/algorithm.html#Algorithm.truth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Algorithm.truth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -212,13 +232,13 @@ If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="multipy.Matrix.pretty">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pretty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/multipy/core/matrix.html#Matrix.pretty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Matrix.pretty" title="Link to this definition"></a></dt>
-<dd><p>Format self.matrix as a string:</p>
-<p>“____0000</p>
-<blockquote>
-<div><p>___0000_</p>
-<p>__0000__</p>
-<p>_0000___”</p>
-</div></blockquote>
+<dd><p>Format matrix as a string:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">____0000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">___0000_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">__0000__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_0000___</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -231,7 +251,7 @@ If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="multipy.Template">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multipy.</span></span><span class="sig-name descname"><span class="pre">Template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multipy/core/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Template" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multipy.</span></span><span class="sig-name descname"><span class="pre">Template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multipy/core/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.Template" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="multipy.Template.merge">
@@ -245,19 +265,19 @@ If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
 <dt class="sig sig-object py" id="multipy.build_adder">
 <span class="sig-prename descclassname"><span class="pre">multipy.</span></span><span class="sig-name descname"><span class="pre">build_adder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multipy/core/template.html#build_adder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.build_adder" title="Link to this definition"></a></dt>
 <dd><p>Returns template “slices” for addition and the resulting slice.</p>
-<p>[slice ]    [adder] [result]</p>
-<p>___0000_ ___aAaA_</p>
-<p>__0000__ __AaAa__ _aAaAaA_</p>
+<p>[slice ] || [adder-] || [result]
+___0000_ || ___aAaA_ || _aAaAaA_
+__0000__ || __AaAa__ || ________</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="multipy.build_csa">
 <span class="sig-prename descclassname"><span class="pre">multipy.</span></span><span class="sig-name descname"><span class="pre">build_csa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multipy/core/template.html#build_csa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipy.build_csa" title="Link to this definition"></a></dt>
 <dd><p>Returns template “slices” for a csa reduction and the resulting slice.</p>
-<p>[slice]      [csa]          [result]</p>
-<p>____0000 ____AaAa</p>
-<p>___0000_ ___aAaA_ __AaAaAa</p>
-<p>__0000__ __AaAa__ __aAaA__</p>
+<p>[slice-] || [csa—] || [result]
+____0000 || ____AaAa || __AaAaAa
+___0000_ || ___aAaA_ || __aAaA__
+__0000__ || __AaAa__ || ________</p>
 </dd></dl>
 
 <dl class="py function">
