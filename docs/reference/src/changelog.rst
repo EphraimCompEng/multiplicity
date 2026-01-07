@@ -1,17 +1,16 @@
-.. _changelog:
+.. change_log:
 =========
 Changelog
 =========
 
 .. toctree::
-   :maxdepth: 2
-
    v0.1
+
 
 .. _v0.1.1: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1
 .. _v0.1.0: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0
 
-
+.. _v0.1:
 v0.1
 ====
 

@@ -27,7 +27,7 @@ class Map:
             self.map = self.build_map(map)
 
 
-    def build_map(self, simple: list[Any]) -> mp.Map:
+    def build_map(self, simple: list[Any]) -> object:
         """
         Use simple map to generate standard map. Each element of simple map
         is a 2-bit, signed hex value. +ve = up, -ve = down.
@@ -35,14 +35,14 @@ class Map:
 
         ...
 
-def build_simple_map(matrix: mp.Matrix, reversed: bool=False) -> mp.Map:
+def build_simple_map(matrix: mp.Matrix, reversed: bool=False) -> object:
     """
     Find empty rows, create simple map to efficiently pack rows.
     Defaults to bottom unless reversed=True.
     """
     ...
 
-def build_dadda_map(bits) -> mp.Map:
+def build_dadda_map(bits) -> object:
     """
     Return map which represents starting point of Dadda tree algorithm.
     """

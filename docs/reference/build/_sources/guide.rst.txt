@@ -182,15 +182,15 @@ For simple maps, the map value represents an entire row rather than a specific b
 
 Here's the breakdown of this example:
 
-1st stage - the first two rows of the result are being move by -1 == FF.
+1st stage - Move first 2 rows of result down by 1 [-1 = FF = down * 1]
 
-2nd stage - each row of the result will be moved again by -1 == FF.
+2nd stage - Move middle 2 rows of result down by 1 [-1 = FF = down * 1]
 
-3rd stage - No moves required, as long as output is within the matrix.
+3rd stage - No moves required
 
 
 Algorithms use a template to produce a result, which is then "mapped" to the next template. Each Adder/CSA/etc. needs to know where it should output in relation to the next template.
-This means as long as output is mapped to input the final output (x from the pattern example) can be anywhere within the matrix.
+This means as long as outputs are mapped correctly to inputs, the placements of arithmetic units can be anywhere. The final output (x from the pattern example) can be anywhere within the matrix.
 
 .. note::
 
