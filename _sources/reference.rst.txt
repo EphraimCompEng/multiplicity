@@ -1,12 +1,10 @@
-.. _reference:
+.. _api-reference:
 =============
 API Reference
 =============
 
 
 .. toctree::
-    :glob:
+    :hidden:
 
-    api/multipy.core
-    api/multipy.datasets
-    api/multipy.io
+    api/multipy

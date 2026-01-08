@@ -6,7 +6,7 @@ MultiPy Documentation
 
 .. toctree::
     :hidden:
-    :titlesonly:
+    :maxdepth: 2
 
     intro
     start
