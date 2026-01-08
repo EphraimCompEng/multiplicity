@@ -30,6 +30,7 @@ Recommended resources before starting:
     * `Teman, A. Fast Multipliers <https://youtu.be/4FwESTOVT-o/>`_
 
 
+
 .. _setup:
 Setup
 -----
@@ -41,11 +42,13 @@ First, import multipy and decide on a bitwidth for our algorithm, to keep it sim
     import multipy as mp
     matrix = mp.Matrix(4) # 4-bit logical AND matrix
 
+
 Here's what it looks like:
 
 .. code-block:: python
 
     print(matrix.matrix)
+
 
 .. code-block:: python
 
@@ -53,6 +56,7 @@ Here's what it looks like:
     ___0000_
     __0000__
     _0000___
+
 
 
 The ``matrix`` is a "structure" used to generate the logical AND matrix, aka partial products, for a given set of inputs. It also tells the algorithm *where* each partial product is located.
@@ -66,11 +70,14 @@ The ``matrix`` is a "structure" used to generate the logical AND matrix, aka par
 
 
 
+
+
 Next, create an algorithm object.
 
 .. code-block:: python
 
     first_alg = mp.Algorithm(matrix)
+
 
 The Algorithm object will hold the templates that define a given algorithm. It also holds an internal state to track which template it should use next.
 
@@ -124,6 +131,7 @@ For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach o
 
 .. note::
     Each arithmetic unit will output to the top of its "run". The next section covers how to "map" these outputs.
+
 
 
 .. _map:

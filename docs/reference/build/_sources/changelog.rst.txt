@@ -11,7 +11,11 @@ Changelog
 v0.1
 ====
 
-`v0.1.1 <https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1>`_
+
+.. _test:
+    https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1
+
+`v0.1.1 <test>`_
 ~~~~~~~~~~~~~~~~~~
 
 This patch is focused on documentation and testing the api reference site locally

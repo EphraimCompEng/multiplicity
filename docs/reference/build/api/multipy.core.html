@@ -8,8 +8,8 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="api/multipy.core.html" />
 <meta property="og:site_name" content="MultiPy" />
-<meta property="og:description" content="Subpackages: multipy.core.analysis package- Submodules, multipy.core.analysis.extract module, multipy.core.analysis.search module, multipy.core.analysis.track module, Module contents., multipy.core..." />
-<meta name="description" content="Subpackages: multipy.core.analysis package- Submodules, multipy.core.analysis.extract module, multipy.core.analysis.search module, multipy.core.analysis.track module, Module contents., multipy.core..." />
+<meta property="og:description" content="multipy.core.algorithm module: Algorithm process: 0: Generate logical AND matrix 1: split matrix 2: apply template, update state 3: generate result 4: optionally apply map 5: update matrix 6: GOTO ..." />
+<meta name="description" content="multipy.core.algorithm module: Algorithm process: 0: Generate logical AND matrix 1: split matrix 2: apply template, update state 3: generate result 4: optionally apply map 5: update matrix 6: GOTO ..." />
 
     <title>multipy.core package &#8212; MultiPy</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -36,8 +36,8 @@
   </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="multipy.core.analysis package" href="multipy.core.analysis.html" />
-    <link rel="prev" title="multipy package" href="multipy.html" /><meta name="docsearch:language" content="en"/>
+    <link rel="next" title="multipy.io package" href="multipy.io.html" />
+    <link rel="prev" title="API Reference" href="../reference.html" /><meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head><body>
 
@@ -136,16 +136,8 @@
 
 
     <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="multipy.html">multipy package</a>
-<details open=""><summary></summary><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">multipy.core package</a>
-<details open=""><summary></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.analysis.html">multipy.core.analysis package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html">multipy.core.templates package</a></li>
-</ul></details></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.datasets.html">multipy.datasets package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.io.html">multipy.io package</a></li>
-</ul></details></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">multipy.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multipy.io.html">multipy.io package</a></li>
 </ul>
 </nav>
 
@@ -171,8 +163,6 @@
       </a>
     </li><li class="bz-breadcrumbs-parent">
       <a href="../reference.html">API Reference</a>
-    </li><li class="bz-breadcrumbs-parent">
-      <a href="multipy.html">multipy package</a>
     </li><li class="bz-breadcrumbs-current">
       <span>multipy.core package</span>
     </li>
@@ -200,44 +190,6 @@
 </header><article class="bz-article-main" role="main">
   <section id="multipy-core-package">
 <h1>multipy.core package<a class="headerlink" href="#multipy-core-package" title="Link to this heading">#</a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="multipy.core.analysis.html">multipy.core.analysis package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.analysis.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.analysis.html#module-multipy.core.analysis.extract">multipy.core.analysis.extract module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.analysis.html#module-multipy.core.analysis.search">multipy.core.analysis.search module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.analysis.html#module-multipy.core.analysis.track">multipy.core.analysis.track module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.analysis.html#module-multipy.core.analysis">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="multipy.core.templates.html">multipy.core.templates package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.templates.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.templates.html#module-multipy.core.templates.adder">multipy.core.templates.adder module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.adder.build_16b_adder_slice"><code class="docutils literal notranslate"><span class="pre">build_16b_adder_slice()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.adder.build_4b_adder_slice"><code class="docutils literal notranslate"><span class="pre">build_4b_adder_slice()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.adder.build_8b_adder_slice"><code class="docutils literal notranslate"><span class="pre">build_8b_adder_slice()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.templates.html#module-multipy.core.templates.csa">multipy.core.templates.csa module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.csa.build_4b_adder_slice"><code class="docutils literal notranslate"><span class="pre">build_4b_adder_slice()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.csa.build_8b_adder_slice"><code class="docutils literal notranslate"><span class="pre">build_8b_adder_slice()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.templates.html#module-multipy.core.templates.decoder">multipy.core.templates.decoder module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="multipy.core.templates.html#multipy.core.templates.decoder.build_simple_decoder"><code class="docutils literal notranslate"><span class="pre">build_simple_decoder()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="multipy.core.templates.html#module-multipy.core.templates">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
-</section>
 <section id="module-multipy.core.algorithm">
 <span id="multipy-core-algorithm-module"></span><h2>multipy.core.algorithm module<a class="headerlink" href="#module-multipy.core.algorithm" title="Link to this heading">#</a></h2>
 <p>Algorithm process:
@@ -529,10 +481,10 @@ set of operands a, b.</p>
 </article><footer class="bz-article-footer">
 
 
-    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="multipy.html" rel="prev">
-    <span>Previous</span><span class="bz-related-pages-title">multipy package</span></a><a class="bz-related-pages-next" href="multipy.core.analysis.html" rel="next">
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="../reference.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">API Reference</span></a><a class="bz-related-pages-next" href="multipy.io.html" rel="next">
     <span>Next</span>
-    <span class="bz-related-pages-title">multipy.core.analysis package</span>
+    <span class="bz-related-pages-title">multipy.io package</span>
   </a></nav>
 
 
@@ -559,8 +511,6 @@ set of operands a, b.</p>
     </svg>
     On this page
   </p><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-multipy.core.algorithm">multipy​.core​.algorithm module</a><ul>
 <li><a class="reference internal" href="#multipy.core.algorithm.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a><ul>
 <li><a class="reference internal" href="#multipy.core.algorithm.Algorithm.algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm​.algorithm</span></code></a></li>
@@ -625,7 +575,7 @@ set of operands a, b.</p>
 
 </aside></main>
   </div><footer class="bz-footer">
-  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Ephraim Madugba</p><p>
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Ephraim M.</p><p>
     Made with
 
     <a href="https://www.sphinx-doc.org/">Sphinx</a> and

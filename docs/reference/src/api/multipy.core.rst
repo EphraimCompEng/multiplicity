@@ -1,17 +1,6 @@
 multipy.core package
 ====================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   multipy.core.analysis
-   multipy.core.templates
-
-Submodules
-----------
 
 multipy.core.algorithm module
 -----------------------------

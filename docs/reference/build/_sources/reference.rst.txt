@@ -5,6 +5,6 @@ API Reference
 
 
 .. toctree::
-    :hidden:
 
-    api/multipy
+    api/multipy.core
+    api/multipy.io
