@@ -20,7 +20,12 @@ stable    = 'v' + ".".join(release.split('.')[:2])
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.apidoc','sphinx.ext.autodoc','sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.apidoc',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
+]
 
 templates_path = ['_templates', ]
 exclude_patterns = []
@@ -42,5 +47,6 @@ variables_to_export = [
 ]
 
 frozen_locals = dict(locals())
+
 rst_epilog = '\n'.join(map(lambda x: f".. |{x}| replace:: {frozen_locals[x]}", variables_to_export))
 del frozen_locals

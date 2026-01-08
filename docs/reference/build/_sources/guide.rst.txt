@@ -4,10 +4,7 @@ User Guide
 ==========
 
 
-
-soon™
-
-(below is an incomplete guide which will grow with the project.)
+(soon™ incomplete guide below)
 
 
 Contents
@@ -19,37 +16,6 @@ Contents
 - :ref:`define_algorithm`
 - :ref:`use_algorithm`
 
-
-
-
-
-
-**Setup**
-
-- import multipy as mp
-- create matrix
-- create algorithm object
-
-**Reduce & Map**
-
-- create patterns and templates
-- create maps
--
-
-**Define Algorithm**
-
-**Generate Truth table**
-
-.. code-block:: text
-    Truth Table tests inputs against the algorithm.
-        Algorithm process:
-        0: Generate logical AND matrix
-        1: split matrix
-        2: apply template, update state
-        3: generate result
-        4: optionally apply map
-        5: update matrix
-        6: GOTO 1:
 
 
 MultiPy focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.
