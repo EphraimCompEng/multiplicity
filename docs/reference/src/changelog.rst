@@ -1,21 +1,17 @@
-.. _changelog:
+.. change_log:
 =========
 Changelog
 =========
 
 .. toctree::
-   :maxdepth: 2
-
    v0.1
 
-.. _v0.1.1: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1
-.. _v0.1.0: https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0
 
-
+.. _v0.1:
 v0.1
 ====
 
-`v0.1.1 <v0.1.1>`_
+`v0.1.1 <https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.1>`_
 ~~~~~~~~~~~~~~~~~~
 
 This patch is focused on documentation and testing the api reference site locally
@@ -30,7 +26,7 @@ Updates:
 
 
 
-`v0.1.0 <v0.1.0>`_
+`v0.1.0 <https://github.com/EphraimCompEng/multipy/releases/tag/v0.1.0>`_
 ~~~~~~~~~~~~~~~~~~
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.

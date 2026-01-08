@@ -14,3 +14,18 @@ Algorithm objects must collect any number of templates based on:
 Applying simple templates can be hardcoded, however complex templates
 need to be analysed before execution. Especially so when implementing
 decoders, flooding and sneaky tricks like using carry-in(cin) on adders.
+
+
+"""
+Structure of algorithm:
+```Python
+>>> self.algorithm[0] = {
+>>>     "matrix" : mp.Matrix
+>>>     "map"    : mp.Map
+>>> }
+>>> self.algorithm[x] = {
+>>>     "template" : mp.Template
+>>>     "result"   : mp.Matrix
+>>>     "map"      : mp.Map
+>>> }
+```

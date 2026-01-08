@@ -1,15 +1,6 @@
 # Roadmap
 
 
-Starting point:
-- [x] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
-- [x] Find optimal data structure for reduction stages
-- [x] Standardise templates 
-- [x] Find optimal file format: [Parquet](https://parquet.apache.org/)
-- [x] Custom reduction stage templates 
-- [x] Automatic version control (MAJOR.MINOR.PATCH) -- uv
-- [x] **Basic** testing
-
 ## Structures
 
 The entire library functions via three structures: Algorithms which initialise a Matrix which are then subsequesntly reduced by templates.
@@ -32,7 +23,7 @@ Basic functionality; "simple templates", generate, analyse:
 - [ ] 8-bit unsaturated multiply [Built-in]
 - [ ] 4-bit saturated multiply [Built-in]
 - [ ] 8-bit saturated multiply [Built-in]
-- [x] Truth table generation -> ~Parquet~ json
+- [x] Truth table generation -> json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
 - [ ] Basic analysis/visualisation of bit ranges]
@@ -47,7 +38,8 @@ simple templates -> internally called patters, form -> complex templates.
 - [ ] Setup Github Wiki? For theory / internal systems
 - [ ] Improve API ref site with nicer HTML/CSS
 - [ ] Add markdown(.md) Functionality to API ref
-- [ ] Fill out a complete user guide 
+- [ ] Complete user guide
+- [ ] Complete advanced guide
 - [ ] Provide academic sources for algorithm docs
 
 ## Optimisation
@@ -57,7 +49,7 @@ The sheer amount of data produced for 16-bit+ multiplier truth tables becomes as
 - [ ] 16-bit unsaturated multiply
 - [ ] 16-bit saturated multiply
 - [ ] Heatmaps? plots? Advanced visualisation
-- [ ] Use [cython](https://cython.org/)? [numba](https://numba.pydata.org/)? for more performance?
+- [ ] Use [rust](https://github.com/PyO3/pyo3)? [numba](https://numba.pydata.org/)? for more performance?
 - [ ] Research if 32/64/128-bit multipliers can be analysed in a reasonable time (1min? 5min? ???)
 
 
@@ -68,9 +60,6 @@ Supported algoithms:
 - [ ] [Baugh–Wooley algorithm](https://www.researchgate.net/figure/llustration-of-an-8-bit-Baugh-Wooley-multiplication_fig2_224349123)
 - [ ] [Booths Multiplication Algorithm](https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm)
 
-# Custom 
-
-
 # Advanced Functionality
 Once the library is stable and optimised:
 - [ ] Decoder with custom encodings
@@ -78,3 +67,16 @@ Once the library is stable and optimised:
 - [ ] "Timing" stages/templates/multipliers -- User defined latencies
 - [ ] 32-bit ?
 - [ ] 64-bit ?
+
+# Implemented
+
+
+### Starting point:
+
+- [x] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
+- [x] Find optimal data structure for reduction stages
+- [x] Standardise templates 
+- [x] Find optimal file format: [Parquet](https://parquet.apache.org/)
+- [x] Custom reduction stage templates 
+- [x] Automatic version control (MAJOR.MINOR.PATCH) -- uv
+- [x] **Basic** testing

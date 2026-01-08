@@ -4,9 +4,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 import os
 import sys
-import multipy as mp
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 print(sys.path)
+import multipy as mp
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -20,16 +20,21 @@ stable    = 'v' + ".".join(release.split('.')[:2])
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.apidoc','sphinx.ext.autodoc','sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.apidoc',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
+]
 
-templates_path = ['_templates']
+templates_path = ['_templates', ]
 exclude_patterns = []
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'breeze'
 html_static_path = ['_static']
 
 # -- Exposing variables to .rst files ----------------------------------------
@@ -42,5 +47,6 @@ variables_to_export = [
 ]
 
 frozen_locals = dict(locals())
+
 rst_epilog = '\n'.join(map(lambda x: f".. |{x}| replace:: {frozen_locals[x]}", variables_to_export))
 del frozen_locals

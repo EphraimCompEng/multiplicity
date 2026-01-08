@@ -2,11 +2,8 @@
 # Generate Multiplier Truth Table #
 ###################################
 
-
+import multipy as mp
 from collections.abc import Generator
-
-from .algorithm import Algorithm
-
 
 
 """
@@ -24,6 +21,8 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
     >>> range  = (min_out, max_out)
     Yields: (operand_a, operand_b)
     """
+    assert isinstance(all(domain_), int)
+    assert isinstance(all(range_), int)
 
     min_in, max_in = domain_
     min_out, max_out = range_
@@ -43,16 +42,28 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
         limit_mx_b = (max_out // b) if (max_out // b) < max_in else max_in
         gen2 = (a for a in range(limit_mn_b, limit_mx_b+1))
         for a in gen2:
-            yield a, b # BUG -- b needs stricter limits
+            # -- b needs checks against a?? -- rethink approach --- #
+            yield a, b # BUG -- b needs stricter limits             #
+            # ----------------------------------------------------- #
 
-def shallow_truth_table(scope: Generator, alg: Algorithm) -> Generator:
-    print(alg.bits)
-    return (Algorithm.build_matrix(a, b, alg.bits) for a, b in scope)
+def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator:
+    """
+    Return Generator of logical AND matrices for a given set of operands a, b.
+    Generated operands should be in the form tuple(a, b).
+    """
+    # print(alg.bits)
+    return (mp.Algorithm.build_matrix(a, b, alg.bits) for a, b in scope)
 
 
-def truth_table(scope: Generator, alg: Algorithm) -> Generator:
+def truth_table(scope: Generator, alg: mp.Algorithm) -> Generator:
     """
     A generator which yields all stages of an algorithm for a given
     set of operands a, b.
+    """
+    ...
+
+def trim(matrix: mp.Matrix) -> mp.Matrix:
+    """
+    Trim empty rows from a matrix
     """
     ...

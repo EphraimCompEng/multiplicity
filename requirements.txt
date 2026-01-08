@@ -2,13 +2,13 @@
 #    uv export --all-groups --no-hashes -o requirements.txt
 -e .
 accessible-pygments==0.0.5
-    # via furo
+    # via sphinx-breeze-theme
 alabaster==1.0.0
     # via sphinx
 babel==2.17.0
     # via sphinx
 beautifulsoup4==4.14.3
-    # via furo
+    # via sphinx-breeze-theme
 certifi==2025.11.12
     # via requests
 charset-normalizer==3.4.4
@@ -20,8 +20,9 @@ colorama==0.4.6 ; sys_platform == 'win32'
 docutils==0.21.2
     # via
     #   sphinx
-    #   sphinx-rtd-theme
-furo==2025.12.19
+    #   sphinx-breeze-theme
+emoji==2.15.0
+    # via sphinx-breeze-theme
 idna==3.11
     # via requests
 imagesize==1.4.1
@@ -41,9 +42,9 @@ pluggy==1.6.0
 pygments==2.19.2
     # via
     #   accessible-pygments
-    #   furo
     #   pytest
     #   sphinx
+    #   sphinx-breeze-theme
 pytest==9.0.2
 requests==2.32.5
     # via sphinx
@@ -55,29 +56,28 @@ soupsieve==2.8.1
     # via beautifulsoup4
 sphinx==9.1.0
     # via
-    #   furo
-    #   sphinx-basic-ng
-    #   sphinx-rtd-theme
-    #   sphinxcontrib-jquery
-sphinx-basic-ng==1.0.0b2
-    # via furo
-sphinx-rtd-theme==3.1.0rc1
+    #   sphinx-breeze-theme
+    #   sphinxext-opengraph
+sphinx-breeze-theme==0.6.0
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==2.0.0
     # via sphinx
 sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
-sphinxcontrib-jquery==4.1
-    # via sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
+sphinxext-opengraph==0.13.0
+    # via sphinx-breeze-theme
 toml-rs==0.2.2
+    # via multipy
 typing-extensions==4.15.0
-    # via beautifulsoup4
+    # via
+    #   beautifulsoup4
+    #   sphinx-breeze-theme
 urllib3==2.6.2
     # via requests

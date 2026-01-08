@@ -28,11 +28,18 @@ class Algorithm(mp.Matrix):
     def __init__(self, matrix: mp.Matrix) -> None:
         self.bits      = 0
         self.state     = 0
-        self.stages    = len(self.algorithm)
+        self.len       = len(self.algorithm)
         self.matrix    = matrix
         self.result    = {}
         self.algorithm = {}
-        # self.populate(matrix) # -- Reactor
+        """Structure of algorithm:
+        >>> self.algorithm[x] = {
+        >>>     "template" : mp.Template
+        >>>     "result"   : mp.Matrix
+        >>>     "map"      : mp.Map
+        >>> }
+        """
+        self.stage     = self.algorithm[self.state]
 
     def __repr__(self) -> str:
         pretty = ""
@@ -41,7 +48,13 @@ class Algorithm(mp.Matrix):
             pretty += f"S{i}:\n" + str(t) + "\n"
         return pretty
 
-    def populate(self, arg: Any) -> None:
+    # -- Refactor to new structure ------------ #
+    # >>> self.algorithm[x] = {                 #
+    # >>>     "template" : mp.Template          #
+    # >>>     "result"   : mp.Matrix            #
+    # >>>     "map"      : mp.Map               #
+    # >>> }                                     #
+    def populate(self, arg: Any) -> None: # --- #
         """
         Adds template(s) to an existing algorithm. All templates must be of
         consistent bitwidth.
@@ -53,16 +66,19 @@ class Algorithm(mp.Matrix):
             raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
 
         self.bits = arg[0].bits if (self.bits == 0) else self.bits # intialise
+
         for template in arg:
-
-            # This test should be inside Template class------------------------- #
-            if template.bits != self.bits:                                       #
-                raise ValueError("All templates must have consistent bitwidth.") #
-            # ------------------------------------------------------------------ #
-
+            if template.bits != self.bits:
+                raise ValueError("All templates must have consistent bitwidth.")
             self.algorithm[len(self.algorithm)] = template
 
 
+
+    def _reduce(self):
+        """
+        Helper function to step through a single stage of an algorithm
+        """
+        ...
 
     def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
         ...
@@ -72,7 +88,6 @@ class Algorithm(mp.Matrix):
         Take template[internal_state], apply to matrix, advance internal_state
         """
         ...
-
 
     # Used to
     @classmethod
@@ -88,19 +103,7 @@ class Algorithm(mp.Matrix):
             ...
         ...
 
-    @classmethod
-    def reduce(cls):
-        """
-        Takes a template, splits
-        """
-        ...
 
-    @classmethod
-    def trim(cls, matrix: mp.Matrix) -> None:
-        """
-        Trim empty rows from a matrix
-        """
-        ...
 
 
     @classmethod
