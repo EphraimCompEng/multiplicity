@@ -3,7 +3,7 @@
 ################################################
 
 from typing import Any
-from multipy import ischar
+from .utils.char import ischar
 import multipy as mp
 import copy
 
