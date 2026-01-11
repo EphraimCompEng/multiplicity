@@ -69,7 +69,7 @@ def resolve_rmap(matrix: mp.Matrix) -> Map:
             continue
 
         # Not sure how else to convert -ve int -> 2s comp hex
-        smap.append(f"{hex(255-offset)[2:].upper()}")
+        smap.append(f"{hex(255-offset+1)[2:].upper()}")
     return Map(smap)
 
 
