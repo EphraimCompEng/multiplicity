@@ -24,6 +24,16 @@ class Algorithm(mp.Matrix):
     this matrix with partial products.
     """
 
+    """
+    pattern only implementation -- small steps:
+
+        > detect pattern inside Template object
+        > Slice matrix(data) along pattern "runs"
+        > reduce slices
+        > unify slices
+        > apply row map
+        > update Algorithm object state
+    """
 
     def __init__(self, matrix: mp.Matrix) -> None:
         self.bits      = 0
@@ -32,7 +42,7 @@ class Algorithm(mp.Matrix):
         self.matrix    = matrix
         self.result    = {}
         self.algorithm = {}
-        """Structure of algorithm:
+        """Structure of a given algorithm stage:
         >>> self.algorithm[x] = {
         >>>     "template" : mp.Template
         >>>     "result"   : mp.Matrix
@@ -61,7 +71,7 @@ class Algorithm(mp.Matrix):
         """
 
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
-            arg = [arg] # list(arg) throws error -- implement __iter___?
+            arg = [arg]
         elif not(isinstance(all(arg), list)):
             raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
 
@@ -74,11 +84,11 @@ class Algorithm(mp.Matrix):
 
 
 
-    def _reduce(self):
-        """
-        Helper function to step through a single stage of an algorithm
-        """
-        ...
+    # def _reduce(self):
+    #     """
+    #     Helper function to step through a single stage of an algorithm
+    #     """
+    #     ...
 
     def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
         ...
