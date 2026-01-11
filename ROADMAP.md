@@ -36,7 +36,7 @@ simple templates -> internally called patters, form -> complex templates.
 - [x] Sphinx implementation
 - [x] Setup sphinx -> web based API reference
 - [ ] Setup Github Wiki? For theory / internal systems
-- [ ] Improve API ref site with nicer HTML/CSS
+- [x] Improve API ref site with nicer HTML/CSS
 - [ ] Add markdown(.md) Functionality to API ref
 - [ ] Complete user guide
 - [ ] Complete advanced guide
