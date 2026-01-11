@@ -127,7 +127,8 @@ class Template:
     # cell = (ch for ch in string.ascii_lowercase)
 
     def __init__(self, template: list[Any], result: Any = None, map: Any = None): # Complex or simple
-        valid_range  = mp.SUPPORTED_BITWIDTHS
+        from .. import SUPPORTED_BITWIDTHS
+        valid_range  = SUPPORTED_BITWIDTHS
         self.len     = len(template)
         self.map     = map
         self.result  = result
