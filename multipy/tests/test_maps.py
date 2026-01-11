@@ -7,8 +7,15 @@ def main():
 
     m = mp.build_dadda_map(4)
     mp.mprint(m)
-    mp.mprint(m)
-    mp.mprint(m)
+    sm = mp.Map(
+        [
+            '00',
+            'FF',
+            'FF',
+            'FF',
+        ], 4
+    )
+    mp.mprint(sm)
 
 
 

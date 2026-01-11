@@ -12,24 +12,34 @@ class Map:
     def __init__(self, map: list[Any], bits: int) -> None:
         assert isinstance(map, list), ValueError("Map must be a list")
         assert bits in mp.SUPPORTED_BITWIDTHS, (
-            ValueError(f"\tError: Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
+            (f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
         )
-        self.bits = bits
+        self.bitsS = bits
         if isinstance(map[0], list):
             self.map = map
-        elif isinstance(all(map), str):
-            self.rmap = self.build_map(map)
+        elif all([isinstance(x, str) for x in map]):
+            self.map  = self.build_map(map)
+            self.rmap = map
         self.len = len(map)
         self._index = 0
 
 
-    def build_map(self, simple: list[Any]) -> object:
+    def build_map(self, rmap: list[str]) -> list[list[str]]:
         """
-        Use simple map to generate standard map. Each element of simple map
+        Use row map to generate standard map. Each element of simple map
         is a 2-bit, signed hex value. +ve = up, -ve = down.
         """
 
-        ...
+        assert (n := len(rmap)) in mp.SUPPORTED_BITWIDTHS, (
+            (f"Unsupported bitwidth {n}. Expected {mp.SUPPORTED_BITWIDTHS}")
+        )
+        map = []
+        for i in range(n):
+            if len(rmap[i]) != 2 and not(isinstance(rmap[i], str)):
+                raise ValueError(f"Invalid row map element {rmap[i]}")
+            map.append([rmap[i] for _ in range(n*2)])
+        return map
+
     def __repr__(self) -> str:
         return mp.pretty(self.map)
 
@@ -45,6 +55,7 @@ class Map:
         self._index += 1
         return self.map[self._index - 1]
 
+# May remove reversed option
 def resolve_rmap(matrix: mp.Matrix, reversed: bool=False) -> Map:
     """
     Find empty rows, create simple map to efficiently pack rows.
