@@ -8,6 +8,7 @@ import toml_rs
 from .core.matrix import (
     Matrix,
     Slice,
+    build_matrix,
 )
 
 
@@ -99,6 +100,7 @@ SUPPORTED_BITWIDTHS = {4, 8}
 __all__ = [
     'Matrix',
     'Slice',
+    'build_matrix',
     'Pattern',
     'Template',
     'Algorithm',

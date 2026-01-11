@@ -38,15 +38,23 @@ class Matrix:
     """
 
     """
-    def __init__(self, bits: int):
-        valid_range = mp.SUPPORTED_BITWIDTHS
-        self.bits   = bits
+    def __init__(self, source: Any) -> None:
+        if isinstance(source, int):
+            assert source in mp.SUPPORTED_BITWIDTHS, (
+                f"Unsupported bitwidth {source}. Expected {mp.SUPPORTED_BITWIDTHS}"
+            )
+            self.bits = source
+            self.matrix = self.__empty_matrix()
+        elif all([isinstance(s, list) for s in source]):
+            assert len(source) in mp.SUPPORTED_BITWIDTHS,(
+                f"Unsupported bitwidth {len(source)}. Expected {mp.SUPPORTED_BITWIDTHS}"
+        )
+            assert len(source)*2 == len(source[0]), "Matrix must be 2m * m"
+            self.bits = len(source)
+            self.matrix = source
+
         self._index = 0
 
-        if bits not in valid_range:
-            raise ValueError(f"Valid bit lengths: {valid_range}")
-        self.matrix = self.__empty_matrix()
-        self.len    = len(self.matrix)
 
     def __empty_matrix(self) -> list[list[str]]:
         """
@@ -57,30 +65,6 @@ class Matrix:
         for i in range(self.bits):
             matrix.append(["_"]*(self.bits-i) + row + ["_"]*i)
         return matrix
-
-    @classmethod
-    def build_matrix(cls, operand_a: int, operand_b: int, bits: int):
-        """
-        Build Logical AND matrix using source operands.
-        """
-        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
-            raise ValueError("Operand bit width exceeds matrix bit width")
-
-        # convert to binary, removing '0b' and padding with zeros
-        # b is reversed to bring LSB to the top of matrix
-        a = bin(operand_a)[2:].zfill(bits)
-        b = bin(operand_b)[2:].zfill(bits)[::-1]
-        i = 0
-        matrix = []
-        for i in range(bits-1, -1, -1):
-            if b[i] == '0':
-                matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
-            elif b[i] == '1':
-                matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
-        return matrix, a, b # exposing operands for access as everthing uses generators
-
-
-
 
     def __repr__(self) -> str:
         return mp.pretty(self.matrix)
@@ -111,7 +95,30 @@ class Matrix:
         return iter(self.matrix)
 
     def __next__(self):
-        if self._index >= self.len:
+        if self._index >= self.bits:
             raise StopIteration
         self._index += 1
         return self.matrix[self._index - 1]
+
+
+
+
+def build_matrix(operand_a: int, operand_b: int, bits: int) -> Matrix:
+    """
+    Build Logical AND matrix using source operands.
+    """
+    if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
+        raise ValueError("Operand bit width exceeds matrix bit width")
+
+    # convert to binary, removing '0b' and padding with zeros
+    # b is reversed to bring LSB to the top of matrix
+    a = bin(operand_a)[2:].zfill(bits)
+    b = bin(operand_b)[2:].zfill(bits)[::-1]
+    i = 0
+    matrix = []
+    for i in range(bits-1, -1, -1):
+        if b[i] == '0':
+            matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
+        elif b[i] == '1':
+            matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
+    return Matrix(matrix)
