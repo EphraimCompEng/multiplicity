@@ -26,10 +26,15 @@ Basic functionality; "simple templates", generate, analyse:
 - [x] Truth table generation -> json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
-- [ ] Basic analysis/visualisation of bit ranges]
 
 \* Note: once built-in functions and classes are operational, hand crafted templates and maps will be be functional.
 simple templates -> internally called patters, form -> complex templates.
+
+
+## IO
+- [ ] Basic analysis/visualisation of bit ranges]
+- [ ] Heatmaps? plots? Advanced visualisation
+
 
 ## Documentation
 
@@ -48,7 +53,6 @@ The sheer amount of data produced for 16-bit+ multiplier truth tables becomes as
 - [ ] Multiprocessing support to handle higher bit-widths
 - [ ] 16-bit unsaturated multiply
 - [ ] 16-bit saturated multiply
-- [ ] Heatmaps? plots? Advanced visualisation
 - [ ] Use [rust](https://github.com/PyO3/pyo3)? [numba](https://numba.pydata.org/)? for more performance?
 - [ ] Research if 32/64/128-bit multipliers can be analysed in a reasonable time (1min? 5min? ???)
 
