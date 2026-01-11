@@ -99,11 +99,12 @@ class Algorithm(mp.Matrix):
         """
         ...
 
-    # Used to
+    # Used to automate splitting a matrix into Slice(n * row)
     @classmethod
     def split(cls, matrix: mp.Matrix, rows: int):
         """
-        Returns list of slices via progressive allocation.
+        Returns list of slices via progressive allocation. Used to automate
+        slicing a matrix into (Slice(n * row) * k), then splitting remainder
 
         Append n contiguous slices of matrix, each containing x rows.
         If not enough rows, progress to rows-1 -> row-2 -> ...
