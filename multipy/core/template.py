@@ -2,10 +2,9 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
+import copy
 from typing import Any
 from .utils.char import ischar
-import multipy as mp
-import copy
 
 
 
