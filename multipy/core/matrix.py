@@ -1,7 +1,3 @@
-#################################################
-# Generating, Aligning Initial Partial Products #
-#################################################
-
 import multipy as mp
 from typing import Any, Iterator
 
@@ -10,10 +6,10 @@ class Slice:
 
     """
     def __init__(self, matrix: list[list[str]]):
-        self.slice =  matrix
-        self.bits  = len(self.slice[0][0]) >> 1
+        self.slice  =  matrix
+        self.bits   = len(self.slice[0][0]) >> 1
         self._index = 0
-        self.len   = len(self.slice)
+        self.len    = len(self.slice)
 
     def __getitem__(self, index: int) -> list[str]:
         return self.slice[index]
@@ -33,7 +29,15 @@ class Slice:
         self._index += 1
         return self.slice[self._index - 1]
 
+
+
+
+
+
 class Matrix:
+    """
+
+    """
     def __init__(self, bits: int):
         valid_range = mp.SUPPORTED_BITWIDTHS
         self.bits   = bits
