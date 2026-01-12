@@ -16,7 +16,7 @@ v0.2
 ====
 
 
-`v0.2.0 <https://github.com/EphraimCompEng/multiplicity/releases/tag/v0.2.0>`_
+`v0.2.0 <https://github.com/EphraimCompEng/multiply/releases/tag/v0.2.0>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Updates:
@@ -46,7 +46,7 @@ v0.1
 
 
 
-`v0.1.1 <https://github.com/EphraimCompEng/multiplicity/releases/tag/v0.1.1>`_
+`v0.1.1 <https://github.com/EphraimCompEng/multiply/releases/tag/v0.1.1>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This patch is focused on documentation and testing the api reference site locally
@@ -61,7 +61,7 @@ Updates:
 
 
 
-`v0.1.0 <https://github.com/EphraimCompEng/multiplicity/releases/tag/v0.1.0>`_
+`v0.1.0 <https://github.com/EphraimCompEng/multiply/releases/tag/v0.1.0>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.
@@ -76,4 +76,4 @@ TODO:
 
     - Documentation and template implementation
 
-For more info on future goals, check out the `roadmap <https://github.com/EphraimCompEng/multiplicity/blob/master/ROADMAP.md>`_.
+For more info on future goals, check out the `roadmap <https://github.com/EphraimCompEng/multiply/blob/master/ROADMAP.md>`_.

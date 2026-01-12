@@ -1,4 +1,4 @@
-multiplicity package
+multiply package
 ====================
 
 Subpackages
@@ -7,16 +7,16 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   multiplicity.analysis
-   multiplicity.core
-   multiplicity.datasets
-   multiplicity.io
-   multiplicity.tests
+   multiply.analysis
+   multiply.core
+   multiply.datasets
+   multiply.io
+   multiply.tests
 
 Module contents
 ---------------
 
-.. automodule:: multiplicity
+.. automodule:: multiply
    :members:
    :show-inheritance:
    :undoc-members:

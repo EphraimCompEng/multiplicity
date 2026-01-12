@@ -141,7 +141,7 @@ Another a reduction layer could use [CSAs](https://en.wikipedia.org/wiki/Carry-s
 Here, each CSA reduced 3 inputs to 2. The output is reordered to mirror how each bit of the CSA calculation is distributed, plus swapping the leftover bit to fit the distribution. For more information see [reduction](link/to/reduction).
 
 
-As you can see the multiplicity can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable complex templates, matrices can be used. For more information see [templates](link/to/templates)
+As you can see the multiply can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable complex templates, matrices can be used. For more information see [templates](link/to/templates)
 
 # Datasets
 

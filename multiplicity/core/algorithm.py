@@ -14,7 +14,7 @@ Algorithm process:
 
 """
 
-import multiplicity as mp
+import multiply as mp
 from typing import Any
 
 class Algorithm(mp.Matrix):

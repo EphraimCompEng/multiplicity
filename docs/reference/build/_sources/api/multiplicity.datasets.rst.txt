@@ -1,10 +1,10 @@
-multiplicity.datasets package
+multiply.datasets package
 =============================
 
 Module contents
 ---------------
 
-.. automodule:: multiplicity.datasets
+.. automodule:: multiply.datasets
    :members:
    :show-inheritance:
    :undoc-members:

@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-title: multiplicity
+title: multiply
 message: 'If you use this software, please cite it as below.'
 type: software
 authors:
   - given-names: Ephraim
     family-names: M
-repository-code: 'https://github.com/EphraimCompEng/multiplicity'
+repository-code: 'https://github.com/EphraimCompEng/multiply'
 abstract: >-
-  multiplicity is a powerful tool to build, test, and analyse multiplier designs.
+  multiply is a powerful tool to build, test, and analyse multiplier designs.
 keywords:
   - python
   - multiplication algorithms

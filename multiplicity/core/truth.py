@@ -2,7 +2,7 @@
 # Generate Multiplier Truth Table #
 ###################################
 
-import multiplicity as mp
+import multiply as mp
 from collections.abc import Generator
 
 

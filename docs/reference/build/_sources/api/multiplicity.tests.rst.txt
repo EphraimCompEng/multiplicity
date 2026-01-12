@@ -1,45 +1,45 @@
-multiplicity.tests package
+multiply.tests package
 ==========================
 
 Submodules
 ----------
 
-multiplicity.tests.test\_maps module
+multiply.tests.test\_maps module
 ------------------------------------
 
-.. automodule:: multiplicity.tests.test_maps
+.. automodule:: multiply.tests.test_maps
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.tests.test\_population module
+multiply.tests.test\_population module
 ------------------------------------------
 
-.. automodule:: multiplicity.tests.test_population
+.. automodule:: multiply.tests.test_population
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.tests.test\_templates module
+multiply.tests.test\_templates module
 -----------------------------------------
 
-.. automodule:: multiplicity.tests.test_templates
+.. automodule:: multiply.tests.test_templates
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.tests.test\_to\_json module
+multiply.tests.test\_to\_json module
 ----------------------------------------
 
-.. automodule:: multiplicity.tests.test_to_json
+.. automodule:: multiply.tests.test_to_json
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.tests.test\_truth module
+multiply.tests.test\_truth module
 -------------------------------------
 
-.. automodule:: multiplicity.tests.test_truth
+.. automodule:: multiply.tests.test_truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -47,7 +47,7 @@ multiplicity.tests.test\_truth module
 Module contents
 ---------------
 
-.. automodule:: multiplicity.tests
+.. automodule:: multiply.tests
    :members:
    :show-inheritance:
    :undoc-members:

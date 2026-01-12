@@ -1,7 +1,7 @@
 
 # Work towards a more elegant solution to testing #
 
-import multiplicity as mp
+import multiply as mp
 
 
 """temp note:

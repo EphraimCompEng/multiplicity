@@ -4,7 +4,7 @@
 
 from typing import Any
 from .utils.char import ischar
-import multiplicity as mp
+import multiply as mp
 import copy
 
 
