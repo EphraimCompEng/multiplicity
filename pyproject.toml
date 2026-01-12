@@ -7,7 +7,7 @@ license = "AGPL-3.0-or-later"
 license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
-    "toml-rs>=0.2.2",
+    "toml>=0.10.2",
 ]
 
 [project.urls]
