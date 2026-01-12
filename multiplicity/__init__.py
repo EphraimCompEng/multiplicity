@@ -1,7 +1,8 @@
 #!bin/python3
 
 from pathlib import Path
-import toml_rs
+import toml
+
 
 # -- core ---------------------------------------
 
@@ -90,7 +91,7 @@ from .io.lazy_json import (
 
 
 with open(Path(__file__).parent.parent / "pyproject.toml", "r") as f:
-    MP_TOML = toml_rs.loads(f.read())
+    MP_TOML = toml.loads(f.read())
 
 MP_VERSION = MP_TOML["project"]["version"]
 

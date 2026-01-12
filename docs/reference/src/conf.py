@@ -11,10 +11,10 @@ import multiplicity as mp
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project   = 'multiplicity'
+project   = 'Multiplicity'
 copyright = '2025, Ephraim M.'
 author    = 'Ephraim M.'
-github = 'https://github.com/EphraimCompEng/multiplicity'
+github    = 'https://github.com/EphraimCompEng/multiplicity'
 release   = mp.MP_VERSION
 stable    = 'v' + ".".join(release.split('.')[:2])
 
