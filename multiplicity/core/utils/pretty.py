@@ -1,6 +1,6 @@
 from typing import Any
 
-from multipy import Matrix, Slice, Map
+from multiplicity import Matrix, Slice, Map
 
 
 def pretty(listy_object: Any) -> str:

@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-title: MultiPy
+title: multiplicity
 message: 'If you use this software, please cite it as below.'
 type: software
 authors:
   - given-names: Ephraim
     family-names: M
-repository-code: 'https://github.com/EphraimCompEng/multipy'
+repository-code: 'https://github.com/EphraimCompEng/multiplicity'
 abstract: >-
-  MultiPy is a powerful tool to build, test, and analyse multiplier designs.
+  multiplicity is a powerful tool to build, test, and analyse multiplier designs.
 keywords:
   - python
   - multiplication algorithms

@@ -1,21 +1,21 @@
-multipy.io package
+multiplicity.io package
 ==================
 
 Submodules
 ----------
 
-multipy.io.lazy\_json module
+multiplicity.io.lazy\_json module
 ----------------------------
 
-.. automodule:: multipy.io.lazy_json
+.. automodule:: multiplicity.io.lazy_json
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.io.parquet module
+multiplicity.io.parquet module
 -------------------------
 
-.. automodule:: multipy.io.parquet
+.. automodule:: multiplicity.io.parquet
    :members:
    :show-inheritance:
    :undoc-members:
@@ -23,7 +23,7 @@ multipy.io.parquet module
 Module contents
 ---------------
 
-.. automodule:: multipy.io
+.. automodule:: multiplicity.io
    :members:
    :show-inheritance:
    :undoc-members:

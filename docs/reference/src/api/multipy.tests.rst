@@ -1,37 +1,37 @@
-multipy.tests package
+multiplicity.tests package
 =====================
 
 Submodules
 ----------
 
-multipy.tests.test\_population module
+multiplicity.tests.test\_population module
 -------------------------------------
 
-.. automodule:: multipy.tests.test_population
+.. automodule:: multiplicity.tests.test_population
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.tests.test\_templates module
+multiplicity.tests.test\_templates module
 ------------------------------------
 
-.. automodule:: multipy.tests.test_templates
+.. automodule:: multiplicity.tests.test_templates
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.tests.test\_to\_json module
+multiplicity.tests.test\_to\_json module
 -----------------------------------
 
-.. automodule:: multipy.tests.test_to_json
+.. automodule:: multiplicity.tests.test_to_json
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.tests.test\_truth module
+multiplicity.tests.test\_truth module
 --------------------------------
 
-.. automodule:: multipy.tests.test_truth
+.. automodule:: multiplicity.tests.test_truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -39,7 +39,7 @@ multipy.tests.test\_truth module
 Module contents
 ---------------
 
-.. automodule:: multipy.tests
+.. automodule:: multiplicity.tests
    :members:
    :show-inheritance:
    :undoc-members:

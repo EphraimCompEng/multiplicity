@@ -1,7 +1,7 @@
-multipy
+multiplicity
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   multipy
+   multiplicity

@@ -1,4 +1,4 @@
-multipy package
+multiplicity package
 ===============
 
 Subpackages
@@ -7,15 +7,15 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   multipy.core
-   multipy.datasets
-   multipy.io
+   multiplicity.core
+   multiplicity.datasets
+   multiplicity.io
 
 
 Module contents
 ---------------
 
-.. automodule:: multipy
+.. automodule:: multiplicity
    :members:
    :show-inheritance:
    :undoc-members:

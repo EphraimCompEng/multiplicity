@@ -1,4 +1,4 @@
-# MultiPy
+# Multiplicity
 
 A powerful tool to build, test, and analyse multiplier designs.
 
@@ -7,9 +7,9 @@ A powerful tool to build, test, and analyse multiplier designs.
 
 Generating and analysing multiplier designs by hand is labour intensive, even for small datasets, for entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this is close to impossible.
 
-MultiPy is built to streamline:
+multiplicity is built to streamline:
 
-- Custom partial product reduction via [templates](https://github.com/EphraimCompEng/multipy/blob/master/docs/structures/templates.md)
+- Custom partial product reduction via [templates](https://github.com/EphraimCompEng/multiplicity/blob/master/docs/structures/templates.md)
 - Generating complete truth tables   
 - Analysis, plotting, and managing datasets
 - Fine-grain access to bits, words or stages 
@@ -18,7 +18,7 @@ MultiPy is built to streamline:
 # Documentation
 
 Resouces for usage, general theory and implementations can be found in this repository. 
-For the API Reference head to MultiPy's documentation [site](https://ephraimcompeng.github.io/multipy/) 
+For the API Reference head to multiplicity's documentation [site](https://ephraimcompeng.github.io/multiplicity/) 
 
 For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
 
@@ -27,10 +27,10 @@ For more information head to [/docs/](https://github.com/EphraimCompEng/multipli
 
 
 ```sh
-pip install -i https://test.pypi.org/simple/ multipy
+pip install -i https://test.pypi.org/simple/ multiplicity
 ```
 ```Python
-import multipy as mp
+import multiplicity as mp
 ```
 
 # Dependencies

@@ -3,7 +3,7 @@
 ############################
 
 
-import multipy as mp
+import multiplicity as mp
 from typing import Any
 
 

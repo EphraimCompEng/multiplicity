@@ -6,15 +6,15 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 print(sys.path)
-import multipy as mp
+import multiplicity as mp
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project   = 'MultiPy'
+project   = 'multiplicity'
 copyright = '2025, Ephraim M.'
 author    = 'Ephraim M.'
-github = 'https://github.com/EphraimCompEng/multipy'
+github = 'https://github.com/EphraimCompEng/multiplicity'
 release   = mp.MP_VERSION
 stable    = 'v' + ".".join(release.split('.')[:2])
 
@@ -38,10 +38,10 @@ exclude_patterns = []
 
 html_theme = 'breeze'
 html_static_path = ['_static']
-html_title = 'MultiPy'
+html_title = 'multiplicity'
 html_context = {
     'github_user': 'EphraimCompEng',
-    'github_repo': 'multipy'
+    'github_repo': 'multiplicity'
 }
 
 # -- Exposing variables to .rst files ----------------------------------------

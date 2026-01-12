@@ -1,43 +1,43 @@
-multipy.core package
+multiplicity.core package
 ====================
 
 
-multipy.core.algorithm module
+multiplicity.core.algorithm module
 -----------------------------
 
-.. automodule:: multipy.core.algorithm
+.. automodule:: multiplicity.core.algorithm
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.core.map module
+multiplicity.core.map module
 -----------------------
 
-.. automodule:: multipy.core.map
+.. automodule:: multiplicity.core.map
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.core.matrix module
+multiplicity.core.matrix module
 --------------------------
 
-.. automodule:: multipy.core.matrix
+.. automodule:: multiplicity.core.matrix
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.core.template module
+multiplicity.core.template module
 ----------------------------
 
-.. automodule:: multipy.core.template
+.. automodule:: multiplicity.core.template
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.core.truth module
+multiplicity.core.truth module
 -------------------------
 
-.. automodule:: multipy.core.truth
+.. automodule:: multiplicity.core.truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -45,7 +45,7 @@ multipy.core.truth module
 Module contents
 ---------------
 
-.. automodule:: multipy.core
+.. automodule:: multiplicity.core
    :members:
    :show-inheritance:
    :undoc-members:

@@ -1,10 +1,10 @@
-multipy.datasets package
+multiplicity.datasets package
 ========================
 
 Module contents
 ---------------
 
-.. automodule:: multipy.datasets
+.. automodule:: multiplicity.datasets
    :members:
    :show-inheritance:
    :undoc-members:

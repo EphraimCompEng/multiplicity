@@ -1,4 +1,4 @@
-import multipy as mp
+import multiplicity as mp
 # import pathlib
 
 

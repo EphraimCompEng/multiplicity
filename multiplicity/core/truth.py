@@ -2,7 +2,7 @@
 # Generate Multiplier Truth Table #
 ###################################
 
-import multipy as mp
+import multiplicity as mp
 from collections.abc import Generator
 
 
@@ -52,7 +52,7 @@ def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator
     Generated operands should be in the form tuple(a, b).
     """
     # print(alg.bits)
-    return (mp.Algorithm.build_matrix(a, b, alg.bits) for a, b in scope)
+    return (mp.build_matrix(a, b, alg.bits) for a, b in scope)
 
 
 def truth_table(scope: Generator, alg: mp.Algorithm) -> Generator:

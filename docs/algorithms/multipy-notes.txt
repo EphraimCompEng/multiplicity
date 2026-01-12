@@ -1,6 +1,6 @@
 
 
-# -- [ MultiPy ] ---------------------------------------------------------
+# -- [ multiplicity ] ---------------------------------------------------------
 
 ### Notes ###
 - add max_iter attribute to Algorithm class
@@ -113,7 +113,7 @@ algorithms simper, especially for large bit widths.
 Reduction is the process of taking n > 1 partial products, adding
 them, and returning at least n - 1 partial products.
 
-MultiPy implements reduction via templates and maps. For a given stage,
+multiplicity implements reduction via templates and maps. For a given stage,
 an algorithm will supply templates for specific arithmetic function.
 Maps move outputs of one stage to the correct position for the next stage.
 
@@ -188,7 +188,7 @@ of the overlap to vertically relocate.
 Specifically, the "base" of any arithmetic unit, the bits/row which represent
 2^0, must be moved to a position which is free from overlaps.
 
-MultiPy can solve this in two ways: template and map, or a unified smart map.
+multiplicity can solve this in two ways: template and map, or a unified smart map.
 
 # -- smart templates ----------------------------------------------------
 
@@ -230,11 +230,11 @@ resultant = [         # check = [   # x1 = [_ _ d D] # roch = 2
 
 
 [ intro ]
-Template assisted reduction(TAR) is how MultiPy emulates combinstional multiplier
+Template assisted reduction(TAR) is how multiplicity emulates combinstional multiplier
 algorithms.
 
 Below is the process of taking two operands and seeing how these operand bits
-propagate through a given multiplier algorithm. Initial MultiPy versions do not
+propagate through a given multiplier algorithm. Initial multiplicity versions do not
 support booth encoding.
 
 [ algorithm flowchart (wip) ]

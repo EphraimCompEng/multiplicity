@@ -74,7 +74,7 @@ sphinxcontrib-serializinghtml==2.0.0
 sphinxext-opengraph==0.13.0
     # via sphinx-breeze-theme
 toml-rs==0.2.2
-    # via multipy
+    # via multiplicity
 typing-extensions==4.15.0
     # via
     #   beautifulsoup4

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>multipy.core.map &#8212; MultiPy</title>
+    <title>multiplicity.core.map &#8212; multiplicity</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=93f23127" />
   <noscript>
@@ -12,7 +12,7 @@
       .bz-js-only { display: none !important; }
     </style>
   </noscript>
-  
+
     <script defer src="../../../_static/documentation_options.js?v=938c9ccc"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -31,11 +31,11 @@
     <link rel="search" title="Search" href="../../../search.html" /><meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head><body>
-  
+
   <div class="bz-skip-to-content">
     <a href="#bz-main-content">Skip to main content</a>
   </div><header class="bz-header-main">
-  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><span>MultiPy</span>
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><span>multiplicity</span>
 </a></div>
   <div class="bz-header-end"><div class="bz-search-button">
   <a
@@ -71,7 +71,7 @@
   </button>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multipy"
+    href="https://github.com/EphraimCompEng/multiplicity"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"
@@ -124,8 +124,8 @@
     <ul role="menu" aria-hidden="true"></ul>
   </div>
 </nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
-  
-  
+
+
     <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li class="bz-breadcrumbs-home">
@@ -145,11 +145,11 @@
     </li><li class="bz-breadcrumbs-parent">
       <a href="../../index.html">Module code</a>
     </li><li class="bz-breadcrumbs-current">
-      <span>multipy.core.map</span>
+      <span>multiplicity.core.map</span>
     </li>
   </ol>
 </nav>
-  
+
 
   <label
     class="bz-sidebar-secondary-toggle"
@@ -169,18 +169,18 @@
     </svg>
   </label>
 </header><article class="bz-article-main" role="main">
-  <h1>Source code for multipy.core.map</h1><div class="highlight"><pre>
+  <h1>Source code for multiplicity.core.map</h1><div class="highlight"><pre>
 <span></span><span class="c1">############################</span>
 <span class="c1"># Map Bits Inside A Matrix #</span>
 <span class="c1">############################</span>
 
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">multipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiplicity</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 
 <div class="viewcode-block" id="Map">
-<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.Map">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Map">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Map</span><span class="p">:</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">map</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -198,7 +198,7 @@
 
 
 <div class="viewcode-block" id="Map.build_map">
-<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.Map.build_map">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Map.build_map">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rmap</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use row map to generate standard map. Each element of simple map</span>
@@ -234,7 +234,7 @@
 
 <span class="c1"># May remove reversed option</span>
 <div class="viewcode-block" id="resolve_rmap">
-<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.resolve_rmap">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.resolve_rmap">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">resolve_rmap</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Map</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find empty rows, create simple map to efficiently pack rows.</span>
@@ -255,7 +255,7 @@
 
 
 <div class="viewcode-block" id="build_dadda_map">
-<a class="viewcode-back" href="../../../api/multipy.core.html#multipy.build_dadda_map">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.build_dadda_map">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_dadda_map</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Map</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return map which represents starting point of Dadda tree algorithm.</span>
@@ -289,23 +289,23 @@
 
 </pre></div>
 </article><footer class="bz-article-footer">
-  
-  
+
+
     <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
-  
+
 
 </footer></main>
   </div><footer class="bz-footer">
   <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Ephraim M.</p><p>
     Made with
-    
+
     <a href="https://www.sphinx-doc.org/">Sphinx</a> and
-    
+
     <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
   </p>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multipy"
+    href="https://github.com/EphraimCompEng/multiplicity"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"

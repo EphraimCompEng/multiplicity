@@ -2,7 +2,7 @@
 # Import Modules Without Error #
 ################################
 
-import multipy as mp
+import multiplicity as mp
 
 def test_pop_empty_matrix():
     matrix = mp.Matrix(8)

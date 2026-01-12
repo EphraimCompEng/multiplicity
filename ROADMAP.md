@@ -32,7 +32,9 @@ simple templates -> internally called patters, form -> complex templates.
 
 
 ## IO
-- [ ] Basic analysis/visualisation of bit ranges]
+- [ ] Basic analysis/visualisation of bit ranges
+- [ ] Apply analytical functions to all stages
+- [ ] Apply analytical functions to each stage
 - [ ] Heatmaps? plots? Advanced visualisation
 
 

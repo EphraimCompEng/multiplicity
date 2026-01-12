@@ -4,7 +4,7 @@
 
 from typing import Any
 from .utils.char import ischar
-import multipy as mp
+import multiplicity as mp
 import copy
 
 
@@ -16,12 +16,12 @@ def build_simple_template(pattern: list[str]) -> list[list[str]]:
     >>> self.bits = 4
     >>> build_template(self.pattern)
 
-    matrix = [  # pattern = [\n
-    [____AaAa], #  'a',\n
-    [___AaAa_], #  'a',\n
-    [__BbBb__], #  'b',\n
-    [_BbBb___], #  'b']\n
-    ]
+    [matrix] || [pattern]\n
+    ____AaAa || ['a',\n
+    ___AaAa_ ||  'a',\n
+    __BbBb__ ||  'b',\n
+    _BbBb___ ||  'b']\n
+
     """
     matrix = []
 
@@ -106,7 +106,7 @@ def build_adder(
     index    = result[0].index(char)-1 # find first instance of char - 1
     result[0][index] = pre_char # Final carry place in result template
 
-    return adder_slice, result
+    return adder_slice, mp.Slice(result)
 
 
 

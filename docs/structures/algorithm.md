@@ -6,7 +6,7 @@ products are left.
 
 Algorithm objects must collect any number of templates based on:
     - bitwidth
-    - template composition -- MultiPy should not stop users making any
+    - template composition -- multiplicity should not stop users making any
       algorithm, even if suboptimal
     - Saturation -- Set to original bit width
     (Unsure if users likely to need saturation to arbitrary bitwidths)

@@ -1,21 +1,21 @@
-multipy.core.utils package
+multiplicity.core.utils package
 ==========================
 
 Submodules
 ----------
 
-multipy.core.utils.char module
+multiplicity.core.utils.char module
 ------------------------------
 
-.. automodule:: multipy.core.utils.char
+.. automodule:: multiplicity.core.utils.char
    :members:
    :show-inheritance:
    :undoc-members:
 
-multipy.core.utils.pretty module
+multiplicity.core.utils.pretty module
 --------------------------------
 
-.. automodule:: multipy.core.utils.pretty
+.. automodule:: multiplicity.core.utils.pretty
    :members:
    :show-inheritance:
    :undoc-members:
@@ -23,7 +23,7 @@ multipy.core.utils.pretty module
 Module contents
 ---------------
 
-.. automodule:: multipy.core.utils
+.. automodule:: multiplicity.core.utils
    :members:
    :show-inheritance:
    :undoc-members:

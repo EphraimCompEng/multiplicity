@@ -1,7 +1,7 @@
 
 # Work towards a more elegant solution to testing #
 
-import multipy as mp
+import multiplicity as mp
 
 
 """temp note:

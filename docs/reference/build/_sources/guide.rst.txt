@@ -18,7 +18,7 @@ Contents
 
 
 
-MultiPy focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.
+multiplicity focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.
 
 Recommended resources before starting:
 
@@ -35,11 +35,11 @@ Recommended resources before starting:
 Setup
 -----
 
-First, import multipy and decide on a bitwidth for our algorithm, to keep it simple let's pick 4-bits:
+First, import multiplicity and decide on a bitwidth for our algorithm, to keep it simple let's pick 4-bits:
 
 .. code-block:: python
 
-    import multipy as mp
+    import multiplicity as mp
     matrix = mp.Matrix(4) # 4-bit logical AND matrix
 
 
@@ -93,7 +93,7 @@ and in the future:
 
 - Greedy Adders -- Adder which makes use of carry in (cin) [2 to 1]
 
-Collectively these are arithmetic units. All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to Multipy.
+Collectively these are arithmetic units. All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to multiplicity.
 
 .. note::
     Decoders are an exception and can potentially reduce a set of partial products by more than 1.
