@@ -1,2 +1,2 @@
 #!/bin/bash
-sphinx-apidoc --remove-old -o ./src/api/ ../../multiply
+sphinx-apidoc --remove-old -o ./src/api/ ../../multiplied

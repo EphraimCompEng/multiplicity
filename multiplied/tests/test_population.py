@@ -2,7 +2,7 @@
 # Import Modules Without Error #
 ################################
 
-import multiply as mp
+import multiplied as mp
 
 def test_pop_empty_matrix():
     matrix = mp.Matrix(8)

@@ -1,7 +1,7 @@
-multiply
+multiplied
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   multiply
+   multiplied

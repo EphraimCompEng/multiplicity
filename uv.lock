@@ -214,7 +214,7 @@ wheels = [
 ]
 
 [[package]]
-name = "multiply"
+name = "multiplied"
 version = "0.2.0"
 source = { editable = "." }
 dependencies = [

@@ -1,45 +1,45 @@
-multiply.tests package
+multiplied.tests package
 ==========================
 
 Submodules
 ----------
 
-multiply.tests.test\_maps module
+multiplied.tests.test\_maps module
 ------------------------------------
 
-.. automodule:: multiply.tests.test_maps
+.. automodule:: multiplied.tests.test_maps
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.tests.test\_population module
+multiplied.tests.test\_population module
 ------------------------------------------
 
-.. automodule:: multiply.tests.test_population
+.. automodule:: multiplied.tests.test_population
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.tests.test\_templates module
+multiplied.tests.test\_templates module
 -----------------------------------------
 
-.. automodule:: multiply.tests.test_templates
+.. automodule:: multiplied.tests.test_templates
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.tests.test\_to\_json module
+multiplied.tests.test\_to\_json module
 ----------------------------------------
 
-.. automodule:: multiply.tests.test_to_json
+.. automodule:: multiplied.tests.test_to_json
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.tests.test\_truth module
+multiplied.tests.test\_truth module
 -------------------------------------
 
-.. automodule:: multiply.tests.test_truth
+.. automodule:: multiplied.tests.test_truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -47,7 +47,7 @@ multiply.tests.test\_truth module
 Module contents
 ---------------
 
-.. automodule:: multiply.tests
+.. automodule:: multiplied.tests
    :members:
    :show-inheritance:
    :undoc-members:

@@ -11,7 +11,7 @@ This project was initially focused on how [saturation](https://en.wikipedia.org/
 
 A combinational multiplier starts by creating all possible partial products. Then, reduces the number of partial products across multiple stages, eventually all products are reduced to one output.
 
-For example, using a [Wallice tree](https://en.wikipedia.org/wiki/Wallice_tree)  to multiply 11 * 12: 
+For example, using a [Wallice tree](https://en.wikipedia.org/wiki/Wallice_tree)  to multiplied 11 * 12: 
 
 ```
 11 * 12 -> 0b1011 * 0b1100

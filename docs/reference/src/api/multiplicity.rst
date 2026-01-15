@@ -1,4 +1,4 @@
-multiply package
+multiplied package
 ====================
 
 Subpackages
@@ -7,16 +7,16 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   multiply.analysis
-   multiply.core
-   multiply.datasets
-   multiply.io
-   multiply.tests
+   multiplied.analysis
+   multiplied.core
+   multiplied.datasets
+   multiplied.io
+   multiplied.tests
 
 Module contents
 ---------------
 
-.. automodule:: multiply
+.. automodule:: multiplied
    :members:
    :show-inheritance:
    :undoc-members:

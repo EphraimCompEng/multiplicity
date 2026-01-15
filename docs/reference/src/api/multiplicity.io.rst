@@ -1,21 +1,21 @@
-multiply.io package
+multiplied.io package
 =======================
 
 Submodules
 ----------
 
-multiply.io.lazy\_json module
+multiplied.io.lazy\_json module
 ---------------------------------
 
-.. automodule:: multiply.io.lazy_json
+.. automodule:: multiplied.io.lazy_json
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.io.parquet module
+multiplied.io.parquet module
 ------------------------------
 
-.. automodule:: multiply.io.parquet
+.. automodule:: multiplied.io.parquet
    :members:
    :show-inheritance:
    :undoc-members:
@@ -23,7 +23,7 @@ multiply.io.parquet module
 Module contents
 ---------------
 
-.. automodule:: multiply.io
+.. automodule:: multiplied.io
    :members:
    :show-inheritance:
    :undoc-members:

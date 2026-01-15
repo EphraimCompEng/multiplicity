@@ -1,6 +1,6 @@
 
 
-# -- [ multiply ] ---------------------------------------------------------
+# -- [ multiplied ] ---------------------------------------------------------
 
 ### Notes ###
 - add max_iter attribute to Algorithm class
@@ -113,7 +113,7 @@ algorithms simper, especially for large bit widths.
 Reduction is the process of taking n > 1 partial products, adding
 them, and returning at least n - 1 partial products.
 
-multiply implements reduction via templates and maps. For a given stage,
+multiplied implements reduction via templates and maps. For a given stage,
 an algorithm will supply templates for specific arithmetic function.
 Maps move outputs of one stage to the correct position for the next stage.
 
@@ -188,7 +188,7 @@ of the overlap to vertically relocate.
 Specifically, the "base" of any arithmetic unit, the bits/row which represent
 2^0, must be moved to a position which is free from overlaps.
 
-multiply can solve this in two ways: template and map, or a unified smart map.
+multiplied can solve this in two ways: template and map, or a unified smart map.
 
 # -- smart templates ----------------------------------------------------
 
@@ -230,11 +230,11 @@ resultant = [         # check = [   # x1 = [_ _ d D] # roch = 2
 
 
 [ intro ]
-Template assisted reduction(TAR) is how multiply emulates combinstional multiplier
+Template assisted reduction(TAR) is how multiplied emulates combinstional multiplier
 algorithms.
 
 Below is the process of taking two operands and seeing how these operand bits
-propagate through a given multiplier algorithm. Initial multiply versions do not
+propagate through a given multiplier algorithm. Initial multiplied versions do not
 support booth encoding.
 
 [ algorithm flowchart (wip) ]
@@ -287,7 +287,7 @@ key:
    each arithmetic unit's result in m_dict.
 
 4) Once results have been positioned, use the relative map values from rs_template
-   to correctly position partial products for next multiply stage
+   to correctly position partial products for next multiplied stage
 
 [ simplified flowchart ]
 

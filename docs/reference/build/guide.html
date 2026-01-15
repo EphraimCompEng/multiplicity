@@ -7,11 +7,11 @@
 <meta property="og:title" content="User Guide" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="guide.html" />
-<meta property="og:site_name" content="multiply" />
-<meta property="og:description" content="(soon™ incomplete guide below) Contents: Setup, Reduce, Map, Define Algorithm, Use Algorithm. multiply focuses on combinational multiplication, fine-grained control over algorithms, and the cho..." />
-<meta name="description" content="(soon™ incomplete guide below) Contents: Setup, Reduce, Map, Define Algorithm, Use Algorithm. multiply focuses on combinational multiplication, fine-grained control over algorithms, and the cho..." />
+<meta property="og:site_name" content="multiplied" />
+<meta property="og:description" content="(soon™ incomplete guide below) Contents: Setup, Reduce, Map, Define Algorithm, Use Algorithm. multiplied focuses on combinational multiplication, fine-grained control over algorithms, and the cho..." />
+<meta name="description" content="(soon™ incomplete guide below) Contents: Setup, Reduce, Map, Define Algorithm, Use Algorithm. multiplied focuses on combinational multiplication, fine-grained control over algorithms, and the cho..." />
 
-    <title>User Guide &#8212; multiply</title>
+    <title>User Guide &#8212; multiplied</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=93f23127" />
   <noscript>
@@ -44,7 +44,7 @@
   <div class="bz-skip-to-content">
     <a href="#bz-main-content">Skip to main content</a>
   </div><header class="bz-header-main">
-  <div class="bz-header-start"><a class="bz-header-brand" href="index.html"><span>multiply</span>
+  <div class="bz-header-start"><a class="bz-header-brand" href="index.html"><span>multiplied</span>
 </a></div>
   <div class="bz-header-end"><div class="bz-search-button">
   <a
@@ -80,7 +80,7 @@
   </button>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multiply"
+    href="https://github.com/EphraimCompEng/multiplied"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"
@@ -188,7 +188,7 @@
 <li><p><a class="reference internal" href="#define-algorithm"><span class="std std-ref">Define Algorithm</span></a></p></li>
 <li><p><a class="reference internal" href="#use-algorithm"><span class="std std-ref">Use Algorithm</span></a></p></li>
 </ul>
-<p>multiply focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.</p>
+<p>multiplied focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.</p>
 <p>Recommended resources before starting:</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Binary_multiplier">Binary Multipliers</a></p></li>
@@ -203,8 +203,8 @@
 </section>
 <section id="setup">
 <span id="id1"></span><h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>First, import multiply and decide on a bitwidth for our algorithm, to keep it simple let’s pick 4-bits:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiply</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<p>First, import multiplied and decide on a bitwidth for our algorithm, to keep it simple let’s pick 4-bits:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># 4-bit logical AND matrix</span>
 </pre></div>
 </div>
@@ -243,7 +243,7 @@
 <ul class="simple">
 <li><p>Greedy Adders – Adder which makes use of carry in (cin) [2 to 1]</p></li>
 </ul>
-<p>Collectively these are arithmetic units. All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to multiply.</p>
+<p>Collectively these are arithmetic units. All of which reduce a set of partial products by 1, each with their characteristics in latency, complexity and size. None of this applies to multiplied.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Decoders are an exception and can potentially reduce a set of partial products by more than 1.</p>
@@ -375,7 +375,7 @@ b                                       b
 </ul></nav>
 
     <div class="bz-edit-this-page">
-  <a href="https://github.com/EphraimCompEng/multiply/edit/main/guide.rst">
+  <a href="https://github.com/EphraimCompEng/multiplied/edit/main/guide.rst">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
       <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
     </svg>
@@ -397,7 +397,7 @@ b                                       b
   </p>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multiply"
+    href="https://github.com/EphraimCompEng/multiplied"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"

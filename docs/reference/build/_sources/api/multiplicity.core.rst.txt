@@ -1,4 +1,4 @@
-multiply.core package
+multiplied.core package
 =========================
 
 Subpackages
@@ -7,48 +7,48 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   multiply.core.templates
-   multiply.core.utils
+   multiplied.core.templates
+   multiplied.core.utils
 
 Submodules
 ----------
 
-multiply.core.algorithm module
+multiplied.core.algorithm module
 ----------------------------------
 
-.. automodule:: multiply.core.algorithm
+.. automodule:: multiplied.core.algorithm
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.map module
+multiplied.core.map module
 ----------------------------
 
-.. automodule:: multiply.core.map
+.. automodule:: multiplied.core.map
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.matrix module
+multiplied.core.matrix module
 -------------------------------
 
-.. automodule:: multiply.core.matrix
+.. automodule:: multiplied.core.matrix
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.template module
+multiplied.core.template module
 ---------------------------------
 
-.. automodule:: multiply.core.template
+.. automodule:: multiplied.core.template
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.truth module
+multiplied.core.truth module
 ------------------------------
 
-.. automodule:: multiply.core.truth
+.. automodule:: multiplied.core.truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -56,7 +56,7 @@ multiply.core.truth module
 Module contents
 ---------------
 
-.. automodule:: multiply.core
+.. automodule:: multiplied.core
    :members:
    :show-inheritance:
    :undoc-members:

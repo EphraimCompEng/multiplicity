@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-title: multiply
+title: multiplied
 message: 'If you use this software, please cite it as below.'
 type: software
 authors:
   - given-names: Ephraim
     family-names: M
-repository-code: 'https://github.com/EphraimCompEng/multiply'
+repository-code: 'https://github.com/EphraimCompEng/multiplied'
 abstract: >-
-  multiply is a powerful tool to build, test, and analyse multiplier designs.
+  multiplied is a powerful tool to build, test, and analyse multiplier designs.
 keywords:
   - python
   - multiplication algorithms

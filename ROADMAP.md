@@ -19,10 +19,10 @@ Wallace Tree multipliers will be the first focus of the library, before moving o
 
 Basic functionality; "simple templates", generate, analyse:
 
-- [ ] 4-bit unsaturated multiply [Built-in]\*
-- [ ] 8-bit unsaturated multiply [Built-in]
-- [ ] 4-bit saturated multiply [Built-in]
-- [ ] 8-bit saturated multiply [Built-in]
+- [ ] 4-bit unsaturated multiplied [Built-in]\*
+- [ ] 8-bit unsaturated multiplied [Built-in]
+- [ ] 4-bit saturated multiplied [Built-in]
+- [ ] 8-bit saturated multiplied [Built-in]
 - [x] Truth table generation -> json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
@@ -53,8 +53,8 @@ simple templates -> internally called patters, form -> complex templates.
 The sheer amount of data produced for 16-bit+ multiplier truth tables becomes astronomical. The program must be robust enough to deal with this efficiently before tackling:
 - [ ] Testing suite - Pytest
 - [ ] Multiprocessing support to handle higher bit-widths
-- [ ] 16-bit unsaturated multiply
-- [ ] 16-bit saturated multiply
+- [ ] 16-bit unsaturated multiplied
+- [ ] 16-bit saturated multiplied
 - [ ] Use [rust](https://github.com/PyO3/pyo3)? [numba](https://numba.pydata.org/)? for more performance?
 - [ ] Research if 32/64/128-bit multipliers can be analysed in a reasonable time (1min? 5min? ???)
 

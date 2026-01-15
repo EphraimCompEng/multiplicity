@@ -85,7 +85,7 @@ The final reduction results in a single complete value:
 
 In the [original](first/init/) program data was stored in json and could easily be prettified. However, working the stored structures seemed impossible and the project ended there. This time round there will be a big focus on data structures, allowing for robust analytics, as well as human readable data using matplotlib.
 
-- [ ] Find optimal data structure for combinational multiply stages
+- [ ] Find optimal data structure for combinational multiplied stages
 
 ### Simple Templates
 
@@ -141,7 +141,7 @@ Another a reduction layer could use [CSAs](https://en.wikipedia.org/wiki/Carry-s
 Here, each CSA reduced 3 inputs to 2. The output is reordered to mirror how each bit of the CSA calculation is distributed, plus swapping the leftover bit to fit the distribution. For more information see [reduction](link/to/reduction).
 
 
-As you can see the multiply can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable complex templates, matrices can be used. For more information see [templates](link/to/templates)
+As you can see the multiplied can distinguish between reduction using adder or CSAs by the run of a given string. However, these templates are very simple and offer little fine-grain control. To enable complex templates, matrices can be used. For more information see [templates](link/to/templates)
 
 # Datasets
 

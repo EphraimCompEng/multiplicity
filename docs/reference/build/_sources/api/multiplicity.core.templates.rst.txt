@@ -1,29 +1,29 @@
-multiply.core.templates package
+multiplied.core.templates package
 ===================================
 
 Submodules
 ----------
 
-multiply.core.templates.adder module
+multiplied.core.templates.adder module
 ----------------------------------------
 
-.. automodule:: multiply.core.templates.adder
+.. automodule:: multiplied.core.templates.adder
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.templates.csa module
+multiplied.core.templates.csa module
 --------------------------------------
 
-.. automodule:: multiply.core.templates.csa
+.. automodule:: multiplied.core.templates.csa
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.templates.decoder module
+multiplied.core.templates.decoder module
 ------------------------------------------
 
-.. automodule:: multiply.core.templates.decoder
+.. automodule:: multiplied.core.templates.decoder
    :members:
    :show-inheritance:
    :undoc-members:
@@ -31,7 +31,7 @@ multiply.core.templates.decoder module
 Module contents
 ---------------
 
-.. automodule:: multiply.core.templates
+.. automodule:: multiplied.core.templates
    :members:
    :show-inheritance:
    :undoc-members:

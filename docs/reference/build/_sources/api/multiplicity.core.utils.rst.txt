@@ -1,21 +1,21 @@
-multiply.core.utils package
+multiplied.core.utils package
 ===============================
 
 Submodules
 ----------
 
-multiply.core.utils.char module
+multiplied.core.utils.char module
 -----------------------------------
 
-.. automodule:: multiply.core.utils.char
+.. automodule:: multiplied.core.utils.char
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiply.core.utils.pretty module
+multiplied.core.utils.pretty module
 -------------------------------------
 
-.. automodule:: multiply.core.utils.pretty
+.. automodule:: multiplied.core.utils.pretty
    :members:
    :show-inheritance:
    :undoc-members:
@@ -23,7 +23,7 @@ multiply.core.utils.pretty module
 Module contents
 ---------------
 
-.. automodule:: multiply.core.utils
+.. automodule:: multiplied.core.utils
    :members:
    :show-inheritance:
    :undoc-members:

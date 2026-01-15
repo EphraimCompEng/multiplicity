@@ -1,4 +1,4 @@
-import multiply as mp
+import multiplied as mp
 # import pathlib
 
 

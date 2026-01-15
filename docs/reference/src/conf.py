@@ -6,15 +6,15 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 print(sys.path)
-import multiply as mp
+import multiplied as mp
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project   = 'multiply'
+project   = 'multiplied'
 copyright = '2025, Ephraim M.'
 author    = 'Ephraim M.'
-github    = 'https://github.com/EphraimCompEng/multiply'
+github    = 'https://github.com/EphraimCompEng/multiplied'
 release   = mp.MP_VERSION
 stable    = 'v' + ".".join(release.split('.')[:2])
 
@@ -38,10 +38,10 @@ exclude_patterns = []
 
 html_theme = 'breeze'
 html_static_path = ['_static']
-html_title = 'multiply'
+html_title = 'multiplied'
 html_context = {
     'github_user': 'EphraimCompEng',
-    'github_repo': 'multiply'
+    'github_repo': 'multiplied'
 }
 
 # -- Exposing variables to .rst files ----------------------------------------

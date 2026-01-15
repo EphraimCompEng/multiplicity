@@ -1,5 +1,5 @@
 [project]
-name = "multiply"
+name = "multiplied"
 version = "0.2.0"
 description = "A powerful tool to build, test, and analyse multiplier designs."
 readme = "README.md"
@@ -11,15 +11,15 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/EphraimCompEng/multiply"
-Issues = "https://github.com/EphraimCompEng/multiply/issues"
+Homepage = "https://github.com/EphraimCompEng/multiplied"
+Issues = "https://github.com/EphraimCompEng/multiplied/issues"
 
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "multiply"
+module-name = "multiplied"
 module-root = ""
 
 [dependency-groups]

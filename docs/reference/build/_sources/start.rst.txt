@@ -6,8 +6,8 @@ Get Started
 
 .. code:: sh
 
-    pip install -i https://test.pypi.org/simple/ multiply
+    pip install -i https://test.pypi.org/simple/ multiplied
 
 .. code:: python
 
-    import multiply as mp
+    import multiplied as mp
