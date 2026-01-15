@@ -85,7 +85,7 @@ class Matrix:
         if matrix.bits != self.bits:
             return False
         for i in range(self.bits):
-            if matrix[i] != self.matrix[i]:
+            if matrix.matrix[i] != self.matrix[i]:
                 return False
         return True
 
