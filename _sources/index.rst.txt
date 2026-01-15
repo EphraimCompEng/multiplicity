@@ -1,5 +1,5 @@
 .. _landing:
-Multiplicity Documentation
+multiplied Documentation
 ---------------------
 
 |stable|
@@ -16,12 +16,12 @@ Multiplicity Documentation
     contact
 
 
-- Source: `Github <https://github.com/EphraimCompEng/multiplicity>`_ | `PyPi <https://test.pypi.org/manage/project/multiplicity/releases/>`_
-- Use Multiplicity: :ref:`started` | :ref:`guide`
-- Further Reading: `Overview <https://github.com/EphraimCompEng/multiplicity/tree/master/docs>`_ | `Teman, A. Fast Multipliers <https://youtu.be/4FwESTOVT-o/>`_
+- Source: `Github <https://github.com/EphraimCompEng/multiplied>`_ | `PyPi <https://test.pypi.org/manage/project/multiplied/releases/>`_
+- Use multiplied: :ref:`started` | :ref:`guide`
+- Further Reading: `Overview <https://github.com/EphraimCompEng/multiplied/tree/master/docs>`_ | `Teman, A. Fast Multipliers <https://youtu.be/4FwESTOVT-o/>`_
 
 This project is in early development. If you would like to contribute, head over to :ref:`contactme`.
 
-.. _roadmap: https://github.com/EphraimCompEng/multiplicity/blob/master/ROADMAP.md
+.. _roadmap: https://github.com/EphraimCompEng/multiplied/blob/master/ROADMAP.md
 
 Check out the `roadmap <roadmap>`_

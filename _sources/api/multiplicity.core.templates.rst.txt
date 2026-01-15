@@ -1,29 +1,29 @@
-multiplicity.core.templates package
+multiplied.core.templates package
 ===================================
 
 Submodules
 ----------
 
-multiplicity.core.templates.adder module
+multiplied.core.templates.adder module
 ----------------------------------------
 
-.. automodule:: multiplicity.core.templates.adder
+.. automodule:: multiplied.core.templates.adder
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.templates.csa module
+multiplied.core.templates.csa module
 --------------------------------------
 
-.. automodule:: multiplicity.core.templates.csa
+.. automodule:: multiplied.core.templates.csa
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.templates.decoder module
+multiplied.core.templates.decoder module
 ------------------------------------------
 
-.. automodule:: multiplicity.core.templates.decoder
+.. automodule:: multiplied.core.templates.decoder
    :members:
    :show-inheritance:
    :undoc-members:
@@ -31,7 +31,7 @@ multiplicity.core.templates.decoder module
 Module contents
 ---------------
 
-.. automodule:: multiplicity.core.templates
+.. automodule:: multiplied.core.templates
    :members:
    :show-inheritance:
    :undoc-members:

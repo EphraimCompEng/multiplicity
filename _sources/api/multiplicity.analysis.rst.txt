@@ -1,29 +1,29 @@
-multiplicity.analysis package
+multiplied.analysis package
 =============================
 
 Submodules
 ----------
 
-multiplicity.analysis.extract module
+multiplied.analysis.extract module
 ------------------------------------
 
-.. automodule:: multiplicity.analysis.extract
+.. automodule:: multiplied.analysis.extract
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.analysis.search module
+multiplied.analysis.search module
 -----------------------------------
 
-.. automodule:: multiplicity.analysis.search
+.. automodule:: multiplied.analysis.search
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.analysis.track module
+multiplied.analysis.track module
 ----------------------------------
 
-.. automodule:: multiplicity.analysis.track
+.. automodule:: multiplied.analysis.track
    :members:
    :show-inheritance:
    :undoc-members:
@@ -31,7 +31,7 @@ multiplicity.analysis.track module
 Module contents
 ---------------
 
-.. automodule:: multiplicity.analysis
+.. automodule:: multiplied.analysis
    :members:
    :show-inheritance:
    :undoc-members:

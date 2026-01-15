@@ -6,8 +6,8 @@ Get Started
 
 .. code:: sh
 
-    pip install -i https://test.pypi.org/simple/ multiplicity
+    pip install -i https://test.pypi.org/simple/ multiplied
 
 .. code:: python
 
-    import multiplicity as mp
+    import multiplied as mp

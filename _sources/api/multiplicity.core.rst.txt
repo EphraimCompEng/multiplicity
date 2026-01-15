@@ -1,4 +1,4 @@
-multiplicity.core package
+multiplied.core package
 =========================
 
 Subpackages
@@ -7,48 +7,48 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   multiplicity.core.templates
-   multiplicity.core.utils
+   multiplied.core.templates
+   multiplied.core.utils
 
 Submodules
 ----------
 
-multiplicity.core.algorithm module
+multiplied.core.algorithm module
 ----------------------------------
 
-.. automodule:: multiplicity.core.algorithm
+.. automodule:: multiplied.core.algorithm
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.map module
+multiplied.core.map module
 ----------------------------
 
-.. automodule:: multiplicity.core.map
+.. automodule:: multiplied.core.map
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.matrix module
+multiplied.core.matrix module
 -------------------------------
 
-.. automodule:: multiplicity.core.matrix
+.. automodule:: multiplied.core.matrix
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.template module
+multiplied.core.template module
 ---------------------------------
 
-.. automodule:: multiplicity.core.template
+.. automodule:: multiplied.core.template
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.truth module
+multiplied.core.truth module
 ------------------------------
 
-.. automodule:: multiplicity.core.truth
+.. automodule:: multiplied.core.truth
    :members:
    :show-inheritance:
    :undoc-members:
@@ -56,7 +56,7 @@ multiplicity.core.truth module
 Module contents
 ---------------
 
-.. automodule:: multiplicity.core
+.. automodule:: multiplied.core
    :members:
    :show-inheritance:
    :undoc-members:

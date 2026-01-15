@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>multiplicity.core.algorithm &#8212; multiplicity</title>
+    <title>multiplied.core.algorithm &#8212; multiplied</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=93f23127" />
   <noscript>
@@ -12,7 +12,7 @@
       .bz-js-only { display: none !important; }
     </style>
   </noscript>
-  
+
     <script defer src="../../../_static/documentation_options.js?v=938c9ccc"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
@@ -31,11 +31,11 @@
     <link rel="search" title="Search" href="../../../search.html" /><meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head><body>
-  
+
   <div class="bz-skip-to-content">
     <a href="#bz-main-content">Skip to main content</a>
   </div><header class="bz-header-main">
-  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><span>multiplicity</span>
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><span>multiplied</span>
 </a></div>
   <div class="bz-header-end"><div class="bz-search-button">
   <a
@@ -71,7 +71,7 @@
   </button>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multiplicity"
+    href="https://github.com/EphraimCompEng/multiplied"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"
@@ -124,8 +124,8 @@
     <ul role="menu" aria-hidden="true"></ul>
   </div>
 </nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
-  
-  
+
+
     <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li class="bz-breadcrumbs-home">
@@ -145,11 +145,11 @@
     </li><li class="bz-breadcrumbs-parent">
       <a href="../../index.html">Module code</a>
     </li><li class="bz-breadcrumbs-current">
-      <span>multiplicity.core.algorithm</span>
+      <span>multiplied.core.algorithm</span>
     </li>
   </ol>
 </nav>
-  
+
 
   <label
     class="bz-sidebar-secondary-toggle"
@@ -169,7 +169,7 @@
     </svg>
   </label>
 </header><article class="bz-article-main" role="main">
-  <h1>Source code for multiplicity.core.algorithm</h1><div class="highlight"><pre>
+  <h1>Source code for multiplied.core.algorithm</h1><div class="highlight"><pre>
 <span></span><span class="c1">#########################################</span>
 <span class="c1"># Algorithm Are Defined Using Templates #</span>
 <span class="c1">#########################################</span>
@@ -186,11 +186,11 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">multiplicity</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <div class="viewcode-block" id="Algorithm">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Algorithm</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A given algorithm is created on top of a zero initialised Logical</span>
@@ -239,7 +239,7 @@
     <span class="c1"># &gt;&gt;&gt;     &quot;map&quot;      : mp.Map               #</span>
     <span class="c1"># &gt;&gt;&gt; }                                     #</span>
 <div class="viewcode-block" id="Algorithm.populate">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm.populate">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.populate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># --- #</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds template(s) to an existing algorithm. All templates must be of</span>
@@ -268,13 +268,13 @@
     <span class="c1">#     ...</span>
 
 <div class="viewcode-block" id="Algorithm.truth">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm.truth">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.truth">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">truth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="o">...</span></div>
 
 
 <div class="viewcode-block" id="Algorithm.step">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm.step">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.step">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Take template[internal_state], apply to matrix, advance internal_state</span>
@@ -284,7 +284,7 @@
 
     <span class="c1"># Used to automate splitting a matrix into Slice(n * row)</span>
 <div class="viewcode-block" id="Algorithm.split">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm.split">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.split">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -304,7 +304,7 @@
 
 
 <div class="viewcode-block" id="Algorithm.exec">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplicity.Algorithm.exec">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.exec">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">exec</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -315,23 +315,23 @@
 
 </pre></div>
 </article><footer class="bz-article-footer">
-  
-  
+
+
     <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
-  
+
 
 </footer></main>
   </div><footer class="bz-footer">
   <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Ephraim M.</p><p>
     Made with
-    
+
     <a href="https://www.sphinx-doc.org/">Sphinx</a> and
-    
+
     <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
   </p>
 </div><div class="bz-external-links">
   <a
-    href="https://github.com/EphraimCompEng/multiplicity"
+    href="https://github.com/EphraimCompEng/multiplied"
     aria-label="GitHub"
     data-tooltip="GitHub"
     target="_blank"

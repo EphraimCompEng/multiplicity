@@ -6,5 +6,5 @@ API Reference
 
 .. toctree::
 
-    api/multiplicity.core
-    api/multiplicity.io
+    api/multiplied.core
+    api/multiplied.io

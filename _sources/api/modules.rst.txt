@@ -1,7 +1,7 @@
-multiplicity
+multiplied
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   multiplicity
+   multiplied

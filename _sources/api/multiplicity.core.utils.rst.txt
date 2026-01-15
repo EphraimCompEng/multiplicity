@@ -1,21 +1,21 @@
-multiplicity.core.utils package
+multiplied.core.utils package
 ===============================
 
 Submodules
 ----------
 
-multiplicity.core.utils.char module
+multiplied.core.utils.char module
 -----------------------------------
 
-.. automodule:: multiplicity.core.utils.char
+.. automodule:: multiplied.core.utils.char
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplicity.core.utils.pretty module
+multiplied.core.utils.pretty module
 -------------------------------------
 
-.. automodule:: multiplicity.core.utils.pretty
+.. automodule:: multiplied.core.utils.pretty
    :members:
    :show-inheritance:
    :undoc-members:
@@ -23,7 +23,7 @@ multiplicity.core.utils.pretty module
 Module contents
 ---------------
 
-.. automodule:: multiplicity.core.utils
+.. automodule:: multiplied.core.utils
    :members:
    :show-inheritance:
    :undoc-members:

@@ -6,4 +6,4 @@ Contact
 
 Email: ephraim.ce@proton.me
 
-Bugs/Issues: https://github.com/EphraimCompEng/multiplicity/issues
+Bugs/Issues: https://github.com/EphraimCompEng/multiplied/issues
