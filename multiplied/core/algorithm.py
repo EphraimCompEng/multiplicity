@@ -38,18 +38,24 @@ class Algorithm(mp.Matrix):
     def __init__(self, matrix: mp.Matrix) -> None:
         self.bits      = 0
         self.state     = 0
-        self.len       = len(self.algorithm)
         self.matrix    = matrix
         self.result    = {}
-        self.algorithm = {}
+        self.algorithm = {0: {
+            'template': None,
+            'matrix'  : matrix,
+            'map'     : None,
+        }}
+        self.len       = len(self.algorithm)
+        self.stage     = self.algorithm[self.state]
         """Structure of a given algorithm stage:
         >>> self.algorithm[x] = {
         >>>     "template" : mp.Template
         >>>     "result"   : mp.Matrix
         >>>     "map"      : mp.Map
         >>> }
+
+        Use state as index for iterator method
         """
-        self.stage     = self.algorithm[self.state]
 
     def __repr__(self) -> str:
         pretty = ""
@@ -64,12 +70,12 @@ class Algorithm(mp.Matrix):
     # >>>     "result"   : mp.Matrix            #
     # >>>     "map"      : mp.Map               #
     # >>> }                                     #
-    def populate(self, arg: Any) -> None: # --- #
+    def populate(self, arg: Any) -> Any: # --- #
         """
         Adds template(s) to an existing algorithm. All templates must be of
         consistent bitwidth.
         """
-
+        return NotImplementedError # Tempoarary
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg]
         elif not(isinstance(all(arg), list)):
