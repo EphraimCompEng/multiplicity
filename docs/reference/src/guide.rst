@@ -18,7 +18,7 @@ Contents
 
 
 
-multiplied focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.
+Multiplied focuses on combinational multiplication, fine-grained control over algorithms, and the choice of making algorithms entirely by hand or using build-in building blocks.
 
 Recommended resources before starting:
 
