@@ -37,6 +37,12 @@ def build_csa(
         # For int in template slice, map possible CSA operands to adder_slice
         # Then map possible outputs to result
         # [ bA + bB + bC = 0b00, 0b01, 0b10 ]
+        #
+        # Max bits per calculation = 1, therefore template result is:
+        #
+        # t = AaAa...
+        #    AaAa...
+        #
         # CSA auto maps Cout: FF, see templates/map.py
         csa_slice[0][i] = char if (y0:=csa_slice[0][i] != '_') else '_'
         csa_slice[1][i] = char if (y1:=csa_slice[1][i] != '_') else '_'
@@ -75,9 +81,16 @@ def build_adder(
 
 
     for i in range(n):
-        # For int in template slice, map possible ADD operands to adder_slice
-        # Then map possible outputs to result
-        # [ bA + bB = 0b00, 0b01, 0b10, 0b11]
+        # For int, [0, 1], in matrix slice, map possible ADD operands to
+        # template_adder_slice
+        # Then map possible outputs to result:
+        # [ bA + bB = 0b0, 0b1]
+        #
+        # Max bits per calculation = 1, therefore template result is:
+        #
+        # t = AaAa...
+        #
+
         adder_slice[0][i] = char if (y0:=adder_slice[0][i] != '_') else '_'
         adder_slice[1][i] = char if (y1:=adder_slice[1][i] != '_') else '_'
         result[0][i]      = char if y0 or y1 else '_'
@@ -92,6 +105,8 @@ def build_adder(
     result[0][index] = pre_char # Final carry place in result template
 
     return adder_slice, mp.Slice(result)
+
+def init_simple_template() ->:
 
 
 
@@ -137,11 +152,13 @@ class Template:
             self.template = template
             self.merged = None
 
-    # Templates must be built using previous template's results
+
+    # Templates must be built using thr current matrix
     def build_simple_template(self, pattern: list[str], resultant: Any
     ) -> tuple[list[Any],list[Any]]:
         """
-        Build a simple template for a given bitwidth based on resultant template.
+        Build a simple template for a given bitwidth based on matrix.
+        Defaults to empty matrix if matrix=None.
         >>> self.bits = 4
         >>> build_template(self.pattern)
 
