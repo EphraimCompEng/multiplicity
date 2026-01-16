@@ -44,17 +44,18 @@ class Matrix:
 
     """
     def __init__(self, source: Any) -> None:
+
         if isinstance(source, int):
-            assert source in mp.SUPPORTED_BITWIDTHS, (
-                f"Unsupported bitwidth {source}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
+            if source not in mp.SUPPORTED_BITWIDTHS:
+                raise ValueError(f"Unsupported bitwidth {source}. Expected {mp.SUPPORTED_BITWIDTHS}")
             self.bits = source
             self.__empty_matrix(source)
+
         elif all([isinstance(s, list) for s in source]):
-            assert len(source) in mp.SUPPORTED_BITWIDTHS,(
-                f"Unsupported bitwidth {len(source)}. Expected {mp.SUPPORTED_BITWIDTHS}"
-        )
-            assert len(source)*2 == len(source[0]), "Matrix must be 2m * m"
+            if len(source) not in mp.SUPPORTED_BITWIDTHS:
+                raise ValueError(f"Unsupported bitwidth {len(source)}. Expected {mp.SUPPORTED_BITWIDTHS}")
+            if len(source)*2 != len(source[0]):
+                raise ValueError("Matrix must be 2m * m")
             self.bits = len(source)
             self.matrix = source
 

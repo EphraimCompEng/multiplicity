@@ -10,10 +10,10 @@ from typing import Any
 class Map:
 
     def __init__(self, map: list[Any]) -> None:
-        assert isinstance(map, list), ValueError("Map must be a list")
-        assert (bits := len(map)) in mp.SUPPORTED_BITWIDTHS, (
-            (f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
-        )
+        if not(isinstance(map, list)):
+            raise ValueError("Map must be type list")
+        if (bits := len(map)) not in mp.SUPPORTED_BITWIDTHS:
+            raise ValueError(f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
         self.bits = bits
         if isinstance(map[0], list):
             self.map = map
