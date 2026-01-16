@@ -10,22 +10,7 @@ import copy
 
 
 
-def build_simple_template(pattern: list[str]) -> list[list[str]]:
-    """
-    Build a simple template for a given bitwidth.
-    >>> self.bits = 4
-    >>> build_template(self.pattern)
 
-    [matrix] || [pattern]\n
-    ____AaAa || ['a',\n
-    ___AaAa_ ||  'a',\n
-    __BbBb__ ||  'b',\n
-    _BbBb___ ||  'b']\n
-
-    """
-    matrix = []
-
-    return matrix
 
 # Defining a new Template type for list[list[Any]] would be useful?
 
@@ -111,10 +96,12 @@ def build_adder(
 
 
 class Pattern:
+    """
+
+    """
     def __init__(self, pattern: list[str]):
-        assert isinstance(pattern, list) and all(ischar(row) for row in pattern), (
-            "Error: Invalid pattern format. Expected list[char]"
-        )
+        if not(isinstance(pattern, list) and all(ischar(row) for row in pattern)):
+            raise ValueError("Error: Invalid pattern format. Expected list[char]")
         self.pattern = pattern
 
     def __str__(self):
@@ -123,17 +110,21 @@ class Pattern:
             pretty_str += " " + p + "\n"
         return f"{'['+ pretty_str[1:-2]+']'}"
 
+
+
 class Template:
+    """
+
+    """
     # import string
     # cell = (ch for ch in string.ascii_lowercase)
 
     def __init__(self, template: list[Any], result: Any = None, map: Any = None): # Complex or simple
-        from .. import SUPPORTED_BITWIDTHS
-        valid_range  = SUPPORTED_BITWIDTHS
-        self.len     = len(template)
-        self.map     = map
-        self.result  = result
-        self.pattern = None
+        valid_range   = mp.SUPPORTED_BITWIDTHS
+        self.len      = len(template)
+        self.map      = map
+        self.result   = result
+        self.pattern  = None
         self.template = None
 
 
@@ -142,10 +133,57 @@ class Template:
             raise ValueError(f"Valid bit lengths: {valid_range}")
         if ischar(template[0]):
             self.pattern  = template
-            self.template, self.result = build_simple_template(template)
         elif ischar(template[0][0]):
             self.template = template
             self.merged = None
+
+    # Templates must be built using previous template's results
+    def build_simple_template(self, pattern: list[str], resultant: Any
+    ) -> tuple[list[Any],list[Any]]:
+        """
+        Build a simple template for a given bitwidth based on resultant template.
+        >>> self.bits = 4
+        >>> build_template(self.pattern)
+
+        [matrix] || [pattern]\n
+        ____AaAa || ['a',\n
+        ___AaAa_ ||  'a',\n
+        __BbBb__ ||  'b',\n
+        _BbBb___ ||  'b']\n
+        """
+
+        # -- sanity check -----------------------------------------------
+        if not(isinstance(pattern, list)):
+            raise ValueError("Pattern must be type list")
+        if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
+            raise ValueError(
+                f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
+            )
+
+        if isinstance(resultant, list):
+
+        # -- find run ---------------------------------------------------
+        template = {}
+        i = 1
+        while i < len(pattern):
+            run = 1
+            while pattern[i-1] == pattern[i]:
+                run += 1
+                i   += 1
+            match run:
+                case 1: # Do nothing
+                    template[i-run] =
+                case 2: # Create adder
+                    ...
+                case 3: # Create CSA row
+                    ...
+                case _:
+                    raise ValueError(f"Unsupported run length {run}")
+
+        matrix = []
+
+        return matrix
+
 
     def merge(self, templates: list[Any]) -> None:
         """
