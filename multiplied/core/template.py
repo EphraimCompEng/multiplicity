@@ -119,6 +119,7 @@ def build_noop(
     # (noop_slice, noop_slice) == tuple both pointing to one object.
     return noop_slice, copy.copy(noop_slice)
 
+    ...
 class Pattern:
     """
 
@@ -128,6 +129,26 @@ class Pattern:
             raise ValueError("Error: Invalid pattern format. Expected list[char]")
         self.pattern = pattern
         self.bits    = len(pattern)
+
+    def get_runs(self) -> dict:
+        """
+        Returns dict containing length and positions of a given char in pattern
+        """
+        metadata = {}
+        i = 1
+        k = 0
+        while i < len(self.pattern):
+            run = 1
+            while i < len(self.pattern) and self.pattern[i-1] == self.pattern[i]:
+                run += 1
+                i   += 1
+            if run < 4:
+                metadata[k] = {'pos': (None, i-run), 'len': run}
+            else:
+                raise ValueError(f"Unsupported run length {run}")
+            i += 1
+            k += 1
+        return metadata
 
     def __str__(self):
         pretty_ = ""
@@ -152,9 +173,9 @@ class Template:
     def __init__(self,
         source: Pattern | list[Any],
         *,
+        map: Any    = None,
+        dadda: bool = False,
         result: Any = None,
-        map: Any = None,
-        dadda: bool = False
     ) -> None: # Complex or pattern
 
         self.map      = map
@@ -237,7 +258,6 @@ class Template:
         result = []
         for i in template_slices.values():
             result += i[1]
-
         self.template, self.result = mp.Matrix(template), mp.Matrix(result)
 
 

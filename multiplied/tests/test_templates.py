@@ -63,6 +63,7 @@ def test_build_from_pattern() -> None:
         'b',
     ])
     mytemplate = mp.Template(mypattern)
+    print(mypattern.get_runs())
     print(mytemplate.template)
     print(mytemplate.result)
 
