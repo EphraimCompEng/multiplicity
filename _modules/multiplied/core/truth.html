@@ -228,7 +228,7 @@
 <span class="sd">    Return Generator of logical AND matrices for a given set of operands a, b.</span>
 <span class="sd">    Generated operands should be in the form tuple(a, b).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># print(alg.bits)</span>
+    <span class="c1"># -- sanity checks [TODO] ---------------------------------------</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">alg</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">)</span></div>
 
 

@@ -196,14 +196,9 @@
 <div class="viewcode-block" id="test_pop_build_matrix">
 <a class="viewcode-back" href="../../../api/multiplicity.tests.html#multiplied.tests.test_population.test_pop_build_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_pop_build_matrix</span><span class="p">():</span>
-    <span class="n">matrix</span>         <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">mult_by_zero_a</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">mult_by_zero_b</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="c1"># exceed_matrix  = mp.Matrix(8)</span>
-
-    <span class="n">matrix</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-    <span class="n">mult_by_zero_a</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-    <span class="n">mult_by_zero_b</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">mult_by_zero_a</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">mult_by_zero_b</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">matrix</span><span class="o">.</span><span class="n">bits</span>   <span class="o">==</span> <span class="n">mult_by_zero_a</span><span class="o">.</span><span class="n">bits</span>
     <span class="k">assert</span> <span class="n">matrix</span><span class="o">.</span><span class="n">bits</span>   <span class="o">==</span> <span class="n">mult_by_zero_b</span><span class="o">.</span><span class="n">bits</span></div>
 
@@ -213,9 +208,9 @@
 
 <div class="viewcode-block" id="test_pop_agorithm">
 <a class="viewcode-back" href="../../../api/multiplicity.tests.html#multiplied.tests.test_population.test_pop_agorithm">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_pop_agorithm</span><span class="p">():</span>
-    <span class="n">temp1</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># Placeholder for template</span>
-    <span class="n">temp2</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># Placeholder for template</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_pop_agorithm</span><span class="p">():</span> <span class="c1">## POPULATION NO IMPLEMENTED ##</span>
+    <span class="n">temp1</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># Placeholder for template &lt;-- update this</span>
+    <span class="n">temp2</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># Placeholder for template &lt;-- update this</span>
     <span class="n">arg</span>   <span class="o">=</span> <span class="p">[</span><span class="n">temp1</span><span class="p">,</span> <span class="n">temp2</span><span class="p">]</span>
     <span class="n">alg</span>   <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Algorithm</span><span class="p">(</span><span class="n">temp1</span><span class="p">)</span>
     <span class="n">alg</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>

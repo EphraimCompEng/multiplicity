@@ -201,7 +201,7 @@
     <span class="nb">slice</span>  <span class="o">=</span> <span class="nb">slice</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
     <span class="c1"># print(slice)</span>
     <span class="n">my_slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_csa</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 
@@ -210,10 +210,9 @@
 <a class="viewcode-back" href="../../../api/multiplicity.tests.html#multiplied.tests.test_templates.test_temp_build_csa8">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_temp_build_csa8</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">matrix8</span>  <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">slice2</span>  <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">slice2</span> <span class="o">=</span> <span class="n">slice2</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">slice2</span>  <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
     <span class="n">my_slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_csa</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">slice2</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix8</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix8</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 
@@ -222,10 +221,9 @@
 <a class="viewcode-back" href="../../../api/multiplicity.tests.html#multiplied.tests.test_templates.test_temp_build_adder4">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_temp_build_adder4</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">matrix4</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="nb">slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="nb">slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="nb">slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
     <span class="n">my_slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_adder</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 
@@ -234,10 +232,9 @@
 <a class="viewcode-back" href="../../../api/multiplicity.tests.html#multiplied.tests.test_templates.test_temp_build_adder8">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_temp_build_adder8</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">matrix4</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="nb">slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="nb">slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="o">.</span><span class="n">matrix</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="nb">slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">my_slice</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_adder</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">matrix4</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">my_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 

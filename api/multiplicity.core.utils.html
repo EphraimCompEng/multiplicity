@@ -182,6 +182,27 @@
 <section id="module-multiplied.core.utils.char">
 <span id="multiplied-core-utils-char-module"></span><h2>multiplied.core.utils.char module<a class="headerlink" href="#module-multiplied.core.utils.char" title="Link to this heading">#</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.utils.char.chargen">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.char.</span></span><span class="sig-name descname"><span class="pre">chargen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/char.html#chargen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.char.chargen" title="Link to this definition">#</a></dt>
+<dd><p>Continuously generate characters from A to Z.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.utils.char.chartff">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.char.</span></span><span class="sig-name descname"><span class="pre">chartff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/char.html#chartff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.char.chartff" title="Link to this definition">#</a></dt>
+<dd><p>Infinitely generate char in upper then lowercase form.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">chartff</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">&#39;a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">&#39;A&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">&#39;a&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="multiplied.core.utils.char.ischar">
 <span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.char.</span></span><span class="sig-name descname"><span class="pre">ischar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/char.html#ischar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.char.ischar" title="Link to this definition">#</a></dt>
 <dd><p>Tests if a string is exactly one alphabetic character</p>
@@ -245,6 +266,8 @@
   </p><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-multiplied.core.utils.char">multiplied​.core​.utils​.char module</a><ul>
+<li><a class="reference internal" href="#multiplied.core.utils.char.chargen"><code class="docutils literal notranslate"><span class="pre">chargen()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.utils.char.chartff"><code class="docutils literal notranslate"><span class="pre">chartff()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.utils.char.ischar"><code class="docutils literal notranslate"><span class="pre">ischar()</span></code></a></li>
 </ul>
 </li>
