@@ -158,14 +158,14 @@ class Template:
         """
         Create template for zeroed matrix using pattern
         """
-        base = mp.Matrix(bits)
+        matrix = mp.Matrix(bits)
         if dadda:
             raise NotImplementedError("Applying maps not implemented")
-            # base = mp.apply_map(base)
-        self.template = self.build_from_pattern(pattern, base)
+            # matrix = mp.apply_map(matrix)
+        self.template = self.build_from_pattern(pattern, matrix)
 
     # Templates must be built using thr current matrix
-    def build_from_pattern(self, pattern: Pattern, resultant: Any
+    def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
     ) -> None:
         """
         Build a simple template for a given bitwidth based on matrix.
@@ -188,8 +188,6 @@ class Template:
                 f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
 
-        if isinstance(resultant, list):
-
         # -- find run ---------------------------------------------------
         template = {}
         i = 1
@@ -200,7 +198,7 @@ class Template:
                 i   += 1
             match run:
                 case 1: # Do nothing
-                    template[i-run] =
+                    template[i-run] = None
                 case 2: # Create adder
                     ...
                 case 3: # Create CSA row
