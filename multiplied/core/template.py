@@ -106,10 +106,6 @@ def build_adder(
 
     return adder_slice, mp.Slice(result)
 
-def init_simple_template() ->:
-
-
-
 class Pattern:
     """
 
@@ -134,28 +130,36 @@ class Template:
     # import string
     # cell = (ch for ch in string.ascii_lowercase)
 
-    def __init__(self, template: list[Any], result: Any = None, map: Any = None): # Complex or simple
-        valid_range   = mp.SUPPORTED_BITWIDTHS
+    def __init__(self, template: list[Any], *,
+        result: Any = None, map: Any = None, dadda: bool = False) -> None: # Complex or pattern
         self.len      = len(template)
         self.map      = map
+        self.dadda    = dadda
         self.result   = result
-        self.pattern  = None
-        self.template = None
-
 
         # length of any template represents it's bitwidth
-        if len(template) not in valid_range:
-            raise ValueError(f"Valid bit lengths: {valid_range}")
+        if len(template) not in mp.SUPPORTED_BITWIDTHS:
+            raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
         if ischar(template[0]):
             self.pattern  = template
+            self.init_base_template(self.pattern, self.dadda)
         elif ischar(template[0][0]):
             self.template = template
-            self.merged = None
+            self.pattern  = None
+        else:
+            raise ValueError(
+                "Error: Invalid template format.\
+                    Expected pattern: list[char] or template: list[list[str]]")
+
+    def init_base_template(self, pattern: list[str], dadda=False) -> None:
+        """
+        Create template for zeroed matrix using pattern
+        """
 
 
     # Templates must be built using thr current matrix
-    def build_simple_template(self, pattern: list[str], resultant: Any
-    ) -> tuple[list[Any],list[Any]]:
+    def build_from_pattern(self, pattern: list[str], resultant: Any
+    ) -> None:
         """
         Build a simple template for a given bitwidth based on matrix.
         Defaults to empty matrix if matrix=None.
