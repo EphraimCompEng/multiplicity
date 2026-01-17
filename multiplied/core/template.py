@@ -114,6 +114,7 @@ class Pattern:
         if not(isinstance(pattern, list) and all(ischar(row) for row in pattern)):
             raise ValueError("Error: Invalid pattern format. Expected list[char]")
         self.pattern = pattern
+        self.bits    = len(pattern)
 
     def __str__(self):
         pretty_str = ""
@@ -121,7 +122,8 @@ class Pattern:
             pretty_str += " " + p + "\n"
         return f"{'['+ pretty_str[1:-2]+']'}"
 
-
+    def __len__(self):
+        return self.bits
 
 class Template:
     """
@@ -130,35 +132,40 @@ class Template:
     # import string
     # cell = (ch for ch in string.ascii_lowercase)
 
-    def __init__(self, template: list[Any], *,
+    def __init__(self, source: Pattern | list[Any], *,
         result: Any = None, map: Any = None, dadda: bool = False) -> None: # Complex or pattern
-        self.len      = len(template)
         self.map      = map
+        self.bits     = len(source)
         self.dadda    = dadda
-        self.result   = result
+        self.result   = result if isinstance(result, Template) else None
 
         # length of any template represents it's bitwidth
-        if len(template) not in mp.SUPPORTED_BITWIDTHS:
+        if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
-        if ischar(template[0]):
-            self.pattern  = template
-            self.init_base_template(self.pattern, self.dadda)
-        elif ischar(template[0][0]):
-            self.template = template
+        if isinstance(source, Pattern):
+            self.pattern  = source
+            self.init_base_template(self.pattern, self.bits, dadda=self.dadda)
+        elif ischar(source[0][0]):
+            self.template = source
             self.pattern  = None
         else:
             raise ValueError(
                 "Error: Invalid template format.\
-                    Expected pattern: list[char] or template: list[list[str]]")
+                \tExpected pattern: list[char], or template: list[list[str]]")
 
-    def init_base_template(self, pattern: list[str], dadda=False) -> None:
+
+    def init_base_template(self, pattern: Pattern, bits: int, *, dadda=False) -> None:
         """
         Create template for zeroed matrix using pattern
         """
-
+        base = mp.Matrix(bits)
+        if dadda:
+            raise NotImplementedError("Applying maps not implemented")
+            # base = mp.apply_map(base)
+        self.template = self.build_from_pattern(pattern, base)
 
     # Templates must be built using thr current matrix
-    def build_from_pattern(self, pattern: list[str], resultant: Any
+    def build_from_pattern(self, pattern: Pattern, resultant: Any
     ) -> None:
         """
         Build a simple template for a given bitwidth based on matrix.
