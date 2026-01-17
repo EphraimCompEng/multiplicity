@@ -51,7 +51,7 @@ def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator
     Return Generator of logical AND matrices for a given set of operands a, b.
     Generated operands should be in the form tuple(a, b).
     """
-    # print(alg.bits)
+    # -- sanity checks [TODO] ---------------------------------------
     return (mp.build_matrix(a, b, alg.bits) for a, b in scope)
 
 
