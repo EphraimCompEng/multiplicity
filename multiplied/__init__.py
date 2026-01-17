@@ -41,7 +41,7 @@ from .core.map import (
 from .core.utils.char import (
     ischar,
     chargen,
-    chartff
+    chartff,
 )
 
 
