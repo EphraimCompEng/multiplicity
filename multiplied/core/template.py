@@ -148,8 +148,6 @@ class Template:
     """
 
     """
-    # import string
-    # cell = (ch for ch in string.ascii_lowercase)
 
     def __init__(self,
         source: Pattern | list[Any],
