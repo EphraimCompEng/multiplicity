@@ -24,16 +24,15 @@ class Algorithm(mp.Matrix):
     this matrix with partial products.
     """
 
-    """
-    pattern only implementation -- small steps:
+    # pattern only implementation -- small steps:
+    #
+    #   > detect pattern inside Template object
+    #   > Slice matrix(data) along pattern "runs"
+    #   > reduce slices
+    #   > unify slices
+    #   > apply row map
+    #   > update Algorithm object state
 
-        > detect pattern inside Template object
-        > Slice matrix(data) along pattern "runs"
-        > reduce slices
-        > unify slices
-        > apply row map
-        > update Algorithm object state
-    """
 
     def __init__(self, matrix: mp.Matrix) -> None:
         self.bits      = 0
@@ -65,7 +64,7 @@ class Algorithm(mp.Matrix):
         >>>     "map"      : mp.Map
         >>> }
         """
-        return NotImplementedError # Tempoarary
+        return NotImplementedError # Temporary
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg]
         elif not(isinstance(all(arg), list)):
@@ -77,8 +76,6 @@ class Algorithm(mp.Matrix):
             if template.bits != self.bits:
                 raise ValueError("All templates must have consistent bitwidth.")
             self.algorithm[len(self.algorithm)] = template
-
-
 
     def ___reduce(self):
         """
@@ -93,6 +90,7 @@ class Algorithm(mp.Matrix):
         # run = 3 := CSA; carry by placing bit left of source column
         # (bit will be placed one row below source row for visual sugar)
         #
+        #   [input--------] | [output-------]
         #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
         #   .. |0|0|1|1| .. | .. |1|1|1|0| ..
         #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
@@ -100,6 +98,7 @@ class Algorithm(mp.Matrix):
         #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
         #   .. |0|1|1|1| .. | .. |0|0|0|0| ..
         #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
+
 
         ...
 

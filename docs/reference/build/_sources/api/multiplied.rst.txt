@@ -1,0 +1,22 @@
+multiplied package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   multiplied.analysis
+   multiplied.core
+   multiplied.datasets
+   multiplied.io
+   multiplied.tests
+
+Module contents
+---------------
+
+.. automodule:: multiplied
+   :members:
+   :show-inheritance:
+   :undoc-members:
