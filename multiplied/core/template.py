@@ -9,21 +9,17 @@ import copy
 
 
 
-
-
-
-# Defining a new Template type for list[list[Any]] would be useful?
-
 def build_csa(
     char: str, zeroed_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create CSA template slice with zero initialised slice and chosen char.
-    Returns template "slices" for a csa reduction and the resulting slice.\n
-    [slice-] || [csa---] || [result]\n
-    ____0000 || ____AaAa || __AaAaAa\n
-    ___0000_ || ___aAaA_ || __aAaA__\n
-    __0000__ || __AaAa__ || ________\n
+    Returns template "slices" for a csa reduction and the resulting slice.
+
+    >>> [slice-]||[csa---]||[result]
+    >>> ____0000||____AaAa||__AaAaAa
+    >>> ___0000_||___aAaA_||__aAaA__
+    >>> __0000__||__AaAa__||________
     """
     if len(zeroed_slice) != 3:
         raise ValueError("Invalid template slice: must be 3 rows")
@@ -59,10 +55,10 @@ def build_adder(
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create Adder template slice with zero initialised slice and chosen char.
-    Returns template "slices" for addition and the resulting slice.\n
-    [slice ] || [adder-] || [result]\n
-    ___0000_ || ___aAaA_ || _aAaAaA_\n
-    __0000__ || __AaAa__ || ________\n
+    Returns template "slices" for addition and the resulting slice.
+    >>> [slice ] || [adder-] || [result]
+    >>> ___0000_ || ___aAaA_ || _aAaAaA_
+    >>> __0000__ || __AaAa__ || ________
     """
     if len(zeroed_slice) != 2:
         raise ValueError("Invalid template slice: must be 2 rows")
@@ -102,9 +98,9 @@ def build_noop(
 ) -> tuple[mp.Slice, mp.Slice]:
     """
     Create a No-op template slice with zero initialised slice and chosen char.
-    Returns template "slices" and resulting slice. Target row unaffected\n
-    [slice ] || [noop  ] || [result]\n
-    ___0000_ || ___aAaA_ || ___aAaA_\n
+    Returns template "slices" and resulting slice. Target row unaffected
+    >>> [slice ] || [noop  ] || [result]
+    >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
     if len(zeroed_slice) != 1:
         raise ValueError("Invalid template slice: must be 1 rows")
@@ -130,11 +126,13 @@ class Pattern:
         self.pattern = pattern
         self.bits    = len(pattern)
 
-    def get_runs(self) -> dict:
+
+
+    def get_runs(self) -> list[tuple[int, int, int]]:
         """
-        Returns dict containing length and positions of a given char in pattern
+        Returns list of tuples of length, position, and run of a given char in pattern
         """
-        metadata = {}
+        metadata = []
         i = 1
         k = 0
         while i < len(self.pattern):
@@ -143,7 +141,7 @@ class Pattern:
                 run += 1
                 i   += 1
             if run < 4:
-                metadata[k] = {'pos': (None, i-run), 'len': run}
+                metadata.append((None, i-run, run))
             else:
                 raise ValueError(f"Unsupported run length {run}")
             i += 1
@@ -156,7 +154,7 @@ class Pattern:
             pretty_ += " " + p + "\n"
         return f"{'['+ pretty_[1:-2]+']'}"
 
-    def _repr_(self):
+    def __repr__(self):
         return self.__str__()
 
     def __len__(self):
@@ -171,8 +169,7 @@ class Template:
     """
 
     def __init__(self,
-        source: Pattern | list[Any],
-        *,
+        source: Pattern | list[list[str]], *,
         map: Any    = None,
         dadda: bool = False,
         result: Any = None,
@@ -217,11 +214,11 @@ class Template:
         >>> self.bits = 4
         >>> build_template(self.pattern)
 
-        [matrix] || [pattern]\n
-        ____AaAa || ['a',\n
-        ___AaAa_ ||  'a',\n
-        __BbBb__ ||  'b',\n
-        _BbBb___ ||  'b']\n
+        >>> [matrix] || [pattern]
+        >>> ____AaAa || ['a',
+        >>> ___AaAa_ ||  'a',
+        >>> __BbBb__ ||  'b',
+        >>> _BbBb___ ||  'b']
         """
 
         # -- sanity check -----------------------------------------------
