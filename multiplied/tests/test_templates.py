@@ -69,10 +69,10 @@ def test_build_from_pattern() -> None:
 
 
 def main() -> None:
-    # test_temp_build_csa4()
-    # test_temp_build_csa8()
-    # test_temp_build_adder4()
-    # test_temp_build_adder8()
+    test_temp_build_csa4()
+    test_temp_build_csa8()
+    test_temp_build_adder4()
+    test_temp_build_adder8()
     test_build_from_pattern()
 
 if __name__ == "__main__":
