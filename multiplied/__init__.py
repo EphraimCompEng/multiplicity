@@ -27,7 +27,6 @@ from .core.algorithm import (
 
 from .core.truth import (
     truth_scope,
-    shallow_truth_table,
     truth_table,
 )
 
@@ -113,7 +112,7 @@ __all__ = [
     'build_csa',
     'build_adder',
     'truth_scope',
-    'shallow_truth_table',
+    # 'shallow_truth_table',
     'truth_table',
     'json_pretty_store',
     'Map',
