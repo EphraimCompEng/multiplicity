@@ -35,10 +35,9 @@ class Algorithm(mp.Matrix):
 
 
     def __init__(self, matrix: mp.Matrix) -> None:
-        self.bits      = 0
+        self.bits      = len(matrix)
         self.state     = 0
         self.matrix    = matrix
-        self.result    = {}
         self.algorithm = {0: {
             'template': None,
             'matrix'  : matrix,
@@ -104,6 +103,7 @@ class Algorithm(mp.Matrix):
         #   .. |0|1|1|1| .. | .. |0|0|0|0| ..
         #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
 
+        # --
 
         ...
 
@@ -141,4 +141,20 @@ class Algorithm(mp.Matrix):
         x = 0
         if len(matrix) - (x * rows) < rows:
             ...
+        ...
+
+    def auto_resolve_pattern(self, pattern: mp.Pattern, matrix: mp.Matrix, *,
+        populate=True,
+        recursive=False,
+    ) -> None | dict:
+        """
+        Automatically resolve pattern using matrix form the previous stage to
+        produce a new stage of the algoritm.
+
+        Options:
+            populate: Add stage to algorithm or return stage as dict
+            recursive: Recursively resolve until no partial products remail
+        """
+        
+        
         ...
