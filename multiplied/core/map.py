@@ -72,6 +72,8 @@ def resolve_rmap(matrix: mp.Matrix) -> Map:
         smap.append(f"{hex(255-offset+1)[2:].upper()}")
     return Map(smap)
 
+def build_empty_map()-> Map:
+    ...
 
 def build_dadda_map(bits) -> Map:
     """
