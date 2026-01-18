@@ -1,6 +1,6 @@
-#########################################
-# Algorithm Are Defined Using Templates #
-#########################################
+###########################################
+# Algorithm Defined By Templates and Maps #
+###########################################
 
 """
 Algorithm process:
@@ -19,9 +19,10 @@ from typing import Any
 
 class Algorithm(mp.Matrix):
     """
-    A given algorithm is created on top of a zero initialised Logical
-    AND matrix. The first operation in the algorithm must populate
-    this matrix with partial products.
+    An algorithm is created with an initial matrix and an optinal map.
+    Subsequent stages are defined by templates and maps. Built-in methods
+    can automatically generate stages or assist in the creation of custom
+    stages.
     """
 
     # pattern only implementation -- small steps:
@@ -155,6 +156,6 @@ class Algorithm(mp.Matrix):
             populate: Add stage to algorithm or return stage as dict
             recursive: Recursively resolve until no partial products remail
         """
-        
-        
+
+
         ...
