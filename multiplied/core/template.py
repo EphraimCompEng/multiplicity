@@ -16,10 +16,10 @@ def build_csa(
     Create CSA template slice with zero initialised slice and chosen char.
     Returns template "slices" for a csa reduction and the resulting slice.
 
-    >>> [slice-]||[csa---]||[result]
-    >>> ____0000||____AaAa||__AaAaAa
-    >>> ___0000_||___aAaA_||__aAaA__
-    >>> __0000__||__AaAa__||________
+    >>> [slice-] || [csa---] || [result]
+    >>> ____0000 || ____AaAa || __AaAaAa
+    >>> ___0000_ || ___aAaA_ || __aAaA__
+    >>> __0000__ || __AaAa__ || ________
     """
     if len(zeroed_slice) != 3:
         raise ValueError("Invalid template slice: must be 3 rows")
