@@ -55,11 +55,25 @@ def test_temp_build_adder8() -> None:
     mp.mprint(my_slice[0])
     mp.mprint(my_slice[1])
 
+def test_build_from_pattern() -> None:
+    mypattern = mp.Pattern([
+        'a',
+        'a',
+        'b',
+        'b',
+    ])
+    mytemplate = mp.Template(mypattern)
+    print(mypattern.get_runs())
+    print(mytemplate.template)
+    print(mytemplate.result)
+
+
 def main() -> None:
-    test_temp_build_csa4()
-    test_temp_build_csa8()
-    test_temp_build_adder4()
-    test_temp_build_adder8()
+    # test_temp_build_csa4()
+    # test_temp_build_csa8()
+    # test_temp_build_adder4()
+    # test_temp_build_adder8()
+    test_build_from_pattern()
 
 if __name__ == "__main__":
     main()

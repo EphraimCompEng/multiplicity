@@ -33,7 +33,7 @@ def build_csa(
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
     csa_slice = copy.copy(zeroed_slice)
-    
+
     for i in range(n):
         # For int in template slice, map possible CSA operands to adder_slice
         # Then map possible outputs to result
@@ -58,7 +58,7 @@ def build_adder(
     char: str, zeroed_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
-    Create CSA template slice with zero initialised slice and chosen char.
+    Create Adder template slice with zero initialised slice and chosen char.
     Returns template "slices" for addition and the resulting slice.\n
     [slice ] || [adder-] || [result]\n
     ___0000_ || ___aAaA_ || _aAaAaA_\n
@@ -97,6 +97,29 @@ def build_adder(
 
     return adder_slice, mp.Slice(result)
 
+def build_noop(
+    char: str, zeroed_slice: mp.Slice
+) -> tuple[mp.Slice, mp.Slice]:
+    """
+    Create a No-op template slice with zero initialised slice and chosen char.
+    Returns template "slices" and resulting slice. Target row unaffected\n
+    [slice ] || [noop  ] || [result]\n
+    ___0000_ || ___aAaA_ || ___aAaA_\n
+    """
+    if len(zeroed_slice) != 1:
+        raise ValueError("Invalid template slice: must be 1 rows")
+
+    n           = len(zeroed_slice[0])
+    tff         = mp.chartff(char) # Toggle flip flop
+    noop_slice  = copy.copy(zeroed_slice) # ensure no references
+    for i in range(n):
+        noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
+        char = next(tff)
+
+    # (noop_slice, noop_slice) == tuple both pointing to one object.
+    return noop_slice, copy.copy(noop_slice)
+
+    ...
 class Pattern:
     """
 
@@ -107,24 +130,54 @@ class Pattern:
         self.pattern = pattern
         self.bits    = len(pattern)
 
+    def get_runs(self) -> dict:
+        """
+        Returns dict containing length and positions of a given char in pattern
+        """
+        metadata = {}
+        i = 1
+        k = 0
+        while i < len(self.pattern):
+            run = 1
+            while i < len(self.pattern) and self.pattern[i-1] == self.pattern[i]:
+                run += 1
+                i   += 1
+            if run < 4:
+                metadata[k] = {'pos': (None, i-run), 'len': run}
+            else:
+                raise ValueError(f"Unsupported run length {run}")
+            i += 1
+            k += 1
+        return metadata
+
     def __str__(self):
-        pretty_str = ""
+        pretty_ = ""
         for p in self.pattern:
-            pretty_str += " " + p + "\n"
-        return f"{'['+ pretty_str[1:-2]+']'}"
+            pretty_ += " " + p + "\n"
+        return f"{'['+ pretty_[1:-2]+']'}"
+
+    def _repr_(self):
+        return self.__str__()
 
     def __len__(self):
         return self.bits
+
+    def __getitem__(self, index: int) -> str:
+        return self.pattern[index]
 
 class Template:
     """
 
     """
-    # import string
-    # cell = (ch for ch in string.ascii_lowercase)
 
-    def __init__(self, source: Pattern | list[Any], *,
-        result: Any = None, map: Any = None, dadda: bool = False) -> None: # Complex or pattern
+    def __init__(self,
+        source: Pattern | list[Any],
+        *,
+        map: Any    = None,
+        dadda: bool = False,
+        result: Any = None,
+    ) -> None: # Complex or pattern
+
         self.map      = map
         self.bits     = len(source)
         self.dadda    = dadda
@@ -135,7 +188,11 @@ class Template:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
         if isinstance(source, Pattern):
             self.pattern  = source
-            self.init_base_template(self.pattern, self.bits, dadda=self.dadda)
+            matrix = mp.Matrix(self.bits)
+            if dadda:
+                # TODO
+                raise NotImplementedError("Applying maps not implemented")
+            self.build_from_pattern(self.pattern, matrix)
         elif ischar(source[0][0]):
             self.template = source
             self.pattern  = None
@@ -145,15 +202,11 @@ class Template:
                 \tExpected pattern: list[char], or template: list[list[str]]")
 
 
-    def init_base_template(self, pattern: Pattern, bits: int, *, dadda=False) -> None:
+    def init_base_template(self, pattern: Pattern, *, dadda=False) -> None:
         """
         Create template for zeroed matrix using pattern
         """
-        matrix = mp.Matrix(bits)
-        if dadda:
-            raise NotImplementedError("Applying maps not implemented")
-            # matrix = mp.apply_map(matrix)
-        self.template = self.build_from_pattern(pattern, matrix)
+
 
     # Templates must be built using thr current matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
@@ -172,34 +225,41 @@ class Template:
         """
 
         # -- sanity check -----------------------------------------------
-        if not(isinstance(pattern, list)):
-            raise ValueError("Pattern must be type list")
+        if not(isinstance(pattern, Pattern)):
+            raise ValueError("Expected Pattern")
         if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(
                 f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
 
         # -- find run ---------------------------------------------------
-        template = {}
+        template_slices = {}
         i = 1
         while i < len(pattern):
             run = 1
-            while pattern[i-1] == pattern[i]:
+            while i < len(pattern) and pattern[i-1] == pattern[i]:
                 run += 1
                 i   += 1
             match run:
                 case 1: # Do nothing
-                    template[i-run] = None
+                    template_slices[i-run] = build_noop(pattern[i-run], matrix[i-run:i])
                 case 2: # Create adder
-                    ...
+                    template_slices[i-run] = build_adder(pattern[i-run], matrix[i-run:i])
                 case 3: # Create CSA row
-                    ...
+                    template_slices[i-run] = build_csa(pattern[i-run], matrix[i-run:i])
                 case _:
                     raise ValueError(f"Unsupported run length {run}")
+            i += 1
 
-        matrix = []
+        # -- build template and resultant ---------------------------
+        template = []
+        for i in template_slices.values():
+            template += i[0]
+        result = []
+        for i in template_slices.values():
+            result += i[1]
+        self.template, self.result = mp.Matrix(template), mp.Matrix(result)
 
-        return matrix
 
 
     def merge(self, templates: list[Any]) -> None:
@@ -236,6 +296,6 @@ Complex templates implement decoders and bit-mapping.
 
 Decoders reduce 4 or more bits at a time.
 
-Bit mapping allows for outlining where bits are placed in each stage,
+Bit mapping defines where bits are placed in each stage,
 enabling complex implementations and possible optimisations.
 """

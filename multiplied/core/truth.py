@@ -21,8 +21,8 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
     >>> range  = (min_out, max_out)
     Yields: (operand_a, operand_b)
     """
-    assert isinstance(all(domain_), int)
-    assert isinstance(all(range_), int)
+    assert all([isinstance(d, int) for d in domain_])
+    assert all([isinstance(r, int) for r in range_])
 
     min_in, max_in = domain_
     min_out, max_out = range_

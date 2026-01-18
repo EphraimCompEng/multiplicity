@@ -24,16 +24,15 @@ class Algorithm(mp.Matrix):
     this matrix with partial products.
     """
 
-    """
-    pattern only implementation -- small steps:
+    # pattern only implementation -- small steps:
+    #
+    #   > detect pattern inside Template object
+    #   > Slice matrix(data) along pattern "runs"
+    #   > reduce slices
+    #   > unify slices
+    #   > apply row map
+    #   > update Algorithm object state
 
-        > detect pattern inside Template object
-        > Slice matrix(data) along pattern "runs"
-        > reduce slices
-        > unify slices
-        > apply row map
-        > update Algorithm object state
-    """
 
     def __init__(self, matrix: mp.Matrix) -> None:
         self.bits      = 0
@@ -47,15 +46,6 @@ class Algorithm(mp.Matrix):
         }}
         self.len       = len(self.algorithm)
         self.stage     = self.algorithm[self.state]
-        """Structure of a given algorithm stage:
-        >>> self.algorithm[x] = {
-        >>>     "template" : mp.Template
-        >>>     "result"   : mp.Matrix
-        >>>     "map"      : mp.Map
-        >>> }
-
-        Use state as index for iterator method
-        """
 
     def __repr__(self) -> str:
         pretty = ""
@@ -64,18 +54,17 @@ class Algorithm(mp.Matrix):
             pretty += f"S{i}:\n" + str(t) + "\n"
         return pretty
 
-    # -- Refactor to new structure ------------ #
-    # >>> self.algorithm[x] = {                 #
-    # >>>     "template" : mp.Template          #
-    # >>>     "result"   : mp.Matrix            #
-    # >>>     "map"      : mp.Map               #
-    # >>> }                                     #
-    def populate(self, arg: Any) -> Any: # --- #
+    def populate(self, arg: Any) -> Any:
         """
-        Adds template(s) to an existing algorithm. All templates must be of
-        consistent bitwidth.
+        Populates stage of an algorithm.
+
+        >>> self.algorithm[x] = {
+        >>>     "template" : mp.Template
+        >>>     "matrix"   : mp.Matrix
+        >>>     "map"      : mp.Map
+        >>> }
         """
-        return NotImplementedError # Tempoarary
+        return NotImplementedError # Temporary
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg]
         elif not(isinstance(all(arg), list)):
@@ -88,20 +77,49 @@ class Algorithm(mp.Matrix):
                 raise ValueError("All templates must have consistent bitwidth.")
             self.algorithm[len(self.algorithm)] = template
 
+    def ___reduce(self):
+        """
+        use template or pattern to reduce a given matrix.
+        """
+
+        # -- pattern implementation ---------------------------------
+        #
+        # For a given 'run', the length of that run will determine
+        # the height for which to count 1s in a given column:
+        #
+        # run = 3 := CSA; carry by placing bit left of source column
+        # (bit will be placed one row below source row for visual sugar)
+        #
+        #   [input--------] | [output-------]
+        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
+        #   .. |0|0|1|1| .. | .. |1|1|1|0| ..
+        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
+        #   .. |1|1|1|0| .. | .. |0|1|1|?| ..
+        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
+        #   .. |0|1|1|1| .. | .. |0|0|0|0| ..
+        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
 
 
-    # def _reduce(self):
-    #     """
-    #     Helper function to step through a single stage of an algorithm
-    #     """
-    #     ...
-
-    def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
         ...
+
+    # def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
+    #     ...
 
     def step(self, matrix: mp.Matrix) -> None:
         """
         Take template[internal_state], apply to matrix, advance internal_state
+        """
+        ...
+
+    def exec(self,):
+        """
+        Run algorithm with a single set of intputs then reset internal state
+        """
+        ...
+
+    def reset(self,):
+        """
+        Reset internal state and submit new initial matrix
         """
         ...
 
@@ -118,14 +136,4 @@ class Algorithm(mp.Matrix):
         x = 0
         if len(matrix) - (x * rows) < rows:
             ...
-        ...
-
-
-
-
-    @classmethod
-    def exec(cls):
-        """
-        Run algorithm with a single set of intputs then reset internal state
-        """
         ...
