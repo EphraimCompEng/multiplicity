@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../../../../">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>multiplied.core.templates.adder &#8212; multiplied</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/breeze.css?v=93f23127" />
+    <title>multiplied.tests.test_utils &#8212; multiplied</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=93f23127" />
   <noscript>
     <style>
       .bz-js-only { display: none !important; }
     </style>
   </noscript>
   
-    <script defer src="../../../../_static/documentation_options.js?v=938c9ccc"></script>
-    <script defer src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
-    <script defer src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script defer src="../../../../_static/scripts/breeze.js?v=8ef74970"></script>
+    <script defer src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+    <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
   <script data-cfasync="false">
     const mode = localStorage.getItem("breeze-mode") || "auto";
     document.documentElement.dataset.mode = mode;
@@ -27,19 +27,19 @@
       document.documentElement.dataset.theme = mode;
     }
   </script>
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /><meta name="docsearch:language" content="en"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /><meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head><body>
   
   <div class="bz-skip-to-content">
     <a href="#bz-main-content">Skip to main content</a>
   </div><header class="bz-header-main">
-  <div class="bz-header-start"><a class="bz-header-brand" href="../../../../index.html"><span>multiplied</span>
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><span>multiplied</span>
 </a></div>
   <div class="bz-header-end"><div class="bz-search-button">
   <a
-    href="../../../../search.html#q"
+    href="../../../search.html#q"
     aria-label="Search the docs"
     data-tooltip="Search the docs"
   >
@@ -105,7 +105,7 @@
         d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
       />
     </svg>
-  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../../../intro.html">Introduction</a></li><li class="toctree-l1"><a class="reference internal" href="../../../../start.html">Get Started</a></li><li class="toctree-l1"><a class="reference internal" href="../../../../guide.html">User Guide</a></li><li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li><li class="toctree-l1"><a class="reference internal" href="../../../../reference.html">API Reference</a></li><li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li></ul><div class="bz-dropdown">
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li><li class="toctree-l1"><a class="reference internal" href="../../../start.html">Get Started</a></li><li class="toctree-l1"><a class="reference internal" href="../../../guide.html">User Guide</a></li><li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li><li class="toctree-l1"><a class="reference internal" href="../../../reference.html">API Reference</a></li><li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li></ul><div class="bz-dropdown">
     <button aria-haspopup="true" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g
@@ -129,7 +129,7 @@
     <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li class="bz-breadcrumbs-home">
-      <a href="../../../../index.html">
+      <a href="../../../index.html">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -143,9 +143,9 @@
         </svg>
       </a>
     </li><li class="bz-breadcrumbs-parent">
-      <a href="../../../index.html">Module code</a>
+      <a href="../../index.html">Module code</a>
     </li><li class="bz-breadcrumbs-current">
-      <span>multiplied.core.templates.adder</span>
+      <span>multiplied.tests.test_utils</span>
     </li>
   </ol>
 </nav>
@@ -169,46 +169,24 @@
     </svg>
   </label>
 </header><article class="bz-article-main" role="main">
-  <h1>Source code for multiplied.core.templates.adder</h1><div class="highlight"><pre>
-<span></span><span class="c1">####################################</span>
-<span class="c1"># Adders Reduces Two Layers To One #</span>
-<span class="c1">####################################</span>
+  <h1>Source code for multiplied.tests.test_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+<span class="c1"># -- testing --------------------------------------------------------</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_utils.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">testgen</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">chargen</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">testgen</span><span class="p">)</span>
+        <span class="n">testtff</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">chartff</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">testtff</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="build_4b_adder_slice">
-<a class="viewcode-back" href="../../../../api/multiplied.core.templates.html#multiplied.core.templates.adder.build_4b_adder_slice">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_4b_adder_slice</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="o">...</span></div>
-
-
-<div class="viewcode-block" id="build_8b_adder_slice">
-<a class="viewcode-back" href="../../../../api/multiplied.core.templates.html#multiplied.core.templates.adder.build_8b_adder_slice">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_8b_adder_slice</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="o">...</span></div>
-
-
-
-<div class="viewcode-block" id="build_16b_adder_slice">
-<a class="viewcode-back" href="../../../../api/multiplied.core.templates.html#multiplied.core.templates.adder.build_16b_adder_slice">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_16b_adder_slice</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="o">...</span></div>
-
-
-<span class="c1"># def build_32b_adder_slice():</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     ...</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </article><footer class="bz-article-footer">
   

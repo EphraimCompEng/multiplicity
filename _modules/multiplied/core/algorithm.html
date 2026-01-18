@@ -190,7 +190,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <div class="viewcode-block" id="Algorithm">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Algorithm</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A given algorithm is created on top of a zero initialised Logical</span>
@@ -198,16 +198,15 @@
 <span class="sd">    this matrix with partial products.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    pattern only implementation -- small steps:</span>
+    <span class="c1"># pattern only implementation -- small steps:</span>
+    <span class="c1">#</span>
+    <span class="c1">#   &gt; detect pattern inside Template object</span>
+    <span class="c1">#   &gt; Slice matrix(data) along pattern &quot;runs&quot;</span>
+    <span class="c1">#   &gt; reduce slices</span>
+    <span class="c1">#   &gt; unify slices</span>
+    <span class="c1">#   &gt; apply row map</span>
+    <span class="c1">#   &gt; update Algorithm object state</span>
 
-<span class="sd">        &gt; detect pattern inside Template object</span>
-<span class="sd">        &gt; Slice matrix(data) along pattern &quot;runs&quot;</span>
-<span class="sd">        &gt; reduce slices</span>
-<span class="sd">        &gt; unify slices</span>
-<span class="sd">        &gt; apply row map</span>
-<span class="sd">        &gt; update Algorithm object state</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bits</span>      <span class="o">=</span> <span class="mi">0</span>
@@ -221,15 +220,6 @@
         <span class="p">}}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">len</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stage</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Structure of a given algorithm stage:</span>
-<span class="sd">        &gt;&gt;&gt; self.algorithm[x] = {</span>
-<span class="sd">        &gt;&gt;&gt;     &quot;template&quot; : mp.Template</span>
-<span class="sd">        &gt;&gt;&gt;     &quot;result&quot;   : mp.Matrix</span>
-<span class="sd">        &gt;&gt;&gt;     &quot;map&quot;      : mp.Map</span>
-<span class="sd">        &gt;&gt;&gt; }</span>
-
-<span class="sd">        Use state as index for iterator method</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">pretty</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -238,20 +228,19 @@
             <span class="n">pretty</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;S</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">pretty</span>
 
-    <span class="c1"># -- Refactor to new structure ------------ #</span>
-    <span class="c1"># &gt;&gt;&gt; self.algorithm[x] = {                 #</span>
-    <span class="c1"># &gt;&gt;&gt;     &quot;template&quot; : mp.Template          #</span>
-    <span class="c1"># &gt;&gt;&gt;     &quot;result&quot;   : mp.Matrix            #</span>
-    <span class="c1"># &gt;&gt;&gt;     &quot;map&quot;      : mp.Map               #</span>
-    <span class="c1"># &gt;&gt;&gt; }                                     #</span>
 <div class="viewcode-block" id="Algorithm.populate">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm.populate">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span> <span class="c1"># --- #</span>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.populate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds template(s) to an existing algorithm. All templates must be of</span>
-<span class="sd">        consistent bitwidth.</span>
+<span class="sd">        Populates stage of an algorithm.</span>
+
+<span class="sd">        &gt;&gt;&gt; self.algorithm[x] = {</span>
+<span class="sd">        &gt;&gt;&gt;     &quot;template&quot; : mp.Template</span>
+<span class="sd">        &gt;&gt;&gt;     &quot;matrix&quot;   : mp.Matrix</span>
+<span class="sd">        &gt;&gt;&gt;     &quot;map&quot;      : mp.Map</span>
+<span class="sd">        &gt;&gt;&gt; }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span> <span class="c1"># Tempoarary</span>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span> <span class="c1"># Temporary</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">):</span> <span class="c1"># warp matrix in list to reuse code</span>
             <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="p">]</span>
         <span class="k">elif</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="nb">list</span><span class="p">)):</span>
@@ -265,22 +254,36 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)]</span> <span class="o">=</span> <span class="n">template</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">___reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        use template or pattern to reduce a given matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># -- pattern implementation ---------------------------------</span>
+        <span class="c1">#</span>
+        <span class="c1"># For a given &#39;run&#39;, the length of that run will determine</span>
+        <span class="c1"># the height for which to count 1s in a given column:</span>
+        <span class="c1">#</span>
+        <span class="c1"># run = 3 := CSA; carry by placing bit left of source column</span>
+        <span class="c1"># (bit will be placed one row below source row for visual sugar)</span>
+        <span class="c1">#</span>
+        <span class="c1">#   [input--------] | [output-------]</span>
+        <span class="c1">#   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..</span>
+        <span class="c1">#   .. |0|0|1|1| .. | .. |1|1|1|0| ..</span>
+        <span class="c1">#   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..</span>
+        <span class="c1">#   .. |1|1|1|0| .. | .. |0|1|1|?| ..</span>
+        <span class="c1">#   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..</span>
+        <span class="c1">#   .. |0|1|1|1| .. | .. |0|0|0|0| ..</span>
+        <span class="c1">#   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..</span>
 
 
-    <span class="c1"># def _reduce(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Helper function to step through a single stage of an algorithm</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="c1"># def truth(self, matrix: mp.Matrix, template: mp.Template) -&gt; None:</span>
     <span class="c1">#     ...</span>
 
-<div class="viewcode-block" id="Algorithm.truth">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm.truth">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">truth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="o">...</span></div>
-
-
 <div class="viewcode-block" id="Algorithm.step">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm.step">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.step">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Take template[internal_state], apply to matrix, advance internal_state</span>
@@ -288,9 +291,27 @@
         <span class="o">...</span></div>
 
 
+<div class="viewcode-block" id="Algorithm.exec">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.exec">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exec</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run algorithm with a single set of intputs then reset internal state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="Algorithm.reset">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.reset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset internal state and submit new initial matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+
     <span class="c1"># Used to automate splitting a matrix into Slice(n * row)</span>
 <div class="viewcode-block" id="Algorithm.split">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm.split">[docs]</a>
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.split">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -303,19 +324,6 @@
         <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">rows</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rows</span><span class="p">:</span>
             <span class="o">...</span>
-        <span class="o">...</span></div>
-
-
-
-
-
-<div class="viewcode-block" id="Algorithm.exec">
-<a class="viewcode-back" href="../../../api/multiplicity.core.html#multiplied.Algorithm.exec">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">exec</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Run algorithm with a single set of intputs then reset internal state</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 </div>
 
