@@ -47,12 +47,17 @@ class Algorithm(mp.Matrix):
         self.len       = len(self.algorithm)
         self.stage     = self.algorithm[self.state]
 
+    def __str__(self) -> str:
+        pretty_ = ""
+        for i, m in self.algorithm.items():
+            pretty_ += f"\n[S{i}]\n\n"
+            for j, k in m.items():
+                if k:
+                    pretty_ += f"{j}:\n{mp.pretty(k)}\n"
+        return pretty_
+
     def __repr__(self) -> str:
-        pretty = ""
-        print()
-        for i, t in self.algorithm.items():
-            pretty += f"S{i}:\n" + str(t) + "\n"
-        return pretty
+        return str(self)
 
     def populate(self, arg: Any) -> Any:
         """
