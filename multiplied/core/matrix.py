@@ -1,3 +1,7 @@
+###################################################
+# Classes to Represent Matrices and Matrix Slices #
+###################################################
+
 import multiplied as mp
 from typing import Any, Iterator
 
