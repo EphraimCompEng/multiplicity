@@ -17,7 +17,6 @@ Algorithm process:
 
 from typing import Any
 import multiplied as mp
-import copy
 
 class Algorithm(mp.Matrix):
     """
@@ -41,13 +40,9 @@ class Algorithm(mp.Matrix):
         self.bits      = len(matrix)
         self.state     = 0
         self.matrix    = matrix
-        self.algorithm = {0: {
-            'template': None,
-            'matrix'  : matrix,
-            'map'     : None,
-        }}
+        self.algorithm = {}
         self.len       = len(self.algorithm)
-        self.stage     = self.algorithm[self.state]
+        self.stage     = self.algorithm[self.state] if self.len > 0 else None
 
     def __str__(self) -> str:
         pretty_ = ""
@@ -91,36 +86,38 @@ class Algorithm(mp.Matrix):
 
 
 
-
-    def populate(self, arg: Any, *,stage: int = -1) -> Any:
+    def push(self, template: mp.Template, map: Any = None) -> None:
         """
-        Populates stage of an algorithm.
+        Populates stage of an algorithm based on template. Generates pseudo
+        result to represent output matrix
 
         >>> self.algorithm[x] = {
-        >>>     "template" : mp.Template | None,
-        >>>     "matrix"   : mp.Matrix | None,
-        >>>     "map"      : mp.Map | None,
-        >>> }
+        >>>     "template" : mp.Template,
+        >>>     "pseudo"   : mp.Matrix,
+        >>>     "map"      : mp.Map}
         """
-        if stage == -1:
-            stage = len(self.algorithm)
-        elif stage not in self.algorithm:
-            raise ValueError(f"Invalid stage {stage}.")
+
+        if not(isinstance(template, mp.Template)):
+            raise TypeError("Invalid argument type. Expected mp.Template")
+        if template.bits != self.bits:
+            raise ValueError("Template bitwidth must match Algorithm bitwidth.")
+        if map and not(isinstance(map, mp.Map)):
+            raise TypeError("Invalid argument type. Expected mp.Map")
+
+        # -- [TODO] ------------------------------------------------- #
+        if not map.rmap:                                              #
+            raise NotImplementedError("Complex map not implemnted")   #
+        # ----------------------------------------------------------- #
+
+        stage = {'template': template}
+        stage_index = len(self.algorithm)
+        if not map:
+            self.algorithm[stage_index] = stage
+            return
 
 
 
-        return NotImplementedError # Temporary
-        if isinstance(arg, mp.Template): # warp matrix in list to reuse code
-            arg = [arg]
-        elif not(isinstance(all(arg), list)):
-            raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
 
-        self.bits = arg[0].bits if (self.bits == 0) else self.bits # intialise
-
-        for template in arg:
-            if template.bits != self.bits:
-                raise ValueError("All templates must have consistent bitwidth.")
-            self.algorithm[len(self.algorithm)] = template
 
 
 

@@ -116,6 +116,7 @@ def build_noop(
     return noop_slice, copy.copy(noop_slice)
 
     ...
+
 class Pattern:
     """
 
@@ -198,6 +199,11 @@ class Template:
                 "Error: Invalid template format.\
                 \tExpected pattern: list[char], or template: list[list[str]]")
 
+    def __str__(self) -> str:
+        return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.template}, {self.result})"
 
     def init_base_template(self, pattern: Pattern, *, dadda=False) -> None:
         """
@@ -205,7 +211,7 @@ class Template:
         """
 
 
-    # Templates must be built using thr current matrix
+    # Templates must be built using matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
     ) -> None:
         """
@@ -259,6 +265,7 @@ class Template:
 
 
 
+    # To be used in complex template results
     def merge(self, templates: list[Any]) -> None:
         """
         Merge multiple template slices into a single template.

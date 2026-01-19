@@ -78,7 +78,7 @@ def test_resolve_rmap() -> None:
     mytemplate = mp.Template(mypattern)
     print(mytemplate)
     # print(mp.Matrix(mytemplate.result))
-    print(mytemplate.resolve_rmap())
+    print(mp.resolve_rmap(mp.Matrix(4, a=5, b=4)))
 
 
 def main() -> None:
