@@ -12,9 +12,8 @@ def pretty(listy_object: Any) -> str:
     >>> __0000__
     >>> _0000___
     """
-    assert isinstance(listy_object, (Matrix, Slice, Map, list)), (
-        "Unsupported type"
-    )
+    if not isinstance(listy_object, (Matrix, Slice, Map, list)):
+        raise TypeError(f"Unsupported type {type(listy_object)}")
 
     pretty_    = ""
     whitespace = " " if isinstance(listy_object, Map) else ""
