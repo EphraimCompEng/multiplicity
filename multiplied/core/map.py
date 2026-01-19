@@ -69,10 +69,7 @@ def resolve_rmap(matrix: mp.Matrix) -> Map:
             val = 0
         else:
             val = ((offset ^ 255) + 1) # 2s complement
-        print(val)
         rmap.append(f"{val:02X}"[-2:])
-
-        print(rmap)
     return Map(rmap)
 
 def empty_map(bits: int)-> Map:
