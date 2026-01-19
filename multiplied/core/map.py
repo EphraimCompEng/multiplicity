@@ -22,6 +22,20 @@ class Map:
             self.rmap = map
         self._index = 0
 
+    def __repr__(self) -> str:
+        return mp.pretty(self.map)
+
+    def __str__(self) -> str:
+        return str(self.__repr__())
+
+    def __iter__(self):
+        return iter(self.map)
+
+    def __next__(self):
+        if self._index >= self.bits:
+            raise StopIteration
+        self._index += 1
+        return self.map[self._index - 1]
 
     def build_map(self, rmap: list[str]) -> list[list[str]]:
         """
@@ -39,20 +53,7 @@ class Map:
             map.append([rmap[i] for _ in range(n*2)])
         return map
 
-    def __repr__(self) -> str:
-        return mp.pretty(self.map)
 
-    def __str__(self) -> str:
-        return str(self.__repr__())
-
-    def __iter__(self):
-        return iter(self.map)
-
-    def __next__(self):
-        if self._index >= self.bits:
-            raise StopIteration
-        self._index += 1
-        return self.map[self._index - 1]
 
 def resolve_rmap(matrix: mp.Matrix) -> Map:
     """
