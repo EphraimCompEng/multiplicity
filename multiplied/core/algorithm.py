@@ -157,5 +157,7 @@ class Algorithm(mp.Matrix):
             recursive: Recursively resolve until no partial products remail
         """
 
+        top_stage = self.algorithm[len(self.algorithm) - 1]
+        runs = pattern.get_runs()
 
         ...
