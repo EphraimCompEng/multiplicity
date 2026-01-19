@@ -16,7 +16,7 @@ def test_shallow_generator4() -> None:
     alg4    = mp.Algorithm(matrix4)
     for m, a, b in mp.shallow_truth_table(truth4, alg4):
         print(a, b)
-        print(mp.Matrix.pretty(m))
+        mp.mprint(m)
 
 
 def test_shallow_generator8() -> None:
