@@ -5,7 +5,7 @@ from multiplied import Matrix, Slice, Map
 
 def pretty(listy_object: Any) -> str:
     """
-    Format matrix as a string:
+    Format mp.Matrix, mp.Slice, mp.Map, or list as a string:
 
     >>> ____0000
     >>> ___0000_
@@ -27,5 +27,5 @@ def pretty(listy_object: Any) -> str:
 
 
 def mprint(matrix: Any):
-    """Print formatted Matrix object"""
+    """Wapper for print(mp.pretty)"""
     print(pretty(matrix))
