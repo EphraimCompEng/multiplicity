@@ -8,7 +8,7 @@ def test_dadda_map(bits) -> None:
     m = mp.build_dadda_map(bits)
     mp.mprint(m)
 
-def test_simple_map() -> None:
+def test_resolve_simple_map() -> None:
     sm = mp.Map(
         [
             '00',
@@ -23,15 +23,15 @@ def test_simple_map() -> None:
     m1map = mp.resolve_rmap(m1)
     mp.mprint(m1map)
 
-
+def test_empty_map(bits: int) -> None:
+    m = mp.empty_map(bits)
+    mp.mprint(m)
 
 
 def main():
-
     test_dadda_map(8)
-
-
-
+    test_resolve_simple_map()
+    test_empty_map(16)
 
 if __name__ == "__main__":
     main()

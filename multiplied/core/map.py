@@ -54,7 +54,6 @@ class Map:
         self._index += 1
         return self.map[self._index - 1]
 
-# May remove reversed option
 def resolve_rmap(matrix: mp.Matrix) -> Map:
     """
     Find empty rows, create simple map to efficiently pack rows.
@@ -72,10 +71,10 @@ def resolve_rmap(matrix: mp.Matrix) -> Map:
         smap.append(f"{hex(255-offset+1)[2:].upper()}")
     return Map(smap)
 
-def build_empty_map()-> Map:
-    ...
+def empty_map(bits: int)-> Map:
+    return Map(["00" for i in range(bits)])
 
-def build_dadda_map(bits) -> Map:
+def build_dadda_map(bits: int) -> Map:
     """
     Return map which represents starting point of Dadda tree algorithm.
     """
