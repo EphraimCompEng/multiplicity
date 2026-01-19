@@ -46,16 +46,15 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
             yield a, b # BUG -- b needs stricter limits             #
             # ----------------------------------------------------- #
 
-# -- redundant since using mp.Algorithm with just AND matrix has the same effect--------#
-#                                                                                       #
-# def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator:     #
-#     """                                                                               #
-#     Return Generator of logical AND matrices for a given set of operands a, b.        #
-#     Generated operands should be in the form tuple(a, b).                             #
-#     """                                                                               #
-#     # -- sanity checks [TODO] ---------------------------------------                 #
-#     return (mp.build_matrix(a, b, alg.bits) for a, b in scope)                        #
+# -- redundant? mp.Algorithm with just AND matrix has the same effect-------------------#                                                                                     #
+def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator:       #
 # --------------------------------------------------------------------------------------#
+    """
+    Return Generator of logical AND matrices for a given set of operands a, b.
+    Generated operands should be in the form tuple(a, b).
+    """
+    # -- sanity checks [TODO] ---------------------------------------
+    return (mp.build_matrix(a, b, alg.bits) for a, b in scope)
 
 def truth_table(scope: Generator, alg: mp.Algorithm) -> Generator:
     """
