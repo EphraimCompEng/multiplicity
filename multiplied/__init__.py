@@ -34,6 +34,7 @@ from .core.map import (
     Map,
     build_dadda_map,
     resolve_rmap,
+    empty_map,
 )
 
 # -- utils --------------------------------------
@@ -108,6 +109,7 @@ __all__ = [
     'Algorithm',
     'build_dadda_map',
     'resolve_rmap',
+    'empty_map',
     # 'build_simple_template',
     'build_csa',
     'build_adder',
