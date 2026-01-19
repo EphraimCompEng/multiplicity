@@ -27,11 +27,25 @@ def test_empty_map(bits: int) -> None:
     m = mp.empty_map(bits)
     mp.mprint(m)
 
+def test_apply_rmap() -> None:
+    m = mp.build_matrix(5, 4, 4)
+    mp.mprint(m)
+    sm = mp.Map(
+        [
+            '00',
+            'FF',
+            'FF',
+            'FF',
+        ]
+    )
+    m.apply_map(sm)
+    mp.mprint(m)
 
 def main():
     test_dadda_map(8)
     test_resolve_simple_map()
-    test_empty_map(16)
+    test_empty_map(8)
+    test_apply_rmap()
 
 if __name__ == "__main__":
     main()

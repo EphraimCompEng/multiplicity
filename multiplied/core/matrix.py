@@ -97,7 +97,6 @@ class Matrix:
     def __len__(self) -> int:
         return self.bits
 
-
     def __eq__(self, matrix: Any, /) -> bool:
         if matrix.bits != self.bits:
             return False
@@ -120,6 +119,24 @@ class Matrix:
             raise StopIteration
         self._index += 1
         return self.matrix[self._index - 1]
+
+
+    def apply_map(self, map: mp.Map) -> None:
+        if not isinstance(map, mp.Map):
+            raise TypeError(f"Expected Map, got {type(map)}")
+        if map.bits != self.bits:
+            raise ValueError(f"Map bitwidth {map.bits} does not match matrix bitwidth {self.bits}")
+        if rmap := map.rmap:
+            temp_matrix = Matrix(self.bits).matrix
+            for i in range(self.bits):
+                if (val := int(rmap[i], 16)) and 128: # -ve 2-bit hex value
+                    val = (val ^ 255 + 1) - 512 # 2s complement
+                temp_matrix[i+val] = self.matrix[i]
+                temp_matrix[i]     = "_"*self.bits*2
+            self.matrix = temp_matrix
+        else:
+            raise NotImplementedError("Complex mapping not implemented")
+
 
 
 
