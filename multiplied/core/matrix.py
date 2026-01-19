@@ -50,7 +50,7 @@ class Matrix:
     """
 
     """
-    def __init__(self, source: Any) -> None:
+    def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
 
         if isinstance(source, int) and (source not in mp.SUPPORTED_BITWIDTHS):
             raise ValueError(
@@ -61,7 +61,12 @@ class Matrix:
                 f"Unsupported bitwidth {len(source)}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
 
-        if isinstance(source, int):
+        if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
+            if not isinstance(source, int):
+                raise ValueError("Invalid input, ")
+            self.bits = source
+            self.matrix = build_matrix(a, b, source).matrix
+        elif isinstance(source, int):
             self.bits = source
             self.__empty_matrix(source)
         elif all([isinstance(row, (list, Slice)) for row in source]):
@@ -101,11 +106,6 @@ class Matrix:
                 return False
         return True
 
-    # def __getslice__(self, start: int=0, stop: int=0) -> Slice:
-    #     slice = self.matrix[start:stop]
-    #     print(slice)
-    #     return mp.Slice(slice)
-
     def __getitem__(self, index: slice) -> Slice:
         slice = self.matrix[index]
         if len(slice) == 1:
@@ -128,6 +128,10 @@ def build_matrix(operand_a: int, operand_b: int, bits: int) -> Matrix:
     """
     Build Logical AND matrix using source operands.
     """
+    if bits not in mp.SUPPORTED_BITWIDTHS:
+        raise ValueError(
+            f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
+        )
     if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
         raise ValueError("Operand bit width exceeds matrix bit width")
 
