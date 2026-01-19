@@ -29,6 +29,13 @@ class Slice:
         slice = [self.slice] if len(self.slice[index]) == 1 else self.slice
         return slice[index]
 
+    def __eq__(self, slice: Any, /) -> bool:
+        if slice.bits != self.bits:
+            return False
+        for i in range(self.bits):
+            if slice.slice[i] != self.slice[i]:
+                return False
+        return True
 
     def _repr_(self):
         return self.__str__()
@@ -71,7 +78,7 @@ class Matrix:
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
                 raise ValueError("Invalid input. Expected integer.")
-            self.matrix = build_matrix(a, b, source).matrix
+            self.matrix = build_matrix(a, b, bits=source).matrix
 
         elif isinstance(source, int):
             self.bits = source
@@ -88,7 +95,7 @@ class Matrix:
 
     def __empty_matrix(self, bits: int) -> None:
         """
-        Build a wallace tree style logic AND matrix for a bitwidth of self.bits.
+        Build a wallace tree for a bitwidth of self.bits.
         """
         row = [0]*bits
         matrix = []
@@ -97,10 +104,10 @@ class Matrix:
         self.matrix = matrix
 
     def __repr__(self) -> str:
-        return mp.pretty(self.matrix)
+        return self.__repr__()
 
     def __str__(self) -> str:
-        return str(self.__repr__())
+        return mp.pretty(self.matrix)
 
     def __len__(self) -> int:
         return self.bits
@@ -137,7 +144,7 @@ class Matrix:
         if rmap := map.rmap:
             temp_matrix = Matrix(self.bits).matrix
             for i in range(self.bits):
-                if (val := int(rmap[i], 16)) & 128: # -ve 2-bit hex value
+                if ((val := int(rmap[i], 16)) & 128) and rmap[i] != '00': # -ve 2-bit hex value
                     val = (val ^ 255 + 1) - 512 # 2s complement
                 temp_matrix[i]     = "_"*self.bits*2
                 temp_matrix[i+val] = self.matrix[i]
@@ -149,9 +156,9 @@ class Matrix:
 
 
 
-def build_matrix(operand_a: int, operand_b: int, bits: int) -> Matrix:
+def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
-    Build Logical AND matrix using source operands.
+    Build Logical AND matrix using source operands. Default bits=8
     """
     if bits not in mp.SUPPORTED_BITWIDTHS:
         raise ValueError(

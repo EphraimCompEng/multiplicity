@@ -62,13 +62,17 @@ def resolve_rmap(matrix: mp.Matrix) -> Map:
     Defaults to bottom unless reversed=True.
     """
     offset = 0
-    rmap = ['00']
-    for i in range(1, len(matrix)): # skip row 0
-        if all([(b == '_' or b == '0') for b in matrix[i]]):
+    rmap = []
+    for i in range(len(matrix)): # skip row 0
+        if all(['1' != bit for bit in matrix.matrix[i]]):
             offset += 1
-            rmap.append("00")
+            val = 0
         else:
-            rmap.append(f"{hex(255-offset+1)[2:].upper()}")
+            val = ((offset ^ 255) + 1) # 2s complement
+        print(val)
+        rmap.append(f"{val:02X}"[-2:])
+
+        print(rmap)
     return Map(rmap)
 
 def empty_map(bits: int)-> Map:

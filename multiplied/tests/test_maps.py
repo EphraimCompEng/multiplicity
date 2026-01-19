@@ -19,7 +19,7 @@ def test_resolve_simple_map() -> None:
     )
     print(sm.rmap)
     mp.mprint(sm)
-    m1 = mp.build_matrix(5, 5, 4)
+    m1 = mp.build_matrix(5, 5, bits=4)
     mp.mprint(m1)
     m1map = mp.resolve_rmap(m1)
     print(m1map.rmap)
@@ -30,7 +30,7 @@ def test_empty_map(bits: int) -> None:
     mp.mprint(m)
 
 def test_apply_rmap() -> None:
-    m = mp.build_matrix(5, 5, 4)
+    m = mp.build_matrix(3, 10, bits=4)
     mp.mprint(m)
     rm = mp.resolve_rmap(m)
     print(rm.rmap)
@@ -38,9 +38,9 @@ def test_apply_rmap() -> None:
     mp.mprint(m)
 
 def main():
-    # test_dadda_map(8)
-    # test_resolve_simple_map()
-    # test_empty_map(8)
+    test_dadda_map(8)
+    test_resolve_simple_map()
+    test_empty_map(4)
     test_apply_rmap()
 
 if __name__ == "__main__":
