@@ -59,7 +59,7 @@ class Algorithm(mp.Matrix):
     def __repr__(self) -> str:
         return str(self)
 
-    def populate(self, arg: Any) -> Any:
+    def populate(self, arg: Any, *,stage: int = -1) -> Any:
         """
         Populates stage of an algorithm.
 
@@ -69,6 +69,13 @@ class Algorithm(mp.Matrix):
         >>>     "map"      : mp.Map
         >>> }
         """
+        if stage == -1:
+            stage = len(self.algorithm)
+        elif stage not in self.algorithm:
+            raise ValueError(f"Invalid stage {stage}.")
+
+
+
         return NotImplementedError # Temporary
         if isinstance(arg, mp.Template): # warp matrix in list to reuse code
             arg = [arg]
@@ -157,6 +164,16 @@ class Algorithm(mp.Matrix):
             recursive: Recursively resolve until no partial products remail
         """
 
+        # Recursively resolving patterns require applying a stage's map to
+        # its template:
+        #
+        # > prior_map(prior_template) -> current pseudo_matrix
+        # > pseudo_matrix -> create new_template
+        # > resolve_map(new_template.resultant) -> new_map
+        # > new stage = {map: new_map, matrix: None, template: new_template}
+        #
+        #
+        #
         top_stage = self.algorithm[len(self.algorithm) - 1]
         runs = pattern.get_runs()
 
