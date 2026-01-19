@@ -2,6 +2,7 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
+
 """
 Algorithm process:
 0: Generate logical AND matrix
@@ -14,8 +15,9 @@ Algorithm process:
 
 """
 
-import multiplied as mp
 from typing import Any
+import multiplied as mp
+import copy
 
 class Algorithm(mp.Matrix):
     """
@@ -59,37 +61,9 @@ class Algorithm(mp.Matrix):
     def __repr__(self) -> str:
         return str(self)
 
-    def populate(self, arg: Any, *,stage: int = -1) -> Any:
-        """
-        Populates stage of an algorithm.
-
-        >>> self.algorithm[x] = {
-        >>>     "template" : mp.Template
-        >>>     "matrix"   : mp.Matrix
-        >>>     "map"      : mp.Map
-        >>> }
-        """
-        if stage == -1:
-            stage = len(self.algorithm)
-        elif stage not in self.algorithm:
-            raise ValueError(f"Invalid stage {stage}.")
-
-
-
-        return NotImplementedError # Temporary
-        if isinstance(arg, mp.Template): # warp matrix in list to reuse code
-            arg = [arg]
-        elif not(isinstance(all(arg), list)):
-            raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
-
-        self.bits = arg[0].bits if (self.bits == 0) else self.bits # intialise
-
-        for template in arg:
-            if template.bits != self.bits:
-                raise ValueError("All templates must have consistent bitwidth.")
-            self.algorithm[len(self.algorithm)] = template
-
-    def ___reduce(self):
+    # Mangled as execution order is sensitive and __reduce should only
+    # be called by the algorithm itself via: self.step(), or self.exec()
+    def __reduce(self):
         """
         use template or pattern to reduce a given matrix.
         """
@@ -115,6 +89,41 @@ class Algorithm(mp.Matrix):
 
         ...
 
+
+
+
+    def populate(self, arg: Any, *,stage: int = -1) -> Any:
+        """
+        Populates stage of an algorithm.
+
+        >>> self.algorithm[x] = {
+        >>>     "template" : mp.Template | None,
+        >>>     "matrix"   : mp.Matrix | None,
+        >>>     "map"      : mp.Map | None,
+        >>> }
+        """
+        if stage == -1:
+            stage = len(self.algorithm)
+        elif stage not in self.algorithm:
+            raise ValueError(f"Invalid stage {stage}.")
+
+
+
+        return NotImplementedError # Temporary
+        if isinstance(arg, mp.Template): # warp matrix in list to reuse code
+            arg = [arg]
+        elif not(isinstance(all(arg), list)):
+            raise TypeError("Invalid argument type. Expected list[Matrix] or Matrix.")
+
+        self.bits = arg[0].bits if (self.bits == 0) else self.bits # intialise
+
+        for template in arg:
+            if template.bits != self.bits:
+                raise ValueError("All templates must have consistent bitwidth.")
+            self.algorithm[len(self.algorithm)] = template
+
+
+
     # def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
     #     ...
 
@@ -138,12 +147,12 @@ class Algorithm(mp.Matrix):
 
     # Used to automate splitting a matrix into Slice(n * row)
     @classmethod
-    def split(cls, matrix: mp.Matrix, rows: int):
+    def split(cls, matrix: mp.Matrix, rows: int) -> mp.Slice:
         """
         Returns list of slices via progressive allocation. Used to automate
-        slicing a matrix into (Slice(n * row) * k), then splitting remainder
+        slicing a matrix into (Slice(n * row) * k), then splitting remainder.
 
-        Append n contiguous slices of matrix, each containing x rows.
+        Append n contiguous slices of matrix to list, each containing x rows.
         If not enough rows, progress to rows-1 -> row-2 -> ...
         """
         x = 0
@@ -172,9 +181,20 @@ class Algorithm(mp.Matrix):
         # > resolve_map(new_template.resultant) -> new_map
         # > new stage = {map: new_map, matrix: None, template: new_template}
         #
-        #
-        #
-        top_stage = self.algorithm[len(self.algorithm) - 1]
+
+        # -- apply prior map ----------------------------------------
+
+        peek_stage = self.algorithm[len(self.algorithm) - 1]
+        prior_map  = peek_stage['map']
+        if prior_map:
+            prior_template = peek_stage['template']
+            prior_result = mp.Matrix(prior_template.result)
+            ...
+
+        # -- create pseudo_matrix -----------------------------------
+
+        # -- create new_template ------------------------------------
         runs = pattern.get_runs()
 
+        # -- resolve_map --------------------------------------------
         ...
