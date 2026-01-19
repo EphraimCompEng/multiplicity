@@ -16,7 +16,8 @@ class Map:
             raise ValueError(f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
         self.bits = bits
         if isinstance(map[0], list):
-            self.map = map
+            self.map  = map
+            self.rmap = None
         elif all([isinstance(x, str) for x in map]):
             self.map  = self.build_map(map)
             self.rmap = map
