@@ -63,7 +63,7 @@ class Matrix:
 
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
-                raise ValueError("Invalid input, ")
+                raise ValueError("Invalid input. Expected type int")
             self.bits = source
             self.matrix = build_matrix(a, b, source).matrix
         elif isinstance(source, int):
