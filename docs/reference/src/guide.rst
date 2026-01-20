@@ -1,4 +1,5 @@
 .. _guide:
+
 ==========
 User Guide
 ==========
@@ -32,6 +33,7 @@ Recommended resources before starting:
 
 
 .. _setup:
+
 Setup
 -----
 
@@ -82,13 +84,16 @@ Next, create an algorithm object.
 The Algorithm object will hold the templates that define a given algorithm. It also holds an internal state to track which template it should use next.
 
 .. _reduce:
+
 Reduce
 ------
 
 Now let's make some templates. This involves figuring out where you want to place:
 
 - Carry Save Adders -- CSA (Half Adders, HA, are automtically placed when using simple templates) [3 to 2]
+
 - Adders -- [2 to 1]
+
 and in the future:
 
 - Greedy Adders -- Adder which makes use of carry in (cin) [2 to 1]
@@ -130,11 +135,13 @@ For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach o
     b       c       d       x
 
 .. note::
+
     Each arithmetic unit will output to the top of its "run". The next section covers how to "map" these outputs.
 
 
 
 .. _map:
+
 Map
 ---
 Each step of an algorithm needs a pattern or a template, but it also needs to regoup their partial products before using the next template. This is where maps come in.
@@ -191,10 +198,12 @@ This means as long as outputs are mapped correctly to inputs, the placements of 
 
 
 .. _define_algorithm:
+
 Define Algorithm
 ----------------
 
 
 .. _use_algorithm:
+
 Use Algorithm
 -------------

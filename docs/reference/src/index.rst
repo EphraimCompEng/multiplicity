@@ -1,6 +1,7 @@
 .. _landing:
+
 Multiplied Documentation
----------------------
+------------------------
 
 |stable|
 
@@ -24,4 +25,4 @@ This project is in early development. If you would like to contribute, head over
 
 .. _roadmap: https://github.com/EphraimCompEng/multiplied/blob/master/ROADMAP.md
 
-Check out the `roadmap <roadmap>`_
+Check out the roadmap_
