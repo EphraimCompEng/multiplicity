@@ -18,7 +18,7 @@ Algorithm process:
 from typing import Any
 import multiplied as mp
 
-class Algorithm(mp.Matrix):
+class Algorithm():
     """
     An algorithm is created with an initial matrix and an optinal map.
     Subsequent stages are defined by templates and maps. Built-in methods
@@ -43,18 +43,35 @@ class Algorithm(mp.Matrix):
         self.algorithm = {}
         self.len       = len(self.algorithm)
         self.stage     = self.algorithm[self.state] if self.len > 0 else None
+        self._index    = 0
 
+    # -- [ TODO: add dictionary formatting to mp.pretty() ] ---------
     def __str__(self) -> str:
-        pretty_ = ""
-        for i, m in self.algorithm.items():
-            pretty_ += f"\n[S{i}]\n\n"
-            for j, k in m.items():
-                if k:
-                    pretty_ += f"{j}:\n{mp.pretty(k)}\n"
-        return pretty_
+        # pretty_ = ""
+        # for i, m in self.algorithm.items():
+        #     pretty_ += f"\n[S{i}]\n\n"
+        #     for j, k in m.items():
+        #         if k:
+        #             pretty_ += f"{j}:\n{mp.pretty(k)}\n"
+        # return pretty_
+        return mp.pretty(self.algorithm)
 
     def __repr__(self) -> str:
-        return str(self)
+        return str(self.__str__())
+
+
+    def __getitem__(self, index) -> dict:
+        return self.algorithm[index]
+
+    def __iter__(self):
+        return iter(self.algorithm)
+
+    def __next__(self):
+        if self._index >= self.bits:
+            raise StopIteration
+        self._index += 1
+        return self.algorithm[self._index - 1]
+
 
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
@@ -86,7 +103,8 @@ class Algorithm(mp.Matrix):
 
 
 
-    def push(self, template: mp.Template, map: Any = None) -> None:
+    def push(self, template: mp.Template | mp.Pattern, map: Any = None
+    ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
         result to represent output matrix
@@ -97,23 +115,35 @@ class Algorithm(mp.Matrix):
         >>>     "map"      : mp.Map}
         """
 
-        if not(isinstance(template, mp.Template)):
+        if not(isinstance(template, (mp.Template, mp.Pattern))):
             raise TypeError("Invalid argument type. Expected mp.Template")
+        if isinstance(template, mp.Pattern):
+            template = mp.Template(template)
         if template.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
-        if map and not(isinstance(map, mp.Map)):
+        if map and not(isinstance(map, (mp.Map))):
             raise TypeError("Invalid argument type. Expected mp.Map")
 
         # -- [TODO] ------------------------------------------------- #
-        if not map.rmap:                                              #
-            raise NotImplementedError("Complex map not implemnted")   #
+        if map and not map.rmap:                                              #
+            raise NotImplementedError("Complex map not implemented")   #
         # ----------------------------------------------------------- #
 
-        stage = {'template': template}
         stage_index = len(self.algorithm)
-        if not map:
-            self.algorithm[stage_index] = stage
-            return
+        result = mp.Matrix(template.result)
+        if not map and result:
+            # auto resolve map
+            map = mp.resolve_rmap(result)
+            result.apply_map(map)
+        else:
+            result.apply_map(map)
+        stage = {
+            'template': template,
+            'pseudo': result,
+            'map': map,
+        }
+        self.algorithm[stage_index] = stage
+
 
 
 
@@ -186,6 +216,7 @@ class Algorithm(mp.Matrix):
         if prior_map:
             prior_template = peek_stage['template']
             prior_result = mp.Matrix(prior_template.result)
+
             ...
 
         # -- create pseudo_matrix -----------------------------------

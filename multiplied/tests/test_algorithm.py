@@ -23,6 +23,7 @@ def test_auto_resolve_single() -> None:
         'b',
     ])
     alg = mp.Algorithm(m)
+    alg.push(p)
     print(alg)
     alg.auto_resolve_pattern(p, m)
 
@@ -34,8 +35,7 @@ def test_auto_resolve_recursive_partial() -> None:
 
 
 def main():
-    # test_auto_resolve_single()
-    ...
+    test_auto_resolve_single()
 
 if __name__ == "__main__":
     main()
