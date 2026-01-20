@@ -96,7 +96,7 @@ class Algorithm():
 
 
 
-    def push(self, template: mp.Template | mp.Pattern, map: Any = None
+    def push(self, template: mp.Template | mp.Pattern, map_: Any = None
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -114,28 +114,28 @@ class Algorithm():
             template = mp.Template(template)
         if template.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
-        if map and not(isinstance(map, (mp.Map))):
+        if map_ and not(isinstance(map_, (mp.Map))):
             raise TypeError("Invalid argument type. Expected mp.Map")
 
         # -- [TODO] ------------------------------------------------- #
-        if map and not map.rmap:                                      #
+        if map_ and not map_.rmap:                                    #
             raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
 
         stage_index = len(self.algorithm)
         result = mp.Matrix(template.result)
 
-        if not map and result:
-            # auto resolve map
-            map = result.resolve_rmap()
-            result.apply_map(map)
+        if not map_ and result:
+            # auto resolve map_
+            map_ = result.resolve_rmap()
+            result.apply_map(map_)
         else:
-            result.apply_map(map)
+            result.apply_map(map_)
 
         stage = {
             'template': template,
             'pseudo': result,
-            'map': map,
+            'map': map_,
         }
         self.algorithm[stage_index] = stage
 

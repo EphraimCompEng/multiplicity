@@ -2,10 +2,10 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
-from typing import Any
 from .utils.char import ischar
+from copy import copy,deepcopy
+from typing import Any
 import multiplied as mp
-import copy
 
 
 
@@ -15,7 +15,6 @@ def build_csa(
     """
     Create CSA template slice with zero initialised slice and chosen char.
     Returns template "slices" for a csa reduction and the resulting slice.
-
     >>> [slice-] || [csa---] || [result]
     >>> ____0000 || ____AaAa || __AaAaAa
     >>> ___0000_ || ___aAaA_ || __aAaA__
@@ -28,7 +27,7 @@ def build_csa(
     n         = len(zeroed_slice[0])
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
-    csa_slice = copy.copy(zeroed_slice)
+    csa_slice = copy(zeroed_slice)
 
     for i in range(n):
         # For int in template slice, map possible CSA operands to adder_slice
@@ -67,7 +66,7 @@ def build_adder(
     n           = len(zeroed_slice[0])
     tff         = mp.chartff(char) # Toggle flip flop
     result      = [['_']*n, ['_']*n]
-    adder_slice = copy.copy(zeroed_slice) # ensure no references
+    adder_slice = copy(zeroed_slice) # ensure no references
 
     for i in range(n):
         # For int, [0, 1], in matrix slice, map possible ADD operands to
@@ -106,12 +105,12 @@ def build_noop(char: str, zeroed_slice: mp.Slice
 
     n          = len(zeroed_slice[0])
     tff        = mp.chartff(char) # Toggle flip flop
-    noop_slice = copy.copy(zeroed_slice) # ensure no references
+    noop_slice = copy(zeroed_slice) # ensure no references
     for i in range(n):
         noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
         char = next(tff)
 
-    return noop_slice, copy.copy(noop_slice) # avoids pointing to same object
+    return noop_slice, copy(noop_slice) # avoids pointing to same object
 
 class Pattern:
     """
@@ -188,7 +187,7 @@ class Template:
                 raise NotImplementedError("Applying maps not implemented")
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, matrix)
+            self.build_from_pattern(self.pattern, deepcopy(matrix))
         elif ischar(source[0][0]):
             self.template = source
             self.pattern  = None
@@ -218,13 +217,13 @@ class Template:
         """
         Build a simple template and it's result for a given bitwidth based
         on matrix. Defaults to empty matrix if matrix=None.
-
         >>> [matrix] || [pattern] || [templ.] [result]
         >>> ____0000 || [  'a',   || ____AaAa __aAaAaA
         >>> ___0000_ ||    'a',   || ___AaAa_ ________
         >>> __0000__ ||    'b',   || __BbBb__ bBbBbB__
         >>> _0000___ ||    'b'  ] || _BbBb___ ________
         """
+
         # -- sanity check -----------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
