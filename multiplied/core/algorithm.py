@@ -127,7 +127,7 @@ class Algorithm():
 
         if not map and result:
             # auto resolve map
-            map = mp.resolve_rmap(result)
+            map = result.resolve_rmap()
             result.apply_map(map)
         else:
             result.apply_map(map)
@@ -138,11 +138,6 @@ class Algorithm():
             'map': map,
         }
         self.algorithm[stage_index] = stage
-
-
-
-
-
 
 
 

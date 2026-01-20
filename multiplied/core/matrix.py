@@ -130,6 +130,27 @@ class Matrix:
         self._index += 1
         return self.matrix[self._index - 1]
 
+    # TODO: Defaults to bottom unless reversed=True.
+    def resolve_rmap(self, *, ignore_zeros: bool=True
+    ) -> mp.Map:
+        """
+        Find empty rows, create simple map to efficiently pack rows.
+
+        options:
+            ignore_zeros: If True, ignore rows with only zeros.
+        """
+
+        option = '0' if ignore_zeros else '_'
+        offset = 0
+        rmap   = []
+        for i in range(self.bits):
+            if all([bit == '_' and bit != option for bit in self.matrix[i]]):
+                offset += 1
+                val = 0
+            else:
+                val = ((offset ^ 255) + 1) # 2s complement
+            rmap.append(f"{val:02X}"[-2:])
+        return mp.Map(rmap)
 
     def apply_map(self, map_: mp.Map) -> None:
         if not isinstance(map_, mp.Map):
