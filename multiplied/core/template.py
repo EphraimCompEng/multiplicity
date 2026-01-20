@@ -283,9 +283,31 @@ class Template:
 
 
 
+def resolve_pattern(matrix: mp.Matrix) -> mp.Pattern:
+    # -- resolve pattern via split() ----------------------------
+    from multiplied.core.utils.char import chargen
+    char  = chargen()
+    if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
+        return Pattern([next(char) for _ in range(matrix.bits)])
 
 
-
+    scope = matrix.bits - empty_rows
+    new_pattern = []
+    while 0 < scope:
+        ch = next(char)
+        if 3 <= scope:
+            new_pattern += [ch, ch, ch]
+            scope -= 3
+        elif scope == 2:
+            new_pattern += [ch, ch]
+            scope -= 2
+        elif scope == 1:
+            new_pattern += [ch]
+            scope -= 1
+        else:
+            break
+    new_pattern += [next(char) for _ in range(empty_rows)]
+    return Pattern(new_pattern)
 
 
 

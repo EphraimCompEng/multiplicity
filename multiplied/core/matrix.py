@@ -168,10 +168,6 @@ class Matrix:
         else:
             raise NotImplementedError("Complex mapping not implemented")
 
-
-
-
-
 def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
     Build Logical AND matrix using source operands. Default bits=8
@@ -200,4 +196,4 @@ def empty_rows(matrix: Matrix) -> int:
         raise TypeError(f"Expected Matrix, got {type(matrix)}")
     bits = len(matrix)
     empty_row = ['_' for i in range(bits*2)]
-    return sum([matrix[i] == empty_row for i in range(bits)])
+    return sum([matrix.matrix[i] == empty_row for i in range(bits)])
