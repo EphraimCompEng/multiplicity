@@ -284,12 +284,13 @@ class Template:
 
 
 def resolve_pattern(matrix: mp.Matrix) -> mp.Pattern:
-    # -- resolve pattern via split() ----------------------------
+    """
+    For a given matrix, progressively allocate CSAs then adders to pattern
+    """
     from multiplied.core.utils.char import chargen
     char  = chargen()
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
         return Pattern([next(char) for _ in range(matrix.bits)])
-
 
     scope = matrix.bits - empty_rows
     new_pattern = []
