@@ -58,30 +58,6 @@ class Map:
 def empty_map(bits: int)-> Map:
     return Map(["00" for i in range(bits)])
 
-# TODO: Defaults to bottom unless reversed=True.
-def resolve_rmap(matrix: mp.Matrix,*, ignore_zeros: bool=True
-) -> Map:
-    """
-    Find empty rows, create simple map to efficiently pack rows.
-
-    options:
-        ignore_zeros: If True, ignore rows with only zeros.
-    """
-    if not isinstance(matrix, mp.Matrix):
-        raise TypeError(f"Expected mp.Matrix, got {type(matrix)}")
-
-    option = '0' if ignore_zeros else '_'
-    offset = 0
-    rmap   = []
-    for i in range(len(matrix)):
-        if all([bit == '_' and bit != option for bit in matrix.matrix[i]]):
-            offset += 1
-            val = 0
-        else:
-            val = ((offset ^ 255) + 1) # 2s complement
-        rmap.append(f"{val:02X}"[-2:])
-    return Map(rmap)
-
 
 def build_dadda_map(bits: int) -> Map:
     """

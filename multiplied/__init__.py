@@ -4,12 +4,16 @@ from pathlib import Path
 import toml
 
 
-# -- core ---------------------------------------
+# -- core -----------------------------------------------------------
+
+##########################################################
+# explicit order: map -> matrix -> template -> algorithm #
+##########################################################
+
 
 from .core.map import (
     Map,
     build_dadda_map,
-    resolve_rmap,
     empty_map,
 )
 
@@ -38,7 +42,8 @@ from .core.truth import (
 )
 
 
-# -- utils --------------------------------------
+# -- utils ----------------------------------------------------------
+
 from .core.utils.char import (
     ischar,
     chargen,
@@ -51,11 +56,11 @@ from .core.utils.pretty import (
     mprint,
 )
 
-# -- datasets -----------------------------------
+# -- datasets -------------------------------------------------------
 
 
 
-# -- io -----------------------------------------
+# -- io -------------------------------------------------------------
 
 from .io.lazy_json import (
     json_pretty_store,
@@ -65,10 +70,10 @@ from .io.lazy_json import (
 #
 
 
-# -- External -----------------------------------
+# -- External -------------------------------------------------------
 
 
-# -- Tests --------------------------------------
+# -- Tests ----------------------------------------------------------
 
 # from .tests.test_population import (
 #     test_pop_empty_matrix,
@@ -90,7 +95,7 @@ from .io.lazy_json import (
 
 
 
-# -- pyproject.toml metadata --------------------
+# -- pyproject.toml metadata ----------------------------------------
 
 
 with open(Path(__file__).parent.parent / "pyproject.toml", "r") as f:
@@ -101,6 +106,8 @@ MP_VERSION = MP_TOML["project"]["version"]
 SUPPORTED_BITWIDTHS = {4, 8}
 
 
+# -- __all__ --------------------------------------------------------
+
 __all__ = [
     'Matrix',
     'Slice',
@@ -109,7 +116,6 @@ __all__ = [
     'Template',
     'Algorithm',
     'build_dadda_map',
-    'resolve_rmap',
     'empty_map',
     'build_csa',
     'build_adder',
