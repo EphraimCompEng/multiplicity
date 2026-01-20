@@ -21,6 +21,7 @@ from .core.matrix import (
     Matrix,
     Slice,
     build_matrix,
+    empty_rows,
 )
 
 
@@ -112,6 +113,7 @@ __all__ = [
     'Matrix',
     'Slice',
     'build_matrix',
+    'empty_rows',
     'Pattern',
     'Template',
     'Algorithm',
@@ -131,19 +133,5 @@ __all__ = [
     'mprint',
     'MP_VERSION',
     'SUPPORTED_BITWIDTHS',
-
-
-
-
-    # 'test_pop_empty_matrix',
-    # 'test_pop_build_matrix',
-    # 'test_pop_agorithm',
-    # 'test_temp_build_csa4',
-    # 'test_temp_build_csa8',
-    # 'test_temp_build_adder4',
-    # 'test_temp_build_adder8',
-    # 'test_to_json4',
-    # 'test_to_json8',
-
 
 ]
