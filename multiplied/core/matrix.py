@@ -1,3 +1,7 @@
+###################################################
+# Classes to Represent Matrices and Matrix Slices #
+###################################################
+
 import multiplied as mp
 from typing import Any, Iterator
 
@@ -5,19 +9,33 @@ class Slice:
     """
 
     """
-    def __init__(self, matrix: list[list[str]]):
-        self.bits   = len(matrix[0]) >> 1
+    def __init__(self, matrix: list[Any]):
+        if isinstance(matrix[0], list):
+            self.bits = len(matrix[0]) >> 1
+        elif isinstance(matrix, list) and isinstance(matrix[0], str):
+            self.bits = len(matrix[0])
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(
                 f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
-        self.slice  =  matrix
-        self._index = 0
-        self.len    = len(self.slice)
+        self.slice = matrix if isinstance(matrix[0], list) else [matrix]
+        self.index  = 0
 
-    def __getitem__(self, index: int) -> list[str]:
-        return self.slice[index]
+    # TODO:: look into overloads for accurate type usage
+    #
+    #  index: int -> T
+    #  index: slice -> list[T]
+    def __getitem__(self, index: int) -> list[Any]:
+        slice = [self.slice] if len(self.slice[index]) == 1 else self.slice
+        return slice[index]
 
+    def __eq__(self, slice: Any, /) -> bool:
+        if slice.bits != self.bits:
+            return False
+        for i in range(self.bits):
+            if slice.slice[i] != self.slice[i]:
+                return False
+        return True
 
     def _repr_(self):
         return self.__str__()
@@ -29,10 +47,10 @@ class Slice:
         return len(self.slice)
 
     def __iter__(self) -> Iterator:
-        return self
+        return iter(self.slice)
 
     def __next__(self):
-        if self._index >= self.len:
+        if self._index >= len(self.slice):
             raise StopIteration
         self._index += 1
         return self.slice[self._index - 1]
@@ -46,32 +64,35 @@ class Matrix:
     """
 
     """
-    def __init__(self, source: Any) -> None:
-
-        if isinstance(source, int) and (source not in mp.SUPPORTED_BITWIDTHS):
-            raise ValueError(
-                f"Unsupported bitwidth {source}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
-        if isinstance(source, list) and (len(source) not in mp.SUPPORTED_BITWIDTHS):
-            raise ValueError(
-                f"Unsupported bitwidth {len(source)}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
-
+    def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
         if isinstance(source, int):
             self.bits = source
+        if isinstance(source, list):
+            self.bits = len(source)
+
+        if (self.bits not in mp.SUPPORTED_BITWIDTHS):
+            raise ValueError(
+                f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
+            )
+        if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
+            if not isinstance(source, int):
+                raise ValueError("Invalid input. Expected integer.")
+            self.matrix = build_matrix(a, b, bits=source).matrix
+
+        elif isinstance(source, int):
+            self.bits = source
             self.__empty_matrix(source)
+
         elif all([isinstance(row, (list, Slice)) for row in source]):
             if len(source)*2 != len(source[0]):
                 raise ValueError("Matrix must be 2m * m")
             self.bits = len(source)
             self.matrix = source
 
-        self._index = 0
-
 
     def __empty_matrix(self, bits: int) -> None:
         """
-        Build a wallace tree style logic AND matrix for a bitwidth of self.bits.
+        Build a wallace tree for a bitwidth of self.bits.
         """
         row = [0]*bits
         matrix = []
@@ -80,14 +101,13 @@ class Matrix:
         self.matrix = matrix
 
     def __repr__(self) -> str:
-        return mp.pretty(self.matrix)
+        return self.__str__()
 
     def __str__(self) -> str:
-        return str(self.__repr__())
+        return mp.pretty(self.matrix)
 
     def __len__(self) -> int:
         return self.bits
-
 
     def __eq__(self, matrix: Any, /) -> bool:
         if matrix.bits != self.bits:
@@ -97,16 +117,9 @@ class Matrix:
                 return False
         return True
 
-    # def __getslice__(self, start: int=0, stop: int=0) -> Slice:
-    #     slice = self.matrix[start:stop]
-    #     print(slice)
-    #     return mp.Slice(slice)
-
-    def __getitem__(self, index: slice) -> Slice:
+    def __getitem__(self, index: int | slice) -> Slice:
         slice = self.matrix[index]
-        if len(slice) == 1:
-            slice = list(slice)
-        return mp.Slice(slice)
+        return Slice(slice)
 
     def __iter__(self):
         return iter(self.matrix)
@@ -118,19 +131,40 @@ class Matrix:
         return self.matrix[self._index - 1]
 
 
+    def apply_map(self, map: mp.Map) -> None:
+        if not isinstance(map, mp.Map):
+            raise TypeError(f"Expected Map, got {type(map)}")
+        if map.bits != self.bits:
+            raise ValueError(f"Map bitwidth {map.bits} does not match matrix bitwidth {self.bits}")
+        if rmap := map.rmap:
+            temp_matrix = Matrix(self.bits).matrix
+            for i in range(self.bits):
+                if ((val := int(rmap[i], 16)) & 128) and rmap[i] != '00': # -ve 2-bit hex value
+                    val = (val ^ 255 + 1) - 512 # 2s complement
+                temp_matrix[i]     = ["_" for _ in range(self.bits*2)]
+                temp_matrix[i+val] = self.matrix[i]
+            self.matrix = temp_matrix
+        else:
+            raise NotImplementedError("Complex mapping not implemented")
 
 
-def build_matrix(operand_a: int, operand_b: int, bits: int) -> Matrix:
+
+
+
+def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
-    Build Logical AND matrix using source operands.
+    Build Logical AND matrix using source operands. Default bits=8
     """
+    if bits not in mp.SUPPORTED_BITWIDTHS:
+        raise ValueError(
+            f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
+        )
     if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
         raise ValueError("Operand bit width exceeds matrix bit width")
 
     # convert to binary, removing '0b' and padding with zeros
-    # b is reversed to bring LSB to the top of matrix
     a = bin(operand_a)[2:].zfill(bits)
-    b = bin(operand_b)[2:].zfill(bits)[::-1]
+    b = bin(operand_b)[2:].zfill(bits)
     i = 0
     matrix = []
     for i in range(bits-1, -1, -1):

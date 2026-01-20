@@ -3,10 +3,8 @@ from collections.abc import Generator
 
 # --  Character related helper functions ----------------------------
 
-def ischar(ch:str) -> bool:
-    """
-    Tests if a string is exactly one alphabetic character
-    """
+def ischar(ch: str) -> bool:
+    """Tests if a string is exactly one alphabetic character"""
     try:
         ord(ch)
         return True
@@ -14,9 +12,7 @@ def ischar(ch:str) -> bool:
         return False
 
 def chargen() -> Generator[str]:
-    """
-    Continuously generate characters from A to Z.
-    """
+    """Continuously generate characters from A to Z."""
     i = 0
     while True:
         yield chr((i % 26) + 65)
@@ -33,7 +29,6 @@ def chartff(ch: str) -> Generator[str]:
     'A'
     >>> next(x)
     'a'
-
     """
 
     if not ischar(ch):

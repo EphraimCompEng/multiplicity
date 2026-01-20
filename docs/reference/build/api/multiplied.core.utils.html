@@ -20,7 +20,7 @@
     </style>
   </noscript>
   
-    <script defer src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script defer src="../_static/documentation_options.js?v=e259d695"></script>
     <script defer src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -234,17 +234,52 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="multiplied.core.utils.pretty.mprint">
 <span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.pretty.</span></span><span class="sig-name descname"><span class="pre">mprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/utils/pretty.html#mprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.pretty.mprint" title="Link to this definition">#</a></dt>
-<dd><p>Print formatted Matrix object</p>
+<dd><p>Wrapper for print(mp.pretty)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="multiplied.core.utils.pretty.pretty">
 <span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.pretty.</span></span><span class="sig-name descname"><span class="pre">pretty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listy_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/pretty.html#pretty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.pretty.pretty" title="Link to this definition">#</a></dt>
-<dd><p>Format matrix as a string:</p>
+<dd><p>Format Multiplied types, or list as a string:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">____0000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">___0000_</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">__0000__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">_0000___</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.utils.pretty.pretty_dict">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.pretty.</span></span><span class="sig-name descname"><span class="pre">pretty_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listy_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/pretty.html#pretty_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.pretty.pretty_dict" title="Link to this definition">#</a></dt>
+<dd><p>Format mp.Map as a string:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="mi">1</span><span class="p">:</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span><span class="p">]],</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="mi">2</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]]}</span>
+<span class="go">0:</span>
+<span class="go">  1__</span>
+<span class="go">  _2_</span>
+<span class="go">  __3</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.utils.pretty.pretty_nested_list">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.utils.pretty.</span></span><span class="sig-name descname"><span class="pre">pretty_nested_list</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">listy_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">whitespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/pretty.html#pretty_nested_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.utils.pretty.pretty_nested_list" title="Link to this definition">#</a></dt>
+<dd><p>Format nested list as a string:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">],[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="go">1__</span>
+<span class="go">_2_</span>
+<span class="go">__3</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -298,6 +333,8 @@
 <li><a class="reference internal" href="#module-multiplied.core.utils.pretty">multiplied​.core​.utils​.pretty module</a><ul>
 <li><a class="reference internal" href="#multiplied.core.utils.pretty.mprint"><code class="docutils literal notranslate"><span class="pre">mprint()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.utils.pretty.pretty"><code class="docutils literal notranslate"><span class="pre">pretty()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.utils.pretty.pretty_dict"><code class="docutils literal notranslate"><span class="pre">pretty_​dict()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.utils.pretty.pretty_nested_list"><code class="docutils literal notranslate"><span class="pre">pretty_​nested_​list()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-multiplied.core.utils">Module contents</a></li>

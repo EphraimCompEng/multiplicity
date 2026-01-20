@@ -16,12 +16,27 @@ class Map:
             raise ValueError(f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
         self.bits = bits
         if isinstance(map[0], list):
-            self.map = map
+            self.map  = map
+            self.rmap = None
         elif all([isinstance(x, str) for x in map]):
             self.map  = self.build_map(map)
             self.rmap = map
         self._index = 0
 
+    def __repr__(self) -> str:
+        return mp.pretty(self.map)
+
+    def __str__(self) -> str:
+        return str(self.__repr__())
+
+    def __iter__(self):
+        return iter(self.map)
+
+    def __next__(self):
+        if self._index >= self.bits:
+            raise StopIteration
+        self._index += 1
+        return self.map[self._index - 1]
 
     def build_map(self, rmap: list[str]) -> list[list[str]]:
         """
@@ -39,41 +54,36 @@ class Map:
             map.append([rmap[i] for _ in range(n*2)])
         return map
 
-    def __repr__(self) -> str:
-        return mp.pretty(self.map)
 
-    def __str__(self) -> str:
-        return str(self.__repr__())
+def empty_map(bits: int)-> Map:
+    return Map(["00" for i in range(bits)])
 
-    def __iter__(self):
-        return iter(self.map)
-
-    def __next__(self):
-        if self._index >= self.bits:
-            raise StopIteration
-        self._index += 1
-        return self.map[self._index - 1]
-
-# May remove reversed option
-def resolve_rmap(matrix: mp.Matrix) -> Map:
+# TODO: Defaults to bottom unless reversed=True.
+def resolve_rmap(matrix: mp.Matrix,*, ignore_zeros: bool=True
+) -> Map:
     """
     Find empty rows, create simple map to efficiently pack rows.
-    Defaults to bottom unless reversed=True.
+
+    options:
+        ignore_zeros: If True, ignore rows with only zeros.
     """
+    if not isinstance(matrix, mp.Matrix):
+        raise TypeError(f"Expected mp.Matrix, got {type(matrix)}")
+
+    option = '0' if ignore_zeros else '_'
     offset = 0
-    smap = []
-    for i in matrix:
-        if all([(b == '_' or b == '0') for b in i]):
+    rmap   = []
+    for i in range(len(matrix)):
+        if all([bit == '_' and bit != option for bit in matrix.matrix[i]]):
             offset += 1
-            smap.append("00")
-            continue
+            val = 0
+        else:
+            val = ((offset ^ 255) + 1) # 2s complement
+        rmap.append(f"{val:02X}"[-2:])
+    return Map(rmap)
 
-        # Not sure how else to convert -ve int -> 2s comp hex
-        smap.append(f"{hex(255-offset+1)[2:].upper()}")
-    return Map(smap)
 
-
-def build_dadda_map(bits) -> Map:
+def build_dadda_map(bits: int) -> Map:
     """
     Return map which represents starting point of Dadda tree algorithm.
     """

@@ -68,12 +68,26 @@ def test_build_from_pattern() -> None:
     print(mytemplate.result)
 
 
+def test_resolve_rmap() -> None:
+    mypattern = mp.Pattern([
+        'a',
+        'a',
+        'b',
+        'b',
+    ])
+    mytemplate = mp.Template(mypattern)
+    print(mytemplate)
+    # print(mp.Matrix(mytemplate.result))
+    print(mp.resolve_rmap(mp.Matrix(4, a=5, b=4)))
+
+
 def main() -> None:
     # test_temp_build_csa4()
     # test_temp_build_csa8()
     # test_temp_build_adder4()
     # test_temp_build_adder8()
     test_build_from_pattern()
+    test_resolve_rmap()
 
 if __name__ == "__main__":
     main()

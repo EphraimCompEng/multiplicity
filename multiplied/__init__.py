@@ -27,14 +27,15 @@ from .core.algorithm import (
 
 from .core.truth import (
     truth_scope,
-    shallow_truth_table,
     truth_table,
+    shallow_truth_table,
 )
 
 from .core.map import (
     Map,
     build_dadda_map,
     resolve_rmap,
+    empty_map,
 )
 
 # -- utils --------------------------------------
@@ -109,6 +110,7 @@ __all__ = [
     'Algorithm',
     'build_dadda_map',
     'resolve_rmap',
+    'empty_map',
     # 'build_simple_template',
     'build_csa',
     'build_adder',
