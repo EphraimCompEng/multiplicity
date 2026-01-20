@@ -131,13 +131,13 @@ class Matrix:
         return self.matrix[self._index - 1]
 
 
-    def apply_map(self, map: mp.Map) -> None:
-        if not isinstance(map, mp.Map):
-            raise TypeError(f"Expected Map, got {type(map)}")
-        if map.bits != self.bits:
-            raise ValueError(f"Map bitwidth {map.bits} does not match matrix bitwidth {self.bits}")
-        if rmap := map.rmap:
-            temp_matrix = Matrix(self.bits).matrix
+    def apply_map(self, map_: mp.Map) -> None:
+        if not isinstance(map_, mp.Map):
+            raise TypeError(f"Expected Map, got {type(map_)}")
+        if map_.bits != self.bits:
+            raise ValueError(f"Map bitwidth {map_.bits} does not match matrix bitwidth {self.bits}")
+        if rmap := map_.rmap:
+            temp_matrix = build_matrix(0, 0, bits=self.bits).matrix
             for i in range(self.bits):
                 if ((val := int(rmap[i], 16)) & 128) and rmap[i] != '00': # -ve 2-bit hex value
                     val = (val ^ 255 + 1) - 512 # 2s complement

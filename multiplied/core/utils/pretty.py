@@ -46,7 +46,7 @@ def pretty_dict(listy_dict: Any) -> str:
     """
     pretty_ = ""
     for key, value in listy_dict.items():
-        pretty_ += f"{key}:"+'{\n'
+        pretty_ += f"\n{key}:"+'{\n'
         for item_, list_ in value.items():
             pretty_ += f"{item_}:\n\n{str(list_)}\n"
         pretty_ += '}'
