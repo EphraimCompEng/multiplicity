@@ -162,6 +162,7 @@ class Algorithm():
         """
         ...
 
+
     # Used to automate splitting a matrix into Slice(n * row)
     @classmethod
     def split(cls, matrix: mp.Matrix, rows: int) -> list[mp.Slice]:
@@ -173,11 +174,12 @@ class Algorithm():
         If not enough rows, progress to rows-1 -> row-2 -> ...
         """
 
-        # find non zero rows
+        # > find non zero rows
+        # > formula can be found for progressive allocation
+        empty_rows = mp.empty_rows(matrix)
 
-        x = 0
-        if len(matrix) - (x * rows) < rows:
-            ...
+
+
         ...
 
     def auto_resolve_pattern(self, pattern: mp.Pattern, *,
@@ -199,47 +201,79 @@ class Algorithm():
         # > resolve_map(new_template.resultant) -> new_map
         # > new stage = {map: new_map, matrix: None, template: new_template}
         #
+        from multiplied.core.utils.char import chargen
 
         if not isinstance(pattern, mp.Pattern):
             raise TypeError(f'Expected mp.Pattern, got {type(pattern)}')
 
-        # -- extract pseudo_matrix -----------------------------------
-        if not self.algorithm:
-            matrix = self.matrix
-        else:
-            matrix = self.algorithm[self.len-1]['pseudo']
 
 
         # -- non recursive ------------------------------------------
-        self.push(mp.Template(pattern, matrix=matrix))
+        if not self.algorithm:
+            pseudo = self.matrix
+        else:
+            pseudo = self.algorithm[self.len-1]['pseudo']
+        self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
             return
 
         # -- recursive setup ----------------------------------------
-        
-        
-        
-        # -- resolve pattern via split() ----------------------------
-        
-
-        # -- create new_template ------------------------------------
+        pseudo    = self.algorithm[self.len-1]['pseudo']
+        condition = self.bits-1 != mp.empty_rows(pseudo)
+        if condition:
+            return
 
 
-
-        # match len(slice_):
-        #     case 1: # Do nothing
-        #         template_slices[i-run] = build_noop(char, slice_)
-        #     case 2: # Create adder
-        #         template_slices[i-run] = build_adder(char, slice_)
-        #     case 3: # Create CSA row
-        #         template_slices[i-run] = build_csa(char, slice_)
-        #     case _:
-        #         raise ValueError(f"Unsupported run length {run}")
-
-        # -- resolve_map --------------------------------------------
+        while condition:
+            pseudo = self.algorithm[self.len-1]['pseudo']
 
 
-        # -- apply_map ----------------------------------------------
 
-        # -- push----- ----------------------------------------------
+            # -- resolve pattern via split() ----------------------------
+            if (empty_rows := mp.empty_rows(pseudo)) == self.bits:
+                return
+            char  = chargen()
+            scope = self.bits - empty_rows
+            new_pattern = []
+            i = 0
+            j = 0
+            while i < len(pseudo):
+                if scope <= 3:
+                    new_pattern += [next(char), next(char), next(char)]
+                    i     += 3
+                    scope -= 3
+                elif scope == 2:
+                    new_pattern += [next(char), next(char)]
+                    i     += 2
+                    scope -= 2
+                elif scope == 1:
+                    new_pattern += [next(char)]
+                    i     += 1
+                    scope -= 1
+                else:
+                    break
+
+
+            # -- create new_template ------------------------------------
+
+
+
+            # match len(slice_):
+            #     case 1: # Do nothing
+            #         template_slices[i-run] = build_noop(char, slice_)
+            #     case 2: # Create adder
+            #         template_slices[i-run] = build_adder(char, slice_)
+            #     case 3: # Create CSA row
+            #         template_slices[i-run] = build_csa(char, slice_)
+            #     case _:
+            #         raise ValueError(f"Unsupported run length {run}")
+
+            # -- resolve_map --------------------------------------------
+
+
+            # -- apply_map ----------------------------------------------
+
+            # -- push ---------------------------------------------------
+
+            condition = self.bits-1 == mp.empty_rows(pseudo)
         ...
