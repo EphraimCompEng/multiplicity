@@ -56,7 +56,7 @@ def build_adder(
     """
     Create Adder template slice with zero initialised slice and chosen char.
     Returns template "slices" for addition and the resulting slice.
-    >>> [slice ] || [adder-] || [result]
+    >>> [slice-] || [adder-] || [result]
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________
     """
@@ -216,18 +216,15 @@ class Template:
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
     ) -> None:
         """
-        Build a simple template for a given bitwidth based on matrix.
-        Defaults to empty matrix if matrix=None.
-        >>> self.bits = 4
-        >>> build_template(self.pattern)
+        Build a simple template and it's result for a given bitwidth based
+        on matrix. Defaults to empty matrix if matrix=None.
 
-        >>> [matrix] || [pattern]
-        >>> ____AaAa || ['a',
-        >>> ___AaAa_ ||  'a',
-        >>> __BbBb__ ||  'b',
-        >>> _BbBb___ ||  'b']
+        >>> [matrix] || [pattern] || [templ.] [result]
+        >>> ____0000 || [  'a',   || ____AaAa __aAaAaA
+        >>> ___0000_ ||    'a',   || ___AaAa_ ________
+        >>> __0000__ ||    'b',   || __BbBb__ bBbBbB__
+        >>> _0000___ ||    'b'  ] || _BbBb___ ________
         """
-
         # -- sanity check -----------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
