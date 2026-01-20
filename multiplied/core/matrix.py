@@ -12,11 +12,11 @@ class Slice:
     def __init__(self, matrix: list[Any]):
         if isinstance(matrix[0], list):
             self.bits = len(matrix[0]) >> 1
-        elif isinstance(matrix, list):
-            self.bits = len(matrix) >> 1
+        elif isinstance(matrix, list) and isinstance(matrix[0], str):
+            self.bits = len(matrix[0])
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(
-                f"Unsupported bitwidth {len(matrix)}. Expected {mp.SUPPORTED_BITWIDTHS}"
+                f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
         self.slice = matrix if isinstance(matrix[0], list) else [matrix]
         self.index  = 0
@@ -65,7 +65,6 @@ class Matrix:
 
     """
     def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
-
         if isinstance(source, int):
             self.bits = source
         if isinstance(source, list):
@@ -73,7 +72,7 @@ class Matrix:
 
         if (self.bits not in mp.SUPPORTED_BITWIDTHS):
             raise ValueError(
-                f"Unsupported bitwidth {self}. Expected {mp.SUPPORTED_BITWIDTHS}"
+                f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
@@ -120,8 +119,6 @@ class Matrix:
 
     def __getitem__(self, index: int | slice) -> Slice:
         slice = self.matrix[index]
-        if len(slice) == 1:
-            slice = [slice]
         return Slice(slice)
 
     def __iter__(self):
@@ -144,7 +141,7 @@ class Matrix:
             for i in range(self.bits):
                 if ((val := int(rmap[i], 16)) & 128) and rmap[i] != '00': # -ve 2-bit hex value
                     val = (val ^ 255 + 1) - 512 # 2s complement
-                temp_matrix[i]     = "_"*self.bits*2
+                temp_matrix[i]     = ["_" for _ in range(self.bits*2)]
                 temp_matrix[i+val] = self.matrix[i]
             self.matrix = temp_matrix
         else:

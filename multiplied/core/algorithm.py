@@ -15,6 +15,7 @@ Algorithm process:
 
 """
 
+from copy import copy
 from typing import Any
 import multiplied as mp
 
@@ -45,15 +46,7 @@ class Algorithm():
         self.stage     = self.algorithm[self.state] if self.len > 0 else None
         self._index    = 0
 
-    # -- [ TODO: add dictionary formatting to mp.pretty() ] ---------
     def __str__(self) -> str:
-        # pretty_ = ""
-        # for i, m in self.algorithm.items():
-        #     pretty_ += f"\n[S{i}]\n\n"
-        #     for j, k in m.items():
-        #         if k:
-        #             pretty_ += f"{j}:\n{mp.pretty(k)}\n"
-        # return pretty_
         return mp.pretty(self.algorithm)
 
     def __repr__(self) -> str:
@@ -125,18 +118,20 @@ class Algorithm():
             raise TypeError("Invalid argument type. Expected mp.Map")
 
         # -- [TODO] ------------------------------------------------- #
-        if map and not map.rmap:                                              #
-            raise NotImplementedError("Complex map not implemented")   #
+        if map and not map.rmap:                                      #
+            raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
 
         stage_index = len(self.algorithm)
         result = mp.Matrix(template.result)
+
         if not map and result:
             # auto resolve map
             map = mp.resolve_rmap(result)
             result.apply_map(map)
         else:
             result.apply_map(map)
+
         stage = {
             'template': template,
             'pseudo': result,
@@ -174,7 +169,7 @@ class Algorithm():
 
     # Used to automate splitting a matrix into Slice(n * row)
     @classmethod
-    def split(cls, matrix: mp.Matrix, rows: int) -> mp.Slice:
+    def split(cls, matrix: mp.Matrix, rows: int) -> list[mp.Slice]:
         """
         Returns list of slices via progressive allocation. Used to automate
         slicing a matrix into (Slice(n * row) * k), then splitting remainder.
@@ -182,6 +177,9 @@ class Algorithm():
         Append n contiguous slices of matrix to list, each containing x rows.
         If not enough rows, progress to rows-1 -> row-2 -> ...
         """
+
+        # find non zero rows
+
         x = 0
         if len(matrix) - (x * rows) < rows:
             ...
@@ -211,7 +209,7 @@ class Algorithm():
 
         # -- apply prior map ----------------------------------------
 
-        peek_stage = self.algorithm[len(self.algorithm) - 1]
+        peek_stage = copy(self.algorithm[len(self.algorithm) - 1])
         prior_map  = peek_stage['map']
         if prior_map:
             prior_template = peek_stage['template']

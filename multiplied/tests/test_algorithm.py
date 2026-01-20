@@ -24,8 +24,12 @@ def test_auto_resolve_single() -> None:
     ])
     alg = mp.Algorithm(m)
     alg.push(p)
+    # print(alg)
+    # alg.auto_resolve_pattern(p, m)
+    t2 = mp.Template(mp.Pattern(['a','a','b','c']), matrix=alg.algorithm[0]['pseudo'])
+    alg.push(t2)
     print(alg)
-    alg.auto_resolve_pattern(p, m)
+
 
 def test_auto_resolve_recursive_full() -> None:
     ...

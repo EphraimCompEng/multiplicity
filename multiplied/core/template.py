@@ -93,29 +93,25 @@ def build_adder(
 
     return adder_slice, mp.Slice(result)
 
-def build_noop(
-    char: str, zeroed_slice: mp.Slice
+def build_noop(char: str, zeroed_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]:
     """
     Create a No-op template slice with zero initialised slice and chosen char.
     Returns template "slices" and resulting slice. Target row unaffected
-    >>> [slice ] || [noop  ] || [result]
+    >>> [slice-] || [noop--] || [result]
     >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
     if len(zeroed_slice) != 1:
         raise ValueError("Invalid template slice: must be 1 rows")
 
-    n           = len(zeroed_slice[0])
-    tff         = mp.chartff(char) # Toggle flip flop
-    noop_slice  = copy.copy(zeroed_slice) # ensure no references
+    n          = len(zeroed_slice[0])
+    tff        = mp.chartff(char) # Toggle flip flop
+    noop_slice = copy.copy(zeroed_slice) # ensure no references
     for i in range(n):
         noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
         char = next(tff)
 
-    # (noop_slice, noop_slice) == tuple both pointing to one object.
-    return noop_slice, copy.copy(noop_slice)
-
-    ...
+    return noop_slice, copy.copy(noop_slice) # avoids pointing to same object
 
 class Pattern:
     """
@@ -153,7 +149,7 @@ class Pattern:
         pretty_ = ""
         for p in self.pattern:
             pretty_ += " " + p + "\n"
-        return f"{'['+ pretty_[1:-2]+']'}"
+        return f"{'['+ pretty_[1:-1]+']'}"
 
     def __repr__(self):
         return self.__str__()
@@ -174,6 +170,7 @@ class Template:
         map: Any    = None,
         dadda: bool = False,
         result: Any = None,
+        matrix: Any = None
     ) -> None: # Complex or pattern
 
         self.map    = map
@@ -186,10 +183,11 @@ class Template:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
         if isinstance(source, Pattern):
             self.pattern  = source
-            matrix = mp.Matrix(self.bits)
             if dadda:
                 # TODO
                 raise NotImplementedError("Applying maps not implemented")
+            if not matrix:
+                matrix =  mp.Matrix(self.bits)
             self.build_from_pattern(self.pattern, matrix)
         elif ischar(source[0][0]):
             self.template = source
@@ -241,7 +239,7 @@ class Template:
         # -- find run ---------------------------------------------------
         template_slices = {}
         i = 1
-        while i < len(pattern):
+        while i < len(pattern)+1:
             run = 1
             while i < len(pattern) and pattern[i-1] == pattern[i]:
                 run += 1
