@@ -180,42 +180,66 @@ class Algorithm():
             ...
         ...
 
-    def auto_resolve_pattern(self, pattern: mp.Pattern, matrix: mp.Matrix, *,
-        populate=True,
+    def auto_resolve_pattern(self, pattern: mp.Pattern, *,
         recursive=False,
-    ) -> None | dict:
+    ) -> None:
         """
-        Automatically resolve pattern using matrix form the previous stage to
-        produce a new stage of the algoritm.
+        Automatically resolve pattern using the previous stage and creates
+        a new algoritm stage.
 
         Options:
-            populate: Add stage to algorithm or return stage as dict
             recursive: Recursively resolve until no partial products remail
         """
 
         # Recursively resolving patterns require applying a stage's map to
         # its template:
         #
-        # > prior_map(prior_template) -> current pseudo_matrix
-        # > pseudo_matrix -> create new_template
+        # > pseudo_matrix -> mp.split()
+        # > resolve each slice -> create new_template
         # > resolve_map(new_template.resultant) -> new_map
         # > new stage = {map: new_map, matrix: None, template: new_template}
         #
 
-        # -- apply prior map ----------------------------------------
+        if not isinstance(pattern, mp.Pattern):
+            raise TypeError(f'Expected mp.Pattern, got {type(pattern)}')
 
-        peek_stage = copy(self.algorithm[len(self.algorithm) - 1])
-        prior_map  = peek_stage['map']
-        if prior_map:
-            prior_template = peek_stage['template']
-            prior_result = mp.Matrix(prior_template.result)
+        # -- extract pseudo_matrix -----------------------------------
+        if not self.algorithm:
+            matrix = self.matrix
+        else:
+            matrix = self.algorithm[self.len-1]['pseudo']
 
-            ...
 
-        # -- create pseudo_matrix -----------------------------------
+        # -- non recursive ------------------------------------------
+        self.push(mp.Template(pattern, matrix=matrix))
+        if not recursive:
+            return
+
+        # -- recursive setup ----------------------------------------
+        
+        
+        
+        # -- resolve pattern via split() ----------------------------
+        
 
         # -- create new_template ------------------------------------
-        runs = pattern.get_runs()
+
+
+
+        # match len(slice_):
+        #     case 1: # Do nothing
+        #         template_slices[i-run] = build_noop(char, slice_)
+        #     case 2: # Create adder
+        #         template_slices[i-run] = build_adder(char, slice_)
+        #     case 3: # Create CSA row
+        #         template_slices[i-run] = build_csa(char, slice_)
+        #     case _:
+        #         raise ValueError(f"Unsupported run length {run}")
 
         # -- resolve_map --------------------------------------------
+
+
+        # -- apply_map ----------------------------------------------
+
+        # -- push----- ----------------------------------------------
         ...
