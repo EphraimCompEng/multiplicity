@@ -4,6 +4,14 @@ multiplied.tests package
 Submodules
 ----------
 
+multiplied.tests.test\_algorithm module
+---------------------------------------
+
+.. automodule:: multiplied.tests.test_algorithm
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 multiplied.tests.test\_maps module
 ----------------------------------
 
