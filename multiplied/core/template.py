@@ -176,10 +176,10 @@ class Template:
         result: Any = None,
     ) -> None: # Complex or pattern
 
-        self.map      = map
-        self.bits     = len(source)
-        self.dadda    = dadda
-        self.result   = result if isinstance(result, Template) else None
+        self.map    = map
+        self.bits   = len(source)
+        self.dadda  = dadda
+        self.result = result if isinstance(result, Template) else None
 
         # length of any template represents it's bitwidth
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
@@ -204,6 +204,9 @@ class Template:
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.template}, {self.result})"
+
+    def __len__(self):
+        return len(self.template)
 
     def init_base_template(self, pattern: Pattern, *, dadda=False) -> None:
         """
@@ -261,7 +264,7 @@ class Template:
         result = []
         for i in template_slices.values():
             result += i[1]
-        self.template, self.result = mp.Matrix(template), mp.Matrix(result)
+        self.template, self.result = template, result
 
 
 
