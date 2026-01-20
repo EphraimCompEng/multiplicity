@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+    <script defer src="../../../_static/documentation_options.js?v=e259d695"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -183,9 +183,9 @@
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="test_simple_map">
-<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_maps.test_simple_map">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_simple_map</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="test_resolve_simple_map">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_maps.test_resolve_simple_map">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_resolve_simple_map</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">sm</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
         <span class="p">[</span>
             <span class="s1">&#39;00&#39;</span><span class="p">,</span>
@@ -194,24 +194,40 @@
             <span class="s1">&#39;FF&#39;</span><span class="p">,</span>
         <span class="p">]</span>
     <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">rmap</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">sm</span><span class="p">)</span>
-    <span class="n">m1</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
     <span class="n">m1map</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m1map</span><span class="o">.</span><span class="n">rmap</span><span class="p">)</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m1map</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="test_empty_map">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_maps.test_empty_map">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_empty_map</span><span class="p">(</span><span class="n">bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_map</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="test_apply_rmap">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_maps.test_apply_rmap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_apply_rmap</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">rm</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">rmap</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="n">rm</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">mprint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_maps.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-
-    <span class="n">test_dadda_map</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span></div>
-
-
-
+    <span class="n">test_dadda_map</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">test_resolve_simple_map</span><span class="p">()</span>
+    <span class="n">test_empty_map</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">test_apply_rmap</span><span class="p">()</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

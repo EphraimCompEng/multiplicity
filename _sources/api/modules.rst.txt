@@ -1,5 +1,5 @@
 multiplied
-=======
+==========
 
 .. toctree::
    :maxdepth: 4

@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../../_static/documentation_options.js?v=938c9ccc"></script>
+    <script defer src="../../../../_static/documentation_options.js?v=e259d695"></script>
     <script defer src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -177,10 +177,8 @@
 
 <div class="viewcode-block" id="ischar">
 <a class="viewcode-back" href="../../../../api/multiplied.core.utils.html#multiplied.ischar">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ischar</span><span class="p">(</span><span class="n">ch</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Tests if a string is exactly one alphabetic character</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ischar</span><span class="p">(</span><span class="n">ch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests if a string is exactly one alphabetic character&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -191,9 +189,7 @@
 <div class="viewcode-block" id="chargen">
 <a class="viewcode-back" href="../../../../api/multiplied.core.utils.html#multiplied.chargen">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">chargen</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Continuously generate characters from A to Z.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Continuously generate characters from A to Z.&quot;&quot;&quot;</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">yield</span> <span class="nb">chr</span><span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span> <span class="o">+</span> <span class="mi">65</span><span class="p">)</span>
@@ -213,7 +209,6 @@
 <span class="sd">    &#39;A&#39;</span>
 <span class="sd">    &gt;&gt;&gt; next(x)</span>
 <span class="sd">    &#39;a&#39;</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ischar</span><span class="p">(</span><span class="n">ch</span><span class="p">):</span>

@@ -1,23 +1,49 @@
 .. change_log:
+
 =========
 Changelog
 =========
 
-.. toctree::
-    v0.2
-    v0.1
+
+v0.3
+=====
+
+`v0.3.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.0>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates:
+
+    - Secured multiplied on PyPi, test.PyPi and github
+    - Assisted algorithm generation via patterns (not true automation)
+    - Finalised structure and populated an Algorithm stage `#18 <https://github.com/EphraimCompEng/multiplied/issues/18>`_
+    - Expanded mp.pretty formatting to all Multiplied types
+    - Added to utils.char.py to clean up template generation
+    - Generate templates from patterns using existing matrix
+
+    Plus smaller bug fixes and improvements
+
+Looking forward:
+
+    [Main Focus]
+
+    - Automatic algorithm generation via patterns
+    - Applying algorithms to operands
+    - Truth table generation via algorithm(s)
+
+    [ Ongoing ]
+
+    - Prepare for complex, custom, templates
+    - Export to .parquet files
+    - Continued development of the API reference site
 
 
 
-
-
-.. _v0.2:
 v0.2
 ====
 
 
 `v0.2.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.2.0>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Updates:
 
@@ -40,14 +66,14 @@ Looking forward:
     - Implement exporting to parquet files
     - Continued development of the API reference site
 
-.. _v0.1:
+
 v0.1
 ====
 
 
 
 `v0.1.1 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.1>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This patch is focused on documentation and testing the api reference site locally
 
@@ -62,7 +88,7 @@ Updates:
 
 
 `v0.1.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.0>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.
 
