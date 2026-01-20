@@ -6,6 +6,13 @@ import toml
 
 # -- core ---------------------------------------
 
+from .core.map import (
+    Map,
+    build_dadda_map,
+    resolve_rmap,
+    empty_map,
+)
+
 from .core.matrix import (
     Matrix,
     Slice,
@@ -16,7 +23,6 @@ from .core.matrix import (
 from .core.template import (
     Pattern,
     Template,
-    # build_simple_template,
     build_csa,
     build_adder,
 )
@@ -31,12 +37,6 @@ from .core.truth import (
     shallow_truth_table,
 )
 
-from .core.map import (
-    Map,
-    build_dadda_map,
-    resolve_rmap,
-    empty_map,
-)
 
 # -- utils --------------------------------------
 from .core.utils.char import (
@@ -111,7 +111,6 @@ __all__ = [
     'build_dadda_map',
     'resolve_rmap',
     'empty_map',
-    # 'build_simple_template',
     'build_csa',
     'build_adder',
     'truth_scope',
