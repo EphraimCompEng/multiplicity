@@ -1,20 +1,15 @@
 .. change_log:
+
 =========
 Changelog
 =========
 
-.. toctree::
-    v0.3
-    v0.2
-    v0.1
 
-
-.. _v0.3:
 v0.3
 =====
 
 `v0.3.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.0>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Updates:
 
@@ -42,13 +37,13 @@ Looking forward:
     - Continued development of the API reference site
 
 
-.. _v0.2:
+
 v0.2
 ====
 
 
 `v0.2.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.2.0>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Updates:
 
@@ -71,14 +66,14 @@ Looking forward:
     - Implement exporting to parquet files
     - Continued development of the API reference site
 
-.. _v0.1:
+
 v0.1
 ====
 
 
 
 `v0.1.1 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.1>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This patch is focused on documentation and testing the api reference site locally
 
@@ -93,7 +88,7 @@ Updates:
 
 
 `v0.1.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.0>`_
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This release is a complete refactor of the original script, widening it's scope and turning it into a library.
 
