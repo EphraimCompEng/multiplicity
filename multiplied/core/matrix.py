@@ -90,8 +90,6 @@ class Matrix:
             self.bits = len(source)
             self.matrix = source
 
-        self.index = 0
-
 
     def __empty_matrix(self, bits: int) -> None:
         """
@@ -104,7 +102,7 @@ class Matrix:
         self.matrix = matrix
 
     def __repr__(self) -> str:
-        return self.__repr__()
+        return self.__str__()
 
     def __str__(self) -> str:
         return mp.pretty(self.matrix)
