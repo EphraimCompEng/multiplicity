@@ -56,15 +56,19 @@ class Map:
 
 
 
-def resolve_rmap(matrix: mp.Matrix) -> Map:
+# TODO: Defaults to bottom unless reversed=True.
+def resolve_rmap(matrix: mp.Matrix,*, ignore_zeros: bool=True) -> Map:
     """
     Find empty rows, create simple map to efficiently pack rows.
-    Defaults to bottom unless reversed=True.
+
+    options:
+        ignore_zeros: If True, ignore rows with only zeros.
     """
+    option = '0' if ignore_zeros else '_'
     offset = 0
-    rmap = []
-    for i in range(len(matrix)): # skip row 0
-        if all(['1' != bit for bit in matrix.matrix[i]]):
+    rmap   = []
+    for i in range(len(matrix)):
+        if all([bit == '_' and bit != option for bit in matrix.matrix[i]]):
             offset += 1
             val = 0
         else:

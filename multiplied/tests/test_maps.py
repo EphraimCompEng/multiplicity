@@ -33,7 +33,7 @@ def test_apply_rmap() -> None:
     m = mp.build_matrix(3, 10, bits=4)
     mp.mprint(m)
     rm = mp.resolve_rmap(m)
-    print(rm.rmap)
+    mp.mprint(rm.rmap)
     m.apply_map(rm)
     mp.mprint(m)
 
