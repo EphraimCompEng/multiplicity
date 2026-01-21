@@ -55,7 +55,7 @@ def test_auto_resolve_recursive_full() -> None:
     m   = mp.Matrix(4, a=5, b=7)
     alg = mp.Algorithm(m)
     alg.auto_resolve_stage()
-    print(alg)
+    # print(alg)
     m2   = mp.Matrix(8, a=5, b=7)
     alg2 = mp.Algorithm(m2)
     alg2.auto_resolve_stage()
