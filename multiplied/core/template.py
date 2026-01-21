@@ -277,7 +277,7 @@ class Template:
 
 
 
-def resolve_pattern(matrix: mp.Matrix) -> mp.Pattern:
+def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     """
     For a given matrix, progressively allocate CSAs then adders to pattern
     """

@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script defer src="../../../_static/documentation_options.js?v=4621528c"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -237,33 +237,6 @@
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.empty_map">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">empty_map</span><span class="p">(</span><span class="n">bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Map</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">Map</span><span class="p">([</span><span class="s2">&quot;00&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="p">)])</span></div>
-
-
-<span class="c1"># TODO: Defaults to bottom unless reversed=True.</span>
-<div class="viewcode-block" id="resolve_rmap">
-<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.resolve_rmap">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">resolve_rmap</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span><span class="o">*</span><span class="p">,</span> <span class="n">ignore_zeros</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Map</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Find empty rows, create simple map to efficiently pack rows.</span>
-
-<span class="sd">    options:</span>
-<span class="sd">        ignore_zeros: If True, ignore rows with only zeros.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected mp.Matrix, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">option</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="k">if</span> <span class="n">ignore_zeros</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
-    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">rmap</span>   <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">bit</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">bit</span> <span class="o">!=</span> <span class="n">option</span> <span class="k">for</span> <span class="n">bit</span> <span class="ow">in</span> <span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]]):</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="p">((</span><span class="n">offset</span> <span class="o">^</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 2s complement</span>
-        <span class="n">rmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">02X</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
-    <span class="k">return</span> <span class="n">Map</span><span class="p">(</span><span class="n">rmap</span><span class="p">)</span></div>
 
 
 
