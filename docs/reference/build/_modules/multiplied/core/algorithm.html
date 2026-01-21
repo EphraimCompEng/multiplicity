@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script defer src="../../../_static/documentation_options.js?v=4621528c"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -187,7 +187,6 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 
@@ -272,7 +271,7 @@
 
 <div class="viewcode-block" id="Algorithm.push">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.push">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span> <span class="o">|</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="nb">map</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span> <span class="o">|</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">map_</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populates stage of an algorithm based on template. Generates pseudo</span>
@@ -286,39 +285,34 @@
 
         <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">))):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid argument type. Expected mp.Template&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">):</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">template</span><span class="o">.</span><span class="n">bits</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Template bitwidth must match Algorithm bitwidth.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">map</span> <span class="ow">and</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Map</span><span class="p">))):</span>
+        <span class="k">if</span> <span class="n">map_</span> <span class="ow">and</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">map_</span><span class="p">,</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Map</span><span class="p">))):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid argument type. Expected mp.Map&quot;</span><span class="p">)</span>
 
         <span class="c1"># -- [TODO] ------------------------------------------------- #</span>
-        <span class="k">if</span> <span class="nb">map</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">map</span><span class="o">.</span><span class="n">rmap</span><span class="p">:</span>                                      <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">map_</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">map_</span><span class="o">.</span><span class="n">rmap</span><span class="p">:</span>                                    <span class="c1">#</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Complex map not implemented&quot;</span><span class="p">)</span>  <span class="c1">#</span>
         <span class="c1"># ----------------------------------------------------------- #</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">):</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
 
         <span class="n">stage_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">map</span> <span class="ow">and</span> <span class="n">result</span><span class="p">:</span>
-            <span class="c1"># auto resolve map</span>
-            <span class="nb">map</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">map_</span> <span class="ow">and</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">map_</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="n">map_</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="n">map_</span><span class="p">)</span>
 
         <span class="n">stage</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="n">template</span><span class="p">,</span>
             <span class="s1">&#39;pseudo&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
-            <span class="s1">&#39;map&#39;</span><span class="p">:</span> <span class="nb">map</span><span class="p">,</span>
+            <span class="s1">&#39;map&#39;</span><span class="p">:</span> <span class="n">map_</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="n">stage_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">stage</span></div>
-
-
-
-
-
 
 
 
@@ -353,6 +347,7 @@
         <span class="o">...</span></div>
 
 
+
     <span class="c1"># Used to automate splitting a matrix into Slice(n * row)</span>
 <div class="viewcode-block" id="Algorithm.split">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.split">[docs]</a>
@@ -366,55 +361,55 @@
 <span class="sd">        If not enough rows, progress to rows-1 -&gt; row-2 -&gt; ...</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># find non zero rows</span>
+        <span class="c1"># &gt; find non zero rows</span>
+        <span class="c1"># &gt; formula can be found for progressive allocation</span>
+        <span class="n">empty_rows</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_rows</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 
-        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">rows</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">rows</span><span class="p">:</span>
-            <span class="o">...</span>
+
+
         <span class="o">...</span></div>
 
 
-<div class="viewcode-block" id="Algorithm.auto_resolve_pattern">
-<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.auto_resolve_pattern">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_resolve_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
-        <span class="n">populate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="Algorithm.auto_resolve_stage">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.auto_resolve_stage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_resolve_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Automatically resolve pattern using matrix form the previous stage to</span>
-<span class="sd">        produce a new stage of the algoritm.</span>
+<span class="sd">        Automatically resolve pattern using the previous stage and creates</span>
+<span class="sd">        a new algoritm stage.</span>
 
 <span class="sd">        Options:</span>
-<span class="sd">            populate: Add stage to algorithm or return stage as dict</span>
-<span class="sd">            recursive: Recursively resolve until no partial products remail</span>
+<span class="sd">            recursive: Recursively resolve until no partial products remain</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Recursively resolving patterns require applying a stage&#39;s map to</span>
-        <span class="c1"># its template:</span>
-        <span class="c1">#</span>
-        <span class="c1"># &gt; prior_map(prior_template) -&gt; current pseudo_matrix</span>
-        <span class="c1"># &gt; pseudo_matrix -&gt; create new_template</span>
-        <span class="c1"># &gt; resolve_map(new_template.resultant) -&gt; new_map</span>
-        <span class="c1"># &gt; new stage = {map: new_map, matrix: None, template: new_template}</span>
-        <span class="c1">#</span>
+        <span class="c1"># -- non recursive ------------------------------------------</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">:</span>
+            <span class="n">pseudo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pseudo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">len</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">]</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_pattern</span><span class="p">(</span><span class="n">pseudo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="n">pseudo</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">recursive</span><span class="p">:</span>
+            <span class="k">return</span>
 
-        <span class="c1"># -- apply prior map ----------------------------------------</span>
+        <span class="c1"># -- recursive setup ----------------------------------------</span>
+        <span class="n">pseudo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">]</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_rows</span><span class="p">(</span><span class="n">pseudo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">condition</span><span class="p">:</span>
+            <span class="k">return</span>
 
-        <span class="n">peek_stage</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="n">prior_map</span>  <span class="o">=</span> <span class="n">peek_stage</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">prior_map</span><span class="p">:</span>
-            <span class="n">prior_template</span> <span class="o">=</span> <span class="n">peek_stage</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">]</span>
-            <span class="n">prior_result</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">prior_template</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
-            <span class="o">...</span>
+        <span class="c1"># -- main loop ----------------------------------------------</span>
+        <span class="k">while</span> <span class="n">condition</span><span class="p">:</span>
 
-        <span class="c1"># -- create pseudo_matrix -----------------------------------</span>
+            <span class="c1"># Stage generation</span>
+            <span class="n">new_pattern</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_pattern</span><span class="p">(</span><span class="n">pseudo</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">new_pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="n">pseudo</span><span class="p">))</span>
 
-        <span class="c1"># -- create new_template ------------------------------------</span>
-        <span class="n">runs</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">get_runs</span><span class="p">()</span>
-
-        <span class="c1"># -- resolve_map --------------------------------------------</span>
-        <span class="o">...</span></div>
+            <span class="c1"># Condition based on generated stage</span>
+            <span class="n">pseudo</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">]</span>
+            <span class="n">condition</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_rows</span><span class="p">(</span><span class="n">pseudo</span><span class="p">)</span>
+        <span class="k">return</span></div>
 </div>
 
 </pre></div>
