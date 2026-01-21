@@ -9,7 +9,7 @@ Matrix which are then subsequesntly reduced by templates.
 - [x] Correctly implement custom Types. (Templates need work -- Slices implemented)
 - [x] simple templates
 - [ ] Complex templates
-- [ ] Simple reduction
+- [x] Simple reduction
 - [ ] Complex reduction
 - [x] Simple row map
 - [ ] Complete map matrix
@@ -22,17 +22,13 @@ onto [Dadda](https://en.wikipedia.org/wiki/Dadda_multiplier) and signed multipli
 
 Basic functionality; "simple templates", generate, analyse:
 
-- [ ] 4-bit unsaturated multiplied [Built-in]\*
+- [ ] 4-bit unsaturated multiplied [Built-in]
 - [ ] 8-bit unsaturated multiplied [Built-in]
 - [ ] 4-bit saturated multiplied [Built-in]
 - [ ] 8-bit saturated multiplied [Built-in]
 - [x] Truth table generation -> json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
-
-\* Note: once built-in functions and classes are operational, hand crafted
-templates and maps will be be functional.
-simple templates -> internally called patters, form -> complex templates.
 
 ## IO
 
