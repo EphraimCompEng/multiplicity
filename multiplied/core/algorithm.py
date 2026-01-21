@@ -15,8 +15,6 @@ Algorithm process:
 
 """
 
-from copy import copy
-from typing import Any
 import multiplied as mp
 
 class Algorithm():
@@ -182,98 +180,41 @@ class Algorithm():
 
         ...
 
-    def auto_resolve_pattern(self, pattern: mp.Pattern, *,
-        recursive=False,
+    def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
         """
         Automatically resolve pattern using the previous stage and creates
         a new algoritm stage.
 
         Options:
-            recursive: Recursively resolve until no partial products remail
+            recursive: Recursively resolve until no partial products remain
         """
-
-        # Recursively resolving patterns require applying a stage's map to
-        # its template:
-        #
-        # > pseudo_matrix -> mp.split()
-        # > resolve each slice -> create new_template
-        # > resolve_map(new_template.resultant) -> new_map
-        # > new stage = {map: new_map, matrix: None, template: new_template}
-        #
-        from multiplied.core.utils.char import chargen
-
-        if not isinstance(pattern, mp.Pattern):
-            raise TypeError(f'Expected mp.Pattern, got {type(pattern)}')
-
-
 
         # -- non recursive ------------------------------------------
         if not self.algorithm:
             pseudo = self.matrix
         else:
-            pseudo = self.algorithm[self.len-1]['pseudo']
+            pseudo = self.algorithm[self.len]['pseudo']
+        pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
             return
 
         # -- recursive setup ----------------------------------------
-        pseudo    = self.algorithm[self.len-1]['pseudo']
+        pseudo = self.algorithm[len(self.algorithm)-1]['pseudo']
         condition = self.bits-1 != mp.empty_rows(pseudo)
-        if condition:
+        if not condition:
             return
 
 
+        # -- main loop ----------------------------------------------
         while condition:
-            pseudo = self.algorithm[self.len-1]['pseudo']
 
+            # Stage generation
+            new_pattern = mp.resolve_pattern(pseudo)
+            self.push(mp.Template(new_pattern, matrix=pseudo))
 
-
-            # -- resolve pattern via split() ----------------------------
-            if (empty_rows := mp.empty_rows(pseudo)) == self.bits:
-                return
-            char  = chargen()
-            scope = self.bits - empty_rows
-            new_pattern = []
-            i = 0
-            j = 0
-            while i < len(pseudo):
-                if scope <= 3:
-                    new_pattern += [next(char), next(char), next(char)]
-                    i     += 3
-                    scope -= 3
-                elif scope == 2:
-                    new_pattern += [next(char), next(char)]
-                    i     += 2
-                    scope -= 2
-                elif scope == 1:
-                    new_pattern += [next(char)]
-                    i     += 1
-                    scope -= 1
-                else:
-                    break
-
-
-            # -- create new_template ------------------------------------
-
-
-
-            # match len(slice_):
-            #     case 1: # Do nothing
-            #         template_slices[i-run] = build_noop(char, slice_)
-            #     case 2: # Create adder
-            #         template_slices[i-run] = build_adder(char, slice_)
-            #     case 3: # Create CSA row
-            #         template_slices[i-run] = build_csa(char, slice_)
-            #     case _:
-            #         raise ValueError(f"Unsupported run length {run}")
-
-            # -- resolve_map --------------------------------------------
-
-
-            # -- apply_map ----------------------------------------------
-
-            # -- push ---------------------------------------------------
-
-            condition = self.bits-1 == mp.empty_rows(pseudo)
-        ...
+            # Condition based on generated stage
+            pseudo      = self.algorithm[len(self.algorithm)-1]['pseudo']
+            condition   = self.bits-1 != mp.empty_rows(pseudo)
+        return
