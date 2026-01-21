@@ -2,20 +2,18 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
-from typing import Any
 from .utils.char import ischar
+from copy import copy,deepcopy
+from typing import Any
 import multiplied as mp
-import copy
 
 
 
-def build_csa(
-    char: str, zeroed_slice: mp.Slice
+def build_csa(char: str, zeroed_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create CSA template slice with zero initialised slice and chosen char.
     Returns template "slices" for a csa reduction and the resulting slice.
-
     >>> [slice-] || [csa---] || [result]
     >>> ____0000 || ____AaAa || __AaAaAa
     >>> ___0000_ || ___aAaA_ || __aAaA__
@@ -28,35 +26,38 @@ def build_csa(
     n         = len(zeroed_slice[0])
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
-    csa_slice = copy.copy(zeroed_slice)
+    csa_slice = copy(zeroed_slice)
 
     for i in range(n):
-        # For int in template slice, map possible CSA operands to adder_slice
-        # Then map possible outputs to result
-        # [ bA + bB + bC = 0b00, 0b01, 0b10 ]
-        #
-        # Max bits per calculation = 1, therefore template result is:
-        #
-        # t = AaAa...
-        #    AaAa...
-        #
-        # CSA auto maps Cout: FF, see templates/map.py
+        # Generates slice of all possible bit placements, represented
+        # with a char. Lower and upper case aide in visualising changes
+        # in bit position before, templates, and after, result, operation
+
+        char = next(tff)
         csa_slice[0][i] = char if (y0:=csa_slice[0][i] != '_') else '_'
         csa_slice[1][i] = char if (y1:=csa_slice[1][i] != '_') else '_'
         csa_slice[2][i] = char if (y2:=csa_slice[2][i] != '_') else '_'
         result[0][i]    = char if 1 <= (y0+y1+y2) else '_'
         result[1][i-1]  = char if 1 <  (y0+y1+y2) else '_'
-        char = next(tff)
     return csa_slice, mp.Slice(result)
 
-
-def build_adder(
-    char: str, zeroed_slice: mp.Slice
+# -- [ BUG: Does not carry through leading, single row, bits ] ------ #
+#                                                                     #
+# [ Observed ]                                                        #
+# >>> _aAaAaAaAaAaAaAa || _aAaAaAaAaAaAaAa                            #
+# >>> __AaAaAaAaAa____ ||                                             #
+#                                                                     #
+# [ Expected ]                                                        #
+# >>> _aAaAaAaAaAaAaAa || AaAaAaAaAaAaAaAa                            #
+# >>> __AaAaAaAaAa____ ||                                             #
+#                                                                     #
+def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create Adder template slice with zero initialised slice and chosen char.
     Returns template "slices" for addition and the resulting slice.
-    >>> [slice ] || [adder-] || [result]
+
+    >>> [slice-] || [adder-] || [result]
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________
     """
@@ -67,23 +68,17 @@ def build_adder(
     n           = len(zeroed_slice[0])
     tff         = mp.chartff(char) # Toggle flip flop
     result      = [['_']*n, ['_']*n]
-    adder_slice = copy.copy(zeroed_slice) # ensure no references
+    adder_slice = copy(zeroed_slice) # ensure no references
 
     for i in range(n):
-        # For int, [0, 1], in matrix slice, map possible ADD operands to
-        # template_adder_slice
-        # Then map possible outputs to result:
-        # [ bA + bB = 0b0, 0b1]
-        #
-        # Max bits per calculation = 1, therefore template result is:
-        #
-        # t = AaAa...
-        #
+        # Generates slice of all possible bit placements, represented
+        # with a char. Lower and upper case aide in visualising changes
+        # in bit position before, templates, and after, result, operation
 
+        char = next(tff)
         adder_slice[0][i] = char if (y0:=adder_slice[0][i] != '_') else '_'
         adder_slice[1][i] = char if (y1:=adder_slice[1][i] != '_') else '_'
         result[0][i]      = char if y0 or y1 else '_'
-        char = next(tff)
 
     # Adding final carry
     pre_char = char
@@ -106,12 +101,12 @@ def build_noop(char: str, zeroed_slice: mp.Slice
 
     n          = len(zeroed_slice[0])
     tff        = mp.chartff(char) # Toggle flip flop
-    noop_slice = copy.copy(zeroed_slice) # ensure no references
+    noop_slice = copy(zeroed_slice) # ensure no references
     for i in range(n):
         noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
         char = next(tff)
 
-    return noop_slice, copy.copy(noop_slice) # avoids pointing to same object
+    return noop_slice, copy(noop_slice) # avoids pointing to same object
 
 class Pattern:
     """
@@ -122,8 +117,6 @@ class Pattern:
             raise ValueError("Error: Invalid pattern format. Expected list[char]")
         self.pattern = pattern
         self.bits    = len(pattern)
-
-
 
     def get_runs(self) -> list[tuple[int, int, int]]:
         """
@@ -165,8 +158,7 @@ class Template:
 
     """
 
-    def __init__(self,
-        source: Pattern | list[list[str]], *,
+    def __init__(self, source: Pattern | list[list[str]], *,
         map: Any    = None,
         dadda: bool = False,
         result: Any = None,
@@ -188,7 +180,7 @@ class Template:
                 raise NotImplementedError("Applying maps not implemented")
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, matrix)
+            self.build_from_pattern(self.pattern, deepcopy(matrix))
         elif ischar(source[0][0]):
             self.template = source
             self.pattern  = None
@@ -216,16 +208,14 @@ class Template:
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
     ) -> None:
         """
-        Build a simple template for a given bitwidth based on matrix.
-        Defaults to empty matrix if matrix=None.
-        >>> self.bits = 4
-        >>> build_template(self.pattern)
+        Build a simple template and it's result for a given bitwidth based
+        on matrix. Defaults to empty matrix if matrix=None.
 
-        >>> [matrix] || [pattern]
-        >>> ____AaAa || ['a',
-        >>> ___AaAa_ ||  'a',
-        >>> __BbBb__ ||  'b',
-        >>> _BbBb___ ||  'b']
+        >>> [matrix] || [pattern] || [templ.] [result]
+        >>> ____0000 || [  'a',   || ____AaAa __aAaAaA
+        >>> ___0000_ ||    'a',   || ___AaAa_ ________
+        >>> __0000__ ||    'b',   || __BbBb__ bBbBbB__
+        >>> _0000___ ||    'b'  ] || _BbBb___ ________
         """
 
         # -- sanity check -----------------------------------------------
@@ -287,9 +277,32 @@ class Template:
 
 
 
+def resolve_pattern(matrix: mp.Matrix) -> mp.Pattern:
+    """
+    For a given matrix, progressively allocate CSAs then adders to pattern
+    """
+    from multiplied.core.utils.char import chargen
+    char  = chargen()
+    if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
+        return Pattern([next(char) for _ in range(matrix.bits)])
 
-
-
+    scope = matrix.bits - empty_rows
+    new_pattern = []
+    while 0 < scope:
+        ch = next(char)
+        if 3 <= scope:
+            new_pattern += [ch, ch, ch]
+            scope -= 3
+        elif scope == 2:
+            new_pattern += [ch, ch]
+            scope -= 2
+        elif scope == 1:
+            new_pattern += [ch]
+            scope -= 1
+        else:
+            break
+    new_pattern += [next(char) for _ in range(empty_rows)]
+    return Pattern(new_pattern)
 
 
 

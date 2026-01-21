@@ -5,22 +5,23 @@ A powerful tool to build, test, and analyse multiplier designs.
 
 # Why?
 
-Generating and analysing multiplier designs by hand is labour intensive, even for small datasets, for entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this is close to impossible.
+Generating and analysing multiplier designs by hand is labour intensive, even
+for small datasets, for entire [truth tables](https://en.wikipedia.org/wiki/Truth_table), this is close to impossible.
 
 multiplied is built to streamline:
 
 - Custom partial product reduction via [templates](https://github.com/EphraimCompEng/multiplied/blob/master/docs/structures/templates.md)
-- Generating complete truth tables   
+- Generating complete truth tables
 - Analysis, plotting, and managing datasets
-- Fine-grain access to bits, words or stages 
+- Fine-grain access to bits, words or stages
 
 
 # Documentation
 
-Resouces for usage, general theory and implementations can be found in this repository. 
-For the API Reference head to multiplied's documentation [site](https://ephraimcompeng.github.io/multiplied/) 
+Resouces for usage, general theory and implementations can be found in /docs/.
+For the API Reference head to multiplied's documentation [site](https://ephraimcompeng.github.io/multiplied/)
 
-For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs). 
+For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs).
 
 
 # Setup
@@ -29,6 +30,7 @@ For more information head to [/docs/](https://github.com/EphraimCompEng/multipli
 ```sh
 pip install multiplied
 ```
+
 ```Python
 import multiplied as mp
 ```

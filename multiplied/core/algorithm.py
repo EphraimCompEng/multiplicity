@@ -15,7 +15,6 @@ Algorithm process:
 
 """
 
-from copy import copy
 from typing import Any
 import multiplied as mp
 
@@ -96,7 +95,7 @@ class Algorithm():
 
 
 
-    def push(self, template: mp.Template | mp.Pattern, map: Any = None
+    def push(self, template: mp.Template | mp.Pattern, map_: Any = None
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -110,32 +109,32 @@ class Algorithm():
 
         if not(isinstance(template, (mp.Template, mp.Pattern))):
             raise TypeError("Invalid argument type. Expected mp.Template")
-        if isinstance(template, mp.Pattern):
-            template = mp.Template(template)
         if template.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
-        if map and not(isinstance(map, (mp.Map))):
+        if map_ and not(isinstance(map_, (mp.Map))):
             raise TypeError("Invalid argument type. Expected mp.Map")
 
         # -- [TODO] ------------------------------------------------- #
-        if map and not map.rmap:                                      #
+        if map_ and not map_.rmap:                                    #
             raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
+
+        if isinstance(template, mp.Pattern):
+            template = mp.Template(template)
 
         stage_index = len(self.algorithm)
         result = mp.Matrix(template.result)
 
-        if not map and result:
-            # auto resolve map
-            map = result.resolve_rmap()
-            result.apply_map(map)
+        if not map_ and result:
+            map_ = result.resolve_rmap()
+            result.apply_map(map_)
         else:
-            result.apply_map(map)
+            result.apply_map(map_)
 
         stage = {
             'template': template,
             'pseudo': result,
-            'map': map,
+            'map': map_,
         }
         self.algorithm[stage_index] = stage
 
@@ -162,6 +161,7 @@ class Algorithm():
         """
         ...
 
+
     # Used to automate splitting a matrix into Slice(n * row)
     @classmethod
     def split(cls, matrix: mp.Matrix, rows: int) -> list[mp.Slice]:
@@ -173,49 +173,49 @@ class Algorithm():
         If not enough rows, progress to rows-1 -> row-2 -> ...
         """
 
-        # find non zero rows
+        # > find non zero rows
+        # > formula can be found for progressive allocation
+        empty_rows = mp.empty_rows(matrix)
 
-        x = 0
-        if len(matrix) - (x * rows) < rows:
-            ...
+
+
         ...
 
-    def auto_resolve_pattern(self, pattern: mp.Pattern, matrix: mp.Matrix, *,
-        populate=True,
-        recursive=False,
-    ) -> None | dict:
+    def auto_resolve_stage(self, *, recursive=True,
+    ) -> None:
         """
-        Automatically resolve pattern using matrix form the previous stage to
-        produce a new stage of the algoritm.
+        Automatically resolve pattern using the previous stage and creates
+        a new algoritm stage.
 
         Options:
-            populate: Add stage to algorithm or return stage as dict
-            recursive: Recursively resolve until no partial products remail
+            recursive: Recursively resolve until no partial products remain
         """
 
-        # Recursively resolving patterns require applying a stage's map to
-        # its template:
-        #
-        # > prior_map(prior_template) -> current pseudo_matrix
-        # > pseudo_matrix -> create new_template
-        # > resolve_map(new_template.resultant) -> new_map
-        # > new stage = {map: new_map, matrix: None, template: new_template}
-        #
+        # -- non recursive ------------------------------------------
+        if not self.algorithm:
+            pseudo = self.matrix
+        else:
+            pseudo = self.algorithm[self.len]['pseudo']
+        pattern = mp.resolve_pattern(pseudo)
+        self.push(mp.Template(pattern, matrix=pseudo))
+        if not recursive:
+            return
 
-        # -- apply prior map ----------------------------------------
+        # -- recursive setup ----------------------------------------
+        pseudo = self.algorithm[len(self.algorithm)-1]['pseudo']
+        condition = self.bits-1 != mp.empty_rows(pseudo)
+        if not condition:
+            return
 
-        peek_stage = copy(self.algorithm[len(self.algorithm) - 1])
-        prior_map  = peek_stage['map']
-        if prior_map:
-            prior_template = peek_stage['template']
-            prior_result = mp.Matrix(prior_template.result)
 
-            ...
+        # -- main loop ----------------------------------------------
+        while condition:
 
-        # -- create pseudo_matrix -----------------------------------
+            # Stage generation
+            new_pattern = mp.resolve_pattern(pseudo)
+            self.push(mp.Template(new_pattern, matrix=pseudo))
 
-        # -- create new_template ------------------------------------
-        runs = pattern.get_runs()
-
-        # -- resolve_map --------------------------------------------
-        ...
+            # Condition based on generated stage
+            pseudo      = self.algorithm[len(self.algorithm)-1]['pseudo']
+            condition   = self.bits-1 != mp.empty_rows(pseudo)
+        return

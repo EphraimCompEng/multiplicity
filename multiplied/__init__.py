@@ -21,6 +21,7 @@ from .core.matrix import (
     Matrix,
     Slice,
     build_matrix,
+    empty_rows,
 )
 
 
@@ -29,6 +30,7 @@ from .core.template import (
     Template,
     build_csa,
     build_adder,
+    resolve_pattern,
 )
 
 from .core.algorithm import (
@@ -112,6 +114,7 @@ __all__ = [
     'Matrix',
     'Slice',
     'build_matrix',
+    'empty_rows',
     'Pattern',
     'Template',
     'Algorithm',
@@ -119,6 +122,7 @@ __all__ = [
     'empty_map',
     'build_csa',
     'build_adder',
+    'resolve_pattern',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
@@ -131,19 +135,5 @@ __all__ = [
     'mprint',
     'MP_VERSION',
     'SUPPORTED_BITWIDTHS',
-
-
-
-
-    # 'test_pop_empty_matrix',
-    # 'test_pop_build_matrix',
-    # 'test_pop_agorithm',
-    # 'test_temp_build_csa4',
-    # 'test_temp_build_csa8',
-    # 'test_temp_build_adder4',
-    # 'test_temp_build_adder8',
-    # 'test_to_json4',
-    # 'test_to_json8',
-
 
 ]
