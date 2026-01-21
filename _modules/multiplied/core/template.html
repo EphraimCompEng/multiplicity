@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script defer src="../../../_static/documentation_options.js?v=4621528c"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -174,22 +174,20 @@
 <span class="c1"># Returns Template Objects Using User Patterns #</span>
 <span class="c1">################################################</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils.char</span><span class="w"> </span><span class="kn">import</span> <span class="n">ischar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span><span class="p">,</span><span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 
 
 <div class="viewcode-block" id="build_csa">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.build_csa">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_csa</span><span class="p">(</span>
-    <span class="n">char</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">zeroed_slice</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_csa</span><span class="p">(</span><span class="n">char</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">zeroed_slice</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">mp</span><span class="o">.</span><span class="n">Slice</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span><span class="p">]:</span> <span class="c1"># Carry Save Adder -&gt; (template, result)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create CSA template slice with zero initialised slice and chosen char.</span>
 <span class="sd">    Returns template &quot;slices&quot; for a csa reduction and the resulting slice.</span>
-
 <span class="sd">    &gt;&gt;&gt; [slice-] || [csa---] || [result]</span>
 <span class="sd">    &gt;&gt;&gt; ____0000 || ____AaAa || __AaAaAa</span>
 <span class="sd">    &gt;&gt;&gt; ___0000_ || ___aAaA_ || __aAaA__</span>
@@ -202,38 +200,41 @@
     <span class="n">n</span>         <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">tff</span>       <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">chartff</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="c1"># Toggle flip flop</span>
     <span class="n">result</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
-    <span class="n">csa_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span>
+    <span class="n">csa_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="c1"># For int in template slice, map possible CSA operands to adder_slice</span>
-        <span class="c1"># Then map possible outputs to result</span>
-        <span class="c1"># [ bA + bB + bC = 0b00, 0b01, 0b10 ]</span>
-        <span class="c1">#</span>
-        <span class="c1"># Max bits per calculation = 1, therefore template result is:</span>
-        <span class="c1">#</span>
-        <span class="c1"># t = AaAa...</span>
-        <span class="c1">#    AaAa...</span>
-        <span class="c1">#</span>
-        <span class="c1"># CSA auto maps Cout: FF, see templates/map.py</span>
+        <span class="c1"># Generates slice of all possible bit placements, represented</span>
+        <span class="c1"># with a char. Lower and upper case aide in visualising changes</span>
+        <span class="c1"># in bit position before, templates, and after, result, operation</span>
+
+        <span class="n">char</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tff</span><span class="p">)</span>
         <span class="n">csa_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">y0</span><span class="o">:=</span><span class="n">csa_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">csa_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">y1</span><span class="o">:=</span><span class="n">csa_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">csa_slice</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">y2</span><span class="o">:=</span><span class="n">csa_slice</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>    <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">y0</span><span class="o">+</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="mi">1</span> <span class="o">&lt;</span>  <span class="p">(</span><span class="n">y0</span><span class="o">+</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
-        <span class="n">char</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tff</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">csa_slice</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
 
-
+<span class="c1"># -- [ BUG: Does not carry through leading, single row, bits ] ------ #</span>
+<span class="c1">#                                                                     #</span>
+<span class="c1"># [ Observed ]                                                        #</span>
+<span class="c1"># &gt;&gt;&gt; _aAaAaAaAaAaAaAa || _aAaAaAaAaAaAaAa                            #</span>
+<span class="c1"># &gt;&gt;&gt; __AaAaAaAaAa____ ||                                             #</span>
+<span class="c1">#                                                                     #</span>
+<span class="c1"># [ Expected ]                                                        #</span>
+<span class="c1"># &gt;&gt;&gt; _aAaAaAaAaAaAaAa || AaAaAaAaAaAaAaAa                            #</span>
+<span class="c1"># &gt;&gt;&gt; __AaAaAaAaAa____ ||                                             #</span>
+<span class="c1">#                                                                     #</span>
 <div class="viewcode-block" id="build_adder">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.build_adder">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">build_adder</span><span class="p">(</span>
-    <span class="n">char</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">zeroed_slice</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_adder</span><span class="p">(</span><span class="n">char</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">zeroed_slice</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span> <span class="c1"># ----------------- #</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">mp</span><span class="o">.</span><span class="n">Slice</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Slice</span><span class="p">]:</span> <span class="c1"># Carry Save Adder -&gt; (template, result)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create Adder template slice with zero initialised slice and chosen char.</span>
 <span class="sd">    Returns template &quot;slices&quot; for addition and the resulting slice.</span>
-<span class="sd">    &gt;&gt;&gt; [slice ] || [adder-] || [result]</span>
+
+<span class="sd">    &gt;&gt;&gt; [slice-] || [adder-] || [result]</span>
 <span class="sd">    &gt;&gt;&gt; ___0000_ || ___aAaA_ || _aAaAaA_</span>
 <span class="sd">    &gt;&gt;&gt; __0000__ || __AaAa__ || ________</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -244,23 +245,17 @@
     <span class="n">n</span>           <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">tff</span>         <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">chartff</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="c1"># Toggle flip flop</span>
     <span class="n">result</span>      <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
-    <span class="n">adder_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span> <span class="c1"># ensure no references</span>
+    <span class="n">adder_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span> <span class="c1"># ensure no references</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="c1"># For int, [0, 1], in matrix slice, map possible ADD operands to</span>
-        <span class="c1"># template_adder_slice</span>
-        <span class="c1"># Then map possible outputs to result:</span>
-        <span class="c1"># [ bA + bB = 0b0, 0b1]</span>
-        <span class="c1">#</span>
-        <span class="c1"># Max bits per calculation = 1, therefore template result is:</span>
-        <span class="c1">#</span>
-        <span class="c1"># t = AaAa...</span>
-        <span class="c1">#</span>
+        <span class="c1"># Generates slice of all possible bit placements, represented</span>
+        <span class="c1"># with a char. Lower and upper case aide in visualising changes</span>
+        <span class="c1"># in bit position before, templates, and after, result, operation</span>
 
+        <span class="n">char</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tff</span><span class="p">)</span>
         <span class="n">adder_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">y0</span><span class="o">:=</span><span class="n">adder_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">adder_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">y1</span><span class="o">:=</span><span class="n">adder_slice</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>      <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="n">y0</span> <span class="ow">or</span> <span class="n">y1</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
-        <span class="n">char</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tff</span><span class="p">)</span>
 
     <span class="c1"># Adding final carry</span>
     <span class="n">pre_char</span> <span class="o">=</span> <span class="n">char</span>
@@ -286,12 +281,12 @@
 
     <span class="n">n</span>          <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">tff</span>        <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">chartff</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="c1"># Toggle flip flop</span>
-    <span class="n">noop_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span> <span class="c1"># ensure no references</span>
+    <span class="n">noop_slice</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">zeroed_slice</span><span class="p">)</span> <span class="c1"># ensure no references</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">noop_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">char</span> <span class="k">if</span> <span class="p">(</span><span class="n">noop_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;_&#39;</span>
         <span class="n">char</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tff</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">noop_slice</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">noop_slice</span><span class="p">)</span> <span class="c1"># avoids pointing to same object</span></div>
+    <span class="k">return</span> <span class="n">noop_slice</span><span class="p">,</span> <span class="n">copy</span><span class="p">(</span><span class="n">noop_slice</span><span class="p">)</span> <span class="c1"># avoids pointing to same object</span></div>
 
 
 <div class="viewcode-block" id="Pattern">
@@ -305,8 +300,6 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error: Invalid pattern format. Expected list[char]&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bits</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-
-
 
 <div class="viewcode-block" id="Pattern.get_runs">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Pattern.get_runs">[docs]</a>
@@ -354,8 +347,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="n">Pattern</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Pattern</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span>
         <span class="nb">map</span><span class="p">:</span> <span class="n">Any</span>    <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dadda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -377,7 +369,7 @@
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Applying maps not implemented&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">matrix</span><span class="p">:</span>
                 <span class="n">matrix</span> <span class="o">=</span>  <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">build_from_pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">build_from_pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">ischar</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">source</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>  <span class="o">=</span> <span class="kc">None</span>
@@ -410,16 +402,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">build_from_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Build a simple template for a given bitwidth based on matrix.</span>
-<span class="sd">        Defaults to empty matrix if matrix=None.</span>
-<span class="sd">        &gt;&gt;&gt; self.bits = 4</span>
-<span class="sd">        &gt;&gt;&gt; build_template(self.pattern)</span>
+<span class="sd">        Build a simple template and it&#39;s result for a given bitwidth based</span>
+<span class="sd">        on matrix. Defaults to empty matrix if matrix=None.</span>
 
-<span class="sd">        &gt;&gt;&gt; [matrix] || [pattern]</span>
-<span class="sd">        &gt;&gt;&gt; ____AaAa || [&#39;a&#39;,</span>
-<span class="sd">        &gt;&gt;&gt; ___AaAa_ ||  &#39;a&#39;,</span>
-<span class="sd">        &gt;&gt;&gt; __BbBb__ ||  &#39;b&#39;,</span>
-<span class="sd">        &gt;&gt;&gt; _BbBb___ ||  &#39;b&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; [matrix] || [pattern] || [templ.] [result]</span>
+<span class="sd">        &gt;&gt;&gt; ____0000 || [  &#39;a&#39;,   || ____AaAa __aAaAaA</span>
+<span class="sd">        &gt;&gt;&gt; ___0000_ ||    &#39;a&#39;,   || ___AaAa_ ________</span>
+<span class="sd">        &gt;&gt;&gt; __0000__ ||    &#39;b&#39;,   || __BbBb__ bBbBbB__</span>
+<span class="sd">        &gt;&gt;&gt; _0000___ ||    &#39;b&#39;  ] || _BbBb___ ________</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># -- sanity check -----------------------------------------------</span>
@@ -486,8 +476,34 @@
 
 
 
+<div class="viewcode-block" id="resolve_pattern">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.resolve_pattern">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_pattern</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pattern</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For a given matrix, progressively allocate CSAs then adders to pattern</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">multiplied.core.utils.char</span><span class="w"> </span><span class="kn">import</span> <span class="n">chargen</span>
+    <span class="n">char</span>  <span class="o">=</span> <span class="n">chargen</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">empty_rows</span> <span class="o">:=</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_rows</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span> <span class="o">==</span> <span class="n">matrix</span><span class="o">.</span><span class="n">bits</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Pattern</span><span class="p">([</span><span class="nb">next</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">bits</span><span class="p">)])</span>
 
-
+    <span class="n">scope</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">bits</span> <span class="o">-</span> <span class="n">empty_rows</span>
+    <span class="n">new_pattern</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">scope</span><span class="p">:</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="mi">3</span> <span class="o">&lt;=</span> <span class="n">scope</span><span class="p">:</span>
+            <span class="n">new_pattern</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ch</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span>
+            <span class="n">scope</span> <span class="o">-=</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">scope</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">new_pattern</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ch</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span>
+            <span class="n">scope</span> <span class="o">-=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">scope</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_pattern</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+            <span class="n">scope</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">new_pattern</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">empty_rows</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">Pattern</span><span class="p">(</span><span class="n">new_pattern</span><span class="p">)</span></div>
 
 
 

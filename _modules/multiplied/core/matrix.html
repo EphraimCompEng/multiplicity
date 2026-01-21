@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script defer src="../../../_static/documentation_options.js?v=4621528c"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -352,10 +352,6 @@
 </div>
 
 
-
-
-
-
 <div class="viewcode-block" id="build_matrix">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.build_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_matrix</span><span class="p">(</span><span class="n">operand_a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">operand_b</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span><span class="o">*</span><span class="p">,</span> <span class="n">bits</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Matrix</span><span class="p">:</span>
@@ -380,6 +376,16 @@
         <span class="k">elif</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
             <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;_&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">bits</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="empty_rows">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.empty_rows">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">empty_rows</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected Matrix, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">empty_row</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="o">*</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">empty_row</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="p">)])</span></div>
 
 </pre></div>
 </article><footer class="bz-article-footer">
