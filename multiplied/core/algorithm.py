@@ -15,6 +15,7 @@ Algorithm process:
 
 """
 
+from typing import Any
 import multiplied as mp
 
 class Algorithm():
@@ -108,8 +109,6 @@ class Algorithm():
 
         if not(isinstance(template, (mp.Template, mp.Pattern))):
             raise TypeError("Invalid argument type. Expected mp.Template")
-        if isinstance(template, mp.Pattern):
-            template = mp.Template(template)
         if template.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
         if map_ and not(isinstance(map_, (mp.Map))):
@@ -120,11 +119,13 @@ class Algorithm():
             raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
 
+        if isinstance(template, mp.Pattern):
+            template = mp.Template(template)
+
         stage_index = len(self.algorithm)
         result = mp.Matrix(template.result)
 
         if not map_ and result:
-            # auto resolve map_
             map_ = result.resolve_rmap()
             result.apply_map(map_)
         else:
