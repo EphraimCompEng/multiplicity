@@ -1,26 +1,9 @@
-
+###################################################
 # Work towards a more elegant solution to testing #
-
+###################################################
 import multiplied as mp
 
 
-"""temp note:
-
-Just realised that build_csa and build_adder are auto-resolving the
-correct csa grouping/adder length. A function that can split a matrix
-into slices, optimising for 3 layer sices, will amount to completing
-the Algorithm class.
-
-Algorithm process:
-0: Generate logical AND matrix
-1: split matrix
-2: apply template, update state
-3: generate result
-4: optionally apply map
-5: update matrix
-6: GOTO 1:
-
-"""
 def test_temp_build_csa4() -> None:
     matrix4  = mp.Matrix(4)
     slice  = mp.Matrix(4)
@@ -49,7 +32,7 @@ def test_temp_build_adder4() -> None:
 
 def test_temp_build_adder8() -> None:
     matrix4 = mp.Matrix(8)
-    slice = mp.Matrix(8)[:2]
+    slice = mp.Matrix(8)[4:6]
     my_slice = mp.build_adder('a', slice)
     mp.mprint(matrix4)
     mp.mprint(my_slice[0])
@@ -95,6 +78,7 @@ def main() -> None:
     test_build_from_pattern()
     test_resolve_rmap()
     test_resolve_pattern()
+
 
 if __name__ == "__main__":
     main()
