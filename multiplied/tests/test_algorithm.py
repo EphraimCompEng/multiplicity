@@ -66,7 +66,7 @@ def test_auto_resolve_recursive_partial() -> None:
 
 
 def main():
-    # test_auto_resolve_single_4()
+    test_auto_resolve_single_4()
     test_auto_resolve_recursive_full()
 
 if __name__ == "__main__":
