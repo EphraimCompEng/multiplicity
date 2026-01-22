@@ -34,7 +34,8 @@ from .core.template import (
 )
 
 from .core.algorithm import (
-    Algorithm
+    Algorithm,
+    isolate_arithmetic_units,
 )
 
 from .core.truth import (
@@ -119,6 +120,7 @@ __all__ = [
     'Pattern',
     'Template',
     'Algorithm',
+    'isolate_arithmetic_units',
     'build_dadda_map',
     'empty_map',
     'build_csa',

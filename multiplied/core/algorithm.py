@@ -37,6 +37,8 @@ class Algorithm():
 
 
     def __init__(self, matrix: mp.Matrix) -> None:
+        if not isinstance(matrix, mp.Matrix):
+            raise TypeError(f"Expected Matrix, got {type(matrix)}")
         self.bits      = len(matrix)
         self.state     = 0
         self.matrix    = matrix
@@ -55,13 +57,13 @@ class Algorithm():
         return self.algorithm[index]
 
     def __iter__(self):
-        return iter(self.algorithm)
+        return iter(self.algorithm.items())
 
     def __next__(self):
-        if self.index >= self.bits:
+        if self.index >= len(self.algorithm):
             raise StopIteration
         self.index += 1
-        return self.algorithm[self.index - 1]
+        return dict(self.algorithm[self.index - 1])
 
 
 
@@ -141,22 +143,12 @@ class Algorithm():
 
         # -- partition ----------------------------------------------
 
-        # all_chars = set(set(row) for all rows) ?
-        # partition_table = {ch:[] for ch in all_chars}
-        # for row in rows:
-        #
-        #   for char in chars:
-        #       i = 0
-        #       partition_row = []
-        #       while char != row[i]:
-        #           partition_row.append('_')
-        #           i+=1
-        #       while char == row[i]:
-        #           partition_row.append('_')
-        #           i+=1
-        #       n = len(partition_row)
-        #       partition_row += ['_' for _ in range(self.bits - n)]
-        #
+
+
+
+
+
+        # -- apply partition ----------------------------------------
 
 
         # -- CSA ----------------------------------------------------
@@ -174,7 +166,7 @@ class Algorithm():
         """
         Take template[internal_state], apply to matrix, advance internal_state
         """
-        ...
+
 
     def exec(self,):
         """
@@ -226,3 +218,44 @@ class Algorithm():
             pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
             condition = self.bits-1 != mp.empty_rows(pseudo)
         return
+
+
+
+
+# -- helper functions ----------------------------------------------- #
+
+
+
+def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
+    """
+    Isolate arithmetic units into a list seperate templates.
+    """
+
+    if not isinstance(matrix, mp.Template):
+        raise TypeError(f"Expected type Template got {type(matrix)}")
+
+    allchars = mp.allchars(matrix.template)
+    arithmetic_units = []
+    for char in allchars:
+        row = 0
+        unit = []
+
+        # -- skip rows not containing char ------------------
+        while row < matrix.bits:
+            if char not in matrix.template[row]:
+                unit[row] = ['_' for _ in range(matrix.bits)]
+                row += 1
+            break
+
+        # -- extract unit(s) --------------------------------
+        while char in matrix.template[row] and row < matrix.bits:
+            unit[row] = [char if char == b else '_' for b in matrix.template[row]]
+            row += 1
+
+        # -- fill remaining rows ----------------------------
+        for _ in range(matrix.bits-row):
+            unit[row] = ['_' for _ in range(matrix.bits)]
+            row += 1
+
+        arithmetic_units.append(mp.Template(unit))
+    return arithmetic_units
