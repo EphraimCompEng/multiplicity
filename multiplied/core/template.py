@@ -281,18 +281,18 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     scope = matrix.bits - empty_rows
     new_pattern = []
     while 0 < scope:
-        ch = next(char)
+        ch  = next(char)
+        n   = len(new_pattern)
+
         if 3 <= scope:
             new_pattern += [ch, ch, ch]
-            scope -= 3
-        elif scope == 2:
+        elif 2 == scope:
             new_pattern += [ch, ch]
-            scope -= 2
-        elif scope == 1:
+        elif 1 == scope:
             new_pattern += [ch]
-            scope -= 1
-        else:
-            break
+
+        scope -= len(new_pattern) - n
+
     new_pattern += [next(char) for _ in range(empty_rows)]
     return Pattern(new_pattern)
 
