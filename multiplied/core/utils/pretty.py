@@ -53,7 +53,7 @@ def pretty_dict(listy_dict: Any) -> str:
         for item_, list_ in value.items():
             # -- Conflicted feelings about adding whitespaces ----------------------------
             if isinstance(list_, Map):
-                pretty.write(f"\n{item_}:'\n\n{pretty_nested_list(list_, whitespace=True)}"+'}\n')
+                pretty.write(f"\n{item_}:\n\n{pretty_nested_list(list_, whitespace=True)}"+'}\n')
                 continue
             pretty.write(f"\n{item_}:\n\n{str(list_)}"+'}\n')
     return pretty.getvalue()
