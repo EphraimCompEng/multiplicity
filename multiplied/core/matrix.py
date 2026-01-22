@@ -19,7 +19,6 @@ class Slice:
                 f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
         self.slice = matrix if isinstance(matrix[0], list) else [matrix]
-        self.index  = 0
 
     # TODO:: look into overloads for accurate type usage
     #
@@ -50,10 +49,10 @@ class Slice:
         return iter(self.slice)
 
     def __next__(self):
-        if self._index >= len(self.slice):
+        if self.index >= len(self.slice):
             raise StopIteration
-        self._index += 1
-        return self.slice[self._index - 1]
+        self.index += 1
+        return self.slice[self.index - 1]
 
 
 
@@ -125,12 +124,11 @@ class Matrix:
         return iter(self.matrix)
 
     def __next__(self):
-        if self._index >= self.bits:
+        if self.index >= self.bits:
             raise StopIteration
-        self._index += 1
-        return self.matrix[self._index - 1]
+        self.index += 1
+        return self.matrix[self.index - 1]
 
-    # TODO: Defaults to bottom unless reversed=True.
     def resolve_rmap(self, *, ignore_zeros: bool=True
     ) -> mp.Map:
         """
