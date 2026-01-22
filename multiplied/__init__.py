@@ -50,6 +50,7 @@ from .core.utils.char import (
     ischar,
     chargen,
     chartff,
+    allchars,
 )
 
 
@@ -131,6 +132,7 @@ __all__ = [
     'ischar',
     'chargen',
     'chartff',
+    'allchars',
     'pretty',
     'mprint',
     'MP_VERSION',

@@ -40,3 +40,14 @@ def chartff(ch: str) -> Generator[str]:
             yield ch.lower()
         else:
             yield ch.upper()
+
+def allchars(matrix: list[list[str]]) -> set[str]:
+    """
+    Generate all unique characters from a matrix.
+
+    >>> allchars([['A', 'B'], ['C', 'D']])
+    {'A', 'B', 'C', 'D'}
+    """
+    if not isinstance(matrix, list) or not all([isinstance(row, list) for row in matrix]):
+        raise TypeError("Input must be a list of lists")
+    return set(ch for row in matrix for ch in row)
