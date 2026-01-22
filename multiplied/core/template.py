@@ -76,7 +76,6 @@ def build_adder(char: str, source_slice: mp.Slice
     # find index of left most instance of char, regardless of case
     index = min(result[0].index(next(tff)), result[0].index(next(tff)))
     if carry and 0 < index:
-        print(index)
         result[0][index-1] = next(tff) # Final carry place in result template
 
     return adder_slice, mp.Slice(result)
