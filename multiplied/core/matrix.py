@@ -151,20 +151,29 @@ class Matrix:
         return mp.Map(rmap)
 
     def apply_map(self, map_: mp.Map) -> None:
+        """
+        """
         if not isinstance(map_, mp.Map):
             raise TypeError(f"Expected Map, got {type(map_)}")
         if map_.bits != self.bits:
-            raise ValueError(f"Map bitwidth {map_.bits} does not match matrix bitwidth {self.bits}")
+            raise ValueError(
+                f"Map bitwidth {map_.bits} does not match matrix bitwidth {self.bits}"
+            )
+
+        # -- row-wise mapping ---------------------------------------
         if rmap := map_.rmap:
             temp_matrix = build_matrix(0, 0, bits=self.bits).matrix
             for i in range(self.bits):
-                if ((val := int(rmap[i], 16)) & 128) and rmap[i] != '00': # -ve 2-bit hex value
-                    val = (val ^ 255 + 1) - 512 # 2s complement
+                # convert signed hex to 2s complement
+                if ((val := int(rmap[i], 16)) & 128):
+                    val = (~val + 1) & 255 # 2s complement
                 temp_matrix[i]     = ["_" for _ in range(self.bits*2)]
-                temp_matrix[i+val] = self.matrix[i]
+                temp_matrix[i-val] = self.matrix[i]
             self.matrix = temp_matrix
-        else:
-            raise NotImplementedError("Complex mapping not implemented")
+            return
+
+        # -- bit-wise mapping ---------------------------------------
+        raise NotImplementedError("Complex mapping not implemented")
 
 def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
