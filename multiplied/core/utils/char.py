@@ -51,6 +51,9 @@ def allchars(matrix: list[list[str]]) -> set[str]:
     """
     if not isinstance(matrix, list) or not all([isinstance(row, list) for row in matrix]):
         raise TypeError("Input must be a list of lists")
+
+    # By no means efficient, but gets the job done. This maybe fully intergrated
+    # into __reduce()
     chars = set(ch for row in matrix for ch in row)
     chars.remove('_')
     return set(ch.upper() for ch in chars)
