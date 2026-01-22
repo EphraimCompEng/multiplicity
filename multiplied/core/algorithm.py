@@ -115,7 +115,7 @@ class Algorithm():
 
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
-    def __reduce(self):
+    def __reduce(self) -> None:
         """
         use template or pattern to reduce a given matrix.
         """
@@ -139,7 +139,36 @@ class Algorithm():
         #   ...00110110... | ...01100000...
         #   ...00101010... | ...________...
 
+        # -- partition ----------------------------------------------
+
+        # all_chars = set(set(row) for all rows) ?
+        # partition_table = {ch:[] for ch in all_chars}
+        # for row in rows:
+        #
+        #   for char in chars:
+        #       i = 0
+        #       partition_row = []
+        #       while char != row[i]:
+        #           partition_row.append('_')
+        #           i+=1
+        #       while char == row[i]:
+        #           partition_row.append('_')
+        #           i+=1
+        #       n = len(partition_row)
+        #       partition_row += ['_' for _ in range(self.bits - n)]
+        #
+
+
+        # -- CSA ----------------------------------------------------
+
+
+
+        # -- ADD ----------------------------------------------------
+
+
+
         ...
+
 
     def step(self, matrix: mp.Matrix) -> None:
         """
