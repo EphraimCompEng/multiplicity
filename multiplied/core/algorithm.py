@@ -43,7 +43,6 @@ class Algorithm():
         self.algorithm = {}
         self.len       = len(self.algorithm)
         self.stage     = self.algorithm[self.state] if self.len > 0 else None
-        self._index    = 0
 
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
@@ -59,39 +58,12 @@ class Algorithm():
         return iter(self.algorithm)
 
     def __next__(self):
-        if self._index >= self.bits:
+        if self.index >= self.bits:
             raise StopIteration
-        self._index += 1
-        return self.algorithm[self._index - 1]
+        self.index += 1
+        return self.algorithm[self.index - 1]
 
 
-    # Mangled as execution order is sensitive and __reduce should only
-    # be called by the algorithm itself via: self.step(), or self.exec()
-    def __reduce(self):
-        """
-        use template or pattern to reduce a given matrix.
-        """
-
-        # -- pattern implementation ---------------------------------
-        #
-        # For a given 'run', the length of that run will determine
-        # the height for which to count 1s in a given column:
-        #
-        # run = 3 := CSA; carry by placing bit left of source column
-        # (bit will be placed one row below source row for visual sugar)
-        #
-        #   [input--------] | [output-------]
-        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
-        #   .. |0|0|1|1| .. | .. |1|1|1|0| ..
-        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
-        #   .. |1|1|1|0| .. | .. |0|1|1|?| ..
-        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
-        #   .. |0|1|1|1| .. | .. |0|0|0|0| ..
-        #   ..-+-+-+-+-+-.. | ..-+-+-+-+-+-..
-
-        # --
-
-        ...
 
 
 
@@ -138,10 +110,36 @@ class Algorithm():
         }
         self.algorithm[stage_index] = stage
 
+        return
 
 
-    # def truth(self, matrix: mp.Matrix, template: mp.Template) -> None:
-    #     ...
+    # Mangled as execution order is sensitive and __reduce should only
+    # be called by the algorithm itself via: self.step(), or self.exec()
+    def __reduce(self):
+        """
+        use template or pattern to reduce a given matrix.
+        """
+
+        # -- pattern implementation ---------------------------------
+        #
+        # For a given 'run', the length of that run will determine
+        # the height for which to count 1s in a given column:
+        #
+        # run = 3 := CSA; carry is placed to the left of source column
+        # and one row down to avoid corrupting adjacent columns
+        #
+        #   [input-------] | [output------]
+        #   ...00100010... | ...00100010...
+        #   ...00101010... | ...01010100...
+        #   ...00101010... | ...________...
+        #
+        # run = 2 := binary addition; carry generates through propagates
+        #
+        #   [input-------] | [output------]
+        #   ...00110110... | ...01100000...
+        #   ...00101010... | ...________...
+
+        ...
 
     def step(self, matrix: mp.Matrix) -> None:
         """
@@ -161,25 +159,6 @@ class Algorithm():
         """
         ...
 
-
-    # Used to automate splitting a matrix into Slice(n * row)
-    @classmethod
-    def split(cls, matrix: mp.Matrix, rows: int) -> list[mp.Slice]:
-        """
-        Returns list of slices via progressive allocation. Used to automate
-        slicing a matrix into (Slice(n * row) * k), then splitting remainder.
-
-        Append n contiguous slices of matrix to list, each containing x rows.
-        If not enough rows, progress to rows-1 -> row-2 -> ...
-        """
-
-        # > find non zero rows
-        # > formula can be found for progressive allocation
-        empty_rows = mp.empty_rows(matrix)
-
-
-
-        ...
 
     def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
@@ -202,11 +181,10 @@ class Algorithm():
             return
 
         # -- recursive setup ----------------------------------------
-        pseudo = self.algorithm[len(self.algorithm)-1]['pseudo']
+        pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
         condition = self.bits-1 != mp.empty_rows(pseudo)
         if not condition:
             return
-
 
         # -- main loop ----------------------------------------------
         while condition:
@@ -216,6 +194,6 @@ class Algorithm():
             self.push(mp.Template(new_pattern, matrix=pseudo))
 
             # Condition based on generated stage
-            pseudo      = self.algorithm[len(self.algorithm)-1]['pseudo']
-            condition   = self.bits-1 != mp.empty_rows(pseudo)
+            pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
+            condition = self.bits-1 != mp.empty_rows(pseudo)
         return
