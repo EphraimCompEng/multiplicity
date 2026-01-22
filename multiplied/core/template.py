@@ -41,17 +41,7 @@ def build_csa(char: str, zeroed_slice: mp.Slice
         result[1][i-1]  = char if 1 <  (y0+y1+y2) else '_'
     return csa_slice, mp.Slice(result)
 
-# -- [ BUG: Does not carry through leading, single row, bits ] ------ #
-#                                                                     #
-# [ Observed ]                                                        #
-# >>> _aAaAaAaAaAaAaAa || _aAaAaAaAaAaAaAa                            #
-# >>> __AaAaAaAaAa____ ||                                             #
-#                                                                     #
-# [ Expected ]                                                        #
-# >>> _aAaAaAaAaAaAaAa || AaAaAaAaAaAaAaAa                            #
-# >>> __AaAaAaAaAa____ ||                                             #
-#                                                                     #
-def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
+def build_adder(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create Adder template slice with zero initialised slice and chosen char.
@@ -61,18 +51,18 @@ def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________
     """
-    if len(zeroed_slice) != 2:
+    if len(source_slice) != 2:
         raise ValueError("Invalid template slice: must be 2 rows")
 
     # loop setup
-    n           = len(zeroed_slice[0])
+    n           = len(source_slice[0])
     tff         = mp.chartff(char) # Toggle flip flop
     result      = [['_']*n, ['_']*n]
-    adder_slice = copy(zeroed_slice) # ensure no references
+    adder_slice = copy(source_slice) # ensure no references
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
-        # with a char. Lower and upper case aide in visualising changes
+        # with a char. Alternating char case aids in visualising changes
         # in bit position before, templates, and after, result, operation
 
         char = next(tff)
@@ -80,15 +70,18 @@ def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
         adder_slice[1][i] = char if (y1:=adder_slice[1][i] != '_') else '_'
         result[0][i]      = char if y0 or y1 else '_'
 
-    # Adding final carry
-    pre_char = char
-    char     = next(tff)
-    index    = result[0].index(char)-1 # find first instance of char - 1
-    result[0][index] = pre_char # Final carry place in result template
+    # -- Add final carry -----------------------------------------
+    carry = not all(ch == '_' for ch in adder_slice[1]) # sanity check
+
+    # find index of left most instance of char, regardless of case
+    index = min(result[0].index(next(tff)), result[0].index(next(tff)))
+    if carry and 0 < index:
+        print(index)
+        result[0][index-1] = next(tff) # Final carry place in result template
 
     return adder_slice, mp.Slice(result)
 
-def build_noop(char: str, zeroed_slice: mp.Slice
+def build_noop(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]:
     """
     Create a No-op template slice with zero initialised slice and chosen char.
@@ -96,15 +89,14 @@ def build_noop(char: str, zeroed_slice: mp.Slice
     >>> [slice-] || [noop--] || [result]
     >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
-    if len(zeroed_slice) != 1:
+    if len(source_slice) != 1:
         raise ValueError("Invalid template slice: must be 1 rows")
 
-    n          = len(zeroed_slice[0])
+    n          = len(source_slice[0])
     tff        = mp.chartff(char) # Toggle flip flop
-    noop_slice = copy(zeroed_slice) # ensure no references
+    noop_slice = copy(source_slice) # ensure no references
     for i in range(n):
-        noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
-        char = next(tff)
+        noop_slice[0][i] = next(tff) if (noop_slice[0][i] != '_') else '_'
 
     return noop_slice, copy(noop_slice) # avoids pointing to same object
 
@@ -218,7 +210,7 @@ class Template:
         >>> _0000___ ||    'b'  ] || _BbBb___ ________
         """
 
-        # -- sanity check -----------------------------------------------
+        # -- sanity check -------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
         if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
@@ -226,7 +218,7 @@ class Template:
                 f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
 
-        # -- find run ---------------------------------------------------
+        # -- find run -----------------------------------------------
         template_slices = {}
         i = 1
         while i < len(pattern)+1:
