@@ -1,7 +1,8 @@
 from copy import copy
 from typing import Any
-
 from multiplied import Matrix, Slice, Map, Algorithm
+import io
+
 
 
 def pretty(listy_object: Any) -> str:
@@ -39,20 +40,25 @@ def pretty_dict(listy_dict: Any) -> str:
     >>>  1: [[a, _, _],[_, b, _],[_, _, c]],
     >>>  2: [[x, y, z],[x, y, z],[x, y, z]]}
     0:
-      1__
-      _2_
-      __3
+
+    1__
+    _2_
+    __3
     ...
     """
-    pretty_ = ""
-    for key, value in listy_dict.items():
-        pretty_ += f"\n{key}:"+'{\n'
-        for item_, list_ in value.items():
-            pretty_ += f"{item_}:\n\n{str(list_)}\n"
-        pretty_ += '}'
-    return pretty_
 
-def pretty_nested_list(listy_object: Any, whitespace=False) -> str:
+    pretty = io.StringIO()
+    for key, value in listy_dict.items():
+        pretty.write(f"\n{key}:"+'{\n')
+        for item_, list_ in value.items():
+            # -- Conflicted feelings about adding whitespaces ----------------------------
+            if isinstance(list_, Map):
+                pretty.write(f"\n{item_}:'\n\n{pretty_nested_list(list_, whitespace=True)}"+'}\n')
+                continue
+            pretty.write(f"\n{item_}:\n\n{str(list_)}"+'}\n')
+    return pretty.getvalue()
+
+def pretty_nested_list(listy_object: Any, *, whitespace=False) -> str:
     """
     Format nested list as a string:
 
@@ -62,11 +68,11 @@ def pretty_nested_list(listy_object: Any, whitespace=False) -> str:
     __3
     """
     whitespace = " " if whitespace else ""
-    pretty_ = ""
+    pretty = io.StringIO()
     for i in copy(listy_object):
         row = [str(x) + whitespace for x in i]
-        pretty_ += "".join(row) + "\n"
-    return pretty_
+        pretty.write("".join(row) + "\n")
+    return pretty.getvalue()
 
 def mprint(matrix: Any):
     """Wrapper for print(mp.pretty)"""
