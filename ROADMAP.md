@@ -12,7 +12,7 @@ Matrix which are then subsequesntly reduced by templates.
 - [x] Simple reduction
 - [ ] Complex reduction
 - [x] Simple row map
-- [ ] Complete map matrix
+- [ ] Complex map matrix
 - [ ] Algorithm.state and .step()
 
 ## Algorithm
