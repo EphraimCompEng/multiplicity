@@ -24,6 +24,8 @@ def test_step() -> None:
         'b',
     ])
     alg = mp.Algorithm(m)
+    alg.push(p)
+    alg.step()
 
     print(alg)
 
