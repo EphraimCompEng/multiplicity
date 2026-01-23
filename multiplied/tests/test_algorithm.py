@@ -50,12 +50,13 @@ def test_manual_population_8() -> None:
     p = mp.Pattern(['a','a','b','b','c','c','d','d'])
     alg = mp.Algorithm(m)
     alg.push(p)
+    print(alg)
     # alg.auto_resolve_pattern(p, m)
     t2 = mp.Template(mp.Pattern(['a','a','b','b','c','d','e','f']), matrix=alg.algorithm[0]['pseudo'])
     alg.push(t2)
     t3 = mp.Template(mp.Pattern(['a','a','b','c','d','e','f', 'g']), matrix=alg.algorithm[1]['pseudo'])
     alg.push(t3)
-    print(alg)
+    # print(alg)
 
 
 def test_auto_resolve_recursive_full() -> None:
@@ -73,9 +74,15 @@ def test_isolate_arithmetic_units() -> None:
     print(isolated_units)
 
 def main():
-    test_manual_population_8()
-    test_auto_resolve_recursive_full()
+    # test_manual_population_8()
+    # test_auto_resolve_recursive_full()
     # test_isolate_arithmetic_units()
+    m = mp.Matrix(8)
+    p = mp.Pattern(['a','a','b','b','c','c','d','d'])
+    alg = mp.Algorithm(m)
+    alg.push(p)
+    alg.auto_resolve_stage()
+    print(alg)
 
 if __name__ == "__main__":
     main()
