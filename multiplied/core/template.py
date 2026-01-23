@@ -319,7 +319,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     from multiplied.core.utils.char import chargen
     char  = chargen()
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
-        return Pattern([next(char) for _ in range(matrix.bits)])
+        return Pattern(['_' for _ in range(matrix.bits)])
 
     scope = matrix.bits - empty_rows
     new_pattern = []
@@ -336,7 +336,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
 
         scope -= len(new_pattern) - n
 
-    new_pattern += [next(char) for _ in range(empty_rows)]
+    new_pattern += ['_' for _ in range(empty_rows)]
     return Pattern(new_pattern)
 
 
