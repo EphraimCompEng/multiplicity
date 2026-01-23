@@ -1,6 +1,20 @@
 import multiplied as mp
 
 
+
+def gen_resources(bits: int, *, a=0, b=0
+) -> tuple[mp.Matrix, mp.Pattern, mp.Algorithm]:
+    m = mp.Matrix(bits)
+    match bits:
+        case 4:
+            p = mp.Pattern(['a','a','b','b',])
+        case 8:
+            p = mp.Pattern(['a','a','a','b','b','b','c','d'])
+        case _:
+            raise ValueError(f"Unsupported number of bits: {bits}")
+    alg = mp.Algorithm(m)
+    return m, p, alg
+
 def test_step() -> None:
     m = mp.Matrix(4, a=5, b=4)
     p = mp.Pattern([
@@ -52,22 +66,23 @@ def test_auto_resolve_single_8() -> None:
 
 
 def test_auto_resolve_recursive_full() -> None:
-    m   = mp.Matrix(4, a=5, b=7)
-    alg = mp.Algorithm(m)
+    m, p, alg = gen_resources(4, a= 6, b=7)
     alg.auto_resolve_stage()
-    # print(alg)
-    m2   = mp.Matrix(8, a=5, b=7)
-    alg2 = mp.Algorithm(m2)
+    print(alg)
+
+    m, p, alg2 = gen_resources(8, a=12, b=42)
     alg2.auto_resolve_stage()
     print(alg2)
 
-def test_auto_resolve_recursive_partial() -> None:
-    ...
-
+def test_isolate_arithmetic_units() -> None:
+    template = mp.Template(mp.Pattern(['a','a','b','c']), matrix=mp.Matrix(4))
+    isolated_units = mp.isolate_arithmetic_units(template)
+    print(isolated_units)
 
 def main():
     # test_auto_resolve_single_4()
-    test_auto_resolve_recursive_full()
+    # test_auto_resolve_recursive_full()
+    test_isolate_arithmetic_units()
 
 if __name__ == "__main__":
     main()
