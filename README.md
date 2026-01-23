@@ -2,7 +2,6 @@
 
 A powerful tool to build, test, and analyse multiplier designs.
 
-
 ## Why?
 
 Generating and analysing multiplier designs by hand is labour intensive, even
@@ -15,9 +14,7 @@ multiplied is built to streamline:
 - Analysis, plotting, and managing datasets
 - Fine-grain access to bits, words or stages
 
-
 ## Setup
-
 
 ```sh
 pip install multiplied
@@ -27,7 +24,7 @@ pip install multiplied
 import multiplied as mp
 ```
 
-## Pattern Based Algorithm 
+## Pattern Based Algorithm
 
 Multiplied assists in template generation to create reusable algorithm objects:
 
