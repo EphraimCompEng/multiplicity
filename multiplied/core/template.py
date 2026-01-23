@@ -2,14 +2,14 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
-from .utils.char import ischar
-from copy import copy,deepcopy
+from copy import copy
 from typing import Any
+from .utils.char import ischar
 import multiplied as mp
 
 
 
-def build_csa(char: str, zeroed_slice: mp.Slice
+def build_csa(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create CSA template slice with zero initialised slice and chosen char.
@@ -19,14 +19,18 @@ def build_csa(char: str, zeroed_slice: mp.Slice
     >>> ___0000_ || ___aAaA_ || __aAaA__
     >>> __0000__ || __AaAa__ || ________
     """
-    if len(zeroed_slice) != 3:
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+    if len(source_slice) != 3:
         raise ValueError("Invalid template slice: must be 3 rows")
 
     # loop setup
-    n         = len(zeroed_slice[0])
+    n         = len(source_slice[0])
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
-    csa_slice = copy(zeroed_slice)
+    csa_slice = copy(source_slice)
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
@@ -51,6 +55,10 @@ def build_adder(char: str, source_slice: mp.Slice
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________
     """
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
     if len(source_slice) != 2:
         raise ValueError("Invalid template slice: must be 2 rows")
 
@@ -88,6 +96,10 @@ def build_noop(char: str, source_slice: mp.Slice
     >>> [slice-] || [noop--] || [result]
     >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
     if len(source_slice) != 1:
         raise ValueError("Invalid template slice: must be 1 rows")
 
@@ -165,6 +177,8 @@ class Template:
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
         if isinstance(source, Pattern):
+            from copy import deepcopy
+
             self.pattern  = source
             if dadda:
                 # TODO
@@ -219,10 +233,12 @@ class Template:
 
         # -- find run -----------------------------------------------
         template_slices = {}
+        empty_row = ['_' for _ in range(matrix.bits)]
         i = 1
         while i < len(pattern)+1:
             run = 1
             while i < len(pattern) and pattern[i-1] == pattern[i]:
+
                 run += 1
                 i   += 1
 
@@ -235,7 +251,11 @@ class Template:
                 case 3: # Create CSA row
                     template_slices[i-run] = build_csa(pattern[i-run], matrix[i-run:i])
                 case _:
-                    raise ValueError(f"Unsupported run length {run}")
+                    if pattern[i-run] != '_':
+                        raise ValueError(f"Unsupported run length {run}. Use '_' for empty rows")
+
+                    template_slices[i-run] = build_empty(matrix[i-run:i])
+
             i += 1
 
         # -- build template and resultant ---------------------------
