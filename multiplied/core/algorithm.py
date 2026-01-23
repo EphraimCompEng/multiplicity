@@ -146,13 +146,35 @@ class Algorithm():
 
 
         # -- apply units --------------------------------------------
-
+        # Make an empty temp matrix
+        # Use Template.result to set relevent bits to 0
+        # Use Template.matrix isolate region in source matrix
 
         # -- CSA ----------------------------------------------------
-
+        # IF region covers 3 rows:
+        #   sum columns, collect and distribute counts
+        #   replace template with matrix
 
 
         # -- ADD ----------------------------------------------------
+        # IF region covers 2 rows:
+        #   convert to int -> add -> convert -> extend zeros to region width
+        #   replace templat with matrix
+
+
+        # -- merge units to matrix ----------------------------------
+        # Merge in any order, checking for overlaps between borders
+        # resolve conflics by suming present bit positions and shift
+        # a target unit's bit
+        #
+        # Complex scenarions, where NOOP, CSA and ADD units intersect
+        # will require extensive checks. One method could be skipping
+        # merges andopting for merges with non conflicting units until
+        # few conflicting merges remain.
+        # These conflicts can quickly be found by checking the sum from
+        # earlier is == 3. Allowing for this functionallity to be
+        # implemented at a later date.
+
 
 
 
