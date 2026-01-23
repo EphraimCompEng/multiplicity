@@ -225,6 +225,8 @@ class Template:
             while i < len(pattern) and pattern[i-1] == pattern[i]:
                 run += 1
                 i   += 1
+
+            # TODO: Add checks for templates which do not make sense for a given matrix #
             match run:
                 case 1: # Do nothing
                     template_slices[i-run] = build_noop(pattern[i-run], matrix[i-run:i])
