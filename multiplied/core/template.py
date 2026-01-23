@@ -111,6 +111,28 @@ def build_noop(char: str, source_slice: mp.Slice
 
     return noop_slice, copy(noop_slice) # avoids pointing to same object
 
+def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
+    """
+    Create an empty template slice. Returns template "slices" and resulting slice.
+    Variable length determined by source slice.
+    >>> [slice-] || [empty-] || [result]
+    >>> ???????? || ________ || ________
+    >>> ???????? || ________ || ________
+    >>> ...      || ...      || ...
+    """
+
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+
+    n           = len(source_slice)
+    empty_slice = copy(source_slice) # ensure no references
+    for row in range(n):
+        for i in range(empty_slice.bits):
+            empty_slice[row][i] = '_'
+    return empty_slice, copy(empty_slice)
+
+
+
 class Pattern:
     """
 
