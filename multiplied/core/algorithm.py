@@ -141,14 +141,14 @@ class Algorithm():
         #   ...00110110... | ...01100000...
         #   ...00101010... | ...________...
 
-        # -- partition ----------------------------------------------
+        # -- partition units -----------------------------------------
+        arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state])
 
 
 
 
 
-
-        # -- apply partition ----------------------------------------
+        # -- apply units --------------------------------------------
 
 
         # -- CSA ----------------------------------------------------
@@ -166,7 +166,8 @@ class Algorithm():
         """
         Take template[internal_state], apply to matrix, advance internal_state
         """
-
+        self.state += 1
+        self.__reduce()
 
     def exec(self,):
         """
@@ -239,22 +240,31 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     for char in allchars:
         row = 0
         unit = []
-
+        empty_row = ['_' for _ in range(matrix.bits*2)]
         # -- skip rows not containing char ------------------
         while row < matrix.bits:
             if char not in matrix.template[row]:
-                unit[row] = ['_' for _ in range(matrix.bits)]
+                unit.append(empty_row)
                 row += 1
+                continue
             break
 
         # -- extract unit(s) --------------------------------
-        while char in matrix.template[row] and row < matrix.bits:
-            unit[row] = [char if char == b else '_' for b in matrix.template[row]]
+        while(row < matrix.bits and (
+            char.upper() in matrix.template[row] or
+            char.lower() in matrix.template[row])):
+            tmp = []
+            for b in matrix.template[row]:
+                if char.upper() == b or char.lower() == b:
+                     tmp += char
+                else:
+                     tmp += '_'
+            unit.append(tmp)
             row += 1
 
         # -- fill remaining rows ----------------------------
-        for _ in range(matrix.bits-row):
-            unit[row] = ['_' for _ in range(matrix.bits)]
+        while 0 < (matrix.bits-row):
+            unit.append(empty_row)
             row += 1
 
         arithmetic_units.append(mp.Template(unit))

@@ -152,14 +152,14 @@ class Template:
     def __init__(self, source: Pattern | list[list[str]], *,
         map: Any    = None,
         dadda: bool = False,
-        result: Any = None,
-        matrix: Any = None
+        result: Any = [],
+        matrix: Any = []
     ) -> None: # Complex or pattern
 
         self.map    = map
         self.bits   = len(source)
         self.dadda  = dadda
-        self.result = result if isinstance(result, Template) else None
+        self.result = result if isinstance(result, Template) else []
 
         # length of any template represents it's bitwidth
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
@@ -174,7 +174,7 @@ class Template:
             self.build_from_pattern(self.pattern, deepcopy(matrix))
         elif ischar(source[0][0]):
             self.template = source
-            self.pattern  = None
+            self.pattern  = []
         else:
             raise ValueError(
                 "Error: Invalid template format.\
