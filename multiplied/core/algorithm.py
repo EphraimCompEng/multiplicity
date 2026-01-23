@@ -181,7 +181,7 @@ class Algorithm():
         ...
 
 
-    def step(self, matrix: mp.Matrix) -> None:
+    def step(self) -> None:
         """
         Take template[internal_state], apply to matrix, advance internal_state
         """
