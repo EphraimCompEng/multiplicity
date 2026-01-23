@@ -201,6 +201,6 @@ def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
 def empty_rows(matrix: Matrix) -> int:
     if not isinstance(matrix, Matrix):
         raise TypeError(f"Expected Matrix, got {type(matrix)}")
-    bits = len(matrix)
-    empty_row = ['_' for i in range(bits*2)]
-    return sum([matrix.matrix[i] == empty_row for i in range(bits)])
+
+    empty_row = ['_' for i in range(matrix.bits*2)]
+    return sum([matrix.matrix[i] == empty_row for i in range(matrix.bits)])
