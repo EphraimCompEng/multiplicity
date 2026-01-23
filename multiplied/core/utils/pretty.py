@@ -1,6 +1,6 @@
 from copy import copy
 from typing import Any
-from multiplied import Matrix, Slice, Map, Algorithm
+from multiplied import Matrix, Slice, Map, Algorithm, Template
 import io
 
 
@@ -16,6 +16,7 @@ def pretty(listy_object: Any) -> str:
     """
     if not isinstance(listy_object, (
         Algorithm,
+        Template,
         Matrix,
         Slice,
         Map,
@@ -26,6 +27,8 @@ def pretty(listy_object: Any) -> str:
 
     match copy(listy_object):
         case (Matrix() |Slice() | Map() | list()):
+            return pretty_nested_list(listy_object)
+        case Template():
             return pretty_nested_list(listy_object)
         case (Algorithm() | dict()):
             return pretty_dict(listy_object)
