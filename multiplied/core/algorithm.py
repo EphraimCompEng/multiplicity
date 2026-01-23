@@ -145,9 +145,6 @@ class Algorithm():
         arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state])
 
 
-
-
-
         # -- apply units --------------------------------------------
 
 
@@ -169,18 +166,22 @@ class Algorithm():
         self.state += 1
         self.__reduce()
 
-    def exec(self,):
+    def exec(self):
         """
         Run algorithm with a single set of intputs then reset internal state
         """
-        ...
+        for stage in self.algorithm:
+            self.__reduce()
 
-    def reset(self,):
+
+    def reset(self, matrix: mp.Matrix):
         """
         Reset internal state and submit new initial matrix
         """
-        ...
-
+        if not isinstance(matrix, mp.Matrix):
+            raise TypeError(f"Expected Matrix, got {type(matrix)}")
+        self.matrix = matrix
+        self.state = 0
 
     def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
