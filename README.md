@@ -99,9 +99,10 @@ print(alg)
 ```
 
 ```text
+
 0:{
 
-template:
+template:{
 
 ________AaAaAaAa
 _______aAaAaAaA_
@@ -122,7 +123,7 @@ DdDdDdDdDd______
 ________________
 }
 
-pseudo:
+pseudo:{
 
 ______AaAaAaAaAa
 ____BbBbBbBbBb__
@@ -134,7 +135,7 @@ ________________
 ________________
 }
 
-map:
+map:{
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -148,7 +149,7 @@ FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD
 
 1:{
 
-template:
+template:{
 
 ______AaAaAaAaAa
 ____AaAaAaAaAa__
@@ -169,7 +170,7 @@ ________________
 ________________
 }
 
-pseudo:
+pseudo:{
 
 __AaAaAaAaAaAaAa
 ___AaAaAaAaAa___
@@ -181,7 +182,7 @@ ________________
 ________________
 }
 
-map:
+map:{
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -195,7 +196,7 @@ FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
 
 2:{
 
-template:
+template:{
 
 __AaAaAaAaAaAaAa
 ___aAaAaAaAaA___
@@ -216,7 +217,7 @@ ________________
 ________________
 }
 
-pseudo:
+pseudo:{
 
 AaAaAaAaAaAaAaAa
 _AaAaAaAaAaA____
@@ -228,7 +229,7 @@ ________________
 ________________
 }
 
-map:
+map:{
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -242,7 +243,7 @@ map:
 
 3:{
 
-template:
+template:{
 
 AaAaAaAaAaAaAaAa
 _aAaAaAaAaAa____
@@ -263,7 +264,7 @@ ________________
 ________________
 }
 
-pseudo:
+pseudo:{
 
 AaAaAaAaAaAaAaAa
 ________________
@@ -275,7 +276,7 @@ ________________
 ________________
 }
 
-map:
+map:{
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -288,16 +289,15 @@ map:
 }
 ```
 
-## Conmplex Templates
+## Complex Templates
 
 Coming Soon
 
 ## Documentation
 
-Resouces for usage, general theory and implementations can be found in /docs/.
+Resouces for usage, general theory and implementations can be found in [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs).
 For the API Reference head to multiplied's documentation [site](https://ephraimcompeng.github.io/multiplied/)
 
-For more information head to [/docs/](https://github.com/EphraimCompEng/multiplier-lab/tree/master/docs).
 
 ## Dependencies
 
