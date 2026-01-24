@@ -131,6 +131,35 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
             empty_slice[row][i] = '_'
     return empty_slice, copy(empty_slice)
 
+def template_checksum(source:list[list[str]]) -> list[int]:
+    def err():
+        return ValueError(
+            "Error: Invalid template format.\
+            \tExpected pattern: list[char], or template: list[list[char]]")
+    if (
+        (bits := len(source)) in mp.SUPPORTED_BITWIDTHS or
+        not isinstance(source, list) or
+        not isinstance(source[0], list)
+    ):
+        err()
+
+
+    checksum = [0 for _ in range(bits)]
+    for i, row in enumerate(source):
+        empty = 0
+        valid_len = 0
+        for ch in row:
+            if not ischar(ch):
+                err()
+            if ch == '_':
+                empty += 1
+
+        if valid_len != bits:
+            err()
+
+        if empty == bits << 1:
+            checksum[i] = 1
+    return checksum
 
 
 class Pattern:
@@ -214,34 +243,10 @@ class Template:
             return
 
         # -- template handling ---------------------------------------
-        if isinstance(source, list) and isinstance(source[0], list):
-            def err():
-                return ValueError(
-                    "Error: Invalid template format.\
-                    \tExpected pattern: list[char], or template: list[list[char]]")
-            checksum = [0 for _ in range(self.bits)]
-            for i, row in enumerate(source):
-                empty = 0
-                valid_len = 0
-                for ch in row:
-                    if not ischar(ch):
-                        err()
-                    if ch == '_':
-                        empty += 1
-
-                if valid_len != self.bits:
-                    err()
-
-                if empty == self.bits << 1:
-                    checksum[i] = 1
-
-            self.template = source
-            self.checksum = checksum
-            self.pattern  = []
-        else:
-            raise ValueError(
-                "Error: Invalid template format.\
-                \tExpected pattern: list[char], or template: list[list[char]]")
+        checksum = template_checksum(source)
+        self.template = source
+        self.checksum = checksum
+        self.pattern  = []
 
     def __str__(self) -> str:
         return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
