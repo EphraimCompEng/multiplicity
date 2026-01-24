@@ -15,6 +15,7 @@ Algorithm process:
 
 """
 
+from copy import copy
 from typing import Any
 import multiplied as mp
 
@@ -48,7 +49,7 @@ class Algorithm():
         # -- TODO: update this when anything is modified ------------
         # create update() function
         # add to each modifying class method
-        self.stage     = self.algorithm[self.state] if self.len > 0 else None
+        self.stage = self.algorithm[self.state] if self.len > 0 else None
 
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
@@ -126,20 +127,22 @@ class Algorithm():
         use template or pattern to reduce a given matrix.
         """
 
-        # -- pattern implementation ---------------------------------
+        # -- implementation -----------------------------------------
         #
-        # For a given 'run', the length of that run will determine
-        # the height for which to count 1s in a given column:
+        # Arithmetic units are defined by how many rows they cover, or
+        # their 'run', the length of which determines the type of unit:
         #
-        # run = 3 := CSA; carry is placed to the left of source column
-        # and one row down to avoid corrupting adjacent columns
+        # run = 3:
+        #   CSA: carry is placed to the left of source column
+        #   and one row down to avoid corrupting adjacent columns
         #
         #   [input-------] | [output------]
         #   ...00100010... | ...00100010...
         #   ...00101010... | ...01010100...
         #   ...00101010... | ...________...
         #
-        # run = 2 := binary addition; carry generates through propagates
+        # run = 2:
+        #   binary adder: carry generates through propagates
         #
         #   [input-------] | [output------]
         #   ...00110110... | ...01100000...
@@ -148,9 +151,8 @@ class Algorithm():
         # -- partition units -----------------------------------------
         # isolates units into list of templates
 
-        arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state]['template'])
-
-
+        template = self.algorithm[self.state]['template']
+        units    = isolate_arithmetic_units(template)
 
 
         # -- apply units --------------------------------------------
@@ -159,7 +161,53 @@ class Algorithm():
         # Use checksum to quickly locate row of arithmetic unit
         # Use Template.matrix isolate region in source matrix
 
-        output = mp.Matrix(self.bits) # Empty matrix
+        for unit in units:
+
+            base_index = unit.checksum.index(1)
+            # leading =
+            match sum(unit.checksum):
+                case 1: # NOOP
+                    continue
+                case 2: # ADD
+                    operand_a = list(self.matrix[base_index][0])
+                    operand_b = list(self.matrix[base_index+1][0])
+                    n     = max(len(operand_a), len(operand_b))
+                    start = 0
+                    while operand_a[start] == '_' and operand_b[start] == '_':
+                        start += 1
+
+
+                    print('start:', start)
+                    print(operand_a)
+                    print(operand_b)
+
+                    for i in range(start, n):
+                        if operand_a[i] == '_' and operand_b[i] != '_':
+                            print('boo')
+                            operand_a[i] = '0'
+
+                        elif operand_b[i] == '_' and  operand_a[i] != '_':
+                            print('hmm')
+                            operand_b[i] = '0'
+
+                        elif operand_a[i] == '_' and operand_b[i] == '_':
+                            operand_a[i] = '0'
+                            operand_b[i] = '0'
+
+                    print(start, n)
+                    print(operand_a[start], operand_b[start])
+                    int_a = int("".join(operand_a[start:]), 2)
+                    int_b = int("".join(operand_b[start:]), 2)
+                    print(int_a, int_b)
+                    operand_c = list(f"{int_a+int_b:0{n-start+1}b}")
+                    print(operand_c)
+
+
+                case 3: # CSA
+                    ...
+
+                case _:
+                    raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
 
 
 
@@ -179,19 +227,34 @@ class Algorithm():
         # Merge in any order, checking for overlaps between borders
         # resolve conflics by suming present bit positions and shift
         # a target unit's bit
-        #
+
+        # ! difficult sanity checks --------------------------------- #
         # Complex scenarions, where NOOP, CSA and ADD units intersect
-        # will require extensive checks. One method could be skipping
-        # merges andopting for merges with non conflicting units until
-        # few conflicting merges remain.
-        # These conflicts can quickly be found by checking the sum from
-        # earlier is == 3. Allowing for this functionallity to be
-        # implemented at a later date.
+        # will require extensive checks:
+        #
+        #   [example--] || [isolated]
+        #   ...BbaAa... || ....ba....
+        #   ...CcaAa... || ....ca....
+        #   ...CcaAa... || ....ca....
+        #
+        #
+        # If ths is repeated, resolution can get very tricky.
+        # One method could be skipping merges and opting for merges with non
+        # conflicting units, repeat until few partially merged templates remain
+        # and finally resolve conflicts, if possible.
+        #
+        # These conflicts can quickly be found by checking the sum of possible
+        # bit positions in a given region of intersecting arithmetic units.
+        # The example's sum for the first column is == 3.  This should raise a
+        # flag indicating it should be merged later.
+        #
+        #
+        # This functionallity to be implemented at a later date.
 
 
 
 
-        ...
+
 
 
     def step(self) -> None:
@@ -302,12 +365,12 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
                     if len(set(intra_row_transition)) != 1:                            #
                         irt_err = intra_row_transition[1]-1                            #
                         raise SyntaxError(                                             #
-                            f"Intra-row Error [column {irt_err}]. Invalid template.")  #
+                            f"Intra-row Error [column {irt_err}]. Invalid template."   #
+                        )                                                              #
                     # ---------------------------------------------------------------- #
                     tmp[i] = char
                 last = b
 
-            print(intra_row_transition)
             unit[row] = tmp
             row += 1
         # -- fill remaining rows ------------------------------------
@@ -327,9 +390,9 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     #   - test if unit exists within a single block
     #   - currently naive but *should* catch real world cases
     #   - ! rigorous checks require testing:
-    #       - Horizontal(row check) (-) [Done]
-    #       - Backwards diagonal    (\)
-    #       - Forward diagonal      (/)
+    #       - Vertical(row check) (|) [Done]
+    #       - Backwards diagonal  (\)
+    #       - Forward diagonal    (/)
     #
     # Simple row check(below):
     #   - count template's non empty rows

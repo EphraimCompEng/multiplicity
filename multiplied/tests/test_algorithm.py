@@ -20,6 +20,8 @@ def test_step() -> None:
     p = mp.Pattern(['a','a','b','b'])
     alg = mp.Algorithm(m)
     alg.push(p)
+    print(alg.matrix)
+    print(alg.matrix[0])
     alg.step()
 
     print(alg)
@@ -112,10 +114,11 @@ def test_err_duplicate_units() -> None:
 
 
 def main():
+    test_step()
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_isolate_arithmetic_units()
-    test_err_duplicate_units()
+    # test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()
