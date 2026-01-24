@@ -131,14 +131,14 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
             empty_slice[row][i] = '_'
     return empty_slice, copy(empty_slice)
 
-def template_checksum(source:list[list[str]]) -> list[int]:
+def checksum(source:list[list[str]]) -> list[int]:
     def err():
         return ValueError(
             "Error: Invalid template format.\
             \tExpected pattern: list[char], or template: list[list[char]]")
     if (
         (bits := len(source)) in mp.SUPPORTED_BITWIDTHS or
-        not isinstance(source, list) or
+        not isinstance(source, (list, mp.Matrix)) or
         not isinstance(source[0], list)
     ):
         err()
@@ -263,9 +263,9 @@ class Template:
             return
 
         # -- template handling ---------------------------------------
-        checksum = template_checksum(source)
+        checksum_ = checksum(source)
         self.template = source
-        self.checksum = checksum
+        self.checksum = checksum_
         self.pattern  = []
 
     def __str__(self) -> str:
