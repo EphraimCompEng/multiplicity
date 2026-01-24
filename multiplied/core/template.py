@@ -143,7 +143,7 @@ def checksum(source:list[list[str]]) -> list[int]:
     ):
         err()
 
-    checksum = [0 for _ in range(bits)]
+    checksum = [0] * bits
     for i, row in enumerate(source):
         empty = 0
         valid_len = 0
@@ -376,7 +376,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     from multiplied.core.utils.char import chargen
     char  = chargen()
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
-        return Pattern(['_' for _ in range(matrix.bits)])
+        return Pattern(['_'] * matrix.bits)
 
     scope = matrix.bits - empty_rows
     new_pattern = []
@@ -393,7 +393,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
 
         scope -= len(new_pattern) - n
 
-    new_pattern += ['_' for _ in range(empty_rows)]
+    new_pattern += ['_'] * empty_rows
     return Pattern(new_pattern)
 
 

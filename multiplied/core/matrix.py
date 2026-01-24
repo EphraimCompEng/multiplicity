@@ -167,7 +167,7 @@ class Matrix:
                 # convert signed hex to 2s complement
                 if ((val := int(rmap[i], 16)) & 128):
                     val = (~val + 1) & 255 # 2s complement
-                temp_matrix[i]     = ["_" for _ in range(self.bits*2)]
+                temp_matrix[i]     = ["_"] * (self.bits*2)
                 temp_matrix[i-val] = self.matrix[i]
             self.matrix = temp_matrix
             return
