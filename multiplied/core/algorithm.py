@@ -44,6 +44,10 @@ class Algorithm():
         self.matrix    = matrix
         self.algorithm = {}
         self.len       = len(self.algorithm)
+
+        # -- TODO: update this when anything is modified ------------
+        # create update() function
+        # add to each modifying class method
         self.stage     = self.algorithm[self.state] if self.len > 0 else None
 
     def __str__(self) -> str:
@@ -142,13 +146,18 @@ class Algorithm():
         #   ...00101010... | ...________...
 
         # -- partition units -----------------------------------------
-        arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state])
+        arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state]['template'])
+        for i in arithmetic_units:
+            print(i.checksum)
 
 
         # -- apply units --------------------------------------------
         # Make an empty temp matrix
         # Use Template.result to set relevent bits to 0
         # Use Template.matrix isolate region in source matrix
+
+        output = mp.Matrix(self.bits)
+
 
         # -- CSA ----------------------------------------------------
         # IF region covers 3 rows:
@@ -185,8 +194,8 @@ class Algorithm():
         """
         Take template[internal_state], apply to matrix, advance internal_state
         """
-        self.state += 1
         self.__reduce()
+        self.state += 1
 
     def exec(self):
         """
