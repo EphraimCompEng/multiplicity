@@ -175,6 +175,12 @@ class Matrix:
         # -- bit-wise mapping ---------------------------------------
         raise NotImplementedError("Complex mapping not implemented")
 
+
+
+# -- helper functions -----------------------------------------------
+
+
+
 def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
     Build Logical AND matrix using source operands. Default bits=8
