@@ -156,7 +156,7 @@ def checksum(source:list[list[str]]) -> list[int]:
         if valid_len != bits:
             err()
 
-        if empty == bits << 1:
+        if empty != bits << 1:
             checksum[i] = 1
     return checksum
 
