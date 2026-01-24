@@ -75,6 +75,9 @@ def main():
     alg.push(p)
     alg.auto_resolve_stage()
     print(alg)
+    print('Checksums:')
+    for i in alg.algorithm.values():
+        print(i['template'].checksum)
 
 if __name__ == "__main__":
     main()

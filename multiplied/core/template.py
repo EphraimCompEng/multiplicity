@@ -198,23 +198,50 @@ class Template:
         # length of any template represents it's bitwidth
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
+
+        # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
             from copy import deepcopy
 
             self.pattern  = source
+            self.checksum = [1 if ch != '_' else 0 for ch in source]
             if dadda:
                 # TODO
                 raise NotImplementedError("Applying maps not implemented")
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
             self.build_from_pattern(self.pattern, deepcopy(matrix))
-        elif ischar(source[0][0]):
+            return
+
+        # -- template handling ---------------------------------------
+        if isinstance(source, list) and isinstance(source[0], list):
+            def err():
+                return ValueError(
+                    "Error: Invalid template format.\
+                    \tExpected pattern: list[char], or template: list[list[char]]")
+            checksum = [0 for _ in range(self.bits)]
+            for i, row in enumerate(source):
+                empty = 0
+                valid_len = 0
+                for ch in row:
+                    if not ischar(ch):
+                        err()
+                    if ch == '_':
+                        empty += 1
+
+                if valid_len != self.bits:
+                    err()
+
+                if empty == self.bits << 1:
+                    checksum[i] = 1
+
             self.template = source
+            self.checksum = checksum
             self.pattern  = []
         else:
             raise ValueError(
                 "Error: Invalid template format.\
-                \tExpected pattern: list[char], or template: list[list[str]]")
+                \tExpected pattern: list[char], or template: list[list[char]]")
 
     def __str__(self) -> str:
         return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
@@ -255,7 +282,6 @@ class Template:
 
         # -- find run -----------------------------------------------
         template_slices = {}
-        empty_row = ['_' for _ in range(matrix.bits)]
         i = 1
         while i < len(pattern)+1:
             run = 1
