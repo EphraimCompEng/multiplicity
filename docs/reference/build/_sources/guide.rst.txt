@@ -119,7 +119,10 @@ To inform the algorithm on how a given template reduces groups of partial produc
     ]
 
 .. note::
-    It is recommended to write patterns vertically to make it clear how rows are effected.
+    Writing patterns vertically to make it clear how rows are effected.
+
+    CSAs work on 3 bits at a time, and returns a 2-bit sum of raised bits.
+    Adders work on 2 words at a time, each word being x-bits, and returns a single word. Bit pairs which sum to 0b10 are carried through the calculation.
 
 For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach out final output:
 
