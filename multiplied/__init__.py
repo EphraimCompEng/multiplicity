@@ -31,6 +31,7 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
+    template_checksum,
 )
 
 from .core.algorithm import (
@@ -126,6 +127,7 @@ __all__ = [
     'build_csa',
     'build_adder',
     'resolve_pattern',
+    'template_checksum',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',

@@ -143,7 +143,6 @@ def template_checksum(source:list[list[str]]) -> list[int]:
     ):
         err()
 
-
     checksum = [0 for _ in range(bits)]
     for i, row in enumerate(source):
         empty = 0
@@ -185,8 +184,11 @@ class Pattern:
                 run += 1
                 i   += 1
             if run < 4:
+                # (arithmetic_unit, starting_row, run_length)
                 metadata.append((None, i-run, run))
             else:
+                # arithmetic_unit = decoder
+                # find decoder type
                 raise ValueError(f"Unsupported run length {run}")
             i += 1
             k += 1
@@ -207,6 +209,24 @@ class Pattern:
     def __getitem__(self, index: int) -> str:
         return self.pattern[index]
 
+
+
+# -- ! [ Preparing For Decoders ] !-------------------------------- #
+#
+# 1st:
+#
+#   Implement complex maps, arithmetic unit based isolation and
+#   partial product reduction.
+#
+# 2st: Adopt get_runs() within build_from_pattern()
+#
+#   get_runs can pass all information needed about a unit then
+#   pass it forward.
+#
+# 3nd: Use named tupes or other structures to pass information
+#
+#   Improves clarity as library becomes increasingly complex.
+#
 class Template:
     """
 
@@ -290,6 +310,12 @@ class Template:
         i = 1
         while i < len(pattern)+1:
             run = 1
+            # replaced with get_runs when decoders are implemented
+            # decoders will likely take special characters to extract the type
+            # and likely require passing named tuples to current func to make
+            # things clearer
+            #
+            # see [ Preparing For Decoders ] ^
             while i < len(pattern) and pattern[i-1] == pattern[i]:
 
                 run += 1
