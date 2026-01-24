@@ -126,9 +126,8 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     if not isinstance(source_slice, mp.Slice):
         raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
 
-    n           = len(source_slice)
     empty_slice = copy(source_slice) # ensure no references
-    for row in range(n):
+    for row in range(len(source_slice)):
         for i in range(empty_slice.bits):
             empty_slice[row][i] = '_'
     return empty_slice, copy(empty_slice)
