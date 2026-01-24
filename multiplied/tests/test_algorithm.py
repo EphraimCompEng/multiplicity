@@ -16,12 +16,11 @@ def gen_resources(bits: int, *, a=0, b=0
     return m, p, alg
 
 def test_step() -> None:
-    m = mp.Matrix(4, a=5, b=4)
+    m = mp.Matrix(4, a=15, b=15)
     p = mp.Pattern(['a','a','b','b'])
     alg = mp.Algorithm(m)
     alg.push(p)
     print(alg.matrix)
-    print(alg.matrix[0])
     alg.step()
 
     print(alg)

@@ -15,7 +15,6 @@ Algorithm process:
 
 """
 
-from copy import copy
 from typing import Any
 import multiplied as mp
 
@@ -148,66 +147,115 @@ class Algorithm():
         #   ...00110110... | ...01100000...
         #   ...00101010... | ...________...
 
+        from copy import copy
+
         # -- partition units -----------------------------------------
         # isolates units into list of templates
 
         template = self.algorithm[self.state]['template']
         units    = isolate_arithmetic_units(template)
-
+        n        = self.bits*2
+        results  = []
+        print(template)
 
         # -- apply units --------------------------------------------
-        # Make an empty temp matrix
-        # Use Template.result to set relevent bits to 0
-        # Use checksum to quickly locate row of arithmetic unit
-        # Use Template.matrix isolate region in source matrix
 
-        for unit in units:
+        for index, unit in enumerate(units):
 
             base_index = unit.checksum.index(1)
-            # leading =
             match sum(unit.checksum):
                 case 1: # NOOP
-                    continue
+                    output = [copy(self.matrix[base_index][0])]
+
                 case 2: # ADD
-                    operand_a = list(self.matrix[base_index][0])
-                    operand_b = list(self.matrix[base_index+1][0])
-                    n     = max(len(operand_a), len(operand_b))
+                    operand_a = copy(self.matrix[base_index][0])
+                    operand_b = copy(self.matrix[base_index+1][0])
+                    checksum  = [False] * n
+
+                    # -- normalise ----------------------------------
                     start = 0
+
+                    # ski empty rows
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
 
-                    print('start:', start)
-                    print(operand_a)
-                    print(operand_b)
-
                     for i in range(start, n):
+                        if operand_a[i] != '_' or operand_b[i] != '_':
+                            checksum[i] = True
+
                         if operand_a[i] == '_' and operand_b[i] != '_':
-                            print('boo')
                             operand_a[i] = '0'
 
+
                         elif operand_b[i] == '_' and  operand_a[i] != '_':
-                            print('hmm')
                             operand_b[i] = '0'
 
                         elif operand_a[i] == '_' and operand_b[i] == '_':
                             operand_a[i] = '0'
                             operand_b[i] = '0'
 
-                    print(start, n)
-                    print(operand_a[start], operand_b[start])
-                    int_a = int("".join(operand_a[start:]), 2)
-                    int_b = int("".join(operand_b[start:]), 2)
-                    print(int_a, int_b)
-                    operand_c = list(f"{int_a+int_b:0{n-start+1}b}")
-                    print(operand_c)
+
+                    unit_len = sum(checksum)
+                    int_a = int("".join(operand_a[start:start+unit_len]), 2)
+                    int_b = int("".join(operand_b[start:start+unit_len]), 2)
+                    print(checksum)
+                    # add and convert back to binary list, accounting for carry
+                    output     = [['_']*(start-1)]
+                    output[0] += list(f"{int_a+int_b:0{unit_len+1}b}")
+                    output[0] += ['_']*(n-start-unit_len)
+                    print(output)
 
 
                 case 3: # CSA
-                    ...
+                    operand_a = copy(self.matrix[base_index][0])
+                    operand_b = copy(self.matrix[base_index+1][0])
+                    operand_c = copy(self.matrix[base_index+2][0])
+                    checksum  = [False]*n
+                    output    = [['_']*n, ['_']*n]
+                    start     = 0
+
+                    # skip empty rows
+                    while operand_a[start] == '_' and operand_b[start] == '_':
+                        start += 1
+
+                    for i in range(start, n):
+                        csa_sum = 0
+                        csa_sum += 1 if operand_a[i] == '1' else 0
+                        csa_sum += 1 if operand_b[i] == '1' else 0
+                        csa_sum += 1 if operand_c[i] == '1' else 0
+
+
+                        # collect sums for further formatting
+                        output[0][i]   = csa_sum
+                        checksum[i] = (
+                            operand_c[i] != '_' or
+                            operand_b[i] != '_' or
+                            operand_a[i] != '_'
+                        )
+                        if not checksum[i]:
+                            break
+                        #
+                        try:
+                            output[0][i]   = '1' if csa_sum & 1 else '0'
+                            j = i-1 if 0 <= i-1 else i
+                            output[1][j] = '1' if csa_sum & 2 else '0'
+                        except IndexError:
+                            continue
+
 
                 case _:
                     raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
+
+            unit_result = [['_']*(self.bits*2) for _ in range(base_index)]
+            for row in output:
+                unit_result.append(row)
+            for _ in range(base_index+len(output), self.bits):
+                unit_result.append(['_']*(self.bits*2))
+
+            results.append(unit_result)
+
+            print(f"unit: \n{mp.pretty(unit_result)}")
 
 
 
