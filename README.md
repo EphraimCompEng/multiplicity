@@ -43,7 +43,7 @@ print(alg)
 ```text
 0:{
 
-template:
+template:{
 
 ________AaAaAaAa
 _______aAaAaAaA_
@@ -64,7 +64,7 @@ DdDdDdDdDd______
 ________________
 }
 
-pseudo:
+pseudo:{
 
 ______AaAaAaAaAa
 ____BbBbBbBbBb__
@@ -76,7 +76,7 @@ ________________
 ________________
 }
 
-map:
+map:{
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
