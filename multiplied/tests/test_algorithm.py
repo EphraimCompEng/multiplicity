@@ -70,22 +70,51 @@ def test_isolate_arithmetic_units() -> None:
     for i in isolated_units:
         print(i.checksum)
 
+def test_err_duplicate_units() -> None:
+    template = mp.Template(mp.Pattern(['a','a','b','b','a','a','d','d']), matrix=mp.Matrix(8))
+    try:
+        isolated_units = mp.isolate_arithmetic_units(template)
+    except SyntaxError:
+        pass
+
+    template = mp.Template([
+        ['_', '_', '_', '_', '_', '_', '_', '_', 'A', 'a', 'A', '_', 'A', 'a', 'A', 'a'],
+        ['_', '_', '_', '_', '_', '_', '_', 'a', 'A', 'a', 'A', '_', 'A', 'a', 'A', '_'],
+        ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', '_', 'A', 'a', '_', '_'],
+        ['_', '_', '_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_'],
+        ['_', '_', '_', '_', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', '_', '_', '_', '_'],
+        ['_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_'],
+        ['_', '_', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', '_', '_', '_', '_', '_', '_'],
+        ['_', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'C', '_', '_', '_', '_', '_', '_', '_']
+        ],
+        result = [
+            ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a'],
+            ['_', '_', '_', '_', '_', '_', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'A', '_', '_'],
+            ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'],
+            ['_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_'],
+            ['_', '_', '_', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', '_', '_', '_', '_', '_'],
+            ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'],
+            ['C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', '_', '_', '_', '_', '_', '_'],
+            ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_']
+        ])
+
+    print(template)
+    isolated_units = mp.isolate_arithmetic_units(template)
+    # try:
+    #     isolated_units = mp.isolate_arithmetic_units(template)
+    # except SyntaxError:
+    #     isolated_units = []
+
+    print(isolated_units)
+    for i in isolated_units:
+        print(i.checksum)
+
 
 def main():
     # test_manual_population_8()
-    test_auto_resolve_recursive_full_8()
-    test_isolate_arithmetic_units()
-    # m = mp.Matrix(8)
-    # p = mp.Pattern(['a','a','b','b','c','c','d','d'])
-    # alg = mp.Algorithm(m)
-    # alg.push(p)
-    # alg.auto_resolve_stage()
-    # print(alg)
-    # print('Checksums:')
-    # for i in alg.algorithm.values():
-    #     print(i['template'].checksum)
-
-    # alg.step()
+    # test_auto_resolve_recursive_full_8()
+    # test_isolate_arithmetic_units()
+    test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()

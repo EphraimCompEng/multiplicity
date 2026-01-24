@@ -146,17 +146,21 @@ class Algorithm():
         #   ...00101010... | ...________...
 
         # -- partition units -----------------------------------------
+        # isolates units into list of templates
+
         arithmetic_units = isolate_arithmetic_units(self.algorithm[self.state]['template'])
-        for i in arithmetic_units:
-            print(i.checksum)
+
+
 
 
         # -- apply units --------------------------------------------
         # Make an empty temp matrix
         # Use Template.result to set relevent bits to 0
+        # Use checksum to quickly locate row of arithmetic unit
         # Use Template.matrix isolate region in source matrix
 
-        output = mp.Matrix(self.bits)
+        output = mp.Matrix(self.bits) # Empty matrix
+
 
 
         # -- CSA ----------------------------------------------------
@@ -258,7 +262,6 @@ class Algorithm():
 # -- helper functions ----------------------------------------------- #
 
 
-
 def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     """
     Isolate arithmetic units into a list seperate templates.
@@ -267,37 +270,79 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     if not isinstance(matrix, mp.Template):
         raise TypeError(f"Expected type Template got {type(matrix)}")
 
-    allchars = mp.allchars(matrix.template)
-    arithmetic_units = []
+    allchars  = mp.allchars(matrix.template, hash=matrix.checksum)
+    arithmetic_units = []*len(allchars)
     for char in allchars:
-        row = 0
-        unit = []
-        empty_row = ['_' for _ in range(matrix.bits*2)]
-        # -- skip rows not containing char ------------------
+        row  = 0
+        unit = [[]]*matrix.bits
+        empty_row   = ['_']*(matrix.bits*2)
+        # -- skip rows not containing char --------------------------
+        # replace with checksum calculation
         while row < matrix.bits:
             if char not in matrix.template[row]:
-                unit.append(empty_row)
+                unit[row] = empty_row
                 row += 1
                 continue
             break
 
-        # -- extract unit(s) --------------------------------
-        while(row < matrix.bits and (
-            char.upper() in matrix.template[row] or
-            char.lower() in matrix.template[row])):
-            tmp = []
-            for b in matrix.template[row]:
-                if char.upper() == b or char.lower() == b:
-                     tmp += char
-                else:
-                     tmp += '_'
-            unit.append(tmp)
-            row += 1
+        # -- extract unit(s) ----------------------------------------
+        charset = set([char.upper(),char.lower()])
+        while(row < matrix.bits and
+            (charset.intersection(matrix.template[row]))
+        ):
 
-        # -- fill remaining rows ----------------------------
+            tmp = ['_']*(matrix.bits*2)
+            intra_row_transition = []
+            last = None
+            for i, b in enumerate(matrix.template[row]):
+                if b in charset:
+                    # -- vertical intra-row check ------------------------------------ #
+                    if last not in charset:                                            #
+                        intra_row_transition.append(i)                                 #
+                    if len(set(intra_row_transition)) != 1:                            #
+                        irt_err = intra_row_transition[1]-1                            #
+                        raise SyntaxError(                                             #
+                            f"Intra-row Error [column {irt_err}]. Invalid template.")  #
+                    # ---------------------------------------------------------------- #
+                    tmp[i] = char
+                last = b
+
+            print(intra_row_transition)
+            unit[row] = tmp
+            row += 1
+        # -- fill remaining rows ------------------------------------
+        # replace with checksum calculation
+
         while 0 < (matrix.bits-row):
-            unit.append(empty_row)
+            unit[row] = empty_row
             row += 1
 
         arithmetic_units.append(mp.Template(unit))
+
+    # -- ! unit sanity checks ! -------------------------------------
+
+    # These checks are not exhaustive and will need revisiting.
+    #
+    # Intra-row check(above):
+    #   - test if unit exists within a single block
+    #   - currently naive but *should* catch real world cases
+    #   - ! rigorous checks require testing:
+    #       - Horizontal(row check) (-) [Done]
+    #       - Backwards diagonal    (\)
+    #       - Forward diagonal      (/)
+    #
+    # Simple row check(below):
+    #   - count template's non empty rows
+    #   - count total number of rows units encompas
+    #
+    # These should catch most cases of non compliance in:
+    #   - CSAs
+    #   - Adders
+    #   - ! Decoders will require checks once implamented
+
+    # -- row check --------------------------------------------------
+    unit_rows = [sum(i.checksum) for i in arithmetic_units]
+    if sum(unit_rows) != sum(matrix.checksum):
+        raise SyntaxError("Invalid template. Each unit must use unique char")
+
     return arithmetic_units
