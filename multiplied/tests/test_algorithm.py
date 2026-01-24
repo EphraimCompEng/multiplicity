@@ -55,29 +55,26 @@ def test_auto_resolve_recursive_full_4() -> None:
     m, p, alg = gen_resources(4, a= 6, b=7)
     alg.auto_resolve_stage()
     print(alg)
+
 def test_auto_resolve_recursive_full_8() -> None:
     m, p, alg2 = gen_resources(8, a=12, b=42)
     alg2.auto_resolve_stage()
     print(alg2)
 
-    print('Checksums:')
-    alg2.step()
-    print('Checksums:')
-    alg2.step()
-    alg2.reset(m)
-    print('Checksums:')
-    alg2.step()
-
 
 def test_isolate_arithmetic_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','c']), matrix=mp.Matrix(4))
     isolated_units = mp.isolate_arithmetic_units(template)
+    print(template)
     print(isolated_units)
+    for i in isolated_units:
+        print(i.checksum)
+
 
 def main():
     # test_manual_population_8()
     test_auto_resolve_recursive_full_8()
-    # test_isolate_arithmetic_units()
+    test_isolate_arithmetic_units()
     # m = mp.Matrix(8)
     # p = mp.Pattern(['a','a','b','b','c','c','d','d'])
     # alg = mp.Algorithm(m)
