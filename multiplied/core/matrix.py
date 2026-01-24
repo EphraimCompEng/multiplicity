@@ -13,7 +13,7 @@ class Slice:
         if isinstance(matrix[0], list):
             self.bits = len(matrix[0]) >> 1
         elif isinstance(matrix, list) and isinstance(matrix[0], str):
-            self.bits = len(matrix[0])
+            self.bits = len(matrix) >> 1
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(
                 f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
