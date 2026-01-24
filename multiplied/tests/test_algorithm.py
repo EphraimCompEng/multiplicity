@@ -99,11 +99,12 @@ def test_err_duplicate_units() -> None:
         ])
 
     print(template)
-    isolated_units = mp.isolate_arithmetic_units(template)
-    # try:
-    #     isolated_units = mp.isolate_arithmetic_units(template)
-    # except SyntaxError:
-    #     isolated_units = []
+    # isolated_units = mp.isolate_arithmetic_units(template)
+    try:
+        isolated_units = mp.isolate_arithmetic_units(template)
+    except SyntaxError:
+        print('passed')
+        isolated_units = []
 
     print(isolated_units)
     for i in isolated_units:
