@@ -20,7 +20,7 @@
     </style>
   </noscript>
   
-    <script defer src="../_static/documentation_options.js?v=4621528c"></script>
+    <script defer src="../_static/documentation_options.js?v=d5a15cff"></script>
     <script defer src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -221,6 +221,7 @@
 <li class="toctree-l1"><a class="reference internal" href="multiplied.core.utils.html">multiplied.core.utils package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="multiplied.core.utils.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multiplied.core.utils.html#module-multiplied.core.utils.char">multiplied.core.utils.char module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.core.utils.html#multiplied.core.utils.char.allchars"><code class="docutils literal notranslate"><span class="pre">allchars()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.utils.html#multiplied.core.utils.char.chargen"><code class="docutils literal notranslate"><span class="pre">chargen()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.utils.html#multiplied.core.utils.char.chartff"><code class="docutils literal notranslate"><span class="pre">chartff()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.utils.html#multiplied.core.utils.char.ischar"><code class="docutils literal notranslate"><span class="pre">ischar()</span></code></a></li>
@@ -299,38 +300,28 @@ result to represent output matrix</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multiplied.core.algorithm.Algorithm.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.reset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.reset" title="Link to this definition">#</a></dt>
 <dd><p>Reset internal state and submit new initial matrix</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="multiplied.core.algorithm.Algorithm.split">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span>
-
-<dl>
-<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>,</dd>
-</dl>
-
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.split" title="Link to this definition">#</a></dt>
-<dd><p>Returns list of slices via progressive allocation. Used to automate
-slicing a matrix into (Slice(n * row) * k), then splitting remainder.</p>
-<p>Append n contiguous slices of matrix to list, each containing x rows.
-If not enough rows, progress to rows-1 -&gt; row-2 -&gt; …</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="multiplied.core.algorithm.Algorithm.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span>
-
-<dl>
-<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em>,</dd>
-</dl>
-
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.step" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.step" title="Link to this definition">#</a></dt>
 <dd><p>Take template[internal_state], apply to matrix, advance internal_state</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.algorithm.isolate_arithmetic_units">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.algorithm.</span></span><span class="sig-name descname"><span class="pre">isolate_arithmetic_units</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.template.Template" title="multiplied.core.template.Template"><span class="pre">Template</span></a></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.template.Template" title="multiplied.core.template.Template"><span class="pre">Template</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#isolate_arithmetic_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.isolate_arithmetic_units" title="Link to this definition">#</a></dt>
+<dd><p>Isolate arithmetic units into a list seperate templates.</p>
 </dd></dl>
 
 </section>
@@ -441,8 +432,8 @@ is a 2-bit, signed hex value. +ve = up, -ve = down.</p>
 <dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">dadda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.Template" title="Link to this definition">#</a></dt>
@@ -496,7 +487,7 @@ on matrix. Defaults to empty matrix if matrix=None.</p>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">zeroed_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/template.html#build_adder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.build_adder" title="Link to this definition">#</a></dt>
@@ -515,7 +506,7 @@ Returns template “slices” for addition and the resulting slice.</p>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">zeroed_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/template.html#build_csa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.build_csa" title="Link to this definition">#</a></dt>
@@ -528,12 +519,29 @@ Returns template “slices” for a csa reduction and the resulting slice.
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.template.build_empty">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.template.</span></span><span class="sig-name descname"><span class="pre">build_empty</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/template.html#build_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.build_empty" title="Link to this definition">#</a></dt>
+<dd><p>Create an empty template slice. Returns template “slices” and resulting slice.
+Variable length determined by source slice.
+&gt;&gt;&gt; [slice-] || [empty-] || [result]
+&gt;&gt;&gt; ???????? || ________ || ________
+&gt;&gt;&gt; ???????? || ________ || ________
+&gt;&gt;&gt; …      || …      || …</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="multiplied.core.template.build_noop">
 <span class="sig-prename descclassname"><span class="pre">multiplied.core.template.</span></span><span class="sig-name descname"><span class="pre">build_noop</span></span><span class="sig-paren">(</span>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">zeroed_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#multiplied.core.matrix.Slice" title="multiplied.core.matrix.Slice"><span class="pre">Slice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/template.html#build_noop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.build_noop" title="Link to this definition">#</a></dt>
@@ -542,6 +550,11 @@ Returns template “slices” and resulting slice. Target row unaffected
 &gt;&gt;&gt; [slice-] || [noop–] || [result]
 &gt;&gt;&gt; ___0000_ || ___aAaA_ || ___aAaA_</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.template.checksum">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.template.</span></span><span class="sig-name descname"><span class="pre">checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/template.html#checksum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.template.checksum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="multiplied.core.template.resolve_pattern">
@@ -661,10 +674,10 @@ set of operands a, b.</p>
 <li><a class="reference internal" href="#multiplied.core.algorithm.Algorithm.exec"><code class="docutils literal notranslate"><span class="pre">Algorithm​.exec()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.algorithm.Algorithm.push"><code class="docutils literal notranslate"><span class="pre">Algorithm​.push()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.algorithm.Algorithm.reset"><code class="docutils literal notranslate"><span class="pre">Algorithm​.reset()</span></code></a></li>
-<li><a class="reference internal" href="#multiplied.core.algorithm.Algorithm.split"><code class="docutils literal notranslate"><span class="pre">Algorithm​.split()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.algorithm.Algorithm.step"><code class="docutils literal notranslate"><span class="pre">Algorithm​.step()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#multiplied.core.algorithm.isolate_arithmetic_units"><code class="docutils literal notranslate"><span class="pre">isolate_​arithmetic_​units()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-multiplied.core.map">multiplied​.core​.map module</a><ul>
@@ -700,7 +713,9 @@ set of operands a, b.</p>
 </li>
 <li><a class="reference internal" href="#multiplied.core.template.build_adder"><code class="docutils literal notranslate"><span class="pre">build_​adder()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.template.build_csa"><code class="docutils literal notranslate"><span class="pre">build_​csa()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.template.build_empty"><code class="docutils literal notranslate"><span class="pre">build_​empty()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.template.build_noop"><code class="docutils literal notranslate"><span class="pre">build_​noop()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.template.checksum"><code class="docutils literal notranslate"><span class="pre">checksum()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.template.resolve_pattern"><code class="docutils literal notranslate"><span class="pre">resolve_​pattern()</span></code></a></li>
 </ul>
 </li>
