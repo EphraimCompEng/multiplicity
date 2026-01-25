@@ -135,35 +135,6 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
             empty_slice[row][i] = '_'
     return empty_slice, copy(empty_slice)
 
-def checksum(source:list[list[str]]) -> list[int]:
-    def err():
-        return ValueError(
-            "Error: Invalid template format.\
-            \tExpected pattern: list[char], or template: list[list[char]]")
-    if (
-        (bits := len(source)) in mp.SUPPORTED_BITWIDTHS or
-        not isinstance(source, (list, mp.Matrix)) or
-        not isinstance(source[0], list)
-    ):
-        err()
-
-    checksum = [0] * bits
-    for i, row in enumerate(source):
-        empty = 0
-        valid_len = 0
-        for ch in row:
-            if not ischar(ch):
-                err()
-            if ch == '_':
-                empty += 1
-
-        if valid_len != bits:
-            err()
-
-        if empty != bits << 1:
-            checksum[i] = 1
-    return checksum
-
 
 class Pattern:
     """
@@ -191,6 +162,7 @@ class Pattern:
                 # (arithmetic_unit, starting_row, run_length)
                 metadata.append((None, i-run, run))
             else:
+                # TODO: Implement Decoders
                 # arithmetic_unit = decoder
                 # find decoder type
                 raise ValueError(f"Unsupported run length {run}")
@@ -243,10 +215,10 @@ class Template:
     ) -> None: # Complex or pattern
         self.bits   = len(source)
         self.result = result if isinstance(result, Template) else []
+        # ! TARGET
 
         # length of any template represents it's bitwidth
-        if self.bits not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
+        mp.validate_bitwidth(self.bits)
 
         # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
@@ -263,10 +235,28 @@ class Template:
         # -- template handling ---------------------------------------
 
         # Add sanity checks
-        checksum_ = checksum(source)
+        self.__checksum(source)
         self.template = source
-        self.checksum = checksum_
         self.pattern  = []
+
+    def __checksum(self, source:list[list[str]]) -> None:
+        row_len  = self.bits << 1
+        checksum = [0] * self.bits
+        for i, row in enumerate(source):
+            if len(row) != row_len:
+                raise
+
+            empty = 0
+            for ch in row:
+                if not ischar(ch):
+                    raise
+                if ch == '_':
+                    empty += 1
+
+
+            if empty != row_len:
+                checksum[i] = 1
+        self.checksum = checksum
 
     # Templates must be built using matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
@@ -285,10 +275,7 @@ class Template:
         # -- sanity check -------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
-        if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(
-                f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
+        mp.validate_bitwidth(len(pattern))
 
         # -- find run -----------------------------------------------
         template_slices = {}
