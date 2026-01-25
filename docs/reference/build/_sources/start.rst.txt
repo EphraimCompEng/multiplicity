@@ -7,7 +7,7 @@ Get Started
 
 .. code:: sh
 
-    pip install -i https://test.pypi.org/simple/ multiplied
+    pip install multiplied
 
 .. code:: python
 

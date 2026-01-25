@@ -12,7 +12,8 @@ def ischar(ch: str) -> bool:
         return False
 
 def chargen() -> Generator[str]:
-    """Continuously generate characters from A to Z."""
+    """Continuously generate characters from A to Z"""
+
     i = 0
     while True:
         yield chr((i % 26) + 65)

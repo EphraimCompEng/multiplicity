@@ -7,7 +7,7 @@ from typing import Any, Iterator
 
 class Slice:
     """
-
+    Matrix slice which adheres to multiplied formatting rules
     """
     def __init__(self, matrix: list[Any]):
         if isinstance(matrix[0], list):
@@ -36,6 +36,7 @@ class Slice:
                 return False
         return True
 
+    # TODO: make a useful repr
     def _repr_(self):
         return self.__str__()
 
@@ -61,7 +62,7 @@ class Slice:
 
 class Matrix:
     """
-
+    Partial Product Matrix
     """
     def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
         if isinstance(source, int):
@@ -98,36 +99,6 @@ class Matrix:
         for i in range(bits):
             matrix.append(["_"]*(bits-i) + row + ["_"]*i)
         self.matrix = matrix
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
-    def __str__(self) -> str:
-        return mp.pretty(self.matrix)
-
-    def __len__(self) -> int:
-        return self.bits
-
-    def __eq__(self, matrix: Any, /) -> bool:
-        if matrix.bits != self.bits:
-            return False
-        for i in range(self.bits):
-            if matrix.matrix[i] != self.matrix[i]:
-                return False
-        return True
-
-    def __getitem__(self, index: int | slice) -> Slice:
-        slice = self.matrix[index]
-        return Slice(slice)
-
-    def __iter__(self):
-        return iter(self.matrix)
-
-    def __next__(self):
-        if self.index >= self.bits:
-            raise StopIteration
-        self.index += 1
-        return self.matrix[self.index - 1]
 
     def resolve_rmap(self, *, ignore_zeros: bool=True
     ) -> mp.Map:
@@ -175,6 +146,35 @@ class Matrix:
         # -- bit-wise mapping ---------------------------------------
         raise NotImplementedError("Complex mapping not implemented")
 
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def __str__(self) -> str:
+        return mp.pretty(self.matrix)
+
+    def __len__(self) -> int:
+        return self.bits
+
+    def __eq__(self, matrix: Any, /) -> bool:
+        if matrix.bits != self.bits:
+            return False
+        for i in range(self.bits):
+            if matrix.matrix[i] != self.matrix[i]:
+                return False
+        return True
+
+    def __getitem__(self, index: int | slice) -> Slice:
+        slice = self.matrix[index]
+        return Slice(slice)
+
+    def __iter__(self):
+        return iter(self.matrix)
+
+    def __next__(self):
+        if self.index >= self.bits:
+            raise StopIteration
+        self.index += 1
+        return self.matrix[self.index - 1]
 
 
 # -- helper functions -----------------------------------------------

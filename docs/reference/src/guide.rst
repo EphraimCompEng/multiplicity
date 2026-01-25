@@ -49,7 +49,7 @@ Here's what it looks like:
 
 .. code-block:: python
 
-    print(matrix.matrix)
+    print(matrix)
 
 
 .. code-block:: python
@@ -119,7 +119,6 @@ To inform the algorithm on how a given template reduces groups of partial produc
     ]
 
 .. note::
-    Writing patterns vertically to make it clear how rows are effected.
 
     CSAs work on 3 bits at a time, and returns a 2-bit sum of raised bits.
     Adders work on 2 words at a time, each word being x-bits, and returns a single word. Bit pairs which sum to 0b10 are carried through the calculation.
@@ -132,14 +131,16 @@ For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach o
 
     1st:    2nd:    3rd:    output:
 
-    a       _       _
-    a       c       _
-    a       c       d
-    b       c       d       x
+    a       c       e       x
+    a       c       e
+    a       d       _
+    b       _       _
 
 .. note::
 
     Each arithmetic unit will output to the top of its "run". The next section covers how to "map" these outputs.
+
+    Underscores represent no operations or noops.
 
 
 
@@ -152,17 +153,20 @@ Each step of an algorithm needs a pattern or a template, but it also needs to re
 First, note that bits can only move vertically as moving horizontally changes it's value. Therefore, each map value is a signed hexadecimal number.
 For simple maps, the map value represents an entire row rather than a specific bit.
 
-.. code-block:: text
+.. code:: text
 
     # Maps for each stage of first_alg
 
     1st:    2nd:    3rd:
 
-    FF      __      __
-    FF      FF      __
-    00      FF      00
     00      00      00
+    00      00      00
+    00      FF      00
+    FF      00      00
 
+.. note::
+
+    Outputs of each units are packed to the top of their initial row.
 
 Here's the breakdown of this example:
 
@@ -180,24 +184,27 @@ This means as long as outputs are mapped correctly to inputs, the placements of 
 
     In other words, these are also valid algorithms:
 
-    .. code-block:: text
+    .. code:: text
+
+        # [ Key ]
+        # char | r :: arithmetic unit | result
 
         # Another valid algorithm               # Another
 
         1st:    2nd:    3rd:    output:         1st:    2nd:    3rd:    output:
 
-        a       c       d       x               a       c
-        a       c       d                       a       c       d       x
-        a       c                               a       c       d
-        b                                       b
+        a r                                     a r     c r
+        a r     c r                             a r     c r     d r     x
+        a       c r     d r                     a       c       d
+        b r     c       d       x               b r
 
         # maps                                  # maps
 
 
-        00      00      00                      00      FF      __
-        00      00      00                      00      FF      00
-        00      00      __                      00      00      00
-        01      __      __                      01      __      __
+        01      00      00                      00      01      00
+        01      01      00                      00      01      00
+        00      01      01                      00      00      00
+        00      00      00                      FF      00      00
 
 
 .. _define_algorithm:

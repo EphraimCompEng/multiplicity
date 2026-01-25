@@ -179,7 +179,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils.char</span><span class="w"> </span><span class="kn">import</span> <span class="n">ischar</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 
-
+<span class="c1"># -- Template and Slice dependencies  ------------------------------- #</span>
 
 <div class="viewcode-block" id="build_csa">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.build_csa">[docs]</a>
@@ -188,6 +188,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create CSA template slice with zero initialised slice and chosen char.</span>
 <span class="sd">    Returns template &quot;slices&quot; for a csa reduction and the resulting slice.</span>
+
 <span class="sd">    &gt;&gt;&gt; [slice-] || [csa---] || [result]</span>
 <span class="sd">    &gt;&gt;&gt; ____0000 || ____AaAa || __AaAaAa</span>
 <span class="sd">    &gt;&gt;&gt; ___0000_ || ___aAaA_ || __aAaA__</span>
@@ -275,6 +276,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a No-op template slice with zero initialised slice and chosen char.</span>
 <span class="sd">    Returns template &quot;slices&quot; and resulting slice. Target row unaffected</span>
+
 <span class="sd">    &gt;&gt;&gt; [slice-] || [noop--] || [result]</span>
 <span class="sd">    &gt;&gt;&gt; ___0000_ || ___aAaA_ || ___aAaA_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -300,6 +302,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create an empty template slice. Returns template &quot;slices&quot; and resulting slice.</span>
 <span class="sd">    Variable length determined by source slice.</span>
+
 <span class="sd">    &gt;&gt;&gt; [slice-] || [empty-] || [result]</span>
 <span class="sd">    &gt;&gt;&gt; ???????? || ________ || ________</span>
 <span class="sd">    &gt;&gt;&gt; ???????? || ________ || ________</span>
@@ -353,7 +356,7 @@
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Pattern">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Pattern</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Simplified representation of a Template.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">ischar</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">pattern</span><span class="p">)):</span>
@@ -425,19 +428,15 @@
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Template">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Template</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    A structure representing collections of arithmetic units using characters.</span>
+<span class="sd">    Generated using a partial product matrix and a Pattern or custom template</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Pattern</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span>
-        <span class="nb">map</span><span class="p">:</span> <span class="n">Any</span>    <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dadda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">[],</span>
         <span class="n">matrix</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Complex or pattern</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">map</span>    <span class="o">=</span> <span class="nb">map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bits</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dadda</span>  <span class="o">=</span> <span class="n">dadda</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Template</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
 
         <span class="c1"># length of any template represents it&#39;s bitwidth</span>
@@ -450,37 +449,19 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>  <span class="o">=</span> <span class="n">source</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">ch</span> <span class="o">!=</span> <span class="s1">&#39;_&#39;</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">source</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">dadda</span><span class="p">:</span>
-                <span class="c1"># TODO</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Applying maps not implemented&quot;</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="ow">not</span> <span class="n">matrix</span><span class="p">:</span>
                 <span class="n">matrix</span> <span class="o">=</span>  <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">build_from_pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
             <span class="k">return</span>
 
         <span class="c1"># -- template handling ---------------------------------------</span>
+
+        <span class="c1"># Add sanity checks</span>
         <span class="n">checksum_</span> <span class="o">=</span> <span class="n">checksum</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="n">checksum_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>  <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mp</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">mp</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="si">}</span><span class="s2">)&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Template.init_base_template">
-<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Template.init_base_template">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">init_base_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dadda</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create template for zeroed matrix using pattern</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-
 
     <span class="c1"># Templates must be built using matrix</span>
 <div class="viewcode-block" id="Template.build_from_pattern">
@@ -568,11 +549,20 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">merged</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># PLACEHOLDER #</span>
         <span class="o">...</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mp</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">mp</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span></div>
 
 
 
-
+<span class="c1"># -- dependent helper functions ------------------------------------- #</span>
 
 
 <div class="viewcode-block" id="resolve_pattern">
@@ -606,6 +596,12 @@
 
 
 
+<div class="viewcode-block" id="build_noop_template">
+<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.build_noop_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_noop_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dadda</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create template for zeroed matrix using pattern</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 

@@ -8,6 +8,9 @@ from typing import Any
 
 
 class Map:
+    """
+    Generates Map object from row map or standard map.
+    """
 
     def __init__(self, map: list[Any]) -> None:
         if not(isinstance(map, list)):
@@ -23,20 +26,6 @@ class Map:
             self.rmap = map
         self._index = 0
 
-    def __repr__(self) -> str:
-        return mp.pretty(self.map)
-
-    def __str__(self) -> str:
-        return str(self.__repr__())
-
-    def __iter__(self):
-        return iter(self.map)
-
-    def __next__(self):
-        if self._index >= self.bits:
-            raise StopIteration
-        self._index += 1
-        return self.map[self._index - 1]
 
     def build_map(self, rmap: list[str]) -> list[list[str]]:
         """
@@ -53,6 +42,22 @@ class Map:
                 raise ValueError(f"Invalid row map element {rmap[i]}")
             map.append([rmap[i] for _ in range(n*2)])
         return map
+
+    # TODO: make a useful repr
+    def __repr__(self) -> str:
+        return str(self.__str__())
+
+    def __str__(self) -> str:
+        return mp.pretty(self.map)
+
+    def __iter__(self):
+        return iter(self.map)
+
+    def __next__(self):
+        if self._index >= self.bits:
+            raise StopIteration
+        self._index += 1
+        return self.map[self._index - 1]
 
 
 def empty_map(bits: int)-> Map:

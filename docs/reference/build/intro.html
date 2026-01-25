@@ -190,6 +190,271 @@
 <li><p>Fine-grain access to bits, words or stages</p></li>
 </ul>
 </section>
+<section id="pattern-based-algorithm">
+<h2>Pattern Based Algorithm<a class="headerlink" href="#pattern-based-algorithm" title="Link to this heading">#</a></h2>
+<p>Multiplied assists in template generation to create reusable algorithm objects:</p>
+<ul class="simple">
+<li><p>Patterns represent simple templates</p></li>
+<li><p>Automatic grouping based on empty rows</p></li>
+<li><p>Pseudo outputs visualise possible bit positions for arithmetic outputs.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+<span class="n">alg</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Algorithm</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">alg</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0:{
+
+template:{
+
+________AaAaAaAa
+_______aAaAaAaA_
+______BbBbBbBb__
+_____bBbBbBbB___
+____CcCcCcCc____
+___cCcCcCcC_____
+__DdDdDdDd______
+_dDdDdDdD_______
+
+______AaAaAaAaAa
+________________
+____BbBbBbBbBb__
+________________
+__CcCcCcCcCc____
+________________
+DdDdDdDdDd______
+________________
+}
+
+pseudo:{
+
+______AaAaAaAaAa
+____BbBbBbBbBb__
+__CcCcCcCcCc____
+DdDdDdDdDd______
+________________
+________________
+________________
+________________
+}
+
+map:{
+
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+}
+</pre></div>
+</div>
+</section>
+<section id="automatic-template-generation">
+<h2>Automatic Template Generation<a class="headerlink" href="#automatic-template-generation" title="Link to this heading">#</a></h2>
+<p>Extend the previous single stage, pattern based algorithm using auto resolution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alg</span><span class="o">.</span><span class="n">auto_resolve_stage</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0:{
+
+template:{
+
+________AaAaAaAa
+_______aAaAaAaA_
+______BbBbBbBb__
+_____bBbBbBbB___
+____CcCcCcCc____
+___cCcCcCcC_____
+__DdDdDdDd______
+_dDdDdDdD_______
+
+______AaAaAaAaAa
+________________
+____BbBbBbBbBb__
+________________
+__CcCcCcCcCc____
+________________
+DdDdDdDdDd______
+________________
+}
+
+pseudo:{
+
+______AaAaAaAaAa
+____BbBbBbBbBb__
+__CcCcCcCcCc____
+DdDdDdDdDd______
+________________
+________________
+________________
+________________
+}
+
+map:{
+
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD FD
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+}
+
+1:{
+
+template:{
+
+______AaAaAaAaAa
+____AaAaAaAaAa__
+__AaAaAaAaAa____
+BbBbBbBbBb______
+________________
+________________
+________________
+________________
+
+__AaAaAaAaAaAaAa
+___AaAaAaAaAa___
+________________
+BbBbBbBbBb______
+________________
+________________
+________________
+________________
+}
+
+pseudo:{
+
+__AaAaAaAaAaAaAa
+___AaAaAaAaAa___
+BbBbBbBbBb______
+________________
+________________
+________________
+________________
+________________
+}
+
+map:{
+
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+}
+
+2:{
+
+template:{
+
+__AaAaAaAaAaAaAa
+___aAaAaAaAaA___
+AaAaAaAaAa______
+________________
+________________
+________________
+________________
+________________
+
+AaAaAaAaAaAaAaAa
+_AaAaAaAaAaA____
+________________
+________________
+________________
+________________
+________________
+________________
+}
+
+pseudo:{
+
+AaAaAaAaAaAaAaAa
+_AaAaAaAaAaA____
+________________
+________________
+________________
+________________
+________________
+________________
+}
+
+map:{
+
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+}
+
+3:{
+
+template:{
+
+AaAaAaAaAaAaAaAa
+_aAaAaAaAaAa____
+________________
+________________
+________________
+________________
+________________
+________________
+
+AaAaAaAaAaAaAaAa
+________________
+________________
+________________
+________________
+________________
+________________
+________________
+}
+
+pseudo:{
+
+AaAaAaAaAaAaAaAa
+________________
+________________
+________________
+________________
+________________
+________________
+________________
+}
+
+map:{
+
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+}
+</pre></div>
+</div>
+</section>
+<section id="complex-templates">
+<h2>Complex Templates<a class="headerlink" href="#complex-templates" title="Link to this heading">#</a></h2>
+<p>Coming Soon</p>
+</section>
 </section>
 
 </article><footer class="bz-article-footer">
@@ -226,6 +491,9 @@
     On this page
   </p><ul>
 <li><a class="reference internal" href="#the-problem">The Problem</a></li>
+<li><a class="reference internal" href="#pattern-based-algorithm">Pattern Based Algorithm</a></li>
+<li><a class="reference internal" href="#automatic-template-generation">Automatic Template Generation</a></li>
+<li><a class="reference internal" href="#complex-templates">Complex Templates</a></li>
 </ul></nav>
   
     <div class="bz-edit-this-page">
