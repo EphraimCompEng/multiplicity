@@ -31,10 +31,12 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
+    checksum,
 )
 
 from .core.algorithm import (
-    Algorithm
+    Algorithm,
+    isolate_arithmetic_units,
 )
 
 from .core.truth import (
@@ -50,6 +52,7 @@ from .core.utils.char import (
     ischar,
     chargen,
     chartff,
+    allchars,
 )
 
 
@@ -118,11 +121,13 @@ __all__ = [
     'Pattern',
     'Template',
     'Algorithm',
+    'isolate_arithmetic_units',
     'build_dadda_map',
     'empty_map',
     'build_csa',
     'build_adder',
     'resolve_pattern',
+    'checksum',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
@@ -131,6 +136,7 @@ __all__ = [
     'ischar',
     'chargen',
     'chartff',
+    'allchars',
     'pretty',
     'mprint',
     'MP_VERSION',

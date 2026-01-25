@@ -8,6 +8,36 @@ Changelog
 v0.3
 =====
 
+`v0.3.3 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.3>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates:
+
+    - Automatic algorithm generation via patterns
+    - Implemented reduction via arithmetic units. Work continues for merging results
+    - Added groundwork for complex template isolation and sanity checks
+    - Added checksums to Template class, allowing for faster traversal
+    - Improved and expanded utility functions
+    - Bug fixes and improved sanity checks in most classes
+
+Looking forward:
+
+    [Main Focus]
+
+    - Truth table generation via algorithm(s)
+    - Applying algorithms to operands
+    - Complex mapping
+    - Complex templates
+
+    [ Ongoing ]
+
+    - Prepare for complex, custom, templates
+    - Export to .parquet files
+    - Continued development of the API reference site
+    - Adopt Pytest
+
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.3.3>`_.
+
 `v0.3.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.0>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -36,7 +66,7 @@ Looking forward:
     - Export to .parquet files
     - Continued development of the API reference site
 
-
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.3.0>`_.
 
 v0.2
 ====

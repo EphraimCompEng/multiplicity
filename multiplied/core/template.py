@@ -2,14 +2,14 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
-from .utils.char import ischar
-from copy import copy,deepcopy
+from copy import copy
 from typing import Any
+from .utils.char import ischar
 import multiplied as mp
 
 
 
-def build_csa(char: str, zeroed_slice: mp.Slice
+def build_csa(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create CSA template slice with zero initialised slice and chosen char.
@@ -19,14 +19,18 @@ def build_csa(char: str, zeroed_slice: mp.Slice
     >>> ___0000_ || ___aAaA_ || __aAaA__
     >>> __0000__ || __AaAa__ || ________
     """
-    if len(zeroed_slice) != 3:
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+    if len(source_slice) != 3:
         raise ValueError("Invalid template slice: must be 3 rows")
 
     # loop setup
-    n         = len(zeroed_slice[0])
+    n         = len(source_slice[0])
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
-    csa_slice = copy(zeroed_slice)
+    csa_slice = copy(source_slice)
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
@@ -37,21 +41,13 @@ def build_csa(char: str, zeroed_slice: mp.Slice
         csa_slice[0][i] = char if (y0:=csa_slice[0][i] != '_') else '_'
         csa_slice[1][i] = char if (y1:=csa_slice[1][i] != '_') else '_'
         csa_slice[2][i] = char if (y2:=csa_slice[2][i] != '_') else '_'
+
+        # ! (y0+y1+y2) is accidentally functional and requires refactoring
         result[0][i]    = char if 1 <= (y0+y1+y2) else '_'
         result[1][i-1]  = char if 1 <  (y0+y1+y2) else '_'
     return csa_slice, mp.Slice(result)
 
-# -- [ BUG: Does not carry through leading, single row, bits ] ------ #
-#                                                                     #
-# [ Observed ]                                                        #
-# >>> _aAaAaAaAaAaAaAa || _aAaAaAaAaAaAaAa                            #
-# >>> __AaAaAaAaAa____ ||                                             #
-#                                                                     #
-# [ Expected ]                                                        #
-# >>> _aAaAaAaAaAaAaAa || AaAaAaAaAaAaAaAa                            #
-# >>> __AaAaAaAaAa____ ||                                             #
-#                                                                     #
-def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
+def build_adder(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create Adder template slice with zero initialised slice and chosen char.
@@ -61,18 +57,22 @@ def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________
     """
-    if len(zeroed_slice) != 2:
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+    if len(source_slice) != 2:
         raise ValueError("Invalid template slice: must be 2 rows")
 
     # loop setup
-    n           = len(zeroed_slice[0])
+    n           = len(source_slice[0])
     tff         = mp.chartff(char) # Toggle flip flop
     result      = [['_']*n, ['_']*n]
-    adder_slice = copy(zeroed_slice) # ensure no references
+    adder_slice = copy(source_slice) # ensure no references
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
-        # with a char. Lower and upper case aide in visualising changes
+        # with a char. Alternating char case aids in visualising changes
         # in bit position before, templates, and after, result, operation
 
         char = next(tff)
@@ -80,15 +80,17 @@ def build_adder(char: str, zeroed_slice: mp.Slice # ----------------- #
         adder_slice[1][i] = char if (y1:=adder_slice[1][i] != '_') else '_'
         result[0][i]      = char if y0 or y1 else '_'
 
-    # Adding final carry
-    pre_char = char
-    char     = next(tff)
-    index    = result[0].index(char)-1 # find first instance of char - 1
-    result[0][index] = pre_char # Final carry place in result template
+    # -- Add final carry -----------------------------------------
+    carry = not all(ch == '_' for ch in adder_slice[1]) # sanity check
+
+    # find index of left most instance of char, regardless of case
+    index = min(result[0].index(next(tff)), result[0].index(next(tff)))
+    if carry and 0 < index:
+        result[0][index-1] = next(tff) # Final carry place in result template
 
     return adder_slice, mp.Slice(result)
 
-def build_noop(char: str, zeroed_slice: mp.Slice
+def build_noop(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]:
     """
     Create a No-op template slice with zero initialised slice and chosen char.
@@ -96,17 +98,69 @@ def build_noop(char: str, zeroed_slice: mp.Slice
     >>> [slice-] || [noop--] || [result]
     >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
-    if len(zeroed_slice) != 1:
+    if not ischar(char):
+        raise ValueError("Expected character. String length must equal 1")
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+    if len(source_slice) != 1:
         raise ValueError("Invalid template slice: must be 1 rows")
 
-    n          = len(zeroed_slice[0])
+    n          = len(source_slice[0])
     tff        = mp.chartff(char) # Toggle flip flop
-    noop_slice = copy(zeroed_slice) # ensure no references
+    noop_slice = copy(source_slice) # ensure no references
     for i in range(n):
-        noop_slice[0][i] = char if (noop_slice[0][i] != '_') else '_'
-        char = next(tff)
+        noop_slice[0][i] = next(tff) if (noop_slice[0][i] != '_') else '_'
 
     return noop_slice, copy(noop_slice) # avoids pointing to same object
+
+def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
+    """
+    Create an empty template slice. Returns template "slices" and resulting slice.
+    Variable length determined by source slice.
+    >>> [slice-] || [empty-] || [result]
+    >>> ???????? || ________ || ________
+    >>> ???????? || ________ || ________
+    >>> ...      || ...      || ...
+    """
+
+    if not isinstance(source_slice, mp.Slice):
+        raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
+
+    empty_slice = copy(source_slice) # ensure no references
+    for row in range(len(source_slice)):
+        for i in range(empty_slice.bits):
+            empty_slice[row][i] = '_'
+    return empty_slice, copy(empty_slice)
+
+def checksum(source:list[list[str]]) -> list[int]:
+    def err():
+        return ValueError(
+            "Error: Invalid template format.\
+            \tExpected pattern: list[char], or template: list[list[char]]")
+    if (
+        (bits := len(source)) in mp.SUPPORTED_BITWIDTHS or
+        not isinstance(source, (list, mp.Matrix)) or
+        not isinstance(source[0], list)
+    ):
+        err()
+
+    checksum = [0] * bits
+    for i, row in enumerate(source):
+        empty = 0
+        valid_len = 0
+        for ch in row:
+            if not ischar(ch):
+                err()
+            if ch == '_':
+                empty += 1
+
+        if valid_len != bits:
+            err()
+
+        if empty != bits << 1:
+            checksum[i] = 1
+    return checksum
+
 
 class Pattern:
     """
@@ -131,8 +185,11 @@ class Pattern:
                 run += 1
                 i   += 1
             if run < 4:
+                # (arithmetic_unit, starting_row, run_length)
                 metadata.append((None, i-run, run))
             else:
+                # arithmetic_unit = decoder
+                # find decoder type
                 raise ValueError(f"Unsupported run length {run}")
             i += 1
             k += 1
@@ -153,6 +210,24 @@ class Pattern:
     def __getitem__(self, index: int) -> str:
         return self.pattern[index]
 
+
+
+# -- ! [ Preparing For Decoders ] !-------------------------------- #
+#
+# 1st:
+#
+#   Implement complex maps, arithmetic unit based isolation and
+#   partial product reduction.
+#
+# 2st: Adopt get_runs() within build_from_pattern()
+#
+#   get_runs can pass all information needed about a unit then
+#   pass it forward.
+#
+# 3nd: Use named tupes or other structures to pass information
+#
+#   Improves clarity as library becomes increasingly complex.
+#
 class Template:
     """
 
@@ -161,33 +236,38 @@ class Template:
     def __init__(self, source: Pattern | list[list[str]], *,
         map: Any    = None,
         dadda: bool = False,
-        result: Any = None,
-        matrix: Any = None
+        result: Any = [],
+        matrix: Any = []
     ) -> None: # Complex or pattern
 
         self.map    = map
         self.bits   = len(source)
         self.dadda  = dadda
-        self.result = result if isinstance(result, Template) else None
+        self.result = result if isinstance(result, Template) else []
 
         # length of any template represents it's bitwidth
         if self.bits not in mp.SUPPORTED_BITWIDTHS:
             raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
+
+        # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
+            from copy import deepcopy
+
             self.pattern  = source
+            self.checksum = [1 if ch != '_' else 0 for ch in source]
             if dadda:
                 # TODO
                 raise NotImplementedError("Applying maps not implemented")
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
             self.build_from_pattern(self.pattern, deepcopy(matrix))
-        elif ischar(source[0][0]):
-            self.template = source
-            self.pattern  = None
-        else:
-            raise ValueError(
-                "Error: Invalid template format.\
-                \tExpected pattern: list[char], or template: list[list[str]]")
+            return
+
+        # -- template handling ---------------------------------------
+        checksum_ = checksum(source)
+        self.template = source
+        self.checksum = checksum_
+        self.pattern  = []
 
     def __str__(self) -> str:
         return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
@@ -218,7 +298,7 @@ class Template:
         >>> _0000___ ||    'b'  ] || _BbBb___ ________
         """
 
-        # -- sanity check -----------------------------------------------
+        # -- sanity check -------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
         if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
@@ -226,14 +306,23 @@ class Template:
                 f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
             )
 
-        # -- find run ---------------------------------------------------
+        # -- find run -----------------------------------------------
         template_slices = {}
         i = 1
         while i < len(pattern)+1:
             run = 1
+            # replaced with get_runs when decoders are implemented
+            # decoders will likely take special characters to extract the type
+            # and likely require passing named tuples to current func to make
+            # things clearer
+            #
+            # see [ Preparing For Decoders ] ^
             while i < len(pattern) and pattern[i-1] == pattern[i]:
+
                 run += 1
                 i   += 1
+
+            # TODO: Add checks for templates which do not make sense for a given matrix #
             match run:
                 case 1: # Do nothing
                     template_slices[i-run] = build_noop(pattern[i-run], matrix[i-run:i])
@@ -242,7 +331,11 @@ class Template:
                 case 3: # Create CSA row
                     template_slices[i-run] = build_csa(pattern[i-run], matrix[i-run:i])
                 case _:
-                    raise ValueError(f"Unsupported run length {run}")
+                    if pattern[i-run] != '_':
+                        raise ValueError(f"Unsupported run length {run}. Use '_' for empty rows")
+
+                    template_slices[i-run] = build_empty(matrix[i-run:i])
+
             i += 1
 
         # -- build template and resultant ---------------------------
@@ -284,24 +377,24 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     from multiplied.core.utils.char import chargen
     char  = chargen()
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
-        return Pattern([next(char) for _ in range(matrix.bits)])
+        return Pattern(['_'] * matrix.bits)
 
     scope = matrix.bits - empty_rows
     new_pattern = []
     while 0 < scope:
-        ch = next(char)
+        ch  = next(char)
+        n   = len(new_pattern)
+
         if 3 <= scope:
             new_pattern += [ch, ch, ch]
-            scope -= 3
-        elif scope == 2:
+        elif 2 == scope:
             new_pattern += [ch, ch]
-            scope -= 2
-        elif scope == 1:
+        elif 1 == scope:
             new_pattern += [ch]
-            scope -= 1
-        else:
-            break
-    new_pattern += [next(char) for _ in range(empty_rows)]
+
+        scope -= len(new_pattern) - n
+
+    new_pattern += ['_'] * empty_rows
     return Pattern(new_pattern)
 
 

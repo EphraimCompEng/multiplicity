@@ -12,7 +12,7 @@ Matrix which are then subsequesntly reduced by templates.
 - [x] Simple reduction
 - [ ] Complex reduction
 - [x] Simple row map
-- [ ] Complete map matrix
+- [ ] Complex map matrix
 - [ ] Algorithm.state and .step()
 
 ## Algorithm
@@ -26,11 +26,15 @@ Basic functionality; "simple templates", generate, analyse:
 - [ ] 8-bit unsaturated multiplied [Built-in]
 - [ ] 4-bit saturated multiplied [Built-in]
 - [ ] 8-bit saturated multiplied [Built-in]
+
+## IO
+
 - [x] Truth table generation -> json
+- [ ] Algorithm -> json
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
 
-## IO
+## Analysis
 
 - [ ] Basic analysis/visualisation of bit ranges
 - [ ] Apply analytical functions to all stages

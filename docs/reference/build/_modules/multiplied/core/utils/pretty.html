@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../../_static/documentation_options.js?v=4621528c"></script>
+    <script defer src="../../../../_static/documentation_options.js?v=d5a15cff"></script>
     <script defer src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../../_static/scripts/breeze.js?v=8ef74970"></script>
@@ -172,8 +172,9 @@
   <h1>Source code for multiplied.core.utils.pretty</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">Slice</span><span class="p">,</span> <span class="n">Map</span><span class="p">,</span> <span class="n">Algorithm</span><span class="p">,</span> <span class="n">Template</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">Slice</span><span class="p">,</span> <span class="n">Map</span><span class="p">,</span> <span class="n">Algorithm</span>
 
 
 <div class="viewcode-block" id="pretty">
@@ -188,17 +189,15 @@
 <span class="sd">    &gt;&gt;&gt; _0000___</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">listy_object</span><span class="p">,</span> <span class="p">(</span>
-        <span class="n">Algorithm</span><span class="p">,</span>
-        <span class="n">Matrix</span><span class="p">,</span>
-        <span class="n">Slice</span><span class="p">,</span>
-        <span class="n">Map</span><span class="p">,</span>
-        <span class="nb">list</span><span class="p">,</span>
-        <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">Algorithm</span><span class="p">,</span> <span class="n">Template</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">Slice</span><span class="p">,</span> <span class="n">Map</span><span class="p">,</span>
+        <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">listy_object</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">match</span> <span class="n">copy</span><span class="p">(</span><span class="n">listy_object</span><span class="p">):</span>
         <span class="k">case</span> <span class="p">(</span><span class="n">Matrix</span><span class="p">()</span> <span class="o">|</span><span class="n">Slice</span><span class="p">()</span> <span class="o">|</span> <span class="n">Map</span><span class="p">()</span> <span class="o">|</span> <span class="nb">list</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">pretty_nested_list</span><span class="p">(</span><span class="n">listy_object</span><span class="p">)</span>
+        <span class="k">case</span> <span class="n">Template</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">pretty_nested_list</span><span class="p">(</span><span class="n">listy_object</span><span class="p">)</span>
         <span class="k">case</span> <span class="p">(</span><span class="n">Algorithm</span><span class="p">()</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">()):</span>
             <span class="k">return</span> <span class="n">pretty_dict</span><span class="p">(</span><span class="n">listy_object</span><span class="p">)</span>
@@ -215,24 +214,31 @@
 <span class="sd">    &gt;&gt;&gt; {0: [[1, _, _],[_, 2, _],[_, _, 3]],</span>
 <span class="sd">    &gt;&gt;&gt;  1: [[a, _, _],[_, b, _],[_, _, c]],</span>
 <span class="sd">    &gt;&gt;&gt;  2: [[x, y, z],[x, y, z],[x, y, z]]}</span>
-<span class="sd">    0:</span>
-<span class="sd">      1__</span>
-<span class="sd">      _2_</span>
-<span class="sd">      __3</span>
+<span class="sd">    0:{</span>
+
+<span class="sd">    1__</span>
+<span class="sd">    _2_</span>
+<span class="sd">    __3</span>
+<span class="sd">    }</span>
 <span class="sd">    ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pretty_</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">pretty</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">listy_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">pretty_</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:&quot;</span><span class="o">+</span><span class="s1">&#39;{</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">pretty</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:&quot;</span><span class="o">+</span><span class="s1">&#39;{</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">item_</span><span class="p">,</span> <span class="n">list_</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">pretty_</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item_</span><span class="si">}</span><span class="s2">:</span><span class="se">\n\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">pretty_</span> <span class="o">+=</span> <span class="s1">&#39;}&#39;</span>
-    <span class="k">return</span> <span class="n">pretty_</span></div>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list_</span><span class="p">,</span> <span class="n">Map</span><span class="p">):</span>
+                <span class="n">pretty</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">item_</span><span class="si">}</span><span class="s2">:&quot;</span> <span class="o">+</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="si">{</span><span class="n">pretty_nested_list</span><span class="p">(</span><span class="n">list_</span><span class="p">,</span><span class="w"> </span><span class="n">whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span><span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">pretty</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">item_</span><span class="si">}</span><span class="s2">:&quot;</span><span class="o">+</span><span class="s1">&#39;{&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">list_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span><span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pretty</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="pretty_nested_list">
 <a class="viewcode-back" href="../../../../api/multiplied.core.utils.html#multiplied.pretty_nested_list">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pretty_nested_list</span><span class="p">(</span><span class="n">listy_object</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pretty_nested_list</span><span class="p">(</span><span class="n">listy_object</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Format nested list as a string:</span>
 
@@ -242,11 +248,11 @@
 <span class="sd">    __3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">whitespace</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="k">if</span> <span class="n">whitespace</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">pretty_</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">pretty</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">(</span><span class="n">listy_object</span><span class="p">):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">whitespace</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
-        <span class="n">pretty_</span> <span class="o">+=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="n">pretty_</span></div>
+        <span class="n">pretty</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pretty</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="mprint">

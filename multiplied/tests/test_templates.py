@@ -64,10 +64,10 @@ def test_resolve_rmap() -> None:
     print(mp.Matrix(4, a=5, b=4))
 
 def test_resolve_pattern() -> None:
-    m = mp.Matrix(4, a=5, b=4)
+    m = mp.Matrix(8, a=5, b=4)
     mypattern  = mp.resolve_pattern(m)
     mytemplate = mp.Template(mypattern)
-    print(mytemplate)
+    print(mytemplate.__repr__())
 
 
 def main() -> None:

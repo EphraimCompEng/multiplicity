@@ -20,7 +20,7 @@
     </style>
   </noscript>
   
-    <script defer src="_static/documentation_options.js?v=4621528c"></script>
+    <script defer src="_static/documentation_options.js?v=d5a15cff"></script>
     <script defer src="_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="_static/scripts/breeze.js?v=8ef74970"></script>
@@ -263,7 +263,9 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It is recommended to write patterns vertically to make it clear how rows are effected.</p>
+<p>Writing patterns vertically to make it clear how rows are effected.</p>
+<p>CSAs work on 3 bits at a time, and returns a 2-bit sum of raised bits.
+Adders work on 2 words at a time, each word being x-bits, and returns a single word. Bit pairs which sum to 0b10 are carried through the calculation.</p>
 </div>
 <p>For this 4-bit algorithm it will take 3 rounds, minimum, of reduction to reach out final output:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Patterns for each stage of first_alg
