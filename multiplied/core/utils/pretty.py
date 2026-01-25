@@ -48,14 +48,21 @@ def pretty_dict(listy_dict: Any) -> str:
 
     pretty = io.StringIO()
     for key, value in listy_dict.items():
-        pretty.write(f"\n{key}:"+'{\n')
+        pretty.write(f"\n{key}:")
+        pretty.write('{\n')
+
+        # ! Not sure if this is the best way to avoid + or += concatination
         for item_, list_ in value.items():
             if isinstance(list_, Map):
-                pretty.write(
-                    f"\n{item_}:" + '{' +
-                    f"\n\n{pretty_nested_list(list_, whitespace=True)}"+'}\n')
+                pretty.write(f"\n{item_}:")
+                pretty.write('{')
+                pretty.write(f"\n\n{pretty_nested_list(list_, whitespace=True)}")
+                pretty.write('}\n')
                 continue
-            pretty.write(f"\n{item_}:"+'{'+f"\n\n{str(list_)}"+'}\n')
+            pretty.write(f"\n{item_}:")
+            pretty.write('{')
+            pretty.write(f"\n\n{str(list_)}")
+            pretty.write('}\n')
     return pretty.getvalue()
 
 def pretty_nested_list(listy_object: Any, *, whitespace=False) -> str:
@@ -74,6 +81,7 @@ def pretty_nested_list(listy_object: Any, *, whitespace=False) -> str:
         pretty.write("".join(row) + "\n")
     return pretty.getvalue()
 
+# Needs some work
 def mprint(matrix: Any):
     """Wrapper for print(mp.pretty)"""
     print(pretty(matrix))
