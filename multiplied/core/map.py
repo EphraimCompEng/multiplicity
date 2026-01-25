@@ -15,8 +15,7 @@ class Map:
     def __init__(self, map: list[Any]) -> None:
         if not(isinstance(map, list)):
             raise ValueError("Map must be type list")
-        if (bits := len(map)) not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
+        mp.validate_bitwidth(bits := len(map))
         self.bits = bits
         if isinstance(map[0], list):
             self.map  = map
@@ -33,9 +32,7 @@ class Map:
         is a 2-bit, signed hex value. +ve = up, -ve = down.
         """
 
-        assert (n := len(rmap)) in mp.SUPPORTED_BITWIDTHS, (
-            (f"Unsupported bitwidth {n}. Expected {mp.SUPPORTED_BITWIDTHS}")
-        )
+        mp.validate_bitwidth(n := len(rmap))
         map = []
         for i in range(n):
             if len(rmap[i]) != 2 and not(isinstance(rmap[i], str)):
@@ -68,9 +65,7 @@ def build_dadda_map(bits: int) -> Map:
     """
     Return map which represents starting point of Dadda tree algorithm.
     """
-    assert bits in mp.SUPPORTED_BITWIDTHS, (
-        ValueError(f"\tError: Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
-    )
+    mp.validate_bitwidth(bits)
 
     # -- Repulsive - Design algorithm for 16-bit+ ------------------------------ #
     dadda_map = {                                                                #

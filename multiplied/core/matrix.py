@@ -5,19 +5,20 @@
 import multiplied as mp
 from typing import Any, Iterator
 
+
 class Slice:
     """
     Matrix slice which adheres to multiplied formatting rules
     """
     def __init__(self, matrix: list[Any]):
+        # ! TARGET
         if isinstance(matrix[0], list):
             self.bits = len(matrix[0]) >> 1
         elif isinstance(matrix, list) and isinstance(matrix[0], str):
             self.bits = len(matrix) >> 1
-        if self.bits not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(
-                f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
+
+        # ! TARGET
+        mp.validate_bitwidth(self.bits)
         self.slice = matrix if isinstance(matrix[0], list) else [matrix]
 
     # TODO:: look into overloads for accurate type usage
@@ -65,15 +66,14 @@ class Matrix:
     Partial Product Matrix
     """
     def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
+        # ! TARGET
         if isinstance(source, int):
             self.bits = source
         if isinstance(source, list):
             self.bits = len(source)
 
-        if (self.bits not in mp.SUPPORTED_BITWIDTHS):
-            raise ValueError(
-                f"Unsupported bitwidth {self.bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
+        # ! TARGET
+        mp.validate_bitwidth(self.bits)
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
                 raise ValueError("Invalid input. Expected integer.")
@@ -185,10 +185,10 @@ def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
     """
     Build Logical AND matrix using source operands. Default bits=8
     """
-    if bits not in mp.SUPPORTED_BITWIDTHS:
-        raise ValueError(
-            f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}"
-        )
+    # ! TARGET
+
+    mp.validate_bitwidth(bits)
+
     if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
         raise ValueError("Operand bit width exceeds matrix bit width")
 

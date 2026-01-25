@@ -31,7 +31,7 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
-    checksum,
+    # checksum, # move to .core.matrix
 )
 
 from .core.algorithm import (
@@ -61,6 +61,9 @@ from .core.utils.pretty import (
     mprint,
 )
 
+from .core.utils.bool import (
+    validate_bitwidth,
+)
 # -- datasets -------------------------------------------------------
 
 
@@ -108,8 +111,6 @@ with open(Path(__file__).parent.parent / "pyproject.toml", "r") as f:
 
 MP_VERSION = MP_TOML["project"]["version"]
 
-SUPPORTED_BITWIDTHS = {4, 8}
-
 
 # -- __all__ --------------------------------------------------------
 
@@ -127,7 +128,7 @@ __all__ = [
     'build_csa',
     'build_adder',
     'resolve_pattern',
-    'checksum',
+    # 'checksum',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
@@ -139,6 +140,7 @@ __all__ = [
     'allchars',
     'pretty',
     'mprint',
+    'validate_bitwidth',
     'MP_VERSION',
     'SUPPORTED_BITWIDTHS',
 
