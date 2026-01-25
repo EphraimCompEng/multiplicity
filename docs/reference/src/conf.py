@@ -30,7 +30,7 @@ extensions = [
 ]
 
 templates_path = ['_templates', ]
-exclude_patterns = []
+exclude_patterns = ['multiplied.tests.rst']
 
 
 # -- Options for HTML output -------------------------------------------------

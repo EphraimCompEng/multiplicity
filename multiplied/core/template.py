@@ -7,13 +7,14 @@ from typing import Any
 from .utils.char import ischar
 import multiplied as mp
 
-
+# -- Template and Slice dependencies  ------------------------------- #
 
 def build_csa(char: str, source_slice: mp.Slice
 ) -> tuple[mp.Slice, mp.Slice]: # Carry Save Adder -> (template, result)
     """
     Create CSA template slice with zero initialised slice and chosen char.
     Returns template "slices" for a csa reduction and the resulting slice.
+
     >>> [slice-] || [csa---] || [result]
     >>> ____0000 || ____AaAa || __AaAaAa
     >>> ___0000_ || ___aAaA_ || __aAaA__
@@ -95,6 +96,7 @@ def build_noop(char: str, source_slice: mp.Slice
     """
     Create a No-op template slice with zero initialised slice and chosen char.
     Returns template "slices" and resulting slice. Target row unaffected
+
     >>> [slice-] || [noop--] || [result]
     >>> ___0000_ || ___aAaA_ || ___aAaA_
     """
@@ -117,6 +119,7 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     """
     Create an empty template slice. Returns template "slices" and resulting slice.
     Variable length determined by source slice.
+
     >>> [slice-] || [empty-] || [result]
     >>> ???????? || ________ || ________
     >>> ???????? || ________ || ________
@@ -164,7 +167,7 @@ def checksum(source:list[list[str]]) -> list[int]:
 
 class Pattern:
     """
-
+    Simplified representation of a Template.
     """
     def __init__(self, pattern: list[str]):
         if not(isinstance(pattern, list) and all(ischar(row) for row in pattern)):
@@ -230,19 +233,15 @@ class Pattern:
 #
 class Template:
     """
-
+    A structure representing collections of arithmetic units using characters.
+    Generated using a partial product matrix and a Pattern or custom template
     """
 
     def __init__(self, source: Pattern | list[list[str]], *,
-        map: Any    = None,
-        dadda: bool = False,
         result: Any = [],
         matrix: Any = []
     ) -> None: # Complex or pattern
-
-        self.map    = map
         self.bits   = len(source)
-        self.dadda  = dadda
         self.result = result if isinstance(result, Template) else []
 
         # length of any template represents it's bitwidth
@@ -255,34 +254,19 @@ class Template:
 
             self.pattern  = source
             self.checksum = [1 if ch != '_' else 0 for ch in source]
-            if dadda:
-                # TODO
-                raise NotImplementedError("Applying maps not implemented")
+
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
             self.build_from_pattern(self.pattern, deepcopy(matrix))
             return
 
         # -- template handling ---------------------------------------
+
+        # Add sanity checks
         checksum_ = checksum(source)
         self.template = source
         self.checksum = checksum_
         self.pattern  = []
-
-    def __str__(self) -> str:
-        return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.template}, {self.result})"
-
-    def __len__(self):
-        return len(self.template)
-
-    def init_base_template(self, pattern: Pattern, *, dadda=False) -> None:
-        """
-        Create template for zeroed matrix using pattern
-        """
-
 
     # Templates must be built using matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
@@ -366,8 +350,17 @@ class Template:
         self.merged = None # PLACEHOLDER #
         ...
 
+    def __str__(self) -> str:
+        return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.template}, {self.result})"
+
+    def __len__(self):
+        return len(self.template)
 
 
+# -- dependent helper functions ------------------------------------- #
 
 
 def resolve_pattern(matrix: mp.Matrix) -> Pattern:
@@ -398,7 +391,10 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     return Pattern(new_pattern)
 
 
-
+def build_noop_template(self, pattern: Pattern, *, dadda=False) -> None:
+    """
+    Create template for zeroed matrix using pattern
+    """
 
 
 

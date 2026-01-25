@@ -18,6 +18,7 @@ Algorithm process:
 from typing import Any
 import multiplied as mp
 
+# TODO: Improve docstring
 class Algorithm():
     """
     An algorithm is created with an initial matrix and an optinal map.
@@ -49,28 +50,6 @@ class Algorithm():
         # create update() function
         # add to each modifying class method
         self.stage = self.algorithm[self.state] if self.len > 0 else None
-
-    def __str__(self) -> str:
-        return mp.pretty(self.algorithm)
-
-    def __repr__(self) -> str:
-        return str(self.__str__())
-
-
-    def __getitem__(self, index) -> dict:
-        return self.algorithm[index]
-
-    def __iter__(self):
-        return iter(self.algorithm.items())
-
-    def __next__(self):
-        if self.index >= len(self.algorithm):
-            raise StopIteration
-        self.index += 1
-        return dict(self.algorithm[self.index - 1])
-
-
-
 
 
     def push(self, template: mp.Template | mp.Pattern, map_: Any = None
@@ -367,6 +346,25 @@ class Algorithm():
             condition = self.bits-1 != mp.empty_rows(pseudo)
         return
 
+    def __str__(self) -> str:
+        return mp.pretty(self.algorithm)
+
+    # TODO: make a useful repr
+    def __repr__(self) -> str:
+        return str(self.__str__())
+
+
+    def __getitem__(self, index) -> dict:
+        return self.algorithm[index]
+
+    def __iter__(self):
+        return iter(self.algorithm.items())
+
+    def __next__(self):
+        if self.index >= len(self.algorithm):
+            raise StopIteration
+        self.index += 1
+        return dict(self.algorithm[self.index - 1])
 
 
 

@@ -17,10 +17,11 @@ simplification, etc., before applying multiprocessing and beyond.
 def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator:
     """
     A generator based on the domain and range of a desired truth table.
-    >>> domain = (min_in, max_in)
-    >>> range  = (min_out, max_out)
-    Yields: (operand_a, operand_b)
+
+    Yeilds tuple: (operand_a, operand_b)
     """
+
+    # ! Replace assertions with if else blocks
     assert all([isinstance(d, int) for d in domain_])
     assert all([isinstance(r, int) for r in range_])
 
@@ -54,7 +55,7 @@ def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator
     Generated operands should be in the form tuple(a, b).
     """
     # -- sanity checks [TODO] ---------------------------------------
-    return (mp.build_matrix(a, b, alg.bits) for a, b in scope)
+    return (mp.build_matrix(a, b, bits=alg.bits) for a, b in scope)
 
 def truth_table(scope: Generator, alg: mp.Algorithm) -> Generator:
     """

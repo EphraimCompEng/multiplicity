@@ -209,7 +209,7 @@
 </pre></div>
 </div>
 <p>Here’s what it looks like:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">____0000</span>
@@ -263,7 +263,6 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Writing patterns vertically to make it clear how rows are effected.</p>
 <p>CSAs work on 3 bits at a time, and returns a 2-bit sum of raised bits.
 Adders work on 2 words at a time, each word being x-bits, and returns a single word. Bit pairs which sum to 0b10 are carried through the calculation.</p>
 </div>
@@ -272,15 +271,16 @@ Adders work on 2 words at a time, each word being x-bits, and returns a single w
 
 1st:    2nd:    3rd:    output:
 
-a       _       _
-a       c       _
-a       c       d
-b       c       d       x
+a       c       e       x
+a       c       e
+a       d       _
+b       _       _
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Each arithmetic unit will output to the top of its “run”. The next section covers how to “map” these outputs.</p>
+<p>Underscores represent no operations or noops.</p>
 </div>
 </section>
 <section id="map">
@@ -292,11 +292,15 @@ For simple maps, the map value represents an entire row rather than a specific b
 
 1st:    2nd:    3rd:
 
-FF      __      __
-FF      FF      __
-00      FF      00
 00      00      00
+00      00      00
+00      FF      00
+FF      00      00
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Outputs of each units are packed to the top of their initial row.</p>
 </div>
 <p>Here’s the breakdown of this example:</p>
 <p>1st stage - Move first 2 rows of result down by 1 [-1 = FF = down * 1]</p>
@@ -307,22 +311,25 @@ This means as long as outputs are mapped correctly to inputs, the placements of 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In other words, these are also valid algorithms:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Another valid algorithm               # Another
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># [ Key ]
+# char | r :: arithmetic unit | result
+
+# Another valid algorithm               # Another
 
 1st:    2nd:    3rd:    output:         1st:    2nd:    3rd:    output:
 
-a       c       d       x               a       c
-a       c       d                       a       c       d       x
-a       c                               a       c       d
-b                                       b
+a r                                     a r     c r
+a r     c r                             a r     c r     d r     x
+a       c r     d r                     a       c       d
+b r     c       d       x               b r
 
 # maps                                  # maps
 
 
-00      00      00                      00      FF      __
-00      00      00                      00      FF      00
-00      00      __                      00      00      00
-01      __      __                      01      __      __
+01      00      00                      00      01      00
+01      01      00                      00      01      00
+00      01      01                      00      00      00
+00      00      00                      FF      00      00
 </pre></div>
 </div>
 </div>

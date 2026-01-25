@@ -191,10 +191,11 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">truth_scope</span><span class="p">(</span><span class="n">domain_</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">],</span> <span class="n">range_</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A generator based on the domain and range of a desired truth table.</span>
-<span class="sd">    &gt;&gt;&gt; domain = (min_in, max_in)</span>
-<span class="sd">    &gt;&gt;&gt; range  = (min_out, max_out)</span>
-<span class="sd">    Yields: (operand_a, operand_b)</span>
+
+<span class="sd">    Yeilds tuple: (operand_a, operand_b)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ! Replace assertions with if else blocks</span>
     <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">domain_</span><span class="p">])</span>
     <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">range_</span><span class="p">])</span>
 
@@ -231,7 +232,7 @@
 <span class="sd">    Generated operands should be in the form tuple(a, b).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># -- sanity checks [TODO] ---------------------------------------</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">alg</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">build_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">scope</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="truth_table">
