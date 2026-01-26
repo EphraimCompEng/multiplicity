@@ -118,11 +118,11 @@ def test_err_duplicate_units() -> None:
 
 def main():
     test_step()
-    test_manual_population_8()
-    test_auto_resolve_recursive_full_8()
-    test_auto_resolve_recursive_full_4()
-    test_isolate_arithmetic_units()
-    test_err_duplicate_units()
+    # test_manual_population_8()
+    # test_auto_resolve_recursive_full_8()
+    # test_auto_resolve_recursive_full_4()
+    # test_isolate_arithmetic_units()
+    # test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()

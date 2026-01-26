@@ -9,7 +9,7 @@ babel==2.17.0
     # via sphinx
 beautifulsoup4==4.14.3
     # via sphinx-breeze-theme
-certifi==2025.11.12
+certifi==2026.1.4
     # via requests
 charset-normalizer==3.4.4
     # via requests
@@ -33,7 +33,7 @@ jinja2==3.1.6
     # via sphinx
 markupsafe==3.0.3
     # via jinja2
-packaging==25.0
+packaging==26.0
     # via
     #   pytest
     #   sphinx
@@ -52,13 +52,13 @@ roman-numerals==4.1.0
     # via sphinx
 snowballstemmer==3.0.1
     # via sphinx
-soupsieve==2.8.1
+soupsieve==2.8.3
     # via beautifulsoup4
 sphinx==9.1.0
     # via
     #   sphinx-breeze-theme
     #   sphinxext-opengraph
-sphinx-breeze-theme==0.6.0
+sphinx-breeze-theme==0.7.1
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==2.0.0
@@ -79,5 +79,5 @@ typing-extensions==4.15.0
     # via
     #   beautifulsoup4
     #   sphinx-breeze-theme
-urllib3==2.6.2
+urllib3==2.6.3
     # via requests
