@@ -135,7 +135,7 @@ class Algorithm():
         units    = isolate_arithmetic_units(template)
         n        = self.bits*2
         results  = []
-        print(template)
+        # print(template)
 
         # -- apply units --------------------------------------------
 
@@ -151,13 +151,10 @@ class Algorithm():
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
 
-                    # -- normalise ----------------------------------
-                    start = 0
-
                     # ski empty rows
+                    start = 0
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
-
 
                     for i in range(start, n):
                         if operand_a[i] != '_' or operand_b[i] != '_':
@@ -165,7 +162,6 @@ class Algorithm():
 
                         if operand_a[i] == '_' and operand_b[i] != '_':
                             operand_a[i] = '0'
-
 
                         elif operand_b[i] == '_' and  operand_a[i] != '_':
                             operand_b[i] = '0'
@@ -178,12 +174,10 @@ class Algorithm():
                     unit_len = sum(checksum)
                     int_a = int("".join(operand_a[start:start+unit_len]), 2)
                     int_b = int("".join(operand_b[start:start+unit_len]), 2)
-                    print(checksum)
                     # add and convert back to binary list, accounting for carry
                     output     = [['_']*(start-1)]
                     output[0] += list(f"{int_a+int_b:0{unit_len+1}b}")
                     output[0] += ['_']*(n-start-unit_len)
-                    print(output)
 
 
                 case 3: # CSA
@@ -280,9 +274,40 @@ class Algorithm():
 
 
 
+    def auto_resolve_stage(self, *, recursive=True,
+    ) -> None:
+        """
+        Automatically resolve pattern using the previous stage and creates
+        a new algoritm stage.
+
+        Options:
+            recursive: Recursively resolve until no partial products remain
+        """
+        from copy import copy
+        # -- non recursive ------------------------------------------
+        if not self.algorithm:
+            pseudo = copy(self.matrix)
+        else:
+            pseudo = copy(self.algorithm[self.len]['pseudo'])
+        pattern = mp.resolve_pattern(pseudo)
+        self.push(mp.Template(pattern, matrix=pseudo))
+        print('1:',pseudo)
+        if not recursive:
+            return
 
 
+        # -- main loop ----------------------------------------------
+        while self.bits-1 != mp.empty_rows(pseudo):
 
+            # Stage generation
+            new_pattern = mp.resolve_pattern(pseudo)
+            self.push(mp.Template(new_pattern, matrix=pseudo))
+
+            # Condition based on generated stage
+            pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
+            print('2:',pseudo)
+
+        return
 
     def step(self) -> None:
         """
@@ -308,43 +333,6 @@ class Algorithm():
         self.matrix = matrix
         self.state = 0
 
-    def auto_resolve_stage(self, *, recursive=True,
-    ) -> None:
-        """
-        Automatically resolve pattern using the previous stage and creates
-        a new algoritm stage.
-
-        Options:
-            recursive: Recursively resolve until no partial products remain
-        """
-
-        # -- non recursive ------------------------------------------
-        if not self.algorithm:
-            pseudo = self.matrix
-        else:
-            pseudo = self.algorithm[self.len]['pseudo']
-        pattern = mp.resolve_pattern(pseudo)
-        self.push(mp.Template(pattern, matrix=pseudo))
-        if not recursive:
-            return
-
-        # -- recursive setup ----------------------------------------
-        pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
-        condition = self.bits-1 != mp.empty_rows(pseudo)
-        if not condition:
-            return
-
-        # -- main loop ----------------------------------------------
-        while condition:
-
-            # Stage generation
-            new_pattern = mp.resolve_pattern(pseudo)
-            self.push(mp.Template(new_pattern, matrix=pseudo))
-
-            # Condition based on generated stage
-            pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
-            condition = self.bits-1 != mp.empty_rows(pseudo)
-        return
 
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
