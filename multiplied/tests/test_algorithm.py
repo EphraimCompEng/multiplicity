@@ -4,7 +4,7 @@ import multiplied as mp
 
 def gen_resources(bits: int, *, a=0, b=0
 ) -> tuple[mp.Matrix, mp.Pattern, mp.Algorithm]:
-    m = mp.Matrix(bits)
+    m = mp.Matrix(bits, a=a, b=b)
     match bits:
         case 4:
             p = mp.Pattern(['a','a','b','b',])
@@ -23,7 +23,9 @@ def test_step() -> None:
     print(alg.matrix)
     alg.step()
 
-    print(alg)
+    print(alg.__repr__())
+    print(alg.algorithm[0]['pseudo'])
+
 
 
 def test_auto_resolve_single_4() -> None:
@@ -49,18 +51,21 @@ def test_manual_population_8() -> None:
     alg.push(t2)
     t3 = mp.Template(mp.Pattern(['a','a','_','_','_','_','_','_']), matrix=alg.algorithm[1]['pseudo'])
     alg.push(t3)
-    # print(alg)
 
 
 def test_auto_resolve_recursive_full_4() -> None:
     m, p, alg = gen_resources(4, a= 6, b=7)
     alg.auto_resolve_stage()
-    print(alg)
+    # print(alg)
+    # print(alg.__repr__())
+
 
 def test_auto_resolve_recursive_full_8() -> None:
     m, p, alg2 = gen_resources(8, a=12, b=42)
     alg2.auto_resolve_stage()
     print(alg2)
+    print(m)
+    print(m.checksum)
 
 
 def test_isolate_arithmetic_units() -> None:
@@ -79,9 +84,9 @@ def test_err_duplicate_units() -> None:
         pass
 
     template = mp.Template([
-        ['_', '_', '_', '_', '_', '_', '_', '_', 'A', 'a', 'A', '_', 'A', 'a', 'A', 'a'],
-        ['_', '_', '_', '_', '_', '_', '_', 'a', 'A', 'a', 'A', '_', 'A', 'a', 'A', '_'],
-        ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', '_', 'A', 'a', '_', '_'],
+        ['_', '_', '_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a'],
+        ['_', '_', '_', '_', '_', '_', '_', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'A', '_'],
+        ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a', '_', '_'],
         ['_', '_', '_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_'],
         ['_', '_', '_', '_', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', '_', '_', '_', '_'],
         ['_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_'],
@@ -112,10 +117,12 @@ def test_err_duplicate_units() -> None:
         print(i.checksum)
 
 
+
 def main():
-    test_step()
+    # test_step()
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
+    test_auto_resolve_recursive_full_4()
     # test_isolate_arithmetic_units()
     # test_err_duplicate_units()
 
