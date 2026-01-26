@@ -215,9 +215,6 @@ class Template:
     ) -> None: # Complex or pattern
         self.bits   = len(source)
         self.result = result if isinstance(result, Template) else []
-        # ! TARGET
-
-        # length of any template represents it's bitwidth
         mp.validate_bitwidth(self.bits)
 
         # -- pattern handling ---------------------------------------
@@ -235,24 +232,25 @@ class Template:
         # -- template handling ---------------------------------------
 
         # Add sanity checks
-        self.__checksum(source)
         self.template = source
         self.pattern  = []
+        self.__checksum()
 
-    def __checksum(self, source:list[list[str]]) -> None:
+    def __checksum(self) -> None:
         row_len  = self.bits << 1
         checksum = [0] * self.bits
-        for i, row in enumerate(source):
+        for i, row in enumerate(self.template):
             if len(row) != row_len:
-                raise
+                raise ValueError("Inconsistent row length")
 
             empty = 0
             for ch in row:
                 if not ischar(ch):
-                    raise
+                    raise TypeError(f"Expected character, got {ch}")
                 if ch == '_':
                     empty += 1
-
+                else:
+                    break
 
             if empty != row_len:
                 checksum[i] = 1
@@ -309,13 +307,14 @@ class Template:
 
             i += 1
 
-        # -- build template and resultant ---------------------------
         template = []
         for i in template_slices.values():
             template += i[0]
+
         result = []
         for i in template_slices.values():
             result += i[1]
+
         self.template, self.result = template, result
 
 
@@ -359,6 +358,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
         return Pattern(['_'] * matrix.bits)
 
+    # TODO use io.StringIO()
     scope = matrix.bits - empty_rows
     new_pattern = []
     while 0 < scope:
@@ -373,7 +373,6 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
             new_pattern += [ch]
 
         scope -= len(new_pattern) - n
-
     new_pattern += ['_'] * empty_rows
     return Pattern(new_pattern)
 
