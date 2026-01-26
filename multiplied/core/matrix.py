@@ -6,18 +6,17 @@ import multiplied as mp
 from typing import Any, Iterator
 
 
+
 class Slice:
     """
     Matrix slice which adheres to multiplied formatting rules
     """
     def __init__(self, matrix: list[Any]):
-        # ! TARGET
         if isinstance(matrix[0], list):
             self.bits = len(matrix[0]) >> 1
         elif isinstance(matrix, list) and isinstance(matrix[0], str):
             self.bits = len(matrix) >> 1
 
-        # ! TARGET
         mp.validate_bitwidth(self.bits)
         self.slice = matrix if isinstance(matrix[0], list) else [matrix]
 
@@ -66,33 +65,59 @@ class Matrix:
     Partial Product Matrix
     """
     def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
-        # ! TARGET
         if isinstance(source, int):
             self.bits = source
-        if isinstance(source, list):
+        elif isinstance(source, list):
             self.bits = len(source)
 
-        # ! TARGET
         mp.validate_bitwidth(self.bits)
+
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
                 raise ValueError("Invalid input. Expected integer.")
-            self.matrix = build_matrix(a, b, bits=source).matrix
+
+            self.__build_matrix(a, b)
+            self.checksum = [0]*self.bits
 
         elif isinstance(source, int):
             self.bits = source
             self.__empty_matrix(source)
+            self.checksum = [0]*self.bits
 
-        elif all([isinstance(row, (list, Slice)) for row in source]):
-            if len(source)*2 != len(source[0]):
-                raise ValueError("Matrix must be 2m * m")
-            self.bits = len(source)
+        else:
+            if  all([isinstance(row, (list, Slice)) for row in source]):
+                if len(source)*2 != len(source[0]):
+                    raise ValueError("Matrix must be 2m * m")
             self.matrix = source
+            self.__checksum()
 
+    def __build_matrix(self, operand_a: int, operand_b: int) -> None:
+        """
+        Build Logical AND matrix using source operands and it's checksum.
+        """
+
+        mp.validate_bitwidth((bits := self.bits))
+
+        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
+            raise ValueError("Operand bit width exceeds matrix bit width")
+
+        # convert to binary, removing '0b' and padding with zeros
+        a = bin(operand_a)[2:].zfill(bits)
+        b = bin(operand_b)[2:].zfill(bits)
+        i = 0
+        matrix   = []
+        for i in range(bits-1, -1, -1):
+            if b[i] == '0':
+                matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
+
+            elif b[i] == '1':
+                matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
+
+        self.matrix = matrix
 
     def __empty_matrix(self, bits: int) -> None:
         """
-        Build a wallace tree for a bitwidth of self.bits.
+        Build a wallace tree for a bitwidth of self.bits
         """
         row = [0]*bits
         matrix = []
@@ -100,13 +125,38 @@ class Matrix:
             matrix.append(["_"]*(bits-i) + row + ["_"]*i)
         self.matrix = matrix
 
+
+    def __checksum(self) -> None:
+        from multiplied.core.utils.char import ischar
+
+        row_len  = self.bits << 1
+        checksum = [0] * self.bits
+        for i, row in enumerate(self.matrix):
+            if len(row) != row_len:
+                raise ValueError("Inconsistent row length")
+
+            empty = 0
+            for ch in row:
+                if not ischar(ch):
+                    raise TypeError(f"Expected character, got {ch}")
+                if ch == '_':
+                    empty += 1
+                else:
+                    break
+
+
+            if empty != row_len:
+                checksum[i] = 1
+        self.checksum = checksum
+
+
     def resolve_rmap(self, *, ignore_zeros: bool=True
     ) -> mp.Map:
         """
-        Find empty rows, create simple map to efficiently pack rows.
+        Find empty rows, create simple map to efficiently pack rows
 
         options:
-            ignore_zeros: If True, ignore rows with only zeros.
+            ignore_zeros: If True, ignore rows with only zeros
         """
 
         option = '0' if ignore_zeros else '_'
@@ -133,17 +183,23 @@ class Matrix:
 
         # -- row-wise mapping ---------------------------------------
         if rmap := map_.rmap:
-            temp_matrix = build_matrix(0, 0, bits=self.bits).matrix
+            matrix = Matrix(self.bits).matrix
             for i in range(self.bits):
                 # convert signed hex to 2s complement
                 if ((val := int(rmap[i], 16)) & 128):
                     val = (~val + 1) & 255 # 2s complement
-                temp_matrix[i]     = ["_"] * (self.bits*2)
-                temp_matrix[i-val] = self.matrix[i]
-            self.matrix = temp_matrix
+                matrix[i]     = ["_"] * (self.bits*2)
+                matrix[i-val] = self.matrix[i]
+
+                # Sync checksums
+                self.checksum[i]     = 0
+                self.checksum[i-val] = 1
+            self.matrix = matrix
+
             return
 
         # -- bit-wise mapping ---------------------------------------
+        # TODO
         raise NotImplementedError("Complex mapping not implemented")
 
     def __repr__(self) -> str:
@@ -178,31 +234,6 @@ class Matrix:
 
 
 # -- helper functions -----------------------------------------------
-
-
-
-def build_matrix(operand_a: int, operand_b: int,*, bits: int=8) -> Matrix:
-    """
-    Build Logical AND matrix using source operands. Default bits=8
-    """
-    # ! TARGET
-
-    mp.validate_bitwidth(bits)
-
-    if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
-        raise ValueError("Operand bit width exceeds matrix bit width")
-
-    # convert to binary, removing '0b' and padding with zeros
-    a = bin(operand_a)[2:].zfill(bits)
-    b = bin(operand_b)[2:].zfill(bits)
-    i = 0
-    matrix = []
-    for i in range(bits-1, -1, -1):
-        if b[i] == '0':
-            matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
-        elif b[i] == '1':
-            matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
-    return Matrix(matrix)
 
 def empty_rows(matrix: Matrix) -> int:
     if not isinstance(matrix, Matrix):
