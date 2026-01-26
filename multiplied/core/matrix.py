@@ -1,6 +1,6 @@
-###################################################
-# Classes to Represent Matrices and Matrix Slices #
-###################################################
+################################################
+# Classes to Represent And Manage Nested Lists #
+################################################
 
 import multiplied as mp
 from typing import Any, Iterator
@@ -55,11 +55,6 @@ class Slice:
             raise StopIteration
         self.index += 1
         return self.slice[self.index - 1]
-
-
-
-
-
 
 class Matrix:
     """

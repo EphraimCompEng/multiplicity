@@ -2,29 +2,12 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
-
-"""
-Algorithm process:
-0: Generate logical AND matrix
-1: split matrix
-2: apply template, update state
-3: generate result
-4: optionally apply map
-5: update matrix
-6: GOTO 1:
-
-"""
-
 from typing import Any, Iterable
 import multiplied as mp
 
-# TODO: Improve docstring
 class Algorithm():
     """
-    An algorithm is created with an initial matrix and an optinal map.
-    Subsequent stages are defined by templates and maps. Built-in methods
-    can automatically generate stages or assist in the creation of custom
-    stages.
+    Manages and sequences operations via a series of stages defined by templates and maps.
     """
 
     # pattern only implementation -- small steps:
@@ -95,7 +78,6 @@ class Algorithm():
             'map': map_,
         }
         self.algorithm[stage_index] = stage
-
         return None
 
 
