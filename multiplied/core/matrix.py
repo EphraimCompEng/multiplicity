@@ -19,6 +19,7 @@ class Slice:
 
         mp.validate_bitwidth(self.bits)
         self.slice = matrix if isinstance(matrix[0], list) else [matrix]
+        return None
 
     # TODO:: look into overloads for accurate type usage
     #
@@ -69,27 +70,48 @@ class Matrix:
             self.bits = source
         elif isinstance(source, list):
             self.bits = len(source)
+        else:
+            raise TypeError(f"Expected integer or list, got {type(source)}")
 
         mp.validate_bitwidth(self.bits)
-
         if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
             if not isinstance(source, int):
                 raise ValueError("Invalid input. Expected integer.")
 
             self.__build_matrix(a, b)
             self.checksum = [0]*self.bits
+            return None
 
         elif isinstance(source, int):
-            self.bits = source
             self.__empty_matrix(source)
             self.checksum = [0]*self.bits
+            return None
 
-        else:
-            if  all([isinstance(row, (list, Slice)) for row in source]):
-                if len(source)*2 != len(source[0]):
-                    raise ValueError("Matrix must be 2m * m")
+        # -- efficient sanity check + checksum ----------------------
+        #
+        from multiplied.core.utils.char import ischar
+        checksum = [0] * self.bits
+        row_len  = self.bits << 1
+        for i, row in enumerate(source):
+            if not isinstance(row, (list, Slice)):
+                raise ValueError("Invalid input. Expected list or slice.")
+            if row_len != len(row):
+                raise ValueError("Inconsistent rows. Matrix must be 2m * m")
+
+            empty = 0
+            for ch in row:
+                if not ischar(ch):
+                    raise TypeError(f"Expected character, got {ch}")
+                if ch == '_':
+                    empty += 1
+                else:
+                    break
+            if empty != row_len:
+                checksum[i] = 1
+
             self.matrix = source
-            self.__checksum()
+            self.checksum = checksum
+        return None
 
     def __build_matrix(self, operand_a: int, operand_b: int) -> None:
         """
@@ -114,6 +136,7 @@ class Matrix:
                 matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
 
         self.matrix = matrix
+        return None
 
     def __empty_matrix(self, bits: int) -> None:
         """
@@ -124,6 +147,7 @@ class Matrix:
         for i in range(bits):
             matrix.append(["_"]*(bits-i) + row + ["_"]*i)
         self.matrix = matrix
+        return None
 
 
     def __checksum(self) -> None:
@@ -148,6 +172,7 @@ class Matrix:
             if empty != row_len:
                 checksum[i] = 1
         self.checksum = checksum
+        return None
 
 
     def resolve_rmap(self, *, ignore_zeros: bool=True
@@ -185,13 +210,13 @@ class Matrix:
         if rmap := map_.rmap:
             matrix = Matrix(self.bits).matrix
             for i in range(self.bits):
-                # convert signed hex to 2s complement
+                # convert signed hex to 2s complement if -ve
                 if ((val := int(rmap[i], 16)) & 128):
                     val = (~val + 1) & 255 # 2s complement
                 matrix[i]     = ["_"] * (self.bits*2)
                 matrix[i-val] = self.matrix[i]
 
-                # Sync checksums
+                # Update checksum as source row empty after move
                 self.checksum[i]     = 0
                 self.checksum[i-val] = 1
             self.matrix = matrix
@@ -202,6 +227,7 @@ class Matrix:
         # TODO
         raise NotImplementedError("Complex mapping not implemented")
 
+    # TODO: make useful __repr__
     def __repr__(self) -> str:
         return self.__str__()
 
