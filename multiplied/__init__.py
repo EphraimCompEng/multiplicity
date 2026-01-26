@@ -20,7 +20,6 @@ from .core.map import (
 from .core.matrix import (
     Matrix,
     Slice,
-    build_matrix,
     empty_rows,
 )
 
@@ -31,7 +30,6 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
-    # checksum, # move to .core.matrix
 )
 
 from .core.algorithm import (
@@ -117,7 +115,6 @@ MP_VERSION = MP_TOML["project"]["version"]
 __all__ = [
     'Matrix',
     'Slice',
-    'build_matrix',
     'empty_rows',
     'Pattern',
     'Template',
@@ -128,7 +125,6 @@ __all__ = [
     'build_csa',
     'build_adder',
     'resolve_pattern',
-    # 'checksum',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
@@ -142,6 +138,4 @@ __all__ = [
     'mprint',
     'validate_bitwidth',
     'MP_VERSION',
-    'SUPPORTED_BITWIDTHS',
-
 ]
