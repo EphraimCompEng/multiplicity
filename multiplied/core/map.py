@@ -24,6 +24,7 @@ class Map:
             self.map  = self.build_map(map)
             self.rmap = map
         self._index = 0
+        return None
 
 
     def build_map(self, rmap: list[str]) -> list[list[str]]:

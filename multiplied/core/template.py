@@ -235,6 +235,7 @@ class Template:
         self.template = source
         self.pattern  = []
         self.__checksum()
+        return None
 
     def __checksum(self) -> None:
         row_len  = self.bits << 1
@@ -255,6 +256,7 @@ class Template:
             if empty != row_len:
                 checksum[i] = 1
         self.checksum = checksum
+        return None
 
     # Templates must be built using matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
@@ -316,6 +318,7 @@ class Template:
             result += i[1]
 
         self.template, self.result = template, result
+        return None
 
 
 

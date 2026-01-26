@@ -15,7 +15,7 @@ Algorithm process:
 
 """
 
-from typing import Any
+from typing import Any, Iterable
 import multiplied as mp
 
 # TODO: Improve docstring
@@ -50,6 +50,7 @@ class Algorithm():
         # create update() function
         # add to each modifying class method
         self.stage = self.algorithm[self.state] if self.len > 0 else None
+        return None
 
 
     def push(self, template: mp.Template | mp.Pattern, map_: Any = None
@@ -95,7 +96,7 @@ class Algorithm():
         }
         self.algorithm[stage_index] = stage
 
-        return
+        return None
 
 
     # Mangled as execution order is sensitive and __reduce should only
@@ -272,7 +273,7 @@ class Algorithm():
         #
         # This functionallity to be implemented at a later date.
 
-
+        return None
 
     def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
@@ -292,7 +293,7 @@ class Algorithm():
         pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
-            return
+            return None
 
 
         # -- main loop ----------------------------------------------
@@ -305,7 +306,7 @@ class Algorithm():
             # Condition based on generated stage
             pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
 
-        return
+        return None
 
     def step(self) -> None:
         """
@@ -314,15 +315,18 @@ class Algorithm():
         self.__reduce()
         self.state += 1
 
-    def exec(self):
+        return None
+
+    def exec(self) -> None:
         """
         Run algorithm with a single set of intputs then reset internal state
         """
         for stage in self.algorithm:
             self.__reduce()
+        return None
 
 
-    def reset(self, matrix: mp.Matrix):
+    def reset(self, matrix: mp.Matrix) -> None:
         """
         Reset internal state and submit new initial matrix
         """
@@ -330,6 +334,7 @@ class Algorithm():
             raise TypeError(f"Expected Matrix, got {type(matrix)}")
         self.matrix = matrix
         self.state = 0
+        return None
 
 
     def __str__(self) -> str:
@@ -343,10 +348,10 @@ class Algorithm():
     def __getitem__(self, index) -> dict:
         return self.algorithm[index]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable:
         return iter(self.algorithm.items())
 
-    def __next__(self):
+    def __next__(self) -> dict:
         if self.index >= len(self.algorithm):
             raise StopIteration
         self.index += 1
