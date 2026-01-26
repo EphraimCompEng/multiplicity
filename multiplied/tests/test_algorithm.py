@@ -22,9 +22,8 @@ def test_step() -> None:
     alg.push(p)
     print(alg.matrix)
     alg.step()
+    print(alg)
 
-    print(alg.__repr__())
-    print(alg.algorithm[0]['pseudo'])
 
 
 
@@ -56,8 +55,7 @@ def test_manual_population_8() -> None:
 def test_auto_resolve_recursive_full_4() -> None:
     m, p, alg = gen_resources(4, a= 6, b=7)
     alg.auto_resolve_stage()
-    # print(alg)
-    # print(alg.__repr__())
+    print(alg)
 
 
 def test_auto_resolve_recursive_full_8() -> None:
@@ -112,19 +110,19 @@ def test_err_duplicate_units() -> None:
         print('passed')
         isolated_units = []
 
-    print(isolated_units)
+    # print(isolated_units)
     for i in isolated_units:
         print(i.checksum)
 
 
 
 def main():
-    # test_step()
-    # test_manual_population_8()
-    # test_auto_resolve_recursive_full_8()
+    test_step()
+    test_manual_population_8()
+    test_auto_resolve_recursive_full_8()
     test_auto_resolve_recursive_full_4()
-    # test_isolate_arithmetic_units()
-    # test_err_duplicate_units()
+    test_isolate_arithmetic_units()
+    test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()
