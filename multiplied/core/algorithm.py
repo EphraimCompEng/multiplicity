@@ -291,7 +291,6 @@ class Algorithm():
             pseudo = copy(self.algorithm[self.len]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
-        print('1:',pseudo)
         if not recursive:
             return
 
@@ -305,7 +304,6 @@ class Algorithm():
 
             # Condition based on generated stage
             pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
-            print('2:',pseudo)
 
         return
 
