@@ -57,7 +57,8 @@ class Map:
 
 
 def empty_map(bits: int)-> Map:
-    return Map(["00" for i in range(bits)])
+    mp.validate_bitwidth(bits)
+    return Map(["00"]*bits)
 
 
 def build_dadda_map(bits: int) -> Map:
