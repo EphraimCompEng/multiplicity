@@ -170,16 +170,16 @@ class Pattern:
             k += 1
         return metadata
 
-    def __str__(self):
+    def __str__(self) -> str:
         pretty_ = ""
         for p in self.pattern:
             pretty_ += " " + p + "\n"
         return f"{'['+ pretty_[1:-1]+']'}"
 
-    def __repr__(self):
-        return self.__str__()
+    def __repr__(self) -> str:
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.bits
 
     def __getitem__(self, index: int) -> str:
@@ -345,7 +345,7 @@ class Template:
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.template}, {self.result})"
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.template)
 
 

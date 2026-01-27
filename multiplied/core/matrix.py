@@ -6,7 +6,7 @@ import multiplied as mp
 from typing import Any, Iterator
 
 
-
+# ! Review slices and their integration to the wider library
 class Slice:
     """
     Matrix slice which adheres to multiplied formatting rules
@@ -37,9 +37,8 @@ class Slice:
                 return False
         return True
 
-    # TODO: make a useful repr
-    def _repr_(self):
-        return self.__str__()
+    def __repr__(self) -> str:
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
     def __str__(self):
         return str(mp.pretty(self.slice))
@@ -222,9 +221,8 @@ class Matrix:
         # TODO
         raise NotImplementedError("Complex mapping not implemented")
 
-    # TODO: make useful __repr__
     def __repr__(self) -> str:
-        return self.__str__()
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
     def __str__(self) -> str:
         return mp.pretty(self.matrix)
@@ -244,10 +242,10 @@ class Matrix:
         slice = self.matrix[index]
         return Slice(slice)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[list[str]]:
         return iter(self.matrix)
 
-    def __next__(self):
+    def __next__(self) -> list[str]:
         if self.index >= self.bits:
             raise StopIteration
         self.index += 1

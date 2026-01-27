@@ -2,9 +2,8 @@
 # Map Bits Inside A Matrix #
 ############################
 
-
 import multiplied as mp
-from typing import Any
+from typing import Any, Iterator
 
 
 class Map:
@@ -41,17 +40,16 @@ class Map:
             map.append([rmap[i] for _ in range(n*2)])
         return map
 
-    # TODO: make a useful repr
     def __repr__(self) -> str:
-        return str(self.__str__())
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
     def __str__(self) -> str:
         return mp.pretty(self.map)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[list[str]]:
         return iter(self.map)
 
-    def __next__(self):
+    def __next__(self) -> list[str]:
         if self._index >= self.bits:
             raise StopIteration
         self._index += 1

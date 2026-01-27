@@ -320,10 +320,11 @@ class Algorithm():
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
 
-    # TODO: make a useful repr
     def __repr__(self) -> str:
-        return str(self.__str__())
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
+    def __len__(self) -> int:
+        return len(self.algorithm)
 
     def __getitem__(self, index) -> dict:
         return self.algorithm[index]
