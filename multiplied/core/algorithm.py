@@ -120,9 +120,9 @@ class Algorithm():
         results  = []
         # print(template)
 
-        # -- apply units --------------------------------------------
+        # -- reduce -------------------------------------------------
 
-        for index, unit in enumerate(units):
+        for unit in units:
 
             base_index = unit.checksum.index(1)
             match sum(unit.checksum):
@@ -134,7 +134,7 @@ class Algorithm():
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
 
-                    # ski empty rows
+                    # skip empty rows
                     start = 0
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
@@ -183,23 +183,21 @@ class Algorithm():
 
 
                         # collect sums for further formatting
-                        output[0][i]   = csa_sum
-                        checksum[i] = (
+                        output[0][i] = csa_sum
+                        checksum[i]  = (
                             operand_c[i] != '_' or
                             operand_b[i] != '_' or
                             operand_a[i] != '_'
                         )
                         if not checksum[i]:
                             break
-                        #
+                        # index 0 is the only case this can be an issue
                         try:
-                            output[0][i]   = '1' if csa_sum & 1 else '0'
-                            j = i-1 if 0 <= i-1 else i
+                            output[0][i] = '1' if csa_sum & 1 else '0'
+                            j            = i-1 if 0 <= i-1 else i
                             output[1][j] = '1' if csa_sum & 2 else '0'
                         except IndexError:
                             continue
-
-
                 case _:
                     raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
 
@@ -224,16 +222,16 @@ class Algorithm():
         # -- ADD ----------------------------------------------------
         # IF region covers 2 rows:
         #   convert to int -> add -> convert -> extend zeros to region width
-        #   replace templat with matrix
+        #   replace template with matrix
 
 
         # -- merge units to matrix ----------------------------------
         # Merge in any order, checking for overlaps between borders
-        # resolve conflics by suming present bit positions and shift
+        # resolve conflicts by summing present bit positions and shifting
         # a target unit's bit
 
         # ! difficult sanity checks --------------------------------- #
-        # Complex scenarions, where NOOP, CSA and ADD units intersect
+        # Complex scenarios, where NOOP, CSA and ADD units intersect
         # will require extensive checks:
         #
         #   [example--] || [isolated]
@@ -242,7 +240,7 @@ class Algorithm():
         #   ...CcaAa... || ....ca....
         #
         #
-        # If ths is repeated, resolution can get very tricky.
+        # If repeated along the same y-axis, resolution can get very tricky.
         # One method could be skipping merges and opting for merges with non
         # conflicting units, repeat until few partially merged templates remain
         # and finally resolve conflicts, if possible.
@@ -253,7 +251,7 @@ class Algorithm():
         # flag indicating it should be merged later.
         #
         #
-        # This functionallity to be implemented at a later date.
+        # This functionality to be implemented at a later date.
 
         return None
 
@@ -261,7 +259,7 @@ class Algorithm():
     ) -> None:
         """
         Automatically resolve pattern using the previous stage and creates
-        a new algoritm stage.
+        a new algorithm stage.
 
         Options:
             recursive: Recursively resolve until no partial products remain
@@ -301,7 +299,7 @@ class Algorithm():
 
     def exec(self) -> None:
         """
-        Run algorithm with a single set of intputs then reset internal state
+        Run algorithm with a single set of inputs then reset internal state
         """
         for stage in self.algorithm:
             self.__reduce()
@@ -341,12 +339,12 @@ class Algorithm():
 
 
 
-# -- helper functions ----------------------------------------------- #
+# -- helper functions ----------------------------------------------- 
 
 
 def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     """
-    Isolate arithmetic units into a list seperate templates.
+    Separate arithmetic units from source template into a list of templates.
     """
 
     if not isinstance(matrix, mp.Template):
@@ -415,12 +413,12 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     #
     # Simple row check(below):
     #   - count template's non empty rows
-    #   - count total number of rows units encompas
+    #   - count total number of rows units encompass
     #
     # These should catch most cases of non compliance in:
     #   - CSAs
     #   - Adders
-    #   - ! Decoders will require checks once implamented
+    #   - ! Decoders will require checks once implemented
 
     # -- row check --------------------------------------------------
     unit_rows = [sum(i.checksum) for i in arithmetic_units]

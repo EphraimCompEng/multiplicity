@@ -64,7 +64,7 @@ def empty_map(bits: int)-> Map:
 
 def build_dadda_map(bits: int) -> Map:
     """
-    Return map which represents starting point of Dadda tree algorithm.
+    Return map representing the starting point of Dadda tree algorithm.
     """
     mp.validate_bitwidth(bits)
 
