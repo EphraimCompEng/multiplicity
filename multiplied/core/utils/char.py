@@ -1,7 +1,8 @@
+####################################################
+# Generating, Testing, and Manipulating Characters #
+####################################################
+
 from collections.abc import Generator
-
-
-# --  Character related helper functions ----------------------------
 
 def ischar(ch: str) -> bool:
     """Tests if a string is exactly one alphabetic character"""
@@ -37,7 +38,7 @@ def chartff(ch: str) -> Generator[str]:
 
     i = True
     while True:
-        if i := not(i):
+        if i := not(i): # tff
             yield ch.lower()
         else:
             yield ch.upper()
@@ -54,7 +55,6 @@ def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
     """
     if not isinstance(matrix, list) or not all([isinstance(row, list) for row in matrix]):
         raise TypeError("Input must be type list[list[char]]")
-
 
     if not hash:
         # By no means efficient, but gets the job done.
