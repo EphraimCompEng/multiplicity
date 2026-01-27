@@ -87,6 +87,7 @@ class Algorithm():
         """
         use template or pattern to reduce a given matrix.
         """
+        from copy import copy
 
         # -- implementation -----------------------------------------
         #
@@ -109,21 +110,14 @@ class Algorithm():
         #   ...00110110... | ...01100000...
         #   ...00101010... | ...________...
 
-        from copy import copy
-
-        # -- partition units -----------------------------------------
-        # isolates units into list of templates
-
+        # -- isolate units -----------------------------------------
         template = self.algorithm[self.state]['template']
         units    = isolate_arithmetic_units(template)
         n        = self.bits*2
         results  = []
-        # print(template)
 
         # -- reduce -------------------------------------------------
-
         for unit in units:
-
             base_index = unit.checksum.index(1)
             match sum(unit.checksum):
                 case 1: # NOOP
@@ -134,15 +128,17 @@ class Algorithm():
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
 
-                    # skip empty rows
+                    # -- skip empty rows ----------------------------
                     start = 0
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
                     for i in range(start, n):
+                        # -- row checksum ---------------------------
                         if operand_a[i] != '_' or operand_b[i] != '_':
                             checksum[i] = True
 
+                        # -- normalise binary -----------------------
                         if operand_a[i] == '_' and operand_b[i] != '_':
                             operand_a[i] = '0'
 
@@ -153,14 +149,14 @@ class Algorithm():
                             operand_a[i] = '0'
                             operand_b[i] = '0'
 
+                    # -- binary addition ----------------------------
+                    bits_ = sum(checksum)
+                    int_a = int("".join(operand_a[start:start+bits_]), 2)
+                    int_b = int("".join(operand_b[start:start+bits_]), 2)
 
-                    unit_len = sum(checksum)
-                    int_a = int("".join(operand_a[start:start+unit_len]), 2)
-                    int_b = int("".join(operand_b[start:start+unit_len]), 2)
-                    # add and convert back to binary list, accounting for carry
                     output     = [['_']*(start-1)]
-                    output[0] += list(f"{int_a+int_b:0{unit_len+1}b}")
-                    output[0] += ['_']*(n-start-unit_len)
+                    output[0] += list(f"{int_a+int_b:0{bits_+1}b}")
+                    output[0] += ['_']*(n-start-bits_)
 
 
                 case 3: # CSA
@@ -171,27 +167,31 @@ class Algorithm():
                     output    = [['_']*n, ['_']*n]
                     start     = 0
 
-                    # skip empty rows
+                    # -- skip empty rows ----------------------------
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
+                    # -- sum columns -------------------------------
                     for i in range(start, n):
                         csa_sum = 0
                         csa_sum += 1 if operand_a[i] == '1' else 0
                         csa_sum += 1 if operand_b[i] == '1' else 0
                         csa_sum += 1 if operand_c[i] == '1' else 0
 
-
-                        # collect sums for further formatting
                         output[0][i] = csa_sum
                         checksum[i]  = (
                             operand_c[i] != '_' or
                             operand_b[i] != '_' or
                             operand_a[i] != '_'
                         )
+
+                        # -- check end of unit ----------------------
                         if not checksum[i]:
                             break
-                        # index 0 is the only case this can be an issue
+
+                        # -- brute force index 0 --------------------
+                        # ! handle index zero outside of loop ! #
+                        # ! unit may not even overlap index 0
                         try:
                             output[0][i] = '1' if csa_sum & 1 else '0'
                             j            = i-1 if 0 <= i-1 else i
@@ -201,28 +201,24 @@ class Algorithm():
                 case _:
                     raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
 
+            # -- build unit into matrix -----------------------------
             unit_result = [['_']*(self.bits*2) for _ in range(base_index)]
             for row in output:
                 unit_result.append(row)
             for _ in range(base_index+len(output), self.bits):
                 unit_result.append(['_']*(self.bits*2))
+            results.append(mp.Matrix(unit_result))
 
-            results.append(unit_result)
-
-            print(f"unit: \n{mp.pretty(unit_result)}")
-
-
-
-        # -- CSA ----------------------------------------------------
-        # IF region covers 3 rows:
-        #   sum columns, collect and distribute counts
-        #   replace template with matrix
+        print(results)
+        for i in results:
+            print(f"\n{mp.pretty(i)}")
 
 
-        # -- ADD ----------------------------------------------------
-        # IF region covers 2 rows:
-        #   convert to int -> add -> convert -> extend zeros to region width
-        #   replace template with matrix
+
+
+
+
+
 
 
         # -- merge units to matrix ----------------------------------
@@ -340,7 +336,7 @@ class Algorithm():
 
 
 
-# -- helper functions ----------------------------------------------- 
+# -- helper functions -----------------------------------------------
 
 
 def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
@@ -372,9 +368,9 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
             (charset.intersection(matrix.template[row]))
         ):
 
-            tmp = ['_']*(matrix.bits*2)
-            intra_row_transition = []
+            tmp  = ['_']*(matrix.bits*2)
             last = None
+            intra_row_transition = []
             for i, b in enumerate(matrix.template[row]):
                 if b in charset:
                     # -- vertical intra-row check ------------------------------------ #
