@@ -39,7 +39,8 @@ def chartff(ch: str) -> Generator[str]:
 
 def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
     """
-    Generate all unique characters from a matrix. Ignores underscore characters
+    Returns set of unique characters from a matrix.
+    Ignores underscore characters and converts characters to uppercase
 
     >>> allchars([['A', 'B'], ['C', 'D']])
     {'A', 'B', 'C', 'D'}
