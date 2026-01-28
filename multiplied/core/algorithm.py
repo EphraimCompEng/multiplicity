@@ -358,7 +358,6 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
             # err:
                 # {'0', '1'} -> '_' -> {'0', '1'}
 
-            border = ({'_'}, {'0', '1'})
             transit = isint
 
             for y, row in enumerate(matrix):
@@ -413,21 +412,17 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     """
     Separate arithmetic units from source template into a list of templates.
     """
-
     if not isinstance(matrix, mp.Template):
         raise TypeError(f"Expected type Template got {type(matrix)}")
 
     allchars = mp.allchars(matrix.template, hash=matrix.checksum)
     arithmetic_units = []*len(allchars)
+    bits = matrix.bits
     for char in allchars:
-        row  = 0
-        unit = [[]]*matrix.bits
-        empty_row   = ['_']*(matrix.bits*2)
-        # -- skip rows not containing char --------------------------
-        # ! to be replaced with bounding box logic once objects
-        # ! generate their own bounding box
-
-        while row < matrix.bits:
+        row  = matrix.checksum.index(1)
+        unit = [[]]*bits
+        empty_row = ['_']*(bits*2)
+        while row < bits:
             if char not in matrix.template[row]:
                 unit[row] = empty_row
                 row += 1
@@ -436,44 +431,44 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
 
         # -- extract unit(s) ----------------------------------------
         # ! does not make use of newly added checksum
-
-        charset = set([char.upper(),char.lower()])
-        seen = {}
         present = True
-        while(row < matrix.bits and present):
-            tmp  = ['_']*(matrix.bits*2)
-            last = None
+        # -- inter-row boundary check (|) --------------------------- #
+        while(row < bits and present):
+            present = False # exit outer loop upon empty row
+            tmp_row = ['_']*(bits*2)
+            last    = None
             intra_row_transition = []
+            for i, ch in enumerate(matrix.template[row]):
+                ch = ch.upper()
+                print(ch)
+                # ! need a check for reused chars
+                if ch == char:
+                    # -- intra-row boundary check (-) -------------------------------- #
+                    # Detects reused chars within the same row: ch -> '_' -> ch
+                    if last != char:
+                        intra_row_transition.append(i)
 
-            # -- inter-row boundary check (|) ----------------------- #
-            # exit outer loop when row not containing char found      #
-            present = False                                           #
-            for i, b in enumerate(matrix.template[row]):              #
-                if b.upper() == char:                                 #
-                    # -- intra-row boundary check ------------------------------------ #
-                    # Detects reused chars within the same row: ch -> '_' -> ch        #
-                    if last != char:                                                   #
-                        intra_row_transition.append(i)                                 #
-                    if len(set(intra_row_transition)) != 1:                            #
-                        irt_err = intra_row_transition[1]-1                            #
-                        raise SyntaxError(                                             #
-                            f"Intra-row Error [column {irt_err}]. Invalid template."   #
-                        )                                                              #
+                    if len(set(intra_row_transition)) != 1:
+                        irt_err = intra_row_transition[1]-1
+                        raise SyntaxError(
+                            f"Intra-row Error at column {irt_err}. Invalid template."
+                        )
                     # ---------------------------------------------------------------- #
-                    present = True                                    #
-            # ------------------------------------------------------- #
-                    tmp[i]  = char
-                last = b.upper()
+                    present    = True
+                    tmp_row[i] = char
+                last = ch.upper()
 
-            unit[row] = tmp
+            unit[row] = tmp_row
             row += 1
-
+        # ----------------------------------------------------------- #
         # -- fill remaining rows ------------------------------------
-        while 0 < (matrix.bits-row):
+        while 0 < (bits-row):
             unit[row] = empty_row
             row += 1
 
         arithmetic_units.append(mp.Template(unit))
+        # print()
+        # print(horizontal_boundaries(unit, transit=mp.isalpha))
 
     # -- duplicate character check ----------------------------------
     # Detects duplicates by testing
@@ -489,42 +484,57 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
 
 
 def horizontal_boundaries(matrix: list[list[Any]], *,
-    transit: Callable[[Any], bool
-    ]) -> list[tuple[int, int]]:
+    transit: Callable[[Any], bool]
+    ) -> dict[str, list[tuple[int, int]]]:
     """
-    Returns a list of tuples representing the horizontal boundaries of the matrix.
-    Each tuple contains the x and y coordinates of the boundary.
+    Returns dictionary of arithmetic unit boundaries.
 
     Parameters:
     - matrix: The nested list to analyze.
-    - transit: Boundary defined by a function:
-        - isalpha
-        - isint
-        - ishex2
+    - transit: Function to return bool for a given boundary
     """
 
     if not transit:
         raise ValueError("Transit function not provided")
 
-    boundary = []
+    bounds = {}
     width = len(matrix[0])
     for y, row in enumerate(matrix):
-        x = 0
-
+        hit = False
+        x   = 0
         while x < width and not transit(row[x]):
-            print(transit(row[x]), row[x])
-            x += 1
-        boundary.append((x, y))
-        while x < width and transit(row[x]):
-            print(transit(row[x]), row[x])
             x += 1
 
-        boundary.append((x-1, y))
+        start = (x, y)
+        key   = row[x].upper()
+        while x < width-1 and transit(row[x]):
+            hit = True
+            if row[x].upper() != row[x+1].upper():
+                break
+            x += 1
+
+        end = (x, y)
         while x < width and not transit(row[x]):
-            print(transit(row[x]), row[x])
             if transit(row[x]):
-                raise ValueError(f"Binary value containing {row[x]} at position ({x}, {y})")
+                raise ValueError(
+                    f"Binary value containing {row[x]} at position ({x}, {y})"
+                )
             x += 1
-        print('end')
 
-    return boundary
+        if hit:
+            if key not in bounds:
+                bounds[key] = []
+            bounds[key].append(start)
+            bounds[key].append(end)
+
+    return bounds
+
+
+# ________AaAaAaAa
+# _______aAaAaAaA_
+# ______AaAaAaAa__
+# _____bBbBbBbB___
+# ____BbBbBbBb____
+# ___bBbBbBbB_____
+# __CcCcCcCc______
+# _DBbBbBbB_______
