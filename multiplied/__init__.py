@@ -35,6 +35,7 @@ from .core.template import (
 
 from .core.algorithm import (
     Algorithm,
+    horizontal_boundaries,
     isolate_arithmetic_units,
 )
 
@@ -63,6 +64,7 @@ from .core.utils.bool import (
     isint,
     ishex2,
     ischar,
+    isalpha,
     validate_bitwidth,
 )
 # -- datasets -------------------------------------------------------
@@ -122,6 +124,7 @@ __all__ = [
     'Pattern',
     'Template',
     'Algorithm',
+    'horizontal_boundaries',
     'isolate_arithmetic_units',
     'build_dadda_map',
     'empty_map',
@@ -135,6 +138,7 @@ __all__ = [
     'json_pretty_store',
     'Map',
     'ischar',
+    'isalpha',
     'ishex2',
     'isint',
     'chargen',

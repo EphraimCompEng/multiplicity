@@ -36,9 +36,18 @@ def ishex2(val: str) -> bool:
     return True
 
 def ischar(ch: str) -> bool:
-    """Return True if string is exactly one alphabetic character"""
+    """Return True if string is exactly one character"""
     try:
         ord(ch)
         return True
+    except (ValueError, TypeError):
+        return False
+
+def isalpha(ch: str) -> bool:
+    """Return True if string is exactly one alphabetic character"""
+    try:
+        if (65 <= ord(ch) <= 90) or (97 <= ord(ch) <= 122):
+            return True
+        return False
     except (ValueError, TypeError):
         return False

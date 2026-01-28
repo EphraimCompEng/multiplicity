@@ -89,7 +89,7 @@ def test_err_duplicate_units() -> None:
         ['_', '_', '_', '_', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', '_', '_', '_', '_'],
         ['_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_'],
         ['_', '_', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', '_', '_', '_', '_', '_', '_'],
-        ['_', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'C', '_', '_', '_', '_', '_', '_', '_']
+        ['_', 'D', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_', '_', '_']
         ],
         result = [
             ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a'],
@@ -104,15 +104,16 @@ def test_err_duplicate_units() -> None:
 
     print(template)
     # isolated_units = mp.isolate_arithmetic_units(template)
-    try:
-        isolated_units = mp.isolate_arithmetic_units(template)
-    except SyntaxError:
-        print('passed')
-        isolated_units = []
+    # try:
+    #     isolated_units = mp.isolate_arithmetic_units(template)
+    # except SyntaxError:
+    #     print('passed')
+    #     isolated_units = []
 
-    # print(isolated_units)
-    for i in isolated_units:
-        print(i.checksum)
+
+    print(mp.horizontal_boundaries(template.template, transit=mp.isalpha))
+    # for i in isolated_units:
+    #     print(i.checksum)
 
 
 
@@ -122,7 +123,7 @@ def main():
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()
     # test_isolate_arithmetic_units()
-    # test_err_duplicate_units()
+    test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()
