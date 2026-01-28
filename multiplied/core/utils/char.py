@@ -53,7 +53,7 @@ def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
 
     if not hash:
         # By no means efficient, but gets the job done.
-        # Maybe inte    grated into __reduce()?
+        # Maybe integrated into __reduce()?
 
         chars = set(ch for row in matrix for ch in row)
         chars.remove('_')
