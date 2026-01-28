@@ -10,16 +10,6 @@ class Algorithm():
     Manages and sequences operations via a series of stages defined by templates and maps.
     """
 
-    # pattern only implementation -- small steps:
-    #
-    #   > detect pattern inside Template object
-    #   > Slice matrix(data) along pattern "runs"
-    #   > reduce slices
-    #   > unify slices
-    #   > apply row map
-    #   > update Algorithm object state
-
-
     def __init__(self, matrix: mp.Matrix) -> None:
         if not isinstance(matrix, mp.Matrix):
             raise TypeError(f"Expected Matrix, got {type(matrix)}")
@@ -85,9 +75,6 @@ class Algorithm():
         }
         self.algorithm[stage_index] = stage
         return None
-
-
-
 
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
@@ -219,7 +206,6 @@ class Algorithm():
             results.append(mp.Matrix(unit_result))
 
 
-
         # -- merge units to matrix ----------------------------------
         # Merge in any order, checking for overlaps between borders
         # resolve conflicts by summing present bit positions and shifting
@@ -251,22 +237,6 @@ class Algorithm():
         # testing
         for i in results:
             print(f"\n{mp.pretty(i)}")
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         return None
@@ -293,7 +263,6 @@ class Algorithm():
         if not recursive:
             return None
 
-
         # -- main loop ----------------------------------------------
         while self.bits-1 != mp.empty_rows(pseudo):
 
@@ -306,23 +275,30 @@ class Algorithm():
 
         return None
 
-    def step(self) -> None:
+    def step(self) -> mp.Matrix:
         """
-        Take template[internal_state], apply to matrix, advance internal_state
+        Execute the next stage of the algorithm and update internal matrix
         """
         self.__reduce()
         self.state += 1
 
-        return None
+        # getattr for matrix, template and map to peek algorithm
+        return self.matrix
 
-    def exec(self) -> None:
+    def exec(self, *, a=0, b=0) -> list[mp.Matrix]:
         """
-        Run algorithm with a single set of inputs then reset internal state
+        Run entire algorithm with a single set of inputs then reset internal state.
+        Returns list of results from all stages of the algorithm
         """
+        if not isinstance(a, int) or not isinstance(b, int):
+            raise TypeError(f"Expected int, got {type(a)} and {type(b)}")
+
+        if a == 0 or b == 0:
+            return [mp.Matrix(self.bits)]
+
         for stage in self.algorithm:
             self.__reduce()
-        return None
-
+        return []
 
     def reset(self, matrix: mp.Matrix) -> None:
         """
@@ -334,6 +310,7 @@ class Algorithm():
         self.state = 0
         return None
 
+    # ! getattr for matrix, template and map to peek algorithm
 
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
@@ -377,7 +354,7 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
                 # '_'
                 # {'0', '1'}
             # err:
-                # ch -> '_' -> ch
+                # {'0', '1'} -> '_' -> {'0', '1'}
         case mp.Map():
             raise NotImplementedError("Map not supported")
             # border:
@@ -393,7 +370,7 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
                 # '_'
                 # ischar(ch)
             # err:
-                #
+                # ch -> '_' -> ch
             matrix = copy(source.template)
         case _:
             raise TypeError(

@@ -20,7 +20,7 @@ def test_step() -> None:
     p = mp.Pattern(['a','a','b','b'])
     alg = mp.Algorithm(m)
     alg.push(p)
-    print(alg.matrix)
+    # print(alg.matrix)
     alg.step()
     print(alg)
 
