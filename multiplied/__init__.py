@@ -60,6 +60,8 @@ from .core.utils.pretty import (
 )
 
 from .core.utils.bool import (
+    isint,
+    ishex2,
     ischar,
     validate_bitwidth,
 )
@@ -133,6 +135,8 @@ __all__ = [
     'json_pretty_store',
     'Map',
     'ischar',
+    'ishex2',
+    'isint',
     'chargen',
     'chartff',
     'allchars',

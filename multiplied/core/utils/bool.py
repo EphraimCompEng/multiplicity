@@ -2,6 +2,9 @@
 # Commonly Reused Sanity Checks #
 #################################
 
+from typing import Any
+
+
 SUPPORTED_BITWIDTHS = {4, 8}
 
 
@@ -10,6 +13,21 @@ def validate_bitwidth(bits: int) -> None | ValueError:
        return ValueError(
             f"Unsupported bitwidth {bits}. Expected {SUPPORTED_BITWIDTHS}"
        )
+
+def isint(source: Any) -> bool:
+    """Return True if source converts to int"""
+    match source:
+        case int():
+            return True
+        case str():
+            try:
+                int(source)
+                return True
+            except ValueError:
+                return False
+        case _:
+            return False
+
 
 def ishex2(val: str) -> bool:
     """Return True if string represents a 2-bit hex value"""
