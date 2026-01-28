@@ -440,7 +440,6 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
             intra_row_transition = []
             for i, ch in enumerate(matrix.template[row]):
                 ch = ch.upper()
-                print(ch)
                 # ! need a check for reused chars
                 if ch == char:
                     # -- intra-row boundary check (-) -------------------------------- #
@@ -482,7 +481,6 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
 
     return arithmetic_units
 
-
 def horizontal_boundaries(matrix: list[list[Any]], *,
     transit: Callable[[Any], bool]
     ) -> dict[str, list[tuple[int, int]]]:
@@ -490,44 +488,62 @@ def horizontal_boundaries(matrix: list[list[Any]], *,
     Returns dictionary of arithmetic unit boundaries.
 
     Parameters:
-    - matrix: The nested list to analyze.
+    - matrix: nested list of m-bits, defined as 2d array of 2m * m
     - transit: Function to return bool for a given boundary
     """
 
     if not transit:
         raise ValueError("Transit function not provided")
+    if not isinstance(transit, Callable):
+        raise TypeError("Transit must be a callable function")
+    if not isinstance(matrix, list):
+        raise TypeError("Matrix must be a list")
+    if not all(isinstance(row, list) for row in matrix):
+        raise TypeError("Matrix must be a list of lists")
+    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
+        mp.validate_bitwidth(rows)
+    else:
+        raise ValueError("Matrix dimensions are not valid")
 
     bounds = {}
-    width = len(matrix[0])
-    for y, row in enumerate(matrix):
-        hit = False
-        x   = 0
-        while x < width and not transit(row[x]):
+    x, y   = 0, 0
+    while y < rows:
+
+        # -- entry border -------------------------------------------
+        key = matrix[y][0].upper()
+        if transit(key):
+            bounds[key] = [(0, 0)]
+
+        # -- central range ------------------------------------------
+        while x < items-1:
+            curr = matrix[y][x].upper()
+            next = matrix[y][x+1].upper()
+            if (curr == next) and transit(curr):
+                x += 1
+                continue
+            if curr != next and (transit(curr) or transit(next)):
+                if curr not in bounds:
+                    bounds[curr] = []
+                bounds[curr].append((x, y))
+                if next not in bounds:
+                    bounds[next] = []
+                bounds[next].append((x+1, y))
+                x += 1
+                continue
             x += 1
 
-        start = (x, y)
-        key   = row[x].upper()
-        while x < width-1 and transit(row[x]):
-            hit = True
-            if row[x].upper() != row[x+1].upper():
-                break
-            x += 1
+        # -- exit border --------------------------------------------
+        key = matrix[y][x].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((x, y))
 
-        end = (x, y)
-        while x < width and not transit(row[x]):
-            if transit(row[x]):
-                raise ValueError(
-                    f"Binary value containing {row[x]} at position ({x}, {y})"
-                )
-            x += 1
-
-        if hit:
-            if key not in bounds:
-                bounds[key] = []
-            bounds[key].append(start)
-            bounds[key].append(end)
+        x  = 0
+        y += 1
 
     return bounds
+
+
 
 
 # ________AaAaAaAa
