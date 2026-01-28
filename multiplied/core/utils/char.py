@@ -4,13 +4,6 @@
 
 from collections.abc import Generator
 
-def ischar(ch: str) -> bool:
-    """Tests if a string is exactly one alphabetic character"""
-    try:
-        ord(ch)
-        return True
-    except (ValueError, TypeError):
-        return False
 
 def chargen() -> Generator[str]:
     """Continuously generate characters from A to Z"""
@@ -21,6 +14,7 @@ def chargen() -> Generator[str]:
         i += 1
 
 def chartff(ch: str) -> Generator[str]:
+    from .bool import ischar
     """
     Infinitely generate char in upper then lowercase form.
 
@@ -58,7 +52,7 @@ def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
 
     if not hash:
         # By no means efficient, but gets the job done.
-        # Maybe intergrated into __reduce()?
+        # Maybe inte    grated into __reduce()?
 
         chars = set(ch for row in matrix for ch in row)
         chars.remove('_')

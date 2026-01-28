@@ -95,7 +95,7 @@ class Matrix:
 
 
         # -- process custom matrix ----------------------------------
-        from multiplied.core.utils.char import ischar
+        from multiplied.core.utils.bool import ischar
         checksum = [0] * self.bits
         row_len  = self.bits << 1
         for i, row in enumerate(source):
@@ -166,7 +166,7 @@ class Matrix:
         return None
 
     def __checksum(self) -> None:
-        from multiplied.core.utils.char import ischar
+        from multiplied.core.utils.bool import ischar
 
         row_len  = self.bits << 1
         checksum = [0] * self.bits

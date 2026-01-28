@@ -48,7 +48,6 @@ from .core.truth import (
 # -- utils ----------------------------------------------------------
 
 from .core.utils.char import (
-    ischar,
     chargen,
     chartff,
     allchars,
@@ -61,6 +60,7 @@ from .core.utils.pretty import (
 )
 
 from .core.utils.bool import (
+    ischar,
     validate_bitwidth,
 )
 # -- datasets -------------------------------------------------------

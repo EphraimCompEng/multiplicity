@@ -4,7 +4,7 @@
 
 from copy import copy
 from typing import Any
-from .utils.char import ischar
+from .utils.bool import ischar
 import multiplied as mp
 
 # -- Template and Slice dependencies  ------------------------------- #
