@@ -7,10 +7,27 @@ from typing import Any, Iterator
 
 
 # ! Review slices and their integration to the wider library
+#
+# IDEAS:
+# - work exclusively with multiplied objects
+# - Slice also slices metadata from source object
 class Slice:
     """
-    Matrix slice which adheres to multiplied formatting rules
+    Matrix slice which adheres to multiplied formatting rules.
+    Retains metadata slice from source object:
     """
+    # TODO
+    """
+    >>> Matrix[start:end]
+    Slice(
+        <Matrix.bits>,
+        <Matrix.matrix[start:end]>,
+        <Matrix.checksum[start:end]>,
+        <Matrix.meta[start:end],
+        ...
+        )
+    """
+
     def __init__(self, matrix: list[Any]):
         if isinstance(matrix[0], list):
             self.bits = len(matrix[0]) >> 1
@@ -59,30 +76,25 @@ class Matrix:
     """
     Partial Product Matrix
     """
-    def __init__(self, source: Any, *, a: int=0, b: int=0) -> None:
+    def __init__(self, source: list[Any] | int, *,
+        a: int=0,
+        b: int=0
+    ) -> None:
+
+        # -- sanity check -------------------------------------------
         if isinstance(source, int):
             self.bits = source
-        elif isinstance(source, list):
-            self.bits = len(source)
-        else:
-            raise TypeError(f"Expected integer or list, got {type(source)}")
-
-        mp.validate_bitwidth(self.bits)
-        if all([isinstance(a, int), isinstance(b, int), (a != 0 or b != 0)]):
-            if not isinstance(source, int):
-                raise ValueError("Invalid input. Expected integer.")
-
+            mp.validate_bitwidth(self.bits)
             self.__build_matrix(a, b)
-            self.checksum = [0]*self.bits
-            return None
+            return
+        elif isinstance(source, (list, Slice)) and isinstance(source[0], list):
+            self.bits = len(source)
+            mp.validate_bitwidth(self.bits)
+        else:
+            raise TypeError(f"Expected integer or nested list, got {type(source)}")
 
-        elif isinstance(source, int):
-            self.__empty_matrix(source)
-            self.checksum = [0]*self.bits
-            return None
 
-        # -- efficient sanity check + checksum ----------------------
-        #
+        # -- process custom matrix ----------------------------------
         from multiplied.core.utils.char import ischar
         checksum = [0] * self.bits
         row_len  = self.bits << 1
@@ -107,31 +119,6 @@ class Matrix:
             self.checksum = checksum
         return None
 
-    def __build_matrix(self, operand_a: int, operand_b: int) -> None:
-        """
-        Build Logical AND matrix using source operands and it's checksum.
-        """
-
-        mp.validate_bitwidth((bits := self.bits))
-
-        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
-            raise ValueError("Operand bit width exceeds matrix bit width")
-
-        # convert to binary, removing '0b' and padding with zeros
-        a = bin(operand_a)[2:].zfill(bits)
-        b = bin(operand_b)[2:].zfill(bits)
-        i = 0
-        matrix   = []
-        for i in range(bits-1, -1, -1):
-            if b[i] == '0':
-                matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
-
-            elif b[i] == '1':
-                matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
-
-        self.matrix = matrix
-        return None
-
     def __empty_matrix(self, bits: int) -> None:
         """
         Build a wallace tree for a bitwidth of self.bits
@@ -143,6 +130,40 @@ class Matrix:
         self.matrix = matrix
         return None
 
+
+    def __build_matrix(self, operand_a: int, operand_b: int) -> None:
+        """
+        Build Logical AND matrix using source operands and it's checksum.
+        """
+
+        mp.validate_bitwidth((bits := self.bits))
+
+        # -- catch multiply by zero ---------------------------------
+        if operand_a == 0 or operand_b == 0:
+            self.__empty_matrix(bits)
+            self.checksum = [0]*bits
+            return None
+
+
+        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
+            raise ValueError("Operand bit width exceeds matrix bit width")
+
+        # convert to binary, removing '0b' and padding with zeros
+        a = bin(operand_a)[2:].zfill(bits)
+        b = bin(operand_b)[2:].zfill(bits)
+        checksum = [0]*bits
+        matrix   = []
+        for i in range(bits-1, -1, -1):
+            if b[i] == '0':
+                matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
+            elif b[i] == '1':
+                matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
+                checksum[i] = 1
+
+
+        self.matrix   = matrix
+        self.checksum = checksum
+        return None
 
     def __checksum(self) -> None:
         from multiplied.core.utils.char import ischar

@@ -6,6 +6,7 @@ import multiplied as mp
 from typing import Any, Iterator
 
 
+
 class Map:
     """
     Generates Map object from row map or standard map.
@@ -16,13 +17,23 @@ class Map:
             raise ValueError("Map must be type list")
         mp.validate_bitwidth(bits := len(map))
         self.bits = bits
+
+        # -- handle standard maps -----------------------------------
         if isinstance(map[0], list):
             self.map  = map
-            self.rmap = None
-        elif all([isinstance(x, str) for x in map]):
-            self.map  = self.build_map(map)
-            self.rmap = map
-        self._index = 0
+            self.rmap = []
+            return None
+
+        # -- handle row maps ---------------------------------------
+        checksum = [0]*bits
+        for i, x in enumerate(map):
+            if 2 < len(x) or not(0 <= int(x, 16) <= 255):
+                raise ValueError(f"Expected hex value in range '00' to 'FF', got mapping {x}")
+            checksum[i] = 1 if x != '00' else 0
+
+        self.checksum =  checksum
+        self.map  = self.build_map(map)
+        self.rmap = map
         return None
 
 

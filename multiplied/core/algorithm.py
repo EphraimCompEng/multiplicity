@@ -36,7 +36,7 @@ class Algorithm():
         return None
 
 
-    def push(self, template: mp.Template | mp.Pattern, map_: Any = None
+    def push(self, source: mp.Template | mp.Pattern, map_: Any = None
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -48,9 +48,7 @@ class Algorithm():
         >>>     "map"      : mp.Map}
         """
 
-        if not(isinstance(template, (mp.Template, mp.Pattern))):
-            raise TypeError("Invalid argument type. Expected mp.Template")
-        if template.bits != self.bits:
+        if source.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
         if map_ and not(isinstance(map_, (mp.Map))):
             raise TypeError("Invalid argument type. Expected mp.Map")
@@ -60,12 +58,20 @@ class Algorithm():
             raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
 
-        if isinstance(template, mp.Pattern):
-            template = mp.Template(template)
+        if isinstance(source, mp.Pattern):
+            template = mp.Template(source)
+        elif isinstance(source, mp.Template):
+            template = source
+        else:
+            raise TypeError("Invalid argument type. Expected mp.Template")
 
+
+        if not isinstance(template.result, list):
+            raise ValueError("Template result is unset")
+
+
+        result      = mp.Matrix(template.result)
         stage_index = len(self.algorithm)
-        result = mp.Matrix(template.result)
-
         if not map_ and result:
             map_ = result.resolve_rmap()
             result.apply_map(map_)
@@ -79,6 +85,8 @@ class Algorithm():
         }
         self.algorithm[stage_index] = stage
         return None
+
+
 
 
     # Mangled as execution order is sensitive and __reduce should only
@@ -190,7 +198,8 @@ class Algorithm():
                             break
 
                         # -- brute force index 0 --------------------
-                        # ! handle index zero outside of loop ! #
+                        # ! remove try catch:
+                        # ! handle index zero outside of loop
                         # ! unit may not even overlap index 0
                         try:
                             output[0][i] = '1' if csa_sum & 1 else '0'
@@ -209,16 +218,6 @@ class Algorithm():
                 unit_result.append(['_']*(self.bits*2))
             results.append(mp.Matrix(unit_result))
 
-        print(results)
-        for i in results:
-            print(f"\n{mp.pretty(i)}")
-
-
-
-
-
-
-
 
 
         # -- merge units to matrix ----------------------------------
@@ -226,11 +225,11 @@ class Algorithm():
         # resolve conflicts by summing present bit positions and shifting
         # a target unit's bit
 
-        # ! difficult sanity checks --------------------------------- #
+        # ! difficult sanity checks --------------------------------- ! #
         # Complex scenarios, where NOOP, CSA and ADD units intersect
         # will require extensive checks:
         #
-        #   [example--] || [isolated]
+        #   [example--] || [region--]
         #   ...BbaAa... || ....ba....
         #   ...CcaAa... || ....ca....
         #   ...CcaAa... || ....ca....
@@ -246,10 +245,33 @@ class Algorithm():
         # The example's sum for the first column is == 3.  This should raise a
         # flag indicating it should be merged later.
         #
-        #
         # This functionality to be implemented at a later date.
 
+
+        # testing
+        for i in results:
+            print(f"\n{mp.pretty(i)}")
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         return None
+
+
 
     def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
@@ -338,6 +360,57 @@ class Algorithm():
 
 # -- helper functions -----------------------------------------------
 
+def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
+) -> list[tuple[int,int]]:
+    if not isinstance(source, (mp.Matrix, mp.Map, mp.Template)):
+        raise TypeError(
+            f"Expected type Matrix or Template got {type(source)}"
+        )
+    mp.validate_bitwidth(bits := source.bits)
+
+    from copy import copy
+
+    match source:
+        case mp.Matrix():
+            matrix = copy(source.matrix)
+            # border:
+                # '_'
+                # {'0', '1'}
+            # err:
+                # ch -> '_' -> ch
+        case mp.Map():
+            raise NotImplementedError("Map not supported")
+            # border:
+                # '00'
+                # if 0 < int(x, 16) < 255
+            # err:
+                # if 2 < len(x) or not 0 < int(x, 16) < 255:
+
+            matrix = copy(source.map)
+        case mp.Template():
+            raise NotImplementedError("Map not supported")
+            # border:
+                # '_'
+                # ischar(ch)
+            # err:
+                #
+            matrix = copy(source.template)
+        case _:
+            raise TypeError(
+                f"Expected type Matrix, Map or Template got {type(source)}"
+            )
+
+    start = source.checksum.index(1)
+    for row in range(start, bits):
+        ...
+
+
+
+
+    return
+
+
+
 
 def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     """
@@ -347,14 +420,16 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     if not isinstance(matrix, mp.Template):
         raise TypeError(f"Expected type Template got {type(matrix)}")
 
-    allchars  = mp.allchars(matrix.template, hash=matrix.checksum)
+    allchars = mp.allchars(matrix.template, hash=matrix.checksum)
     arithmetic_units = []*len(allchars)
     for char in allchars:
         row  = 0
         unit = [[]]*matrix.bits
         empty_row   = ['_']*(matrix.bits*2)
         # -- skip rows not containing char --------------------------
-        # replace with checksum calculation
+        # ! to be replaced with bounding box logic once objects
+        # ! generate their own bounding box
+
         while row < matrix.bits:
             if char not in matrix.template[row]:
                 unit[row] = empty_row
@@ -363,6 +438,8 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
             break
 
         # -- extract unit(s) ----------------------------------------
+        # ! does not make use of newly added checksum
+
         charset = set([char.upper(),char.lower()])
         while(row < matrix.bits and
             (charset.intersection(matrix.template[row]))
@@ -388,7 +465,6 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
             unit[row] = tmp
             row += 1
         # -- fill remaining rows ------------------------------------
-        # replace with checksum calculation
 
         while 0 < (matrix.bits-row):
             unit[row] = empty_row

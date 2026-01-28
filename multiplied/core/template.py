@@ -213,9 +213,10 @@ class Template:
         result: Any = [],
         matrix: Any = []
     ) -> None: # Complex or pattern
+
+        mp.validate_bitwidth(len(source))
         self.bits   = len(source)
         self.result = result if isinstance(result, Template) else []
-        mp.validate_bitwidth(self.bits)
 
         # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
@@ -226,16 +227,21 @@ class Template:
 
             if not matrix:
                 matrix =  mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, deepcopy(matrix))
-            return
+            self.build_from_pattern(self.pattern, matrix)
+            return None
 
         # -- template handling ---------------------------------------
+        if (
+            isinstance(source, list) and
+            all([isinstance(i, list) for i in source]
+            )
+        ):
+            self.template = source
+            self.pattern  = []
+            self.__checksum()
+            return None
 
-        # Add sanity checks
-        self.template = source
-        self.pattern  = []
-        self.__checksum()
-        return None
+
 
     def __checksum(self) -> None:
         row_len  = self.bits << 1
