@@ -30,6 +30,7 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
+    build_empty_slice,
 )
 
 from .core.algorithm import (
@@ -124,6 +125,7 @@ __all__ = [
     'empty_map',
     'build_csa',
     'build_adder',
+    'build_empty_slice',
     'resolve_pattern',
     'truth_scope',
     'shallow_truth_table',

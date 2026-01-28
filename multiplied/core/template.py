@@ -115,7 +115,7 @@ def build_noop(char: str, source_slice: mp.Slice
 
     return noop_slice, copy(noop_slice) # avoids pointing to same object
 
-def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
+def build_empty_slice(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     """
     Create an empty template slice. Returns template "slices" and resulting slice.
     Variable length determined by source slice.
@@ -311,17 +311,15 @@ class Template:
                     if pattern[i-run] != '_':
                         raise ValueError(f"Unsupported run length {run}. Use '_' for empty rows")
 
-                    template_slices[i-run] = build_empty(matrix[i-run:i])
+                    template_slices[i-run] = build_empty_slice(matrix[i-run:i])
 
             i += 1
 
         template = []
-        for i in template_slices.values():
-            template += i[0]
-
         result = []
         for i in template_slices.values():
-            result += i[1]
+            template += i[0]
+            result   += i[1]
 
         self.template, self.result = template, result
         return None
