@@ -3,7 +3,7 @@
 ################################################
 
 import multiplied as mp
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
 
 # ! Review slices and their integration to the wider library
@@ -283,3 +283,77 @@ def empty_rows(matrix: Matrix) -> int:
 
     empty_row = ['_' for i in range(matrix.bits*2)]
     return sum([matrix.matrix[i] == empty_row for i in range(matrix.bits)])
+
+# TODO: error check needed to determine if multiple units use the same character
+#
+# Implementation:
+#
+#   IF bounding box y-diff is > 1:
+#       > ERR vertical gap identifies
+#   IF x-axis has > 2 coordinates:
+#       > ERR: horizonal break between units
+#
+def find_bounding_box(matrix: list[list[Any]], *,
+    transit: Callable[[Any], bool]
+    ) -> dict[str, list[tuple[int, int]]]:
+    """
+    Returns dictionary of arithmetic unit and coordinates for their boundaries.
+
+    Note: key='_' represents bounds for empty character slots
+
+    Parameters:
+    - matrix: nested list of m-bits, defined as 2d array of 2m * m
+    - transit: Function to return bool for a given boundary transition
+    """
+    mp.mprint(matrix)
+    if not transit:
+        raise ValueError("Transit function not provided")
+    if not isinstance(transit, Callable):
+        raise TypeError("Transit must be a callable function")
+    if not isinstance(matrix, list):
+        raise TypeError("Matrix must be a list")
+    if not all(isinstance(row, list) for row in matrix):
+        raise TypeError("Matrix must be a list of lists")
+    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
+        mp.validate_bitwidth(rows)
+    else:
+        raise ValueError("Matrix dimensions are not valid")
+
+    bounds = {}
+    x, y   = 0, 0
+    while y < rows:
+
+        # -- entry border -------------------------------------------
+        key = matrix[y][0].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((0, y))
+
+        # -- central range ------------------------------------------
+        while x < items-1:
+            curr = matrix[y][x].upper()
+            next = matrix[y][x+1].upper()
+            if (curr == next) and transit(curr):
+                x += 1
+                continue
+            if curr != next and (transit(curr) or transit(next)):
+                if curr not in bounds:
+                    bounds[curr] = []
+                bounds[curr].append((x, y))
+                if next not in bounds:
+                    bounds[next] = []
+                bounds[next].append((x+1, y))
+                x += 1
+                continue
+            x += 1
+
+        # -- exit border --------------------------------------------
+        key = matrix[y][x].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((x, y))
+
+        x  = 0
+        y += 1
+
+    return bounds

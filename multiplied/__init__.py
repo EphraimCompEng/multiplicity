@@ -21,6 +21,7 @@ from .core.matrix import (
     Matrix,
     Slice,
     empty_rows,
+    find_bounding_box,
 )
 
 
@@ -35,7 +36,6 @@ from .core.template import (
 
 from .core.algorithm import (
     Algorithm,
-    find_bounding_box,
     isolate_arithmetic_units,
 )
 
