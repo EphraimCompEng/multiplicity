@@ -35,7 +35,7 @@ from .core.template import (
 
 from .core.algorithm import (
     Algorithm,
-    horizontal_boundaries,
+    find_bounding_box,
     isolate_arithmetic_units,
 )
 
@@ -124,7 +124,7 @@ __all__ = [
     'Pattern',
     'Template',
     'Algorithm',
-    'horizontal_boundaries',
+    'find_bounding_box',
     'isolate_arithmetic_units',
     'build_dadda_map',
     'empty_map',
