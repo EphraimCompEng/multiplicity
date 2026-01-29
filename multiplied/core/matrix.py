@@ -252,6 +252,8 @@ class Matrix:
         return self.bits
 
     def __eq__(self, matrix: Any, /) -> bool:
+        if not isinstance(matrix, Matrix):
+            return False
         if matrix.bits != self.bits:
             return False
         for i in range(self.bits):
