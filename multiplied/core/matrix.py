@@ -119,7 +119,7 @@ class Matrix:
             self.checksum = checksum
         return None
 
-    def __empty_matrix(self, bits: int) -> None:
+    def __zero_matrix(self, bits: int) -> None:
         """
         Build a wallace tree for a bitwidth of self.bits
         """
@@ -140,7 +140,7 @@ class Matrix:
 
         # -- catch multiply by zero ---------------------------------
         if operand_a == 0 or operand_b == 0:
-            self.__empty_matrix(bits)
+            self.__zero_matrix(bits)
             self.checksum = [0]*bits
             return None
 
@@ -283,6 +283,15 @@ def empty_rows(matrix: Matrix) -> int:
 
     empty_row = ['_' for i in range(matrix.bits*2)]
     return sum([matrix.matrix[i] == empty_row for i in range(matrix.bits)])
+
+def empty_matrix(bits: int) -> list[list[str]]:
+    """
+    Build an empty 2d array for a given bitwidth
+    """
+    matrix = []
+    for i in range(bits):
+        matrix.append(["_"]*(bits*2))
+    return matrix
 
 # TODO: error check needed to determine if multiple units use the same character
 #
