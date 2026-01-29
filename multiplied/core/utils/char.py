@@ -14,9 +14,8 @@ def chargen() -> Generator[str]:
         i += 1
 
 def chartff(ch: str) -> Generator[str]:
-    from .bool import ischar
     """
-    Infinitely generate char in upper then lowercase form.
+    Generator to flip flop between upper and lowercase characters.
 
     >>> x = chartff('a')
     >>> next(x)
@@ -26,13 +25,14 @@ def chartff(ch: str) -> Generator[str]:
     >>> next(x)
     'a'
     """
+    from .bool import ischar
 
     if not ischar(ch):
         raise ValueError("Input must be a single alphabetic character")
 
     i = True
     while True:
-        if i := not(i): # tff
+        if i := not(i): # toggle flip flop
             yield ch.lower()
         else:
             yield ch.upper()
