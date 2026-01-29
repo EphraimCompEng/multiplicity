@@ -68,16 +68,17 @@ def test_auto_resolve_recursive_full_8() -> None:
 
 def test_isolate_arithmetic_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','c']), matrix=mp.Matrix(4))
-    isolated_units = mp.isolate_arithmetic_units(template)
+    isolated_units = mp.collect_template_units(template)
     print(template)
     print(isolated_units)
     for i in isolated_units:
         print(i.checksum)
 
 def test_err_duplicate_units() -> None:
-    template = mp.Template(mp.Pattern(['a','a','b','b','a','a','d','d']), matrix=mp.Matrix(8))
+    template = mp.Template(mp.Pattern(['a','a','b','b','c','c','d','d']), matrix=mp.Matrix(8))
+    bounds   = mp.find_bounding_box(template.template, transit=mp.isalpha)
     try:
-        isolated_units = mp.isolate_arithmetic_units(template)
+        isolated_units = mp.collect_template_units(template)
     except SyntaxError:
         pass
 
@@ -89,7 +90,7 @@ def test_err_duplicate_units() -> None:
         ['_', '_', '_', '_', 'B', 'b', 'B', 'b', 'B', 'b', 'B', 'b', '_', '_', '_', '_'],
         ['_', '_', '_', 'b', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_'],
         ['_', '_', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', '_', '_', '_', '_', '_', '_'],
-        ['_', 'D', 'B', 'b', 'B', 'b', 'B', 'b', 'B', '_', '_', '_', '_', '_', '_', '_']
+        ['_', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', '_', '_', '_', '_', '_', '_', '_']
         ],
         result = [
             ['_', '_', '_', '_', '_', '_', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'A', 'a'],
@@ -103,7 +104,8 @@ def test_err_duplicate_units() -> None:
         ])
 
     print(template)
-    # isolated_units = mp.isolate_arithmetic_units(template)
+    bounds   = mp.find_bounding_box(template.template, transit=mp.isalpha)
+    isolated_units = mp.collect_template_units(template)
     # try:
     #     isolated_units = mp.isolate_arithmetic_units(template)
     # except SyntaxError:
@@ -111,14 +113,21 @@ def test_err_duplicate_units() -> None:
     #     isolated_units = []
 
 
-    print(mp.horizontal_boundaries(template.template, transit=mp.isalpha))
-    # for i in isolated_units:
-    #     print(i.checksum)
+    for b in mp.find_bounding_box(template.template, transit=mp.isalpha).items():
+        print(b)
+
+    for b in mp.find_bounding_box(template.result, transit=mp.isalpha).items():
+        print(b)
+
+
+    for i in isolated_units:
+        print(i)
+        # print(i.checksum)
 
 
 
 def main():
-    test_step()
+    # test_step()
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()

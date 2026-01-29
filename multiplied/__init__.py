@@ -21,6 +21,7 @@ from .core.matrix import (
     Matrix,
     Slice,
     empty_rows,
+    empty_matrix,
     find_bounding_box,
 )
 
@@ -36,7 +37,8 @@ from .core.template import (
 
 from .core.algorithm import (
     Algorithm,
-    isolate_arithmetic_units,
+    collect_template_units,
+    collect_arithmetic_units,
 )
 
 from .core.truth import (
@@ -120,12 +122,14 @@ MP_VERSION = MP_TOML["project"]["version"]
 __all__ = [
     'Matrix',
     'Slice',
-    'empty_rows',
     'Pattern',
     'Template',
     'Algorithm',
+    'empty_rows',
+    'empty_matrix',
     'find_bounding_box',
-    'isolate_arithmetic_units',
+    'collect_template_units',
+    'collect_arithmetic_units',
     'build_dadda_map',
     'empty_map',
     'build_csa',

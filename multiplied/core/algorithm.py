@@ -337,9 +337,12 @@ class Algorithm():
 
 # -- helper functions -----------------------------------------------
 
-def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
+def isolate_units(
+    source: mp.Matrix | mp.Template,
+    bounds: dict[str, list[tuple[int, int]]]
 ) -> list[tuple[int,int]]:
-    if not isinstance(source, (mp.Matrix, mp.Map, mp.Template)):
+
+    if not isinstance(source, (mp.Matrix, mp.Template)):
         raise TypeError(
             f"Expected type Matrix or Template got {type(source)}"
         )
@@ -350,7 +353,7 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
 
     match source:
         case mp.Matrix():
-            bounds = find_bounding_box(source.matrix)
+            bounds = mp.find_bounding_box(source.matrix, transit=isint)
 
 
         case mp.Map():
@@ -389,7 +392,7 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
 # ! This code is extremely complicated to read through
 # ! replace with bounding box logic and checksums
 # TODO: Implement checksums for x-axis
-def isolate_arithmetic_units_OLD(matrix: mp.Template) -> list[mp.Template]:
+def isolate_arithmetic_units_old(matrix: mp.Template) -> list[mp.Template]:
     """
     Separate arithmetic units from source template into a list of templates.
     """
@@ -462,20 +465,77 @@ def isolate_arithmetic_units_OLD(matrix: mp.Template) -> list[mp.Template]:
 
     return arithmetic_units
 
+def collect_arithmetic_units(
+    source: mp.Matrix,
+    bounds: dict[str, list[tuple[int, int]]]
+) -> list[mp.Matrix]:
+    """
+    Extract arithmetic units from source template into a list of templates.
+    """
 
-def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
+
+# TODO: implement x_checksum (current checksum is y_checksum)
+# IDEA: implement x_signature and maybe y_signature:
+# - A given signature will create a set for all member of an axis
+# - Should help when error checking, though I don't see a use for y_signature
+#
+def collect_template_units(
+    source: mp.Template,
+) -> list[mp.Template]:
     """
     Separate arithmetic units from source template into a list of templates.
     """
+    if not isinstance(source, (mp.Template, mp.Matrix, mp.Map)):
+        raise TypeError(f"Expected type Template, Matrix or Map got {type(source)}")
+
+    from .utils.char import chartff
+    bounds   = mp.find_bounding_box(source.template, transit=mp.isalpha)
+    allchars = list(bounds.keys())
+    allchars.remove('_')
 
 
+    units = []
+    for ch in allchars:
+        print(f'{ch}:')
+        empty_matrix = mp.empty_matrix(source.bits)
+        tff = chartff(ch) # toggle flip flop
+        next(tff) # sync to template case sensitivity
+        i = 0 # coordinate index
+        expected_y = None
+        while i < len(bounds[ch])-1:
+            # -- intra-row boundary -------------------------------------- #
+            # bound[list_of_points][coord_i][y-axis]
+            # "if 2 < points have the same y for a given unit"
+            if 2 < sum([p[1] == bounds[ch][i][1] for p in bounds[ch]]):
+                raise ValueError(
+                    f"Multiple arithmetic units found for unit '{ch}'")
+            # ------------------------------------------------------------ #
+            start = bounds[ch][i]
+            end = bounds[ch][i+1]
+            if start[1] != end[1]:
+                raise ValueError(
+                    f"Bounding box error for unit '{ch}' "
+                    f"Points:{start}, {end}, error:  {start[1]} != {end[1]}"
+                )
+            # -- traverse row ---------------------------------------
+            next(tff) # sync to template case sensitivity
+            for x in range(start[0], end[0]+1):
+                empty_matrix[start[1]][x] = next(tff)
 
 
+            # -- inter-row boundary test --------------------------------- #
+            if expected_y is not None and expected_y != start[1]:
+                raise ValueError(
+                    f"Arithmetic unit '{ch}' spans multiple rows. "
+                    f"Expected row {expected_y}, got row {start[1]}")
+            expected_y = start[1]+1
+            # ------------------------------------------------------------ #
 
-    ...
 
+            i += 2
+        units.append(mp.Template(empty_matrix))
 
-
+    return units
 
 # ________AaAaAaAa
 # _______aAaAaAaA_
