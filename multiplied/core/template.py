@@ -210,24 +210,27 @@ class Template:
     """
 
     def __init__(self, source: Pattern | list[list[str]], *,
-        result: Any = [],
-        matrix: Any = []
+        result: list[Any] = [],
+        matrix: Any = None,
     ) -> None: # Complex or pattern
+
+
 
         mp.validate_bitwidth(len(source))
         self.bits   = len(source)
-        self.result = result if isinstance(result, Template) else []
+        self.result = result if isinstance(result, (Template, list)) else []
 
         # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
-            from copy import deepcopy
+
 
             self.pattern  = source
             self.checksum = [1 if ch != '_' else 0 for ch in source]
-
-            if not matrix:
-                matrix =  mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, matrix)
+            if matrix is None:
+                matrix = mp.Matrix(self.bits)
+            self.build_from_pattern(self.pattern, matrix)#
+            print(self.template)
+            print(self.result)
             return None
 
         # -- template handling ---------------------------------------
