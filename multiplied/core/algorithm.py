@@ -348,30 +348,9 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
     from copy import copy
     from multiplied import ischar, ishex2, isint
 
-    bounds = []
     match source:
         case mp.Matrix():
-            matrix = copy(source.matrix)
-            # border:
-                # '_'
-                # {'0', '1'}
-            # err:
-                # {'0', '1'} -> '_' -> {'0', '1'}
-
-            transit = isint
-
-            for y, row in enumerate(matrix):
-                x = 0
-                while x < len(row) and not transit(row[x]):
-                    x += 1
-
-                boundary = (x, y)
-                while x < len(row):
-                    if not transit(row[x]):
-                        raise ValueError(f"Binary value containing {row[x]} at position ({x}, {y})")
-                    x += 1
-
-                bounds.append(boundary)
+            bounds = find_bounding_box(source.matrix)
 
 
         case mp.Map():
@@ -407,7 +386,9 @@ def horizontal_bounds(source: mp.Matrix | mp.Map | mp.Template
 
 
 
-
+# ! This code is extremely complicated to read through
+# ! replace with bounding box logic and checksums
+# TODO: Implement checksums for x-axis
 def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
     """
     Separate arithmetic units from source template into a list of templates.
@@ -481,17 +462,30 @@ def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
 
     return arithmetic_units
 
-def horizontal_boundaries(matrix: list[list[Any]], *,
+
+
+# TODO: error check needed to determine if multiple units use the same character
+#
+# Implementation:
+#
+#   IF bounding box y-diff is > 1:
+#       > ERR vertical gap identifies
+#   IF x-axis has > 2 coordinates:
+#       > ERR: horizonal break between units
+#
+def find_bounding_box(matrix: list[list[Any]], *,
     transit: Callable[[Any], bool]
     ) -> dict[str, list[tuple[int, int]]]:
     """
-    Returns dictionary of arithmetic unit boundaries.
+    Returns dictionary of arithmetic unit and coordinates for their boundaries.
+
+    Note: key='_' represents bounds for empty character slots
 
     Parameters:
     - matrix: nested list of m-bits, defined as 2d array of 2m * m
-    - transit: Function to return bool for a given boundary
+    - transit: Function to return bool for a given boundary transition
     """
-
+    mp.mprint(matrix)
     if not transit:
         raise ValueError("Transit function not provided")
     if not isinstance(transit, Callable):
@@ -511,8 +505,9 @@ def horizontal_boundaries(matrix: list[list[Any]], *,
 
         # -- entry border -------------------------------------------
         key = matrix[y][0].upper()
-        if transit(key):
-            bounds[key] = [(0, 0)]
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((0, y))
 
         # -- central range ------------------------------------------
         while x < items-1:
