@@ -2,9 +2,9 @@
 # Map Bits Inside A Matrix #
 ############################
 
-
 import multiplied as mp
-from typing import Any
+from typing import Any, Iterator
+
 
 
 class Map:
@@ -15,16 +15,26 @@ class Map:
     def __init__(self, map: list[Any]) -> None:
         if not(isinstance(map, list)):
             raise ValueError("Map must be type list")
-        if (bits := len(map)) not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(f"Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
+        mp.validate_bitwidth(bits := len(map))
         self.bits = bits
+
+        # -- handle standard maps -----------------------------------
         if isinstance(map[0], list):
             self.map  = map
-            self.rmap = None
-        elif all([isinstance(x, str) for x in map]):
-            self.map  = self.build_map(map)
-            self.rmap = map
-        self._index = 0
+            self.rmap = []
+            return None
+
+        # -- handle row maps ---------------------------------------
+        checksum = [0]*bits
+        for i, x in enumerate(map):
+            if 2 < len(x) or not(0 <= int(x, 16) <= 255):
+                raise ValueError(f"Expected hex value in range '00' to 'FF', got mapping {x}")
+            checksum[i] = 1 if x != '00' else 0
+
+        self.checksum =  checksum
+        self.map  = self.build_map(map)
+        self.rmap = map
+        return None
 
 
     def build_map(self, rmap: list[str]) -> list[list[str]]:
@@ -33,9 +43,7 @@ class Map:
         is a 2-bit, signed hex value. +ve = up, -ve = down.
         """
 
-        assert (n := len(rmap)) in mp.SUPPORTED_BITWIDTHS, (
-            (f"Unsupported bitwidth {n}. Expected {mp.SUPPORTED_BITWIDTHS}")
-        )
+        mp.validate_bitwidth(n := len(rmap))
         map = []
         for i in range(n):
             if len(rmap[i]) != 2 and not(isinstance(rmap[i], str)):
@@ -43,17 +51,16 @@ class Map:
             map.append([rmap[i] for _ in range(n*2)])
         return map
 
-    # TODO: make a useful repr
     def __repr__(self) -> str:
-        return str(self.__str__())
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
     def __str__(self) -> str:
         return mp.pretty(self.map)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[list[str]]:
         return iter(self.map)
 
-    def __next__(self):
+    def __next__(self) -> list[str]:
         if self._index >= self.bits:
             raise StopIteration
         self._index += 1
@@ -61,16 +68,15 @@ class Map:
 
 
 def empty_map(bits: int)-> Map:
-    return Map(["00" for i in range(bits)])
+    mp.validate_bitwidth(bits)
+    return Map(["00"]*bits)
 
 
 def build_dadda_map(bits: int) -> Map:
     """
-    Return map which represents starting point of Dadda tree algorithm.
+    Return map representing the starting point of Dadda tree algorithm.
     """
-    assert bits in mp.SUPPORTED_BITWIDTHS, (
-        ValueError(f"\tError: Unsupported bitwidth {bits}. Expected {mp.SUPPORTED_BITWIDTHS}")
-    )
+    mp.validate_bitwidth(bits)
 
     # -- Repulsive - Design algorithm for 16-bit+ ------------------------------ #
     dadda_map = {                                                                #

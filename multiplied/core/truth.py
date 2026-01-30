@@ -55,7 +55,7 @@ def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm) -> Generator
     Generated operands should be in the form tuple(a, b).
     """
     # -- sanity checks [TODO] ---------------------------------------
-    return (mp.build_matrix(a, b, bits=alg.bits) for a, b in scope)
+    return (mp.Matrix(alg.bits, a=a, b=b) for a, b in scope)
 
 def truth_table(scope: Generator, alg: mp.Algorithm) -> Generator:
     """

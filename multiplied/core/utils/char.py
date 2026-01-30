@@ -1,15 +1,9 @@
+####################################################
+# Generating, Testing, and Manipulating Characters #
+####################################################
+
 from collections.abc import Generator
 
-
-# --  Character related helper functions ----------------------------
-
-def ischar(ch: str) -> bool:
-    """Tests if a string is exactly one alphabetic character"""
-    try:
-        ord(ch)
-        return True
-    except (ValueError, TypeError):
-        return False
 
 def chargen() -> Generator[str]:
     """Continuously generate characters from A to Z"""
@@ -21,7 +15,7 @@ def chargen() -> Generator[str]:
 
 def chartff(ch: str) -> Generator[str]:
     """
-    Infinitely generate char in upper then lowercase form.
+    Generator to flip flop between upper and lowercase characters.
 
     >>> x = chartff('a')
     >>> next(x)
@@ -31,20 +25,22 @@ def chartff(ch: str) -> Generator[str]:
     >>> next(x)
     'a'
     """
+    from .bool import ischar
 
     if not ischar(ch):
         raise ValueError("Input must be a single alphabetic character")
 
     i = True
     while True:
-        if i := not(i):
+        if i := not(i): # toggle flip flop
             yield ch.lower()
         else:
             yield ch.upper()
 
 def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
     """
-    Generate all unique characters from a matrix. Ignores underscore characters
+    Returns set of unique characters from a matrix.
+    Ignores underscore characters and converts characters to uppercase
 
     >>> allchars([['A', 'B'], ['C', 'D']])
     {'A', 'B', 'C', 'D'}
@@ -55,10 +51,9 @@ def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
     if not isinstance(matrix, list) or not all([isinstance(row, list) for row in matrix]):
         raise TypeError("Input must be type list[list[char]]")
 
-
     if not hash:
         # By no means efficient, but gets the job done.
-        # Maybe intergrated into __reduce()?
+        # Maybe integrated into __reduce()?
 
         chars = set(ch for row in matrix for ch in row)
         chars.remove('_')

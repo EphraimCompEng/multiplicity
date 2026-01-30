@@ -2,40 +2,13 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
-
-"""
-Algorithm process:
-0: Generate logical AND matrix
-1: split matrix
-2: apply template, update state
-3: generate result
-4: optionally apply map
-5: update matrix
-6: GOTO 1:
-
-"""
-
-from typing import Any
+from typing import Any, Iterable
 import multiplied as mp
 
-# TODO: Improve docstring
 class Algorithm():
     """
-    An algorithm is created with an initial matrix and an optinal map.
-    Subsequent stages are defined by templates and maps. Built-in methods
-    can automatically generate stages or assist in the creation of custom
-    stages.
+    Manages and sequences operations via a series of stages defined by templates and maps.
     """
-
-    # pattern only implementation -- small steps:
-    #
-    #   > detect pattern inside Template object
-    #   > Slice matrix(data) along pattern "runs"
-    #   > reduce slices
-    #   > unify slices
-    #   > apply row map
-    #   > update Algorithm object state
-
 
     def __init__(self, matrix: mp.Matrix) -> None:
         if not isinstance(matrix, mp.Matrix):
@@ -50,9 +23,10 @@ class Algorithm():
         # create update() function
         # add to each modifying class method
         self.stage = self.algorithm[self.state] if self.len > 0 else None
+        return None
 
 
-    def push(self, template: mp.Template | mp.Pattern, map_: Any = None
+    def push(self, source: mp.Template | mp.Pattern, map_: Any = None
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -64,9 +38,7 @@ class Algorithm():
         >>>     "map"      : mp.Map}
         """
 
-        if not(isinstance(template, (mp.Template, mp.Pattern))):
-            raise TypeError("Invalid argument type. Expected mp.Template")
-        if template.bits != self.bits:
+        if source.bits != self.bits:
             raise ValueError("Template bitwidth must match Algorithm bitwidth.")
         if map_ and not(isinstance(map_, (mp.Map))):
             raise TypeError("Invalid argument type. Expected mp.Map")
@@ -76,12 +48,20 @@ class Algorithm():
             raise NotImplementedError("Complex map not implemented")  #
         # ----------------------------------------------------------- #
 
-        if isinstance(template, mp.Pattern):
-            template = mp.Template(template)
+        if isinstance(source, mp.Pattern):
+            template = mp.Template(source)
+        elif isinstance(source, mp.Template):
+            template = source
+        else:
+            raise TypeError("Invalid argument type. Expected mp.Template")
 
+
+        if not isinstance(template.result, list):
+            raise ValueError("Template result is unset")
+
+
+        result      = mp.Matrix(template.result)
         stage_index = len(self.algorithm)
-        result = mp.Matrix(template.result)
-
         if not map_ and result:
             map_ = result.resolve_rmap()
             result.apply_map(map_)
@@ -94,9 +74,7 @@ class Algorithm():
             'map': map_,
         }
         self.algorithm[stage_index] = stage
-
-        return
-
+        return None
 
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
@@ -104,6 +82,7 @@ class Algorithm():
         """
         use template or pattern to reduce a given matrix.
         """
+        from copy import copy
 
         # -- implementation -----------------------------------------
         #
@@ -126,21 +105,15 @@ class Algorithm():
         #   ...00110110... | ...01100000...
         #   ...00101010... | ...________...
 
-        from copy import copy
-
-        # -- partition units -----------------------------------------
-        # isolates units into list of templates
-
+        # -- isolate units -----------------------------------------
         template = self.algorithm[self.state]['template']
-        units    = isolate_arithmetic_units(template)
+        units, bounds    = collect_template_units(template)
         n        = self.bits*2
-        results  = []
-        print(template)
+        # ! Using dict for now as i'm too scared to rely on lists staying in order
+        results  = {}
 
-        # -- apply units --------------------------------------------
-
-        for index, unit in enumerate(units):
-
+        # -- reduce -------------------------------------------------
+        for ch, unit in units.items():
             base_index = unit.checksum.index(1)
             match sum(unit.checksum):
                 case 1: # NOOP
@@ -151,21 +124,19 @@ class Algorithm():
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
 
-                    # -- normalise ----------------------------------
+                    # -- skip empty rows ----------------------------
                     start = 0
-
-                    # ski empty rows
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
-
                     for i in range(start, n):
+                        # -- row checksum ---------------------------
                         if operand_a[i] != '_' or operand_b[i] != '_':
                             checksum[i] = True
 
+                        # -- normalise binary -----------------------
                         if operand_a[i] == '_' and operand_b[i] != '_':
                             operand_a[i] = '0'
-
 
                         elif operand_b[i] == '_' and  operand_a[i] != '_':
                             operand_b[i] = '0'
@@ -174,19 +145,18 @@ class Algorithm():
                             operand_a[i] = '0'
                             operand_b[i] = '0'
 
+                    # -- binary addition ----------------------------
+                    bits_ = sum(checksum)
+                    int_a = int("".join(operand_a[start:start+bits_]), 2)
+                    int_b = int("".join(operand_b[start:start+bits_]), 2)
 
-                    unit_len = sum(checksum)
-                    int_a = int("".join(operand_a[start:start+unit_len]), 2)
-                    int_b = int("".join(operand_b[start:start+unit_len]), 2)
-                    print(checksum)
-                    # add and convert back to binary list, accounting for carry
                     output     = [['_']*(start-1)]
-                    output[0] += list(f"{int_a+int_b:0{unit_len+1}b}")
-                    output[0] += ['_']*(n-start-unit_len)
-                    print(output)
+                    output[0] += list(f"{int_a+int_b:0{bits_+1}b}")
+                    output[0] += ['_']*(n-start-bits_)
 
 
                 case 3: # CSA
+                    print(ch)
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     operand_c = copy(self.matrix[base_index+2][0])
@@ -194,78 +164,65 @@ class Algorithm():
                     output    = [['_']*n, ['_']*n]
                     start     = 0
 
-                    # skip empty rows
+                    # -- skip empty rows ----------------------------
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
-                    for i in range(start, n):
+                    # -- sum columns -------------------------------
+                    for i in range(start+1, n):
                         csa_sum = 0
                         csa_sum += 1 if operand_a[i] == '1' else 0
                         csa_sum += 1 if operand_b[i] == '1' else 0
                         csa_sum += 1 if operand_c[i] == '1' else 0
 
-
-                        # collect sums for further formatting
-                        output[0][i]   = csa_sum
-                        checksum[i] = (
+                        output[0][i] = csa_sum # uses index to store sum in-place
+                        checksum[i]  = (
                             operand_c[i] != '_' or
                             operand_b[i] != '_' or
                             operand_a[i] != '_'
                         )
+                        # -- check end of unit ----------------------
                         if not checksum[i]:
+                            output[0][i] =  '_' # set as empty since sum unused
                             break
-                        #
+
+                        # -- brute force index 0 --------------------
+                        # ! remove try catch:
+                        # ! handle index zero outside of loop
+                        # ! unit may not even overlap index 0
                         try:
                             output[0][i]   = '1' if csa_sum & 1 else '0'
-                            j = i-1 if 0 <= i-1 else i
-                            output[1][j] = '1' if csa_sum & 2 else '0'
+                            output[1][i-1] = '1' if csa_sum & 2 else '0'
                         except IndexError:
                             continue
-
-
                 case _:
                     raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
 
+            # -- build unit into matrix -----------------------------
             unit_result = [['_']*(self.bits*2) for _ in range(base_index)]
             for row in output:
                 unit_result.append(row)
             for _ in range(base_index+len(output), self.bits):
                 unit_result.append(['_']*(self.bits*2))
-
-            results.append(unit_result)
-
-            print(f"unit: \n{mp.pretty(unit_result)}")
-
-
-
-        # -- CSA ----------------------------------------------------
-        # IF region covers 3 rows:
-        #   sum columns, collect and distribute counts
-        #   replace template with matrix
-
-
-        # -- ADD ----------------------------------------------------
-        # IF region covers 2 rows:
-        #   convert to int -> add -> convert -> extend zeros to region width
-        #   replace templat with matrix
+            results[ch] = mp.Matrix(unit_result)
 
 
         # -- merge units to matrix ----------------------------------
         # Merge in any order, checking for overlaps between borders
-        # resolve conflics by suming present bit positions and shift
+        # resolve conflicts by summing present bit positions and shifting
         # a target unit's bit
 
-        # ! difficult sanity checks --------------------------------- #
-        # Complex scenarions, where NOOP, CSA and ADD units intersect
+        # ! difficult sanity checks --------------------------------- ! #
+        # Complex scenarios, where NOOP, CSA and ADD units intersect
         # will require extensive checks:
         #
-        #   [example--] || [isolated]
+        #   [example--] || [region--]
         #   ...BbaAa... || ....ba....
         #   ...CcaAa... || ....ca....
         #   ...CcaAa... || ....ca....
         #
         #
-        # If ths is repeated, resolution can get very tricky.
+        # If repeated along the same y-axis, resolution can get very tricky.
         # One method could be skipping merges and opting for merges with non
         # conflicting units, repeat until few partially merged templates remain
         # and finally resolve conflicts, if possible.
@@ -275,31 +232,80 @@ class Algorithm():
         # The example's sum for the first column is == 3.  This should raise a
         # flag indicating it should be merged later.
         #
-        #
-        # This functionallity to be implemented at a later date.
+        # This functionality to be implemented at a later date.
+
+
+        # testing
+        # for k, v in units.items():
+        #     print(f"\n{k}:\n{mp.pretty(v.template)}")
+        for k, v in results.items():
+            print(f"\n{k}:\n{mp.pretty(v)}")
+
+        # merge
+
+        print(mp.matrix_merge(results, bounds))
+        return None
 
 
 
-
-
-
-
-    def step(self) -> None:
+    def auto_resolve_stage(self, *, recursive=True,
+    ) -> None:
         """
-        Take template[internal_state], apply to matrix, advance internal_state
+        Automatically resolve pattern using the previous stage and creates
+        a new algorithm stage.
+
+        Options:
+            recursive: Recursively resolve until no partial products remain
+        """
+        from copy import copy
+        # -- non recursive ------------------------------------------
+        if not self.algorithm:
+            pseudo = copy(self.matrix)
+        else:
+            pseudo = copy(self.algorithm[self.len]['pseudo'])
+        pattern = mp.resolve_pattern(pseudo)
+        self.push(mp.Template(pattern, matrix=pseudo))
+        if not recursive:
+            return None
+
+        # -- main loop ----------------------------------------------
+        while self.bits-1 != mp.empty_rows(pseudo):
+
+            # Stage generation
+            new_pattern = mp.resolve_pattern(pseudo)
+            self.push(mp.Template(new_pattern, matrix=pseudo))
+
+            # Condition based on generated stage
+            pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
+
+        return None
+
+    def step(self) -> mp.Matrix:
+        """
+        Execute the next stage of the algorithm and update internal matrix
         """
         self.__reduce()
         self.state += 1
 
-    def exec(self):
+        # getattr for matrix, template and map to peek algorithm
+        return self.matrix
+
+    def exec(self, *, a=0, b=0) -> list[mp.Matrix]:
         """
-        Run algorithm with a single set of intputs then reset internal state
+        Run entire algorithm with a single set of inputs then reset internal state.
+        Returns list of results from all stages of the algorithm
         """
+        if not isinstance(a, int) or not isinstance(b, int):
+            raise TypeError(f"Expected int, got {type(a)} and {type(b)}")
+
+        if a == 0 or b == 0:
+            return [mp.Matrix(self.bits)]
+
         for stage in self.algorithm:
             self.__reduce()
+        return []
 
-
-    def reset(self, matrix: mp.Matrix):
+    def reset(self, matrix: mp.Matrix) -> None:
         """
         Reset internal state and submit new initial matrix
         """
@@ -307,60 +313,26 @@ class Algorithm():
             raise TypeError(f"Expected Matrix, got {type(matrix)}")
         self.matrix = matrix
         self.state = 0
+        return None
 
-    def auto_resolve_stage(self, *, recursive=True,
-    ) -> None:
-        """
-        Automatically resolve pattern using the previous stage and creates
-        a new algoritm stage.
-
-        Options:
-            recursive: Recursively resolve until no partial products remain
-        """
-
-        # -- non recursive ------------------------------------------
-        if not self.algorithm:
-            pseudo = self.matrix
-        else:
-            pseudo = self.algorithm[self.len]['pseudo']
-        pattern = mp.resolve_pattern(pseudo)
-        self.push(mp.Template(pattern, matrix=pseudo))
-        if not recursive:
-            return
-
-        # -- recursive setup ----------------------------------------
-        pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
-        condition = self.bits-1 != mp.empty_rows(pseudo)
-        if not condition:
-            return
-
-        # -- main loop ----------------------------------------------
-        while condition:
-
-            # Stage generation
-            new_pattern = mp.resolve_pattern(pseudo)
-            self.push(mp.Template(new_pattern, matrix=pseudo))
-
-            # Condition based on generated stage
-            pseudo    = self.algorithm[len(self.algorithm)-1]['pseudo']
-            condition = self.bits-1 != mp.empty_rows(pseudo)
-        return
+    # ! getattr for matrix, template and map to peek algorithm
 
     def __str__(self) -> str:
         return mp.pretty(self.algorithm)
 
-    # TODO: make a useful repr
     def __repr__(self) -> str:
-        return str(self.__str__())
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
+    def __len__(self) -> int:
+        return len(self.algorithm)
 
     def __getitem__(self, index) -> dict:
         return self.algorithm[index]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable:
         return iter(self.algorithm.items())
 
-    def __next__(self):
+    def __next__(self) -> dict:
         if self.index >= len(self.algorithm):
             raise StopIteration
         self.index += 1
@@ -368,90 +340,86 @@ class Algorithm():
 
 
 
-# -- helper functions ----------------------------------------------- #
+# -- helper functions -----------------------------------------------
 
-
-def isolate_arithmetic_units(matrix: mp.Template) -> list[mp.Template]:
+# TODO: low priority
+def collect_arithmetic_units(
+    source: mp.Matrix,
+    bounds: dict[str, list[tuple[int, int]]]
+) -> list[mp.Matrix]:
     """
-    Isolate arithmetic units into a list seperate templates.
+    Extract arithmetic units from source template into a list of templates.
     """
+    ...
 
-    if not isinstance(matrix, mp.Template):
-        raise TypeError(f"Expected type Template got {type(matrix)}")
 
-    allchars  = mp.allchars(matrix.template, hash=matrix.checksum)
-    arithmetic_units = []*len(allchars)
-    for char in allchars:
-        row  = 0
-        unit = [[]]*matrix.bits
-        empty_row   = ['_']*(matrix.bits*2)
-        # -- skip rows not containing char --------------------------
-        # replace with checksum calculation
-        while row < matrix.bits:
-            if char not in matrix.template[row]:
-                unit[row] = empty_row
-                row += 1
-                continue
-            break
+# TODO: implement x_checksum (current checksum is y_checksum)
+# IDEA: implement x_signature and maybe y_signature:
+# - A given signature will create a set for all member of an axis
+# - Should help when error checking, though I don't see a use for y_signature
+#
+def collect_template_units(
+    source: mp.Template,
+) -> tuple[dict[str, mp.Template], dict[str, list[tuple[int,int]]]]:
+    """
+    Return dict of isolated arithmetic units and their bounding box.
+    """
+    if not isinstance(source, (mp.Template, mp.Matrix, mp.Map)):
+        raise TypeError(f"Expected type Template, Matrix or Map got {type(source)}")
 
-        # -- extract unit(s) ----------------------------------------
-        charset = set([char.upper(),char.lower()])
-        while(row < matrix.bits and
-            (charset.intersection(matrix.template[row]))
-        ):
+    from .utils.char import chartff
+    bounds   = mp.find_bounding_box(source)
+    allchars = list(bounds.keys())
+    allchars.remove('_')
 
-            tmp = ['_']*(matrix.bits*2)
-            intra_row_transition = []
-            last = None
-            for i, b in enumerate(matrix.template[row]):
-                if b in charset:
-                    # -- vertical intra-row check ------------------------------------ #
-                    if last not in charset:                                            #
-                        intra_row_transition.append(i)                                 #
-                    if len(set(intra_row_transition)) != 1:                            #
-                        irt_err = intra_row_transition[1]-1                            #
-                        raise SyntaxError(                                             #
-                            f"Intra-row Error [column {irt_err}]. Invalid template."   #
-                        )                                                              #
-                    # ---------------------------------------------------------------- #
-                    tmp[i] = char
-                last = b
 
-            unit[row] = tmp
-            row += 1
-        # -- fill remaining rows ------------------------------------
-        # replace with checksum calculation
+    units = {}
+    for ch in allchars:
+        matrix = mp.empty_matrix(source.bits)
+        tff = chartff(ch) # toggle flip flop
+        next(tff) # sync to template case sensitivity
+        i = 0 # coordinate index
+        expected_y = None
+        while i < len(bounds[ch])-1:
+            # -- intra-row boundary -------------------------------------- #
+            # bound[list_of_points][coord_i][y-axis]
+            # "if 2 < points have the same y for a given unit"
+            if 2 < sum([p[1] == bounds[ch][i][1] for p in bounds[ch]]):
+                raise ValueError(
+                    f"Multiple arithmetic units found for unit '{ch}'")
+            # ------------------------------------------------------------ #
+            start = bounds[ch][i]
+            end = bounds[ch][i+1]
+            if start[1] != end[1]:
+                raise ValueError(
+                    f"Bounding box error for unit '{ch}' "
+                    f"Points:{start}, {end}, error:  {start[1]} != {end[1]}"
+                )
+            # -- traverse row ---------------------------------------
+            next(tff) # sync to template case sensitivity
+            for x in range(start[0], end[0]+1):
+                matrix[start[1]][x] = next(tff)
 
-        while 0 < (matrix.bits-row):
-            unit[row] = empty_row
-            row += 1
 
-        arithmetic_units.append(mp.Template(unit))
+            # -- inter-row boundary test --------------------------------- #
+            if expected_y is not None and expected_y != start[1]:
+                raise ValueError(
+                    f"Arithmetic unit '{ch}' spans multiple rows. "
+                    f"Expected row {expected_y}, got row {start[1]}")
+            expected_y = start[1]+1
+            # ------------------------------------------------------------ #
 
-    # -- ! unit sanity checks ! -------------------------------------
 
-    # These checks are not exhaustive and will need revisiting.
-    #
-    # Intra-row check(above):
-    #   - test if unit exists within a single block
-    #   - currently naive but *should* catch real world cases
-    #   - ! rigorous checks require testing:
-    #       - Vertical(row check) (|) [Done]
-    #       - Backwards diagonal  (\)
-    #       - Forward diagonal    (/)
-    #
-    # Simple row check(below):
-    #   - count template's non empty rows
-    #   - count total number of rows units encompas
-    #
-    # These should catch most cases of non compliance in:
-    #   - CSAs
-    #   - Adders
-    #   - ! Decoders will require checks once implamented
+            i += 2
+        units[ch] = mp.Template(matrix)
 
-    # -- row check --------------------------------------------------
-    unit_rows = [sum(i.checksum) for i in arithmetic_units]
-    if sum(unit_rows) != sum(matrix.checksum):
-        raise SyntaxError("Invalid template. Each unit must use unique char")
+    return units, bounds
 
-    return arithmetic_units
+# ________AaAaAaAa
+# _______aAaAaAaA_
+# ______AaAaAaAa__
+# _____bBbBbBbB___
+# ____BbBbBbBb____
+# ___bBbBbBbB_____
+# __CcCcCcCc______
+# _DBbBbBbB_______

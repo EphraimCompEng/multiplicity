@@ -20,8 +20,9 @@ from .core.map import (
 from .core.matrix import (
     Matrix,
     Slice,
-    build_matrix,
     empty_rows,
+    empty_matrix,
+    matrix_merge,
 )
 
 
@@ -31,12 +32,14 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
-    checksum,
+    find_bounding_box,
+    build_empty_slice,
 )
 
 from .core.algorithm import (
     Algorithm,
-    isolate_arithmetic_units,
+    collect_template_units,
+    collect_arithmetic_units,
 )
 
 from .core.truth import (
@@ -49,7 +52,6 @@ from .core.truth import (
 # -- utils ----------------------------------------------------------
 
 from .core.utils.char import (
-    ischar,
     chargen,
     chartff,
     allchars,
@@ -61,6 +63,13 @@ from .core.utils.pretty import (
     mprint,
 )
 
+from .core.utils.bool import (
+    isint,
+    ishex2,
+    ischar,
+    isalpha,
+    validate_bitwidth,
+)
 # -- datasets -------------------------------------------------------
 
 
@@ -108,38 +117,41 @@ with open(Path(__file__).parent.parent / "pyproject.toml", "r") as f:
 
 MP_VERSION = MP_TOML["project"]["version"]
 
-SUPPORTED_BITWIDTHS = {4, 8}
-
 
 # -- __all__ --------------------------------------------------------
 
 __all__ = [
     'Matrix',
     'Slice',
-    'build_matrix',
-    'empty_rows',
     'Pattern',
     'Template',
     'Algorithm',
-    'isolate_arithmetic_units',
+    'empty_rows',
+    'empty_matrix',
+    'find_bounding_box',
+    'matrix_merge',
+    'collect_template_units',
+    'collect_arithmetic_units',
     'build_dadda_map',
     'empty_map',
     'build_csa',
     'build_adder',
+    'build_empty_slice',
     'resolve_pattern',
-    'checksum',
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
     'json_pretty_store',
     'Map',
     'ischar',
+    'isalpha',
+    'ishex2',
+    'isint',
     'chargen',
     'chartff',
     'allchars',
     'pretty',
     'mprint',
+    'validate_bitwidth',
     'MP_VERSION',
-    'SUPPORTED_BITWIDTHS',
-
 ]

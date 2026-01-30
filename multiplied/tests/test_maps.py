@@ -3,7 +3,7 @@ import multiplied as mp
 def test_dadda_map(bits) -> None:
     try:
         mp.build_dadda_map(0)
-    except AssertionError:
+    except KeyError:
         pass
     m = mp.build_dadda_map(bits)
     mp.mprint(m)
@@ -19,9 +19,9 @@ def test_resolve_simple_map() -> None:
     )
     print(sm.rmap)
     mp.mprint(sm)
-    m1 = mp.build_matrix(5, 5, bits=4)
+    m1 = mp.Matrix(4,a=5, b=5)
     mp.mprint(m1)
-    m1map = mp.resolve_rmap(m1)
+    m1map = m1.resolve_rmap(ignore_zeros=False)
     print(m1map.rmap)
     mp.mprint(m1map)
 
@@ -30,9 +30,9 @@ def test_empty_map(bits: int) -> None:
     mp.mprint(m)
 
 def test_apply_rmap() -> None:
-    m = mp.build_matrix(3, 10, bits=4)
+    m = mp.Matrix(4,a=3, b=10)
     mp.mprint(m)
-    rm = mp.resolve_rmap(m)
+    rm = m.resolve_rmap(ignore_zeros=False)
     mp.mprint(rm.rmap)
     m.apply_map(rm)
     mp.mprint(m)

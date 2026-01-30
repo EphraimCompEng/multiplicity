@@ -4,7 +4,7 @@
 
 from copy import copy
 from typing import Any
-from .utils.char import ischar
+from .utils.bool import isalpha, ischar
 import multiplied as mp
 
 # -- Template and Slice dependencies  ------------------------------- #
@@ -115,7 +115,7 @@ def build_noop(char: str, source_slice: mp.Slice
 
     return noop_slice, copy(noop_slice) # avoids pointing to same object
 
-def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
+def build_empty_slice(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     """
     Create an empty template slice. Returns template "slices" and resulting slice.
     Variable length determined by source slice.
@@ -134,35 +134,6 @@ def build_empty(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
         for i in range(empty_slice.bits):
             empty_slice[row][i] = '_'
     return empty_slice, copy(empty_slice)
-
-def checksum(source:list[list[str]]) -> list[int]:
-    def err():
-        return ValueError(
-            "Error: Invalid template format.\
-            \tExpected pattern: list[char], or template: list[list[char]]")
-    if (
-        (bits := len(source)) in mp.SUPPORTED_BITWIDTHS or
-        not isinstance(source, (list, mp.Matrix)) or
-        not isinstance(source[0], list)
-    ):
-        err()
-
-    checksum = [0] * bits
-    for i, row in enumerate(source):
-        empty = 0
-        valid_len = 0
-        for ch in row:
-            if not ischar(ch):
-                err()
-            if ch == '_':
-                empty += 1
-
-        if valid_len != bits:
-            err()
-
-        if empty != bits << 1:
-            checksum[i] = 1
-    return checksum
 
 
 class Pattern:
@@ -191,6 +162,7 @@ class Pattern:
                 # (arithmetic_unit, starting_row, run_length)
                 metadata.append((None, i-run, run))
             else:
+                # TODO: Implement Decoders
                 # arithmetic_unit = decoder
                 # find decoder type
                 raise ValueError(f"Unsupported run length {run}")
@@ -198,16 +170,16 @@ class Pattern:
             k += 1
         return metadata
 
-    def __str__(self):
+    def __str__(self) -> str:
         pretty_ = ""
         for p in self.pattern:
             pretty_ += " " + p + "\n"
         return f"{'['+ pretty_[1:-1]+']'}"
 
-    def __repr__(self):
-        return self.__str__()
+    def __repr__(self) -> str:
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.bits
 
     def __getitem__(self, index: int) -> str:
@@ -238,35 +210,60 @@ class Template:
     """
 
     def __init__(self, source: Pattern | list[list[str]], *,
-        result: Any = [],
-        matrix: Any = []
+        result: list[Any] = [],
+        matrix: Any = None,
     ) -> None: # Complex or pattern
-        self.bits   = len(source)
-        self.result = result if isinstance(result, Template) else []
 
-        # length of any template represents it's bitwidth
-        if self.bits not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(f"Valid bit lengths: {mp.SUPPORTED_BITWIDTHS}")
+
+
+        mp.validate_bitwidth(len(source))
+        self.bits   = len(source)
+        self.result = result if isinstance(result, (Template, list)) else []
 
         # -- pattern handling ---------------------------------------
         if isinstance(source, Pattern):
-            from copy import deepcopy
+
 
             self.pattern  = source
             self.checksum = [1 if ch != '_' else 0 for ch in source]
-
-            if not matrix:
-                matrix =  mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, deepcopy(matrix))
-            return
+            if matrix is None:
+                matrix = mp.Matrix(self.bits)
+            self.build_from_pattern(self.pattern, matrix)
+            return None
 
         # -- template handling ---------------------------------------
+        if (
+            isinstance(source, list) and
+            all([isinstance(i, list) for i in source]
+            )
+        ):
+            self.template = source
+            self.pattern  = []
+            self.__checksum()
+            return None
 
-        # Add sanity checks
-        checksum_ = checksum(source)
-        self.template = source
-        self.checksum = checksum_
-        self.pattern  = []
+
+
+    def __checksum(self) -> None:
+        row_len  = self.bits << 1
+        checksum = [0] * self.bits
+        for i, row in enumerate(self.template):
+            if len(row) != row_len:
+                raise ValueError("Inconsistent row length")
+
+            empty = 0
+            for ch in row:
+                if not ischar(ch):
+                    raise TypeError(f"Expected character, got {ch}")
+                if ch == '_':
+                    empty += 1
+                else:
+                    break
+
+            if empty != row_len:
+                checksum[i] = 1
+        self.checksum = checksum
+        return None
 
     # Templates must be built using matrix
     def build_from_pattern(self, pattern: Pattern, matrix: mp.Matrix
@@ -285,10 +282,7 @@ class Template:
         # -- sanity check -------------------------------------------
         if not(isinstance(pattern, Pattern)):
             raise ValueError("Expected Pattern")
-        if len(pattern) not in mp.SUPPORTED_BITWIDTHS:
-            raise ValueError(
-                f"Unsupported bitwidth {len(pattern)}. Expected {mp.SUPPORTED_BITWIDTHS}"
-            )
+        mp.validate_bitwidth(len(pattern))
 
         # -- find run -----------------------------------------------
         template_slices = {}
@@ -318,18 +312,18 @@ class Template:
                     if pattern[i-run] != '_':
                         raise ValueError(f"Unsupported run length {run}. Use '_' for empty rows")
 
-                    template_slices[i-run] = build_empty(matrix[i-run:i])
+                    template_slices[i-run] = build_empty_slice(matrix[i-run:i])
 
             i += 1
 
-        # -- build template and resultant ---------------------------
         template = []
-        for i in template_slices.values():
-            template += i[0]
         result = []
         for i in template_slices.values():
-            result += i[1]
+            template += i[0]
+            result   += i[1]
+
         self.template, self.result = template, result
+        return None
 
 
 
@@ -356,7 +350,7 @@ class Template:
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.template}, {self.result})"
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.template)
 
 
@@ -372,6 +366,7 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
     if (empty_rows := mp.empty_rows(matrix)) == matrix.bits:
         return Pattern(['_'] * matrix.bits)
 
+    # TODO use io.StringIO()
     scope = matrix.bits - empty_rows
     new_pattern = []
     while 0 < scope:
@@ -386,7 +381,6 @@ def resolve_pattern(matrix: mp.Matrix) -> Pattern:
             new_pattern += [ch]
 
         scope -= len(new_pattern) - n
-
     new_pattern += ['_'] * empty_rows
     return Pattern(new_pattern)
 
@@ -396,6 +390,71 @@ def build_noop_template(self, pattern: Pattern, *, dadda=False) -> None:
     Create template for zeroed matrix using pattern
     """
 
+# ! currently not generalised:
+#  > detect type of transition then use appropriate function
+#
+#  > or just detect empty, '_', characters as the boundary
+#       > This option means figuring out the correct key to use
+def find_bounding_box(source: Template
+    ) -> dict[str, list[tuple[int, int]]]:
+    """
+    Returns dictionary of arithmetic unit and coordinates for their boundaries.
+
+    Note: key='_' represents bounds for empty character slots
+
+    Parameters:
+    - matrix: nested list of m-bits, defined as 2d array of 2m * m
+    - transit: Function to return bool for a given boundary transition
+    """
+    if isinstance(source, Template):
+        matrix = source.template
+    else:
+        raise TypeError("Matrix must be a list")
+    if not all(isinstance(row, list) for row in matrix):
+        raise TypeError(f"Matrix must be a list of lists got {type(matrix)}")
+    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
+        mp.validate_bitwidth(rows)
+    else:
+        raise ValueError("Matrix dimensions are not valid")
+
+    bounds = {}
+    x, y   = 0, 0
+    while y < rows:
+
+        # -- entry border -------------------------------------------
+        key = matrix[y][0].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((0, y))
+
+        # -- central range ------------------------------------------
+        while x < items-1:
+            curr = matrix[y][x].upper()
+            next = matrix[y][x+1].upper()
+            if (curr == next) and isalpha(curr):
+                x += 1
+                continue
+            if curr != next and (isalpha(curr) or isalpha(next)):
+                if curr not in bounds:
+                    bounds[curr] = []
+                bounds[curr].append((x, y))
+                if next not in bounds:
+                    bounds[next] = []
+                bounds[next].append((x+1, y))
+                x += 1
+                continue
+            x += 1
+
+        # -- exit border --------------------------------------------
+        key = matrix[y][x].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((x, y))
+
+        x  = 0
+        y += 1
+
+    return bounds
 
 
 """
