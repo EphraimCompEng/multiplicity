@@ -106,10 +106,15 @@ class Algorithm():
         #   ...00101010... | ...________...
 
         # -- isolate units -----------------------------------------
+        # ! Implement result bounding box to create single point of truth ! #
+        # - currently every stage of every matrix reduction needs to resolve
+        #   conflicts dynamically before merging vs doing so once via the
+        #   resultant template
+
         template = self.algorithm[self.state]['template']
         units, bounds    = collect_template_units(template)
         n        = self.bits*2
-        # ! Using dict for now as i'm too scared to rely on lists staying in order
+        # Using dict for now as i'm too scared to rely on lists staying in order
         results  = {}
 
         # -- reduce -------------------------------------------------
@@ -120,6 +125,8 @@ class Algorithm():
                     output = [copy(self.matrix[base_index][0])]
 
                 case 2: # ADD
+                    #TODO: make use of checksums or use bounds
+
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
@@ -156,7 +163,7 @@ class Algorithm():
 
 
                 case 3: # CSA
-                    print(ch)
+                    #TODO: make use of checksums or use bounds
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     operand_c = copy(self.matrix[base_index+2][0])
@@ -243,7 +250,10 @@ class Algorithm():
 
         # merge
 
-        print(mp.matrix_merge(results, bounds))
+        self.matrix = mp.matrix_merge(results, bounds)
+        print(self.matrix)
+        mp.mprint(hoist(self.matrix, checksum=self.matrix.y_checksum))
+        print(self.matrix)
         return None
 
 
@@ -423,3 +433,66 @@ def collect_template_units(
 # ___bBbBbBbB_____
 # __CcCcCcCc______
 # _DBbBbBbB_______
+
+# TODO:
+# [ Optimisation ]
+#
+# - Implement checksum tuple in Template class
+# - output coordinates of moves
+#
+# - move to template.py
+def hoist(source: mp.Matrix | mp.Template, *,
+    checksum: list[int]=[],
+    relative: bool=False,
+) -> mp.Map:
+    """
+    collect non-empty bits to the top of matrix in-place and produce a corresponding map
+    """
+
+    if not isinstance(checksum, list):
+        raise TypeError(f"checksum must be a list got {type(checksum)}")
+
+    match source:
+        case mp.Matrix():
+            matrix = source.matrix
+        case mp.Template():
+            matrix = source.template
+        case _:
+            raise TypeError(f"source must be a Matrix or Template objects got {type(source)}")
+
+    bits = source.bits
+    if checksum == []:
+        checksum = [0]*bits
+
+
+    y_start = checksum.index(1)
+    print(y_start)
+    y_end   = 8-checksum[::-1].index(1) if 1 in checksum else bits
+    print(y_end)
+    map_    = mp.empty_matrix(bits)
+
+    for y in range(y_start, y_end):
+        map_[y] = ['00']*(bits << 1)
+    # implement x_start, x_end when checksums moved
+    for x in range(bits << 1):
+        y = y_start
+        k = 0
+        offset = 0
+        column = ['0']*(y_end - y_start)
+        while y < y_end:
+            if matrix[y][x] == '_':
+                offset += 1
+                val = 0
+            else:
+                val = ((offset ^ 255) + 1) # 2s complement
+                column[k]    = matrix[y][x]
+                matrix[y][x] = '_'
+                k += 1
+
+            map_[y][x] = f"{val:02X}"[-2:]
+            y += 1
+
+        for y in range(k):
+            matrix[y][x] = column[y]
+
+    return mp.Map(map_)
