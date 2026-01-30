@@ -209,6 +209,13 @@ class Template:
     Generated using a partial product matrix and a Pattern or custom template
     """
 
+    # ! THIS is where checksums need to be implemented ! #
+    # > Move checksum logic from Matrix class to Template class
+    # > make checksum a named tuple to easily identify x vs y?
+    # > passing both checksums will be the first step in optimisation
+    #
+
+
     def __init__(self, source: Pattern | list[list[str]], *,
         result: list[Any] = [],
         matrix: Any = None,
@@ -354,7 +361,6 @@ class Template:
         return len(self.template)
 
 
-# -- dependent helper functions ------------------------------------- #
 
 
 def resolve_pattern(matrix: mp.Matrix) -> Pattern:

@@ -68,6 +68,7 @@ class Map:
 
 
 def empty_map(bits: int)-> Map:
+    """Return empty Multiplied Map object"""
     mp.validate_bitwidth(bits)
     return Map(["00"]*bits)
 
