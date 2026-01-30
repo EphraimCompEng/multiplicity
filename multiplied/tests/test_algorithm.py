@@ -16,13 +16,12 @@ def gen_resources(bits: int, *, a=0, b=0
     return m, p, alg
 
 def test_step() -> None:
-    m = mp.Matrix(4, a=15, b=15)
-    p = mp.Pattern(['a','a','b','b'])
-    alg = mp.Algorithm(m)
+    m, p, alg = gen_resources(8, a=15, b=15)
     alg.push(p)
-    # print(alg.matrix)
+    print(alg.matrix)
     alg.step()
-    print(alg)
+    # print(alg.matrix)
+    # print(alg)
 
 
 
@@ -104,7 +103,7 @@ def test_err_duplicate_units() -> None:
         ])
 
     print(template)
-    bounds   = mp.find_bounding_box(template.template, transit=mp.isalpha)
+    bounds   = mp.find_bounding_box(template)
     isolated_units = mp.collect_template_units(template)
     # try:
     #     isolated_units = mp.isolate_arithmetic_units(template)
@@ -113,11 +112,9 @@ def test_err_duplicate_units() -> None:
     #     isolated_units = []
 
 
-    for b in mp.find_bounding_box(template.template, transit=mp.isalpha).items():
+    for b in mp.find_bounding_box(template).items():
         print(b)
 
-    for b in mp.find_bounding_box(template.result, transit=mp.isalpha).items():
-        print(b)
 
 
     for i in isolated_units:
@@ -127,12 +124,12 @@ def test_err_duplicate_units() -> None:
 
 
 def main():
-    # test_step()
+    test_step()
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()
     # test_isolate_arithmetic_units()
-    test_err_duplicate_units()
+    # test_err_duplicate_units()
 
 if __name__ == "__main__":
     main()

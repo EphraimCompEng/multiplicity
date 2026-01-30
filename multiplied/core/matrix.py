@@ -6,6 +6,7 @@ import multiplied as mp
 from typing import Any, Callable, Iterator
 
 
+
 # ! Review slices and their integration to the wider library
 #
 # IDEAS:
@@ -293,76 +294,56 @@ def empty_matrix(bits: int) -> list[list[str]]:
         matrix.append(["_"]*(bits*2))
     return matrix
 
-# TODO: error check needed to determine if multiple units use the same character
-#
-# Implementation:
-#
-#   IF bounding box y-diff is > 1:
-#       > ERR vertical gap identifies
-#   IF x-axis has > 2 coordinates:
-#       > ERR: horizonal break between units
-#
-def find_bounding_box(matrix: list[list[Any]], *,
-    transit: Callable[[Any], bool]
-    ) -> dict[str, list[tuple[int, int]]]:
+
+def matrix_merge(source: dict[str, Matrix],
+    bounds: dict[str, list[tuple[int, int]]],
+    *,
+    carry: bool = True
+) -> Matrix:
     """
-    Returns dictionary of arithmetic unit and coordinates for their boundaries.
-
-    Note: key='_' represents bounds for empty character slots
-
-    Parameters:
-    - matrix: nested list of m-bits, defined as 2d array of 2m * m
-    - transit: Function to return bool for a given boundary transition
+    Merge multiple matrices into a single matrix using pre calculated bounds
     """
-    mp.mprint(matrix)
-    if not transit:
-        raise ValueError("Transit function not provided")
-    if not isinstance(transit, Callable):
-        raise TypeError("Transit must be a callable function")
-    if not isinstance(matrix, list):
-        raise TypeError("Matrix must be a list")
-    if not all(isinstance(row, list) for row in matrix):
-        raise TypeError("Matrix must be a list of lists")
-    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
-        mp.validate_bitwidth(rows)
-    else:
-        raise ValueError("Matrix dimensions are not valid")
+    if not isinstance(source, dict):
+        raise TypeError("Source must be a dictionary")
+    if not all(isinstance(val, Matrix) for val in source.values()):
+        raise TypeError("All values of source must be of type Matrix")
+    if len(source) < 2:
+        raise ValueError("Source must contain at least two matrices")
+    if len(bounds)-1 != len(source):
+        # new error message needed
+        raise ValueError("Source must contain the same number of matrices as bounds")
 
-    bounds = {}
-    x, y   = 0, 0
-    while y < rows:
+    from copy import copy
 
-        # -- entry border -------------------------------------------
-        key = matrix[y][0].upper()
-        if key not in bounds:
-            bounds[key] = []
-        bounds[key].append((0, y))
+    bits = list(source.values())[0].bits
+    output = empty_matrix(bits)
+    for unit, matrix in source.items():
 
-        # -- central range ------------------------------------------
-        while x < items-1:
-            curr = matrix[y][x].upper()
-            next = matrix[y][x+1].upper()
-            if (curr == next) and transit(curr):
-                x += 1
-                continue
-            if curr != next and (transit(curr) or transit(next)):
-                if curr not in bounds:
-                    bounds[curr] = []
-                bounds[curr].append((x, y))
-                if next not in bounds:
-                    bounds[next] = []
-                bounds[next].append((x+1, y))
-                x += 1
-                continue
-            x += 1
+        # > if all of b's points lie inside a's empty bounds
+        # > bounds dont even need to be updated
+        # > Allow for merging carries, carry=True:
+            # checks bit directly left of the leftmost bound
+        # > copy and pase bounds and check for any remaining non empty bits
+        # > non-empty bits will always be on the left
 
-        # -- exit border --------------------------------------------
-        key = matrix[y][x].upper()
-        if key not in bounds:
-            bounds[key] = []
-        bounds[key].append((x, y))
 
-        x  = 0
-        y += 1
+        i = 0
+        while i < len(bounds[unit])-1:
+            left, right = bounds[unit][i], bounds[unit][i+1]
+            if (y := left[1]) != right[1]:
+                raise ValueError("Bounds must be consecutive") # PLACEHOLDER
+            for j in range(left[0], right[0]+1):
+                output[y][j] = matrix.matrix[y][j]
+            if carry:
+                match bounds[unit][0][1] - bounds[unit][-1][1]: # y-axis span
+                    case 2:
+                        if y ==  bounds[unit][0][1]:
+                            cout = left[0]-1
+                            output[y][cout] = matrix.matrix[y][cout]
+                    case 3:
+                        if y ==  bounds[unit][0][1] + 1:
+                            cout = left[0]-1
+                            output[y][cout] = matrix.matrix[y][cout]
+            i += 2
 
-    return bounds
+    return Matrix(output)

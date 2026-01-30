@@ -22,7 +22,7 @@ from .core.matrix import (
     Slice,
     empty_rows,
     empty_matrix,
-    find_bounding_box,
+    matrix_merge,
 )
 
 
@@ -32,6 +32,7 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
+    find_bounding_box,
     build_empty_slice,
 )
 
@@ -128,6 +129,7 @@ __all__ = [
     'empty_rows',
     'empty_matrix',
     'find_bounding_box',
+    'matrix_merge',
     'collect_template_units',
     'collect_arithmetic_units',
     'build_dadda_map',

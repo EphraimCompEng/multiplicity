@@ -107,12 +107,13 @@ class Algorithm():
 
         # -- isolate units -----------------------------------------
         template = self.algorithm[self.state]['template']
-        units    = isolate_arithmetic_units(template)
+        units, bounds    = collect_template_units(template)
         n        = self.bits*2
-        results  = []
+        # ! Using dict for now as i'm too scared to rely on lists staying in order
+        results  = {}
 
         # -- reduce -------------------------------------------------
-        for unit in units:
+        for ch, unit in units.items():
             base_index = unit.checksum.index(1)
             match sum(unit.checksum):
                 case 1: # NOOP
@@ -155,6 +156,7 @@ class Algorithm():
 
 
                 case 3: # CSA
+                    print(ch)
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     operand_c = copy(self.matrix[base_index+2][0])
@@ -167,21 +169,21 @@ class Algorithm():
                         start += 1
 
                     # -- sum columns -------------------------------
-                    for i in range(start, n):
+                    for i in range(start+1, n):
                         csa_sum = 0
                         csa_sum += 1 if operand_a[i] == '1' else 0
                         csa_sum += 1 if operand_b[i] == '1' else 0
                         csa_sum += 1 if operand_c[i] == '1' else 0
 
-                        output[0][i] = csa_sum
+                        output[0][i] = csa_sum # uses index to store sum in-place
                         checksum[i]  = (
                             operand_c[i] != '_' or
                             operand_b[i] != '_' or
                             operand_a[i] != '_'
                         )
-
                         # -- check end of unit ----------------------
                         if not checksum[i]:
+                            output[0][i] =  '_' # set as empty since sum unused
                             break
 
                         # -- brute force index 0 --------------------
@@ -189,9 +191,8 @@ class Algorithm():
                         # ! handle index zero outside of loop
                         # ! unit may not even overlap index 0
                         try:
-                            output[0][i] = '1' if csa_sum & 1 else '0'
-                            j            = i-1 if 0 <= i-1 else i
-                            output[1][j] = '1' if csa_sum & 2 else '0'
+                            output[0][i]   = '1' if csa_sum & 1 else '0'
+                            output[1][i-1] = '1' if csa_sum & 2 else '0'
                         except IndexError:
                             continue
                 case _:
@@ -203,7 +204,7 @@ class Algorithm():
                 unit_result.append(row)
             for _ in range(base_index+len(output), self.bits):
                 unit_result.append(['_']*(self.bits*2))
-            results.append(mp.Matrix(unit_result))
+            results[ch] = mp.Matrix(unit_result)
 
 
         # -- merge units to matrix ----------------------------------
@@ -235,10 +236,14 @@ class Algorithm():
 
 
         # testing
-        for i in results:
-            print(f"\n{mp.pretty(i)}")
+        # for k, v in units.items():
+        #     print(f"\n{k}:\n{mp.pretty(v.template)}")
+        for k, v in results.items():
+            print(f"\n{k}:\n{mp.pretty(v)}")
 
+        # merge
 
+        print(mp.matrix_merge(results, bounds))
         return None
 
 
@@ -337,134 +342,7 @@ class Algorithm():
 
 # -- helper functions -----------------------------------------------
 
-def isolate_units(
-    source: mp.Matrix | mp.Template,
-    bounds: dict[str, list[tuple[int, int]]]
-) -> list[tuple[int,int]]:
-
-    if not isinstance(source, (mp.Matrix, mp.Template)):
-        raise TypeError(
-            f"Expected type Matrix or Template got {type(source)}"
-        )
-    mp.validate_bitwidth(bits := source.bits)
-
-    from copy import copy
-    from multiplied import ischar, ishex2, isint
-
-    match source:
-        case mp.Matrix():
-            bounds = mp.find_bounding_box(source.matrix, transit=isint)
-
-
-        case mp.Map():
-            raise NotImplementedError("Map not supported")
-            # border:
-                # '00'
-                # if 0 < int(x, 16) < 255
-            # err:
-                # if 2 < len(x) or not 0 < int(x, 16) < 255:
-
-            matrix = copy(source.map)
-        case mp.Template():
-            raise NotImplementedError("Map not supported")
-            # border:
-                # '_'
-                # ischar(ch)
-            # err:
-                # ch -> '_' -> ch
-            matrix = copy(source.template)
-        case _:
-            raise TypeError(
-                f"Expected type Matrix, Map or Template got {type(source)}"
-            )
-
-    start = source.checksum.index(1)
-    for row in range(start, bits):
-        ...
-
-
-
-
-    return
-
-
-
-# ! This code is extremely complicated to read through
-# ! replace with bounding box logic and checksums
-# TODO: Implement checksums for x-axis
-def isolate_arithmetic_units_old(matrix: mp.Template) -> list[mp.Template]:
-    """
-    Separate arithmetic units from source template into a list of templates.
-    """
-    if not isinstance(matrix, mp.Template):
-        raise TypeError(f"Expected type Template got {type(matrix)}")
-
-    allchars = mp.allchars(matrix.template, hash=matrix.checksum)
-    arithmetic_units = []*len(allchars)
-    bits = matrix.bits
-    for char in allchars:
-        row  = matrix.checksum.index(1)
-        unit = [[]]*bits
-        empty_row = ['_']*(bits*2)
-        while row < bits:
-            if char not in matrix.template[row]:
-                unit[row] = empty_row
-                row += 1
-                continue
-            break
-
-        # -- extract unit(s) ----------------------------------------
-        # ! does not make use of newly added checksum
-        present = True
-        # -- inter-row boundary check (|) --------------------------- #
-        while(row < bits and present):
-            present = False # exit outer loop upon empty row
-            tmp_row = ['_']*(bits*2)
-            last    = None
-            intra_row_transition = []
-            for i, ch in enumerate(matrix.template[row]):
-                ch = ch.upper()
-                # ! need a check for reused chars
-                if ch == char:
-                    # -- intra-row boundary check (-) -------------------------------- #
-                    # Detects reused chars within the same row: ch -> '_' -> ch
-                    if last != char:
-                        intra_row_transition.append(i)
-
-                    if len(set(intra_row_transition)) != 1:
-                        irt_err = intra_row_transition[1]-1
-                        raise SyntaxError(
-                            f"Intra-row Error at column {irt_err}. Invalid template."
-                        )
-                    # ---------------------------------------------------------------- #
-                    present    = True
-                    tmp_row[i] = char
-                last = ch.upper()
-
-            unit[row] = tmp_row
-            row += 1
-        # ----------------------------------------------------------- #
-        # -- fill remaining rows ------------------------------------
-        while 0 < (bits-row):
-            unit[row] = empty_row
-            row += 1
-
-        arithmetic_units.append(mp.Template(unit))
-        # print()
-        # print(horizontal_boundaries(unit, transit=mp.isalpha))
-
-    # -- duplicate character check ----------------------------------
-    # Detects duplicates by testing
-
-    for i in arithmetic_units:
-       print(i)
-
-    unit_rows = [sum(i.checksum) for i in arithmetic_units]
-    if sum(unit_rows) != sum(matrix.checksum):
-        raise SyntaxError("Invalid template. Each unit must use unique char")
-
-    return arithmetic_units
-
+# TODO: low priority
 def collect_arithmetic_units(
     source: mp.Matrix,
     bounds: dict[str, list[tuple[int, int]]]
@@ -472,6 +350,7 @@ def collect_arithmetic_units(
     """
     Extract arithmetic units from source template into a list of templates.
     """
+    ...
 
 
 # TODO: implement x_checksum (current checksum is y_checksum)
@@ -481,23 +360,22 @@ def collect_arithmetic_units(
 #
 def collect_template_units(
     source: mp.Template,
-) -> list[mp.Template]:
+) -> tuple[dict[str, mp.Template], dict[str, list[tuple]]]:
     """
-    Separate arithmetic units from source template into a list of templates.
+    Return dict of isolated arithmetic units and their bounding box.
     """
     if not isinstance(source, (mp.Template, mp.Matrix, mp.Map)):
         raise TypeError(f"Expected type Template, Matrix or Map got {type(source)}")
 
     from .utils.char import chartff
-    bounds   = mp.find_bounding_box(source.template, transit=mp.isalpha)
+    bounds   = mp.find_bounding_box(source)
     allchars = list(bounds.keys())
     allchars.remove('_')
 
 
-    units = []
+    units = {}
     for ch in allchars:
-        print(f'{ch}:')
-        empty_matrix = mp.empty_matrix(source.bits)
+        matrix = mp.empty_matrix(source.bits)
         tff = chartff(ch) # toggle flip flop
         next(tff) # sync to template case sensitivity
         i = 0 # coordinate index
@@ -520,7 +398,7 @@ def collect_template_units(
             # -- traverse row ---------------------------------------
             next(tff) # sync to template case sensitivity
             for x in range(start[0], end[0]+1):
-                empty_matrix[start[1]][x] = next(tff)
+                matrix[start[1]][x] = next(tff)
 
 
             # -- inter-row boundary test --------------------------------- #
@@ -533,9 +411,9 @@ def collect_template_units(
 
 
             i += 2
-        units.append(mp.Template(empty_matrix))
+        units[ch] = mp.Template(matrix)
 
-    return units
+    return units, bounds
 
 # ________AaAaAaAa
 # _______aAaAaAaA_

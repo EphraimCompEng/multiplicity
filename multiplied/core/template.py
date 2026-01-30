@@ -4,7 +4,7 @@
 
 from copy import copy
 from typing import Any
-from .utils.bool import ischar
+from .utils.bool import isalpha, ischar
 import multiplied as mp
 
 # -- Template and Slice dependencies  ------------------------------- #
@@ -228,9 +228,7 @@ class Template:
             self.checksum = [1 if ch != '_' else 0 for ch in source]
             if matrix is None:
                 matrix = mp.Matrix(self.bits)
-            self.build_from_pattern(self.pattern, matrix)#
-            print(self.template)
-            print(self.result)
+            self.build_from_pattern(self.pattern, matrix)
             return None
 
         # -- template handling ---------------------------------------
@@ -392,6 +390,75 @@ def build_noop_template(self, pattern: Pattern, *, dadda=False) -> None:
     Create template for zeroed matrix using pattern
     """
 
+# TODO: error check needed to determine if multiple units use the same character
+#
+# Implementation:
+#
+#   IF bounding box y-diff is > 1:
+#       > ERR vertical gap identifies
+#   IF x-axis has > 2 coordinates:
+#       > ERR: horizontal break between units
+#
+def find_bounding_box(source: Template
+    ) -> dict[str, list[tuple[int, int]]]:
+    """
+    Returns dictionary of arithmetic unit and coordinates for their boundaries.
+
+    Note: key='_' represents bounds for empty character slots
+
+    Parameters:
+    - matrix: nested list of m-bits, defined as 2d array of 2m * m
+    - transit: Function to return bool for a given boundary transition
+    """
+    if isinstance(source, Template):
+        matrix = source.template
+    else:
+        raise TypeError("Matrix must be a list")
+    if not all(isinstance(row, list) for row in matrix):
+        raise TypeError(f"Matrix must be a list of lists got {type(matrix)}")
+    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
+        mp.validate_bitwidth(rows)
+    else:
+        raise ValueError("Matrix dimensions are not valid")
+
+    bounds = {}
+    x, y   = 0, 0
+    while y < rows:
+
+        # -- entry border -------------------------------------------
+        key = matrix[y][0].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((0, y))
+
+        # -- central range ------------------------------------------
+        while x < items-1:
+            curr = matrix[y][x].upper()
+            next = matrix[y][x+1].upper()
+            if (curr == next) and isalpha(curr):
+                x += 1
+                continue
+            if curr != next and (isalpha(curr) or isalpha(next)):
+                if curr not in bounds:
+                    bounds[curr] = []
+                bounds[curr].append((x, y))
+                if next not in bounds:
+                    bounds[next] = []
+                bounds[next].append((x+1, y))
+                x += 1
+                continue
+            x += 1
+
+        # -- exit border --------------------------------------------
+        key = matrix[y][x].upper()
+        if key not in bounds:
+            bounds[key] = []
+        bounds[key].append((x, y))
+
+        x  = 0
+        y += 1
+
+    return bounds
 
 
 """
