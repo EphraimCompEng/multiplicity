@@ -67,17 +67,16 @@ def test_auto_resolve_recursive_full_8() -> None:
 
 def test_isolate_arithmetic_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','c']), matrix=mp.Matrix(4))
-    isolated_units = mp.collect_template_units(template)
+    isolated_units, bounds = mp.collect_template_units(template)
     print(template)
     print(isolated_units)
-    for i in isolated_units:
-        print(i.checksum)
+    for k, v in isolated_units.items():
+        print(v.checksum)
 
 def test_err_duplicate_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','b','c','c','d','d']), matrix=mp.Matrix(8))
-    bounds   = mp.find_bounding_box(template.template, transit=mp.isalpha)
     try:
-        isolated_units = mp.collect_template_units(template)
+        isolated_units, bounds = mp.collect_template_units(template)
     except SyntaxError:
         pass
 

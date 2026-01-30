@@ -390,15 +390,11 @@ def build_noop_template(self, pattern: Pattern, *, dadda=False) -> None:
     Create template for zeroed matrix using pattern
     """
 
-# TODO: error check needed to determine if multiple units use the same character
+# ! currently not generalised:
+#  > detect type of transition then use appropriate function
 #
-# Implementation:
-#
-#   IF bounding box y-diff is > 1:
-#       > ERR vertical gap identifies
-#   IF x-axis has > 2 coordinates:
-#       > ERR: horizontal break between units
-#
+#  > or just detect empty, '_', characters as the boundary
+#       > This option means figuring out the correct key to use
 def find_bounding_box(source: Template
     ) -> dict[str, list[tuple[int, int]]]:
     """

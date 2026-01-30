@@ -2,7 +2,7 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
-from typing import Any, Callable, Iterable
+from typing import Any, Iterable
 import multiplied as mp
 
 class Algorithm():
@@ -360,7 +360,7 @@ def collect_arithmetic_units(
 #
 def collect_template_units(
     source: mp.Template,
-) -> tuple[dict[str, mp.Template], dict[str, list[tuple]]]:
+) -> tuple[dict[str, mp.Template], dict[str, list[tuple[int,int]]]]:
     """
     Return dict of isolated arithmetic units and their bounding box.
     """

@@ -3,7 +3,7 @@
 ################################################
 
 import multiplied as mp
-from typing import Any, Callable, Iterator
+from typing import Any, Iterator
 
 
 
@@ -312,8 +312,6 @@ def matrix_merge(source: dict[str, Matrix],
     if len(bounds)-1 != len(source):
         # new error message needed
         raise ValueError("Source must contain the same number of matrices as bounds")
-
-    from copy import copy
 
     bits = list(source.values())[0].bits
     output = empty_matrix(bits)
