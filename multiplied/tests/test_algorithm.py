@@ -20,7 +20,8 @@ def test_step() -> None:
     alg.push(p)
     print(alg.matrix)
     alg.step()
-    # print(alg.matrix)
+    print(alg.matrix.x_checksum)
+    print(alg.matrix.y_checksum)
     # print(alg)
 
 
@@ -62,7 +63,8 @@ def test_auto_resolve_recursive_full_8() -> None:
     alg2.auto_resolve_stage()
     print(alg2)
     print(m)
-    print(m.checksum)
+    print(m.y_checksum)
+    print(m.x_checksum)
 
 
 def test_isolate_arithmetic_units() -> None:

@@ -79,9 +79,10 @@ class Matrix:
     """
     def __init__(self, source: list[Any] | int, *,
         a: int=0,
-        b: int=0
+        b: int=0,
+        x_checksum=[], # Add handling if supplied
+        y_checksum=[], # Add handling if supplied
     ) -> None:
-
         # -- sanity check -------------------------------------------
         if isinstance(source, int):
             self.bits = source
@@ -95,29 +96,31 @@ class Matrix:
             raise TypeError(f"Expected integer or nested list, got {type(source)}")
 
 
+        print(source, type(source))
         # -- process custom matrix ----------------------------------
-        from multiplied.core.utils.bool import ischar
-        checksum = [0] * self.bits
         row_len  = self.bits << 1
+        x_checksum = [0] * row_len
+        y_checksum = [0] * self.bits
         for i, row in enumerate(source):
             if not isinstance(row, (list, Slice)):
                 raise ValueError("Invalid input. Expected list or slice.")
             if row_len != len(row):
                 raise ValueError("Inconsistent rows. Matrix must be 2m * m")
-
-            empty = 0
-            for ch in row:
-                if not ischar(ch):
-                    raise TypeError(f"Expected character, got {ch}")
-                if ch == '_':
-                    empty += 1
-                else:
+            ch = 0
+            while ch < row_len:
+                if ch == row_len or row[ch] == '0' or row[ch] == '1':
+                    y_checksum[i] = 1
+                    for x in range(ch, row_len):
+                        if row[x] == '_':
+                            break
+                        x_checksum[x] = 1
                     break
-            if empty != row_len:
-                checksum[i] = 1
+                else:
+                    ch += 1
 
             self.matrix = source
-            self.checksum = checksum
+            self.x_checksum = x_checksum
+            self.y_checksum = y_checksum
         return None
 
     def __zero_matrix(self, bits: int) -> None:
@@ -138,56 +141,64 @@ class Matrix:
         """
 
         mp.validate_bitwidth((bits := self.bits))
+        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
+            raise ValueError("Operand bit width exceeds matrix bit width")
 
         # -- catch multiply by zero ---------------------------------
         if operand_a == 0 or operand_b == 0:
             self.__zero_matrix(bits)
-            self.checksum = [0]*bits
+            self.y_checksum = [0]*bits
+            self.x_checksum = [0]*(bits*2)
             return None
 
 
-        if (operand_a > ((2**bits)-1)) or (operand_b > ((2**bits)-1)):
-            raise ValueError("Operand bit width exceeds matrix bit width")
-
+        # -- generate -----------------------------------------------
         # convert to binary, removing '0b' and padding with zeros
         a = bin(operand_a)[2:].zfill(bits)
         b = bin(operand_b)[2:].zfill(bits)
-        checksum = [0]*bits
+        y_checksum = [0]*bits
+        x_checksum = [0]*(bits*2)
         matrix   = []
         for i in range(bits-1, -1, -1):
             if b[i] == '0':
                 matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
             elif b[i] == '1':
                 matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
-                checksum[i] = 1
+                y_checksum[i] = 1
+                for j, bit in enumerate(list(a)):
+                    x_checksum[i+j] = 1
 
-
-        self.matrix   = matrix
-        self.checksum = checksum
+        self.matrix     = matrix
+        self.y_checksum = y_checksum
+        self.x_checksum = x_checksum
         return None
 
     def __checksum(self) -> None:
-        from multiplied.core.utils.bool import ischar
+        """
+        Calculate checksums for rows and columns of the matrix
+        """
 
         row_len  = self.bits << 1
-        checksum = [0] * self.bits
+        y_checksum = [0] * self.bits
+        x_checksum = [0] * row_len
         for i, row in enumerate(self.matrix):
             if len(row) != row_len:
                 raise ValueError("Inconsistent row length")
 
-            empty = 0
-            for ch in row:
-                if not ischar(ch):
-                    raise TypeError(f"Expected character, got {ch}")
-                if ch == '_':
-                    empty += 1
-                else:
+            ch = 0
+            while ch < row_len:
+                if row[ch] == '0' or row[ch] == '1':
+                    y_checksum[ch] = 1
+                    for x in range(ch, row_len):
+                        if row[x] == '_':
+                            break
+                        x_checksum[x] = 1
                     break
+                else:
+                    ch += 1
 
-
-            if empty != row_len:
-                checksum[i] = 1
-        self.checksum = checksum
+        self.x_checksum = x_checksum
+        self.y_checksum = y_checksum
         return None
 
 
@@ -233,8 +244,8 @@ class Matrix:
                 matrix[i-val] = self.matrix[i]
 
                 # Update checksum as source row empty after move
-                self.checksum[i]     = 0
-                self.checksum[i-val] = 1
+                self.y_checksum[i]     = 0
+                self.y_checksum[i-val] = 1
             self.matrix = matrix
 
             return
@@ -317,28 +328,22 @@ def matrix_merge(source: dict[str, Matrix],
     output = empty_matrix(bits)
     for unit, matrix in source.items():
 
-        # > if all of b's points lie inside a's empty bounds
-        # > bounds dont even need to be updated
-        # > Allow for merging carries, carry=True:
-            # checks bit directly left of the leftmost bound
-        # > copy and pase bounds and check for any remaining non empty bits
-        # > non-empty bits will always be on the left
-
-
         i = 0
         while i < len(bounds[unit])-1:
+
+            # ..., left coord : right coord, ...
             left, right = bounds[unit][i], bounds[unit][i+1]
             if (y := left[1]) != right[1]:
-                raise ValueError("Bounds must be consecutive") # PLACEHOLDER
+                raise ValueError(f"Missing bound pair for row {y}")
             for j in range(left[0], right[0]+1):
                 output[y][j] = matrix.matrix[y][j]
             if carry:
                 match bounds[unit][0][1] - bounds[unit][-1][1]: # y-axis span
-                    case 2:
+                    case 2: # Adder
                         if y ==  bounds[unit][0][1]:
                             cout = left[0]-1
                             output[y][cout] = matrix.matrix[y][cout]
-                    case 3:
+                    case 3: # CSA
                         if y ==  bounds[unit][0][1] + 1:
                             cout = left[0]-1
                             output[y][cout] = matrix.matrix[y][cout]
