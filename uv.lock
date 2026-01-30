@@ -215,7 +215,7 @@ wheels = [
 
 [[package]]
 name = "multiplied"
-version = "0.3.3"
+version = "0.3.4"
 source = { editable = "." }
 dependencies = [
     { name = "toml" },
@@ -355,7 +355,7 @@ wheels = [
 
 [[package]]
 name = "sphinx-breeze-theme"
-version = "0.7.1"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "accessible-pygments" },
@@ -367,9 +367,9 @@ dependencies = [
     { name = "sphinxext-opengraph" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7a/b6/097805ca062755e57c120cdedd9208f5a729724ca334a87a16cf46a1fb29/sphinx_breeze_theme-0.7.1.tar.gz", hash = "sha256:a5cd7e633aedf7d37e40a91a6962f7736bd7b48b80ce7ac81d0a3d702cbae733", size = 2259656, upload-time = "2026-01-26T01:04:46.205Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/e2/34f93e9112175894b8f793e1cfc754b9e8a86a8f5f57b4c2a78b51f69c14/sphinx_breeze_theme-0.9.0.tar.gz", hash = "sha256:75a2b66decf901c3802a58724d982146a2a7bb343044cfaa4c4d9c95fd629b56", size = 2956931, upload-time = "2026-01-29T22:32:45.192Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/2d/8bdc041ae976f95cf55ad61adca44a9b965679859031fde642e3b0c5b6ee/sphinx_breeze_theme-0.7.1-py3-none-any.whl", hash = "sha256:dcf0b258a4a726d9d1426771f5205d9457c6e4cbbeb96722422c54ecb5975b6e", size = 2157617, upload-time = "2026-01-26T01:04:44.041Z" },
+    { url = "https://files.pythonhosted.org/packages/08/24/70956c21f4f63035b74afcfead6bbd3b68e9f4ca05a8948028b6338ea6b0/sphinx_breeze_theme-0.9.0-py3-none-any.whl", hash = "sha256:dc2c71a782f907e5af8a6fdcfbd38eacd0ef9c4677b767c6caa664dc77dc089b", size = 2650523, upload-time = "2026-01-29T22:32:42.975Z" },
 ]
 
 [[package]]
