@@ -2,6 +2,7 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
+from copy import deepcopy
 from typing import Any, Iterable
 import multiplied as mp
 
@@ -111,13 +112,13 @@ class Algorithm():
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
 
-        template = self.algorithm[self.state]['template']
-        units, bounds    = collect_template_units(template)
-        n        = self.bits*2
+        template      = self.algorithm[self.state]['template']
+        units, bounds = collect_template_units(template)
         # Using dict for now as i'm too scared to rely on lists staying in order
-        results  = {}
+        results       = {}
 
         # -- reduce -------------------------------------------------
+        n = self.bits*2
         for ch, unit in units.items():
             base_index = unit.checksum.index(1)
             match sum(unit.checksum):
@@ -248,12 +249,19 @@ class Algorithm():
         for k, v in results.items():
             print(f"\n{k}:\n{mp.pretty(v)}")
 
-        # merge
+        # -- merge --------------------------------------------------
 
         self.matrix = mp.matrix_merge(results, bounds)
+        tmp = deepcopy(self.matrix)
         print(self.matrix)
-        mp.mprint(hoist(self.matrix, checksum=self.matrix.y_checksum))
+        # hoist to be used in template generation, apply map to be used here
+        map_ = hoist(self.matrix, checksum=self.matrix.y_checksum)
         print(self.matrix)
+        print(tmp)
+        print(map_)
+        print(tmp.apply_map(map_))
+        print(tmp)
+
         return None
 
 
@@ -466,9 +474,7 @@ def hoist(source: mp.Matrix | mp.Template, *,
 
 
     y_start = checksum.index(1)
-    print(y_start)
     y_end   = 8-checksum[::-1].index(1) if 1 in checksum else bits
-    print(y_end)
     map_    = mp.empty_matrix(bits)
 
     for y in range(y_start, y_end):

@@ -223,8 +223,10 @@ class Matrix:
             rmap.append(f"{val:02X}"[-2:])
         return mp.Map(rmap)
 
+    # ! Update to use checksums  or coordinates
     def apply_map(self, map_: mp.Map) -> None:
         """
+        Use Multiplied Map object to apply mapping to matrix
         """
         if not isinstance(map_, mp.Map):
             raise TypeError(f"Expected Map, got {type(map_)}")
@@ -234,8 +236,9 @@ class Matrix:
             )
 
         # -- row-wise mapping ---------------------------------------
+
         if rmap := map_.rmap:
-            matrix = Matrix(self.bits).matrix
+            matrix = Matrix(self.bits).matrix # TODO make this modify in-place
             for i in range(self.bits):
                 # convert signed hex to 2s complement if -ve
                 if ((val := int(rmap[i], 16)) & 128):
@@ -243,16 +246,27 @@ class Matrix:
                 matrix[i]     = ["_"] * (self.bits*2)
                 matrix[i-val] = self.matrix[i]
 
-                # Update checksum as source row empty after move
+                # deprecate checksum in favor of coordinates
                 self.y_checksum[i]     = 0
                 self.y_checksum[i-val] = 1
             self.matrix = matrix
 
-            return
+            return None
 
         # -- bit-wise mapping ---------------------------------------
-        # TODO
-        raise NotImplementedError("Complex mapping not implemented")
+        # TODO Update to use coordinates -- way too expensive currently
+        for y in range(self.bits):
+            for x in range(self.bits << 1):
+                # convert signed hex to 2s complement if -ve
+                if ((val := int(map_.map[y][x], 16)) & 128):
+                    val = (~val + 1) & 255 # 2s complement
+                if val != 0:
+                    self.matrix[y-val][x] = self.matrix[y][x]
+                    self.matrix[y][x] = '_'
+
+        self.checksum = [0] * self.bits
+        return None
+
 
     def __repr__(self) -> str:
         return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
