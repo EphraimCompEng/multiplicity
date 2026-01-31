@@ -344,6 +344,11 @@ def matrix_merge(source: dict[str, Matrix],
     output = empty_matrix(bits)
     for unit, matrix in source.items():
 
+        # new bounding box covering whole result
+        box_left = bounds[unit][-2][0]
+        box_right = bounds[unit][1][0]
+        print(bounds[unit])
+        print(box_left, box_right)
         i = 0
         while i < len(bounds[unit])-1:
 
@@ -351,18 +356,17 @@ def matrix_merge(source: dict[str, Matrix],
             left, right = bounds[unit][i], bounds[unit][i+1]
             if (y := left[1]) != right[1]:
                 raise ValueError(f"Missing bound pair for row {y}")
-            for j in range(left[0], right[0]+1):
+            for j in range(box_left, box_right+1):
                 output[y][j] = matrix.matrix[y][j]
-            if carry:
-                match bounds[unit][0][1] - bounds[unit][-1][1]: # y-axis span
-                    case 2: # Adder
-                        if y ==  bounds[unit][0][1]:
-                            cout = left[0]-1
-                            output[y][cout] = matrix.matrix[y][cout]
-                    case 3: # CSA
-                        if y ==  bounds[unit][0][1] + 1:
-                            cout = left[0]-1
-                            output[y][cout] = matrix.matrix[y][cout]
-            i += 2
+            # print('cout!')
+            print(bounds[unit][-1][1] - bounds[unit][0][1])
+            print(box_left-1)
+            if bounds[unit][-1][1] - bounds[unit][0][1] == 1:
+                if y ==  bounds[unit][0][1] and 0 <=box_left-1:
+                    cout = box_left-1
+                    output[y][cout] = matrix.matrix[y][cout]
+                    print('cout!')
 
+            i += 2
+    # mp.mprint(output)
     return Matrix(output)

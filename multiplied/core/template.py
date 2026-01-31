@@ -43,7 +43,6 @@ def build_csa(char: str, source_slice: mp.Slice
         csa_slice[1][i] = char if (y1:=csa_slice[1][i] != '_') else '_'
         csa_slice[2][i] = char if (y2:=csa_slice[2][i] != '_') else '_'
 
-        # ! (y0+y1+y2) is accidentally functional and requires refactoring
         result[0][i]    = char if 1 <= (y0+y1+y2) else '_'
         result[1][i-1]  = char if 1 <  (y0+y1+y2) else '_'
     return csa_slice, mp.Slice(result)

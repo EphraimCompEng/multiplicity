@@ -118,8 +118,9 @@ class Algorithm():
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
         print(self.state)
-        template      = self.algorithm[self.state]['template']
-        print(template)
+        template      = copy(self.algorithm[self.state]['template'])
+        result        = self.algorithm[self.state]['pseudo']
+
         # ! template.template & .result must precalculate this within their objects
         units, bounds = collect_template_units(template)
         # Using dict for now as i'm too scared to rely on lists staying in order
@@ -129,7 +130,6 @@ class Algorithm():
         n = self.bits*2
         for ch, unit in units.items():
             base_index = bounds[ch][0][1]
-            print(ch, bounds[ch])
             match sum(unit.checksum):
                 case 1: # NOOP
                     output = [copy(self.matrix[base_index][0])]
@@ -165,12 +165,15 @@ class Algorithm():
 
                     # -- binary addition ----------------------------
                     bits_ = sum(checksum)
+                    print('check:\n',checksum)
+                    cout  = 1 if bits_ < self.bits*2 else 0
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
-
+                    print(f"{int_a+int_b:0{bits_}b}")
                     output     = [['_']*(start-1)]
-                    output[0] += list(f"{int_a+int_b:0{bits_+1}b}")
-                    output[0] += ['_']*(n-start-bits_)
+                    output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
+                    output[0] += ['_']*(n-bits_-1)
+                    print(bits_, cout, output[0])
 
 
                 case 3: # CSA
@@ -178,31 +181,35 @@ class Algorithm():
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     operand_c = copy(self.matrix[base_index+2][0])
-                    checksum  = [False]*n
+                    empty     = False
                     output    = [['_']*n, ['_']*n]
                     start     = 0
 
                     # -- skip empty rows ----------------------------
-                    while operand_a[start] == '_' and operand_b[start] == '_':
+                    while (
+                        operand_a[start] == '_' and
+                        operand_b[start] == '_' and
+                        operand_c[start] == '_'
+                    ):
                         start += 1
+                    print('start:', start)
 
                     # -- sum columns -------------------------------
-                    for i in range(start+1, n):
+                    for i in range(start, n):
                         csa_sum = 0
                         csa_sum += 1 if operand_a[i] == '1' else 0
                         csa_sum += 1 if operand_b[i] == '1' else 0
                         csa_sum += 1 if operand_c[i] == '1' else 0
 
                         output[0][i] = csa_sum # uses index to store sum in-place
-                        checksum[i]  = (
-                            operand_c[i] != '_' or
-                            operand_b[i] != '_' or
-                            operand_a[i] != '_'
-                        )
+                        empty  = (operand_c[i] == '_') + (operand_b[i] == '_') + (operand_a[i] == '_')
                         # -- check end of unit ----------------------
-                        if not checksum[i]:
+                        if empty == 3:
                             output[0][i] =  '_' # set as empty since sum unused
                             break
+                        if empty == 2:
+                            output[0][i]   = '1' if csa_sum & 1 else '0'
+                            continue
 
                         # -- brute force index 0 --------------------
                         # ! remove try catch:
@@ -258,15 +265,16 @@ class Algorithm():
             print(f"\n{k}:\n{mp.pretty(v)}")
 
         # -- merge --------------------------------------------------
-
-        self.matrix = mp.matrix_merge(results, bounds)
+        if 1 < len(results):
+            self.matrix = mp.matrix_merge(results, bounds)
+        else:
+            self.matrix = list(results.values())[0]
 
         # -- map ----------------------------------------------------
 
         self.matrix.apply_map(self.algorithm[self.state]['map'])
         self.state += 1
 
-        print(self.matrix)
 
         return None
 
@@ -331,8 +339,13 @@ class Algorithm():
         self.matrix = mp.Matrix(self.bits, a=a, b=b)
         truth = {}
         self.state = 0
+        print(self.matrix)
+
         for n in range(len(self.algorithm)):
+            print('template:\n')
+            mp.mprint(self.algorithm[self.state]['template'].template)
             self.__reduce()
+            print(self.matrix)
             truth[n] = self.matrix
         return truth
 
@@ -443,7 +456,6 @@ def collect_template_units(
 
             i += 2
         units[ch] = mp.Template(matrix)
-
     return (units, bounds)
 
 # ________AaAaAaAa
