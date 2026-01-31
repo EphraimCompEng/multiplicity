@@ -77,6 +77,11 @@ class Algorithm():
         self.algorithm[stage_index] = stage
         return None
 
+
+    # ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()
+    # - Maybe use bounds to create x_checksum within __reduce()'s unit collection
+    # - OR within, the same scope, use bounds to execute a given arithmetic unit
+    # ---------------------------------------------------------------
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
     def __reduce(self) -> None:
@@ -92,18 +97,19 @@ class Algorithm():
         #
         # run = 3:
         #   CSA: carry is placed to the left of source column
-        #   and one row down to avoid corrupting adjacent columns
+        #   and one row down to avoid corrupting adjacent columns.
         #
         #   [input-------] | [output------]
         #   ...00100010... | ...00100010...
-        #   ...00101010... | ...01010100...
+        #   ...00101010... | ..00101010....
         #   ...00101010... | ...________...
         #
         # run = 2:
-        #   binary adder: carry generates through propagates
+        #   binary adder: carry generates through propagates, with a
+        #   final carry extending past original width.
         #
         #   [input-------] | [output------]
-        #   ...00110110... | ...01100000...
+        #   ...00110110... | ..001100000...
         #   ...00101010... | ...________...
 
         # -- isolate units -----------------------------------------
@@ -111,8 +117,10 @@ class Algorithm():
         # - currently every stage of every matrix reduction needs to resolve
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
-
+        print(self.state)
         template      = self.algorithm[self.state]['template']
+        print(template)
+        # ! template.template & .result must precalculate this within their objects
         units, bounds = collect_template_units(template)
         # Using dict for now as i'm too scared to rely on lists staying in order
         results       = {}
@@ -120,7 +128,8 @@ class Algorithm():
         # -- reduce -------------------------------------------------
         n = self.bits*2
         for ch, unit in units.items():
-            base_index = unit.checksum.index(1)
+            base_index = bounds[ch][0][1]
+            print(ch, bounds[ch])
             match sum(unit.checksum):
                 case 1: # NOOP
                     output = [copy(self.matrix[base_index][0])]
@@ -134,6 +143,7 @@ class Algorithm():
 
                     # -- skip empty rows ----------------------------
                     start = 0
+                    # print(ch, operand_a, operand_b, base_index)
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
@@ -244,23 +254,19 @@ class Algorithm():
 
 
         # testing
-        # for k, v in units.items():
-        #     print(f"\n{k}:\n{mp.pretty(v.template)}")
         for k, v in results.items():
             print(f"\n{k}:\n{mp.pretty(v)}")
 
         # -- merge --------------------------------------------------
 
         self.matrix = mp.matrix_merge(results, bounds)
-        tmp = deepcopy(self.matrix)
+
+        # -- map ----------------------------------------------------
+
+        self.matrix.apply_map(self.algorithm[self.state]['map'])
+        self.state += 1
+
         print(self.matrix)
-        # hoist to be used in template generation, apply map to be used here
-        map_ = hoist(self.matrix, checksum=self.matrix.y_checksum)
-        print(self.matrix)
-        print(tmp)
-        print(map_)
-        print(tmp.apply_map(map_))
-        print(tmp)
 
         return None
 
@@ -276,26 +282,30 @@ class Algorithm():
             recursive: Recursively resolve until no partial products remain
         """
         from copy import copy
+        n = len(self.algorithm)
+        stage = n+1 if n > 0 else 0
         # -- non recursive ------------------------------------------
         if not self.algorithm:
             pseudo = copy(self.matrix)
         else:
-            pseudo = copy(self.algorithm[self.len]['pseudo'])
+            pseudo = copy(self.algorithm[stage]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
             return None
 
         # -- main loop ----------------------------------------------
-        while self.bits-1 != mp.empty_rows(pseudo):
+        while self.bits-1 > mp.empty_rows(self.algorithm[stage]['pseudo']):
 
             # Stage generation
+            pseudo = copy(self.algorithm[stage]['pseudo'])
             new_pattern = mp.resolve_pattern(pseudo)
             self.push(mp.Template(new_pattern, matrix=pseudo))
 
             # Condition based on generated stage
-            pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
+            stage += 1
 
+        self.stage = 0
         return None
 
     def step(self) -> mp.Matrix:
@@ -308,7 +318,7 @@ class Algorithm():
         # getattr for matrix, template and map to peek algorithm
         return self.matrix
 
-    def exec(self, *, a=0, b=0) -> list[mp.Matrix]:
+    def exec(self, *, a=0, b=0) -> dict[int, mp.Matrix]:
         """
         Run entire algorithm with a single set of inputs then reset internal state.
         Returns list of results from all stages of the algorithm
@@ -317,11 +327,14 @@ class Algorithm():
             raise TypeError(f"Expected int, got {type(a)} and {type(b)}")
 
         if a == 0 or b == 0:
-            return [mp.Matrix(self.bits)]
-
-        for stage in self.algorithm:
+            return {0: mp.Matrix(self.bits)}
+        self.matrix = mp.Matrix(self.bits, a=a, b=b)
+        truth = {}
+        self.state = 0
+        for n in range(len(self.algorithm)):
             self.__reduce()
-        return []
+            truth[n] = self.matrix
+        return truth
 
     def reset(self, matrix: mp.Matrix) -> None:
         """
@@ -431,7 +444,7 @@ def collect_template_units(
             i += 2
         units[ch] = mp.Template(matrix)
 
-    return units, bounds
+    return (units, bounds)
 
 # ________AaAaAaAa
 # _______aAaAaAaA_

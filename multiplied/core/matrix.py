@@ -73,6 +73,9 @@ class Slice:
         self.index += 1
         return self.slice[self.index - 1]
 
+# ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()
+# - Maybe use bounds to create x_checksum within __reduce()'s unit collection
+# - OR within, the same scope, use bounds to execute a given arithmetic unit
 class Matrix:
     """
     Partial Product Matrix
@@ -96,7 +99,6 @@ class Matrix:
             raise TypeError(f"Expected integer or nested list, got {type(source)}")
 
 
-        print(source, type(source))
         # -- process custom matrix ----------------------------------
         row_len  = self.bits << 1
         x_checksum = [0] * row_len

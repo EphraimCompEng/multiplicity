@@ -22,8 +22,14 @@ def test_step() -> None:
     alg.step()
     print(alg.matrix.x_checksum)
     print(alg.matrix.y_checksum)
+    print(alg.matrix)
     # print(alg)
 
+def test_exec() -> None:
+    m, p, alg = gen_resources(8, a=15, b=15)
+    alg.auto_resolve_stage()
+    print(alg)
+    print(alg.exec(a=15, b=15))
 
 
 
@@ -104,7 +110,7 @@ def test_err_duplicate_units() -> None:
         ])
 
     print(template)
-    bounds   = mp.find_bounding_box(template)
+    # bounds   = mp.find_bounding_box(template)
     isolated_units = mp.collect_template_units(template)
     # try:
     #     isolated_units = mp.isolate_arithmetic_units(template)
@@ -125,7 +131,8 @@ def test_err_duplicate_units() -> None:
 
 
 def main():
-    test_step()
+    # test_step()
+    test_exec()
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()
