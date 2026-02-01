@@ -9,7 +9,7 @@ def gen_resources(bits: int, *, a=0, b=0
         case 4:
             p = mp.Pattern(['a','a','b','b',])
         case 8:
-            p = mp.Pattern(['a','a','a','b','b','b','c','d'])
+            p = mp.Pattern(['a','a','a','b','b','b','c','c'])
         case _:
             raise ValueError(f"Unsupported number of bits: {bits}")
     alg = mp.Algorithm(m)
@@ -26,10 +26,14 @@ def test_step() -> None:
     # print(alg)
 
 def test_exec(a: int, b: int) -> None:
-    m, p, alg = gen_resources(8, a=15, b=15)
+    m, p, alg = gen_resources(8, a=a, b=b)
     alg.auto_resolve_stage()
     # print(alg)
     print(alg.exec(a=a, b=b))
+    results = (alg.exec(a=a, b=b))
+    for k, i in results.items():
+        print('result: ', k)
+        print(i)
 
 
 
@@ -128,6 +132,39 @@ def test_err_duplicate_units() -> None:
         print(i)
         # print(i.checksum)
 
+def test_algorithm_reuse_8(a: int, b:int) -> None:
+    m, p, alg = gen_resources(8, a=a, b=a)
+    alg.push(p)
+    alg.auto_resolve_stage()
+    print(alg)
+
+    a=15
+    b=15
+    output = alg.exec(a=a, b=b)
+    for k, v in output.items():
+        print(v)
+    print(int("".join(alg.matrix.matrix[0]), 2))
+    print(a*b)
+
+    a=255
+    b=255
+    output = alg.exec(a=a, b=b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print(int("".join(alg.matrix.matrix[0]), 2))
+    print(a*b)
+
+    a=69
+    b=255
+    output = alg.exec(a=a, b=b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print(int("".join(alg.matrix.matrix[0]), 2))
+    print(a*b)
+
+
 
 
 def main():
@@ -135,11 +172,13 @@ def main():
     test_exec(15, 15)
     test_exec(255, 255)
     test_exec(23, 17)
+    test_algorithm_reuse_8(255, 255)
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()
     # test_isolate_arithmetic_units()
     # test_err_duplicate_units()
+    ...
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,7 @@
 # Returns Template Objects Using User Patterns #
 ################################################
 
-from copy import copy
+from copy import deepcopy
 from typing import Any
 from .utils.bool import isalpha, ischar
 import multiplied as mp
@@ -31,7 +31,7 @@ def build_csa(char: str, source_slice: mp.Slice
     n         = len(source_slice[0])
     tff       = mp.chartff(char) # Toggle flip flop
     result    = [['_']*n, ['_']*n, ['_']*n]
-    csa_slice = copy(source_slice)
+    csa_slice = deepcopy(source_slice)
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
@@ -68,7 +68,7 @@ def build_adder(char: str, source_slice: mp.Slice
     n           = len(source_slice[0])
     tff         = mp.chartff(char) # Toggle flip flop
     result      = [['_']*n, ['_']*n]
-    adder_slice = copy(source_slice) # ensure no references
+    adder_slice = deepcopy(source_slice) # ensure no references
 
     for i in range(n):
         # Generates slice of all possible bit placements, represented
@@ -108,11 +108,11 @@ def build_noop(char: str, source_slice: mp.Slice
 
     n          = len(source_slice[0])
     tff        = mp.chartff(char) # Toggle flip flop
-    noop_slice = copy(source_slice) # ensure no references
+    noop_slice = deepcopy(source_slice) # ensure no references
     for i in range(n):
         noop_slice[0][i] = next(tff) if (noop_slice[0][i] != '_') else '_'
 
-    return noop_slice, copy(noop_slice) # avoids pointing to same object
+    return noop_slice, deepcopy(noop_slice) # avoids pointing to same object
 
 def build_empty_slice(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     """
@@ -128,11 +128,11 @@ def build_empty_slice(source_slice: mp.Slice) -> tuple[mp.Slice, mp.Slice]:
     if not isinstance(source_slice, mp.Slice):
         raise TypeError(f"Expected type mp.Slice, got {type(source_slice)}")
 
-    empty_slice = copy(source_slice) # ensure no references
+    empty_slice = deepcopy(source_slice) # ensure no references
     for row in range(len(source_slice)):
         for i in range(empty_slice.bits):
             empty_slice[row][i] = '_'
-    return empty_slice, copy(empty_slice)
+    return empty_slice, deepcopy(empty_slice)
 
 
 class Pattern:
@@ -354,7 +354,7 @@ class Template:
         return f"{mp.pretty(self.template)}\n{mp.pretty(self.result)}"
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.template}, {self.result})"
+        return f"<multiplied.{self.__class__.__name__} object at {hex(id(self))}>"
 
     def __len__(self) -> int:
         return len(self.template)

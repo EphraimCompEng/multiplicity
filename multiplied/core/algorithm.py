@@ -23,7 +23,6 @@ class Algorithm():
         # -- TODO: update this when anything is modified ------------
         # create update() function
         # add to each modifying class method
-        self.stage = self.algorithm[self.state] if self.len > 0 else None
         return None
 
 
@@ -117,9 +116,7 @@ class Algorithm():
         # - currently every stage of every matrix reduction needs to resolve
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
-        print(self.state)
-        template      = copy(self.algorithm[self.state]['template'])
-        result        = self.algorithm[self.state]['pseudo']
+        template      = deepcopy(self.algorithm[self.state]['template'])
 
         # ! template.template & .result must precalculate this within their objects
         units, bounds = collect_template_units(template)
@@ -165,16 +162,14 @@ class Algorithm():
 
                     # -- binary addition ----------------------------
                     bits_ = sum(checksum)
-                    print('check:\n',bits_, checksum)
+
                     cout  = 1 if not checksum[0] else 0
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
-                    print(f"{int_a+int_b:0{bits_}b}")
-                    print(cout)
-                    output     = [['_']*(start-1)]
+
+                    output     = [['_']*(start-cout)]
                     output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
                     output[0] += ['_']*(n-bits_-cout)
-                    print(bits_, cout, output[0])
 
 
                 case 3: # CSA
@@ -193,7 +188,6 @@ class Algorithm():
                         operand_c[start] == '_'
                     ):
                         start += 1
-                    print('start:', start)
 
                     # -- sum columns -------------------------------
                     for i in range(start, n):
@@ -260,11 +254,6 @@ class Algorithm():
         #
         # This functionality to be implemented at a later date.
 
-
-        # testing
-        for k, v in results.items():
-            print(f"\n{k}:\n{mp.pretty(v)}")
-
         # -- merge --------------------------------------------------
         if 1 < len(results):
             self.matrix = mp.matrix_merge(results, bounds)
@@ -290,31 +279,30 @@ class Algorithm():
         Options:
             recursive: Recursively resolve until no partial products remain
         """
-        from copy import copy
-        n = len(self.algorithm)
-        stage = n+1 if n > 0 else 0
+        stage = len(self.algorithm)
         # -- non recursive ------------------------------------------
         if not self.algorithm:
-            pseudo = copy(self.matrix)
+            pseudo = deepcopy(self.matrix)
         else:
-            pseudo = copy(self.algorithm[stage]['pseudo'])
+            pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
             return None
 
         # -- main loop ----------------------------------------------
-        while self.bits-1 > mp.empty_rows(self.algorithm[stage]['pseudo']):
-
+        stage = len(self.algorithm)
+        while self.bits-1 > mp.empty_rows(self.algorithm[stage-1]['pseudo']):
+            if 50 < stage:
+                raise IndexError('Maximum stage limit reached')
             # Stage generation
-            pseudo = copy(self.algorithm[stage]['pseudo'])
+            pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
             new_pattern = mp.resolve_pattern(pseudo)
             self.push(mp.Template(new_pattern, matrix=pseudo))
 
+
             # Condition based on generated stage
             stage += 1
-
-        self.stage = 0
         return None
 
     def step(self) -> mp.Matrix:
@@ -340,14 +328,11 @@ class Algorithm():
         self.matrix = mp.Matrix(self.bits, a=a, b=b)
         truth = {}
         self.state = 0
-        print(self.matrix)
-
         for n in range(len(self.algorithm)):
-            print('template:\n')
-            mp.mprint(self.algorithm[self.state]['template'].template)
+            # mp.mprint(self.algorithm[n]['template'].template)
             self.__reduce()
-            print(self.matrix)
-            truth[n] = self.matrix
+            truth[n] = deepcopy(self.matrix)
+        self.state = 0
         return truth
 
     def reset(self, matrix: mp.Matrix) -> None:

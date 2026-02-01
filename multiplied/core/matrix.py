@@ -103,6 +103,7 @@ class Matrix:
         row_len  = self.bits << 1
         x_checksum = [0] * row_len
         y_checksum = [0] * self.bits
+        # ! needs refactor
         for i, row in enumerate(source):
             if not isinstance(row, (list, Slice)):
                 raise ValueError("Invalid input. Expected list or slice.")
@@ -111,11 +112,11 @@ class Matrix:
             ch = 0
             while ch < row_len:
                 if ch == row_len or row[ch] == '0' or row[ch] == '1':
-                    y_checksum[i] = 1
                     for x in range(ch, row_len):
                         if row[x] == '_':
                             break
                         x_checksum[x] = 1
+                    y_checksum[i]
                     break
                 else:
                     ch += 1
@@ -347,8 +348,6 @@ def matrix_merge(source: dict[str, Matrix],
         # new bounding box covering whole result
         box_left = bounds[unit][-2][0]
         box_right = bounds[unit][1][0]
-        print(bounds[unit])
-        print(box_left, box_right)
         i = 0
         while i < len(bounds[unit])-1:
 
@@ -358,15 +357,10 @@ def matrix_merge(source: dict[str, Matrix],
                 raise ValueError(f"Missing bound pair for row {y}")
             for j in range(box_left, box_right+1):
                 output[y][j] = matrix.matrix[y][j]
-            # print('cout!')
-            print(bounds[unit][-1][1] - bounds[unit][0][1])
-            print(box_left-1)
             if bounds[unit][-1][1] - bounds[unit][0][1] == 1:
                 if y ==  bounds[unit][0][1] and 0 <=box_left-1:
                     cout = box_left-1
                     output[y][cout] = matrix.matrix[y][cout]
-                    print('cout!')
 
             i += 2
-    # mp.mprint(output)
     return Matrix(output)

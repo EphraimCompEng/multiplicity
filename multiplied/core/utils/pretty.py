@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 from typing import Any
 from multiplied import Matrix, Slice, Map, Algorithm, Template
 import io
@@ -20,11 +20,11 @@ def pretty(listy_object: Any) -> str:
     )):
         raise TypeError(f"Unsupported type {type(listy_object)}")
 
-    match copy(listy_object):
+    match listy_object:
         case (Matrix() |Slice() | Map() | list()):
             return pretty_nested_list(listy_object)
         case Template():
-            return pretty_nested_list(listy_object)
+            return pretty_nested_list(listy_object.template)
         case (Algorithm() | dict()):
             return pretty_dict(listy_object)
         case _:
@@ -76,7 +76,7 @@ def pretty_nested_list(listy_object: Any, *, whitespace=False) -> str:
     """
     whitespace = " " if whitespace else ""
     pretty = io.StringIO()
-    for i in copy(listy_object):
+    for i in deepcopy(listy_object):
         row = [str(x) + whitespace for x in i]
         pretty.write("".join(row) + "\n")
     return pretty.getvalue()
