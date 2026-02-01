@@ -2,6 +2,7 @@
 # Algorithm Defined By Templates and Maps #
 ###########################################
 
+from copy import deepcopy
 from typing import Any, Iterable
 import multiplied as mp
 
@@ -22,7 +23,6 @@ class Algorithm():
         # -- TODO: update this when anything is modified ------------
         # create update() function
         # add to each modifying class method
-        self.stage = self.algorithm[self.state] if self.len > 0 else None
         return None
 
 
@@ -76,6 +76,11 @@ class Algorithm():
         self.algorithm[stage_index] = stage
         return None
 
+
+    # ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()
+    # - Maybe use bounds to create x_checksum within __reduce()'s unit collection
+    # - OR within, the same scope, use bounds to execute a given arithmetic unit
+    # ---------------------------------------------------------------
     # Mangled as execution order is sensitive and __reduce should only
     # be called by the algorithm itself via: self.step(), or self.exec()
     def __reduce(self) -> None:
@@ -91,41 +96,51 @@ class Algorithm():
         #
         # run = 3:
         #   CSA: carry is placed to the left of source column
-        #   and one row down to avoid corrupting adjacent columns
+        #   and one row down to avoid corrupting adjacent columns.
         #
         #   [input-------] | [output------]
         #   ...00100010... | ...00100010...
-        #   ...00101010... | ...01010100...
+        #   ...00101010... | ..00101010....
         #   ...00101010... | ...________...
         #
         # run = 2:
-        #   binary adder: carry generates through propagates
+        #   binary adder: carry generates through propagates, with a
+        #   final carry extending past original width.
         #
         #   [input-------] | [output------]
-        #   ...00110110... | ...01100000...
+        #   ...00110110... | ..001100000...
         #   ...00101010... | ...________...
 
         # -- isolate units -----------------------------------------
-        template = self.algorithm[self.state]['template']
-        units, bounds    = collect_template_units(template)
-        n        = self.bits*2
-        # ! Using dict for now as i'm too scared to rely on lists staying in order
-        results  = {}
+        # ! Implement result bounding box to create single point of truth ! #
+        # - currently every stage of every matrix reduction needs to resolve
+        #   conflicts dynamically before merging vs doing so once via the
+        #   resultant template
+        template      = deepcopy(self.algorithm[self.state]['template'])
+
+        # ! template.template & .result must precalculate this within their objects
+        units, bounds = collect_template_units(template)
+        # Using dict for now as i'm too scared to rely on lists staying in order
+        results       = {}
 
         # -- reduce -------------------------------------------------
+        n = self.bits*2
         for ch, unit in units.items():
-            base_index = unit.checksum.index(1)
+            base_index = bounds[ch][0][1]
             match sum(unit.checksum):
                 case 1: # NOOP
                     output = [copy(self.matrix[base_index][0])]
 
                 case 2: # ADD
+                    #TODO: make use of checksums or use bounds
+
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
 
                     # -- skip empty rows ----------------------------
                     start = 0
+                    # print(ch, operand_a, operand_b, base_index)
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
 
@@ -147,44 +162,49 @@ class Algorithm():
 
                     # -- binary addition ----------------------------
                     bits_ = sum(checksum)
+
+                    cout  = 1 if not checksum[0] else 0
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
 
-                    output     = [['_']*(start-1)]
-                    output[0] += list(f"{int_a+int_b:0{bits_+1}b}")
-                    output[0] += ['_']*(n-start-bits_)
+                    output     = [['_']*(start-cout)]
+                    output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
+                    output[0] += ['_']*(n-bits_-cout)
 
 
                 case 3: # CSA
-                    print(ch)
+                    #TODO: make use of checksums or use bounds
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     operand_c = copy(self.matrix[base_index+2][0])
-                    checksum  = [False]*n
+                    empty     = False
                     output    = [['_']*n, ['_']*n]
                     start     = 0
 
                     # -- skip empty rows ----------------------------
-                    while operand_a[start] == '_' and operand_b[start] == '_':
+                    while (
+                        operand_a[start] == '_' and
+                        operand_b[start] == '_' and
+                        operand_c[start] == '_'
+                    ):
                         start += 1
 
                     # -- sum columns -------------------------------
-                    for i in range(start+1, n):
+                    for i in range(start, n):
                         csa_sum = 0
                         csa_sum += 1 if operand_a[i] == '1' else 0
                         csa_sum += 1 if operand_b[i] == '1' else 0
                         csa_sum += 1 if operand_c[i] == '1' else 0
 
                         output[0][i] = csa_sum # uses index to store sum in-place
-                        checksum[i]  = (
-                            operand_c[i] != '_' or
-                            operand_b[i] != '_' or
-                            operand_a[i] != '_'
-                        )
+                        empty  = (operand_c[i] == '_') + (operand_b[i] == '_') + (operand_a[i] == '_')
                         # -- check end of unit ----------------------
-                        if not checksum[i]:
+                        if empty == 3:
                             output[0][i] =  '_' # set as empty since sum unused
                             break
+                        if empty == 2:
+                            output[0][i]   = '1' if csa_sum & 1 else '0'
+                            continue
 
                         # -- brute force index 0 --------------------
                         # ! remove try catch:
@@ -234,16 +254,18 @@ class Algorithm():
         #
         # This functionality to be implemented at a later date.
 
+        # -- merge --------------------------------------------------
+        if 1 < len(results):
+            self.matrix = mp.matrix_merge(results, bounds)
+        else:
+            self.matrix = list(results.values())[0]
 
-        # testing
-        # for k, v in units.items():
-        #     print(f"\n{k}:\n{mp.pretty(v.template)}")
-        for k, v in results.items():
-            print(f"\n{k}:\n{mp.pretty(v)}")
+        # -- map ----------------------------------------------------
 
-        # merge
+        self.matrix.apply_map(self.algorithm[self.state]['map'])
+        self.state += 1
 
-        print(mp.matrix_merge(results, bounds))
+
         return None
 
 
@@ -257,27 +279,30 @@ class Algorithm():
         Options:
             recursive: Recursively resolve until no partial products remain
         """
-        from copy import copy
+        stage = len(self.algorithm)
         # -- non recursive ------------------------------------------
         if not self.algorithm:
-            pseudo = copy(self.matrix)
+            pseudo = deepcopy(self.matrix)
         else:
-            pseudo = copy(self.algorithm[self.len]['pseudo'])
+            pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
         self.push(mp.Template(pattern, matrix=pseudo))
         if not recursive:
             return None
 
         # -- main loop ----------------------------------------------
-        while self.bits-1 != mp.empty_rows(pseudo):
-
+        stage = len(self.algorithm)
+        while self.bits-1 > mp.empty_rows(self.algorithm[stage-1]['pseudo']):
+            if 50 < stage:
+                raise IndexError('Maximum stage limit reached')
             # Stage generation
+            pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
             new_pattern = mp.resolve_pattern(pseudo)
             self.push(mp.Template(new_pattern, matrix=pseudo))
 
-            # Condition based on generated stage
-            pseudo = copy(self.algorithm[len(self.algorithm)-1]['pseudo'])
 
+            # Condition based on generated stage
+            stage += 1
         return None
 
     def step(self) -> mp.Matrix:
@@ -290,7 +315,7 @@ class Algorithm():
         # getattr for matrix, template and map to peek algorithm
         return self.matrix
 
-    def exec(self, *, a=0, b=0) -> list[mp.Matrix]:
+    def exec(self, *, a=0, b=0) -> dict[int, mp.Matrix]:
         """
         Run entire algorithm with a single set of inputs then reset internal state.
         Returns list of results from all stages of the algorithm
@@ -299,11 +324,16 @@ class Algorithm():
             raise TypeError(f"Expected int, got {type(a)} and {type(b)}")
 
         if a == 0 or b == 0:
-            return [mp.Matrix(self.bits)]
-
-        for stage in self.algorithm:
+            return {0: mp.Matrix(self.bits)}
+        self.matrix = mp.Matrix(self.bits, a=a, b=b)
+        truth = {}
+        self.state = 0
+        for n in range(len(self.algorithm)):
+            # mp.mprint(self.algorithm[n]['template'].template)
             self.__reduce()
-        return []
+            truth[n] = deepcopy(self.matrix)
+        self.state = 0
+        return truth
 
     def reset(self, matrix: mp.Matrix) -> None:
         """
@@ -412,8 +442,7 @@ def collect_template_units(
 
             i += 2
         units[ch] = mp.Template(matrix)
-
-    return units, bounds
+    return (units, bounds)
 
 # ________AaAaAaAa
 # _______aAaAaAaA_
@@ -423,3 +452,64 @@ def collect_template_units(
 # ___bBbBbBbB_____
 # __CcCcCcCc______
 # _DBbBbBbB_______
+
+# TODO:
+# [ Optimisation ]
+#
+# - Implement checksum tuple in Template class
+# - output coordinates of moves
+#
+# - move to template.py
+def hoist(source: mp.Matrix | mp.Template, *,
+    checksum: list[int]=[],
+    relative: bool=False,
+) -> mp.Map:
+    """
+    collect non-empty bits to the top of matrix in-place and produce a corresponding map
+    """
+
+    if not isinstance(checksum, list):
+        raise TypeError(f"checksum must be a list got {type(checksum)}")
+
+    match source:
+        case mp.Matrix():
+            matrix = source.matrix
+        case mp.Template():
+            matrix = source.template
+        case _:
+            raise TypeError(f"source must be a Matrix or Template objects got {type(source)}")
+
+    bits = source.bits
+    if checksum == []:
+        checksum = [0]*bits
+
+
+    y_start = checksum.index(1)
+    y_end   = 8-checksum[::-1].index(1) if 1 in checksum else bits
+    map_    = mp.empty_matrix(bits)
+
+    for y in range(y_start, y_end):
+        map_[y] = ['00']*(bits << 1)
+    # implement x_start, x_end when checksums moved
+    for x in range(bits << 1):
+        y = y_start
+        k = 0
+        offset = 0
+        column = ['0']*(y_end - y_start)
+        while y < y_end:
+            if matrix[y][x] == '_':
+                offset += 1
+                val = 0
+            else:
+                val = ((offset ^ 255) + 1) # 2s complement
+                column[k]    = matrix[y][x]
+                matrix[y][x] = '_'
+                k += 1
+
+            map_[y][x] = f"{val:02X}"[-2:]
+            y += 1
+
+        for y in range(k):
+            matrix[y][x] = column[y]
+
+    return mp.Map(map_)
