@@ -132,8 +132,9 @@ def test_err_duplicate_units() -> None:
 
 def main():
     # test_step()
-    # test_exec(15, 15)
+    test_exec(15, 15)
     test_exec(255, 255)
+    test_exec(23, 17)
     # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()

@@ -165,14 +165,15 @@ class Algorithm():
 
                     # -- binary addition ----------------------------
                     bits_ = sum(checksum)
-                    print('check:\n',checksum)
-                    cout  = 1 if bits_ < self.bits*2 else 0
+                    print('check:\n',bits_, checksum)
+                    cout  = 1 if not checksum[0] else 0
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
                     print(f"{int_a+int_b:0{bits_}b}")
+                    print(cout)
                     output     = [['_']*(start-1)]
                     output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
-                    output[0] += ['_']*(n-bits_-1)
+                    output[0] += ['_']*(n-bits_-cout)
                     print(bits_, cout, output[0])
 
 
