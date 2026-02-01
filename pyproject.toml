@@ -1,6 +1,6 @@
 [project]
 name = "multiplied"
-version = "0.3.4"
+version = "0.4.0"
 description = "A powerful tool to build, test, and analyse multiplier designs."
 readme = "README.md"
 license = "AGPL-3.0-or-later"
