@@ -326,12 +326,12 @@ class Algorithm():
         if a == 0 or b == 0:
             return {0: mp.Matrix(self.bits)}
         self.matrix = mp.Matrix(self.bits, a=a, b=b)
-        truth = {}
+        truth = {0: self.matrix}
         self.state = 0
         for n in range(len(self.algorithm)):
             # mp.mprint(self.algorithm[n]['template'].template)
             self.__reduce()
-            truth[n] = deepcopy(self.matrix)
+            truth[n+1] = deepcopy(self.matrix)
         self.state = 0
         return truth
 
