@@ -1,20 +1,5 @@
 # Roadmap
 
-## Structures
-
-The entire library functions via three structures: Algorithms which initialise a
-Matrix which are then subsequesntly reduced by templates.
-
-- [x] Algorithm, Matrix and Template classes formalised
-- [x] Correctly implement custom Types. (Templates need work -- Slices implemented)
-- [x] simple templates
-- [ ] Complex templates
-- [x] Simple reduction
-- [ ] Complex reduction
-- [x] Simple row map
-- [ ] Complex map matrix
-- [ ] Algorithm.state and .step()
-
 ## Algorithm
 
 Wallace Tree multipliers will be the first focus of the library, before moving
@@ -22,10 +7,10 @@ onto [Dadda](https://en.wikipedia.org/wiki/Dadda_multiplier) and signed multipli
 
 Basic functionality; "simple templates", generate, analyse:
 
-- [ ] 4-bit unsaturated multiplied [Built-in]
-- [ ] 8-bit unsaturated multiplied [Built-in]
-- [ ] 4-bit saturated multiplied [Built-in]
-- [ ] 8-bit saturated multiplied [Built-in]
+- [x] 4-bit unsaturated multiplier [Built-in]
+- [x] 8-bit unsaturated multiplier [Built-in]
+- [ ] 4-bit saturated multiplier [Built-in]
+- [ ] 8-bit saturated multiplier [Built-in]
 
 ## IO
 
@@ -60,9 +45,9 @@ before tackling:
 
 - [ ] Testing suite - Pytest
 - [ ] Multiprocessing support to handle higher bit-widths
-- [ ] 16-bit unsaturated multiplied
-- [ ] 16-bit saturated multiplied
-- [ ] Refactor code to use bytes/bytearray to prepare for rust intergration
+- [ ] 16-bit unsaturated multiplier
+- [ ] 16-bit saturated multiplier
+- [ ] Refactor code to use bytes/bytearray to prepare for rust integration
 - [ ] Use [rust](https://github.com/PyO3/pyo3)?
 - [ ] Use [numba](https://numba.pydata.org/)?
 - [ ] Research if 32/64/128-bit analysis latency is reasonable (1min? 5min? ???)
@@ -71,7 +56,7 @@ before tackling:
 
 Supported algoithms:
 
-- [ ] [Wallace Tree](https://en.wikipedia.org/wiki/Wallace_tree)
+- [x] [Wallace Tree](https://en.wikipedia.org/wiki/Wallace_tree)
 - [ ] [Dadda multiplier](https://en.wikipedia.org/wiki/Dadda_multiplier)
 - [ ] [Baugh–Wooley algorithm](https://www.researchgate.net/figure/llustration-of-an-8-bit-Baugh-Wooley-multiplication_fig2_224349123)
 - [ ] [Booths Multiplication Algorithm](https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm)
@@ -88,7 +73,22 @@ Once the library is stable and optimised:
 
 ## Implemented
 
-### *Starting point*
+### *Structures*
+
+The entire library functions via three structures: Algorithms which initialise a
+Matrix which are then subsequently reduced by templates.
+
+- [x] Algorithm, Matrix and Template classes formalised
+- [x] Correctly implement custom Types. (Templates need work -- Slices implemented)
+- [x] simple templates
+- [x] Complex templates
+- [x] Simple reduction
+- [x] Complex reduction
+- [x] Simple row map
+- [x] Complex map matrix
+- [x] Algorithm.state, .exec() and .step()
+
+### *Starting Point*
 
 - [x] Manage dependencies and automatically resolve them -- [uv](https://docs.astral.sh/uv/)?
 - [x] Find optimal data structure for reduction stages
