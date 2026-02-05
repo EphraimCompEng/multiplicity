@@ -15,7 +15,8 @@ Basic functionality; "simple templates", generate, analyse:
 ## IO
 
 - [x] Truth table generation -> json
-- [ ] Algorithm -> json -> Algorithm
+- [x] Algorithm -> json
+- [ ] json -> Algorithm
 - [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
 - [ ] Truth table generation -> Parquet
 
