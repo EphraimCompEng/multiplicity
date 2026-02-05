@@ -26,9 +26,12 @@ def test_import_algorithm() -> None:
     mp.import_algorithm(path)
 
 
+
+
+
 def main() -> None:
     test_export_algorithm()
-    test_import_algorithm()
+
 
 if __name__ == "__main__":
     main()

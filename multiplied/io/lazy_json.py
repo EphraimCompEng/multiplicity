@@ -68,26 +68,26 @@ def import_algorithm(path: str) -> Algorithm:
     # Low priority
     raise NotImplementedError("import_algorithm is not implemented yet")
 
-    validate_path(path)
-    from multiplied import Template, Matrix, Map
-    with open(path, 'r') as f:
-        payload = json.load(f)
+    # validate_path(path)
+    # from multiplied import Template, Matrix, Map
+    # with open(path, 'r') as f:
+    #     payload = json.load(f)
 
-    print()
-    print(payload)
+    # print()
+    # print(payload)
 
-    alg = Algorithm(payload['matrix'])
-    alg.state = payload['state']
+    # alg = Algorithm(payload['matrix'])
+    # alg.state = payload['state']
 
-    pretty_alg = payload['algorithm']
-    true_alg = {}
-    for i, stage in pretty_alg.items():
-        true_alg[i] = {}
-        for k, step in stage.items():
-            if step == 'Template':
+    # pretty_alg = payload['algorithm']
+    # true_alg = {}
+    # for i, stage in pretty_alg.items():
+    #     true_alg[i] = {}
+    #     for k, step in stage.items():
+    #         if step == 'Template':
                 # test if result included
 
-            alg[i][k] = [[str(step)[:-1].split('')] for ]
+            # alg[i][k] = [[str(step)[:-1].split('')] for ]
 
 
-    return alg
+    # return alg
