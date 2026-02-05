@@ -3,6 +3,7 @@
 ###################################
 
 import multiplied as mp
+import pandas as pd
 from collections.abc import Generator
 
 
@@ -82,3 +83,25 @@ def truth_table(scope: Generator, alg: mp.Algorithm
 
     for a, b in scope:
         yield alg.exec(a=a, b=b)
+
+def truth_dataframe(scope: Generator[tuple], alg: mp.Algorithm
+) -> pd.DataFrame:
+    """
+    Return a pandas DataFrame of all stages of an algorithm for a given
+    set of operands a, b.
+    """
+    if not isinstance(scope, Generator):
+        raise TypeError("Scope must be a generator.")
+    if not isinstance(alg, mp.Algorithm):
+        raise TypeError(f"Expected Algorithm instance got {type(alg)}")
+
+    data = {}
+    for a, b in scope:
+        output = alg.exec(a=a, b=b)
+        for k, v in output.items():
+            for i in range(alg.bits):
+                # columns:: index | a | b | ppm_0 | ppm_1 | ... | ppm_s0 | ppm_s1
+                # ppm = partial product matrix, _<index> = row , _s<index> = formatted row
+                # df row = index | a | b | output | matrix[i]: int | ... | matrix[i]: str | ... |
+                ...
+    return pd.DataFrame(data)

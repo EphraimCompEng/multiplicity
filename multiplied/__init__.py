@@ -45,6 +45,7 @@ from .core.algorithm import (
 from .core.truth import (
     truth_scope,
     truth_table,
+    truth_dataframe,
     shallow_truth_table,
 )
 
@@ -143,6 +144,7 @@ __all__ = [
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
+    'truth_dataframe',
     'Map',
     'ischar',
     'isalpha',
