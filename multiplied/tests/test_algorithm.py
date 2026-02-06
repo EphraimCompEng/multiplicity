@@ -202,24 +202,25 @@ def test_exec_docs() -> None:
     alg = mp.Algorithm(m)
     alg.push(p)
     alg.auto_resolve_stage()
-    # print(alg)
-    a=5
-    b=7
+    a=42
+    b=255
     for m in alg.exec(a=a, b=b).values():
         print(m)
+
+    # convert result to decimal
     print(int("".join(alg.matrix.matrix[0]), 2))
     print(a*b)
 
 
 def main():
     test_exec_docs()
-    test_step()
-    test_exec(15, 15)
-    test_exec(255, 255)
-    test_exec(23, 17)
-    test_algorithm_reuse_8(255, 255)
-    test_algorithm_reuse_4(4, 7)
-    test_manual_population_8()
+    # test_step()
+    # test_exec(15, 15)
+    # test_exec(255, 255)
+    # test_exec(23, 17)
+    # test_algorithm_reuse_8(255, 255)
+    # test_algorithm_reuse_4(4, 7)
+    # test_manual_population_8()
     # test_auto_resolve_recursive_full_8()
     # test_auto_resolve_recursive_full_4()
     # test_isolate_arithmetic_units()
