@@ -275,8 +275,7 @@ class Algorithm():
     def auto_resolve_stage(self, *, recursive=True,
     ) -> None:
         """
-        Automatically resolve pattern using the previous stage and creates
-        a new algorithm stage.
+        Automatically creates new algorithm stage to reduce the previous stage.
 
         Options:
             recursive: Recursively resolve until no partial products remain
