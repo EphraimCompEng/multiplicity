@@ -95,13 +95,27 @@ def truth_dataframe(scope: Generator[tuple], alg: mp.Algorithm
     if not isinstance(alg, mp.Algorithm):
         raise TypeError(f"Expected Algorithm instance got {type(alg)}")
 
+    # -- old plan ---------------------------------------------------
+    # columns:: index | a | b | ppm_0 | ppm_1 | ... | ppm_s0 | ppm_s1 | ...
+    # ppm = partial product matrix, _<index> = row , _s<index> = formatted row
+    # df row = index | a | b | output | matrix[i]: int | ... | matrix[i]: str | ... |
+
+    # -- new multi-index plan ---------------------------------------
+    #               | ppm_0              | ppm_1              |
+    # index | a | b | b0 | b1 | ... | bn | b0 | b1 | ... | bn | ... | ppm_s0 | ppm_s1 | ...
+    # 0     | 0 | 5 | 0  | 0  | ... | 0  | 0  | 0  | ... | 0  | ... |'000...'|'000...'| ...
+
     data = {}
     for a, b in scope:
         output = alg.exec(a=a, b=b)
-        for k, v in output.items():
-            for i in range(alg.bits):
-                # columns:: index | a | b | ppm_0 | ppm_1 | ... | ppm_s0 | ppm_s1
-                # ppm = partial product matrix, _<index> = row , _s<index> = formatted row
-                # df row = index | a | b | output | matrix[i]: int | ... | matrix[i]: str | ... |
-                ...
+        for index, stage in output.items():
+            formatted_rows = stage.matrix
+            integer_rows = [0]*alg.bits
+            for i in range(alg.bits): # convert formatted rows to int
+                i_row = ['0' if x == '_' else x for x in stage.matrix[i]]
+                integer_rows[i] = int(''.join(i_row))
+
+
+
+
     return pd.DataFrame(data)
