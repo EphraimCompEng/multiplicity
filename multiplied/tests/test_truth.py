@@ -1,4 +1,5 @@
 import multiplied as mp
+import pandas as pd
 
 
 
@@ -39,11 +40,24 @@ def test_truth_table() -> None:
         for k, v in m.items():
             print(v)
 
+
+def test_truth_dataframe() -> None:
+    for x in mp.truth_scope((1, 15), (1, 10)):
+        print(x)
+    scope = mp.truth_scope((1, 15), (1, 10))
+    alg = mp.Algorithm(mp.Matrix(4))
+    alg.auto_resolve_stage()
+    t = mp.truth_table(scope, alg)
+    df = mp.truth_dataframe(scope, alg)
+    print(df)
+
+
 def main() -> None:
-    test_scope()
-    test_shallow_generator4()
-    test_shallow_generator8()
-    test_truth_table()
+    # test_scope()
+    # test_shallow_generator4()
+    # test_shallow_generator8()
+    # test_truth_table()
+    test_truth_dataframe()
 
 
 

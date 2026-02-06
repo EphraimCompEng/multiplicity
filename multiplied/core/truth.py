@@ -2,6 +2,7 @@
 # Generate Multiplier Truth Table #
 ###################################
 
+from pprint import pprint
 import multiplied as mp
 import pandas as pd
 from collections.abc import Generator
@@ -84,7 +85,7 @@ def truth_table(scope: Generator, alg: mp.Algorithm
     for a, b in scope:
         yield alg.exec(a=a, b=b)
 
-def truth_dataframe(scope: Generator[tuple], alg: mp.Algorithm
+def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
 ) -> pd.DataFrame:
     """
     Return a pandas DataFrame of all stages of an algorithm for a given
@@ -105,17 +106,44 @@ def truth_dataframe(scope: Generator[tuple], alg: mp.Algorithm
     # index | a | b | b0 | b1 | ... | bn | b0 | b1 | ... | bn | ... | ppm_s0 | ppm_s1 | ...
     # 0     | 0 | 5 | 0  | 0  | ... | 0  | 0  | 0  | ... | 0  | ... |'000...'|'000...'| ...
 
-    data = {}
+
+    bits = alg.bits
+    col = pd.MultiIndex.from_product([
+        [f"stage_{i}" for i in alg.algorithm],
+        [f"ppm_{i}" for i in range(bits)],
+        [f"b{i}" for i in range(bits << 1)]
+
+    ])
+
+
+
+
+    dtype_map = {c: 'int8' for c in col}
+    df = pd.DataFrame(columns=col).astype(dtype_map)
+    print(df)
+    print(col)
+    print({(1,2): 5})
+    data = []
+    operands = []
+    pretty = []
     for a, b in scope:
+        entry = {}
+        pretty_entry = []
         output = alg.exec(a=a, b=b)
-        for index, stage in output.items():
-            formatted_rows = stage.matrix
-            integer_rows = [0]*alg.bits
-            for i in range(alg.bits): # convert formatted rows to int
-                i_row = ['0' if x == '_' else x for x in stage.matrix[i]]
-                integer_rows[i] = int(''.join(i_row))
+        operands.append((a, b, a*b))
+        for stage, matrix in output.items():
+            pretty_entry.append(str(matrix).split('\n'))
+            for r, row in enumerate(matrix):
+                for b, bit in enumerate(row):
+                    entry[
+                        (f"stage_{stage}",f"ppm_{r}",f"b{b}")
+                    ] = 0 if bit in ['_', '0'] else 1
+        data.append(entry)
+        pretty.append(pretty_entry)
 
-
-
-
-    return pd.DataFrame(data)
+    ind = pd.DataFrame(operands, columns=['a', 'b', 'output'])
+    table = pd.DataFrame(data, columns=col).astype(dtype_map)
+    end_col = pd.DataFrame(pretty, columns=[f"ppm_s{i}" for i in range(bits)])
+    print(ind)
+    print(end_col)
+    return pd.concat([ind, table, end_col], axis=1)
