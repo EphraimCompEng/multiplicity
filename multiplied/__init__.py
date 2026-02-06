@@ -45,6 +45,7 @@ from .core.algorithm import (
 from .core.truth import (
     truth_scope,
     truth_table,
+    truth_dataframe,
     shallow_truth_table,
 )
 
@@ -77,6 +78,8 @@ from .core.utils.bool import (
 # -- io -------------------------------------------------------------
 
 from .io.lazy_json import (
+    export_algorithm,
+    import_algorithm,
     json_pretty_store,
 )
 
@@ -92,7 +95,7 @@ from .io.lazy_json import (
 # from .tests.test_population import (
 #     test_pop_empty_matrix,
 #     test_pop_build_matrix,
-#     test_pop_agorithm,
+#     test_pop_algorithm,
 # )
 
 # from .tests.test_templates import (
@@ -141,7 +144,7 @@ __all__ = [
     'truth_scope',
     'shallow_truth_table',
     'truth_table',
-    'json_pretty_store',
+    'truth_dataframe',
     'Map',
     'ischar',
     'isalpha',
@@ -153,5 +156,8 @@ __all__ = [
     'pretty',
     'mprint',
     'validate_bitwidth',
+    'export_algorithm',
+    'import_algorithm',
+    'json_pretty_store',
     'MP_VERSION',
 ]
