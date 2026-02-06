@@ -42,9 +42,9 @@ def test_truth_table() -> None:
 
 
 def test_truth_dataframe() -> None:
-    for x in mp.truth_scope((1, 15), (1, 10)):
+    for x in mp.truth_scope((1, 15), (1, 225)):
         print(x)
-    scope = mp.truth_scope((1, 15), (1, 10))
+    scope = mp.truth_scope((1, 15), (1, 225))
     alg = mp.Algorithm(mp.Matrix(4))
     alg.auto_resolve_stage()
     t = mp.truth_table(scope, alg)
