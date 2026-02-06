@@ -124,7 +124,7 @@ class Algorithm():
         results       = {}
 
         # -- reduce -------------------------------------------------
-        n = self.bits*2
+        n = self.bits << 1
         for ch, unit in units.items():
             base_index = bounds[ch][0][1]
             match sum(unit.checksum):
@@ -162,14 +162,14 @@ class Algorithm():
 
                     # -- binary addition ----------------------------
                     bits_ = sum(checksum)
-
                     cout  = 1 if not checksum[0] else 0
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
 
+                    # print(bits_+cout, f"{int_a+int_b:0{bits_+cout}b}")
                     output     = [['_']*(start-cout)]
                     output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
-                    output[0] += ['_']*(n-bits_-cout)
+                    output[0] += ['_']*(n-bits_-start)
 
 
                 case 3: # CSA
@@ -219,11 +219,13 @@ class Algorithm():
                     raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
 
             # -- build unit into matrix -----------------------------
-            unit_result = [['_']*(self.bits*2) for _ in range(base_index)]
+            # mp.mprint(output)
+            unit_result = [['_']*(self.bits << 1) for _ in range(base_index)]
             for row in output:
                 unit_result.append(row)
             for _ in range(base_index+len(output), self.bits):
-                unit_result.append(['_']*(self.bits*2))
+                unit_result.append(['_']*(self.bits << 1))
+
             results[ch] = mp.Matrix(unit_result)
 
 
@@ -330,6 +332,7 @@ class Algorithm():
         self.state = 0
         for n in range(len(self.algorithm)):
             # mp.mprint(self.algorithm[n]['template'].template)
+            # mp.mprint(self.matrix)
             self.__reduce()
             truth[n+1] = deepcopy(self.matrix)
         self.state = 0
