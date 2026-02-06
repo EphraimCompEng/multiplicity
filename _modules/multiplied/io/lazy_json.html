@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=6c02275b"></script>
+    <script defer src="../../../_static/documentation_options.js?v=c87aa342"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=88787f40"></script>
@@ -152,16 +152,30 @@
 </label></header><article class="bz-article-main" role="main">
   <h1>Source code for multiplied.io.lazy_json</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="kn">import</span> <span class="n">Algorithm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 
+<div class="viewcode-block" id="validate_path">
+<a class="viewcode-back" href="../../../api/multiplied.io.html#multiplied.validate_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;path must be a string&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;path must end with .json&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># ! Need revisiting once loading and storing to .parquet established</span>
 <div class="viewcode-block" id="json_pretty_store">
 <a class="viewcode-back" href="../../../api/multiplied.io.html#multiplied.json_pretty_store">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">json_pretty_store</span><span class="p">(</span><span class="n">gen</span><span class="p">:</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">json_pretty_store</span><span class="p">(</span><span class="n">gen</span><span class="p">:</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Format objects produced by generator then send to JSON file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">Generator</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;gen must be a generator&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
             <span class="n">pretty</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">:</span>
@@ -177,6 +191,71 @@
             <span class="p">}</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="export_algorithm">
+<a class="viewcode-back" href="../../../api/multiplied.io.html#multiplied.export_algorithm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_algorithm</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">Algorithm</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Export multiplied algorithm to JSON file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">Algorithm</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;source must be an Algorithm&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+    <span class="c1"># -- convert multiplied objects to built-in ---------------------</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;bits&#39;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
+        <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">matrix</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)],</span>
+    <span class="p">}</span>
+
+    <span class="n">alg</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">alg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">stage</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">alg</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">step</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)]</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alg</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="import_algorithm">
+<a class="viewcode-back" href="../../../api/multiplied.io.html#multiplied.import_algorithm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">import_algorithm</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Algorithm</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Import multiplied algorithm from JSON file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Low priority</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;import_algorithm is not implemented yet&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># validate_path(path)</span>
+    <span class="c1"># from multiplied import Template, Matrix, Map</span>
+    <span class="c1"># with open(path, &#39;r&#39;) as f:</span>
+    <span class="c1">#     payload = json.load(f)</span>
+
+    <span class="c1"># print()</span>
+    <span class="c1"># print(payload)</span>
+
+    <span class="c1"># alg = Algorithm(payload[&#39;matrix&#39;])</span>
+    <span class="c1"># alg.state = payload[&#39;state&#39;]</span>
+
+    <span class="c1"># pretty_alg = payload[&#39;algorithm&#39;]</span>
+    <span class="c1"># true_alg = {}</span>
+    <span class="c1"># for i, stage in pretty_alg.items():</span>
+    <span class="c1">#     true_alg[i] = {}</span>
+    <span class="c1">#     for k, step in stage.items():</span>
+    <span class="c1">#         if step == &#39;Template&#39;:</span>
+                <span class="c1"># test if result included</span>
+
+            <span class="c1"># alg[i][k] = [[str(step)[:-1].split(&#39;&#39;)] for ]</span>
+
+
+    <span class="c1"># return alg</span>
 </pre></div>
 </article><footer class="bz-article-footer">
   

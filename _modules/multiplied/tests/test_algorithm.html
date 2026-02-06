@@ -13,7 +13,7 @@
     </style>
   </noscript>
   
-    <script defer src="../../../_static/documentation_options.js?v=6c02275b"></script>
+    <script defer src="../../../_static/documentation_options.js?v=c87aa342"></script>
     <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../../../_static/scripts/breeze.js?v=88787f40"></script>
@@ -347,17 +347,70 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="test_algorithm_reuse_4">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_algorithm.test_algorithm_reuse_4">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_algorithm_reuse_4</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">alg</span> <span class="o">=</span> <span class="n">gen_resources</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">alg</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">alg</span><span class="o">.</span><span class="n">auto_resolve_stage</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="mi">15</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">15</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="mi">2</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">9</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="c1"># mp.mprint(v[&#39;pseudo&#39;])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="mi">15</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">13</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="c1"># mp.mprint(v[&#39;pseudo&#39;])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_exec_docs">
+<a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_algorithm.test_exec_docs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_exec_docs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+    <span class="n">alg</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Algorithm</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">alg</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">alg</span><span class="o">.</span><span class="n">auto_resolve_stage</span><span class="p">()</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">42</span>
+    <span class="n">b</span><span class="o">=</span><span class="mi">255</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">alg</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="c1"># convert result to decimal</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_algorithm.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">test_exec_docs</span><span class="p">()</span>
     <span class="c1"># test_step()</span>
-    <span class="n">test_exec</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-    <span class="n">test_exec</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-    <span class="n">test_exec</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-    <span class="n">test_algorithm_reuse_8</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="c1"># test_exec(15, 15)</span>
+    <span class="c1"># test_exec(255, 255)</span>
+    <span class="c1"># test_exec(23, 17)</span>
+    <span class="c1"># test_algorithm_reuse_8(255, 255)</span>
+    <span class="c1"># test_algorithm_reuse_4(4, 7)</span>
     <span class="c1"># test_manual_population_8()</span>
     <span class="c1"># test_auto_resolve_recursive_full_8()</span>
     <span class="c1"># test_auto_resolve_recursive_full_4()</span>

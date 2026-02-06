@@ -9,7 +9,12 @@
 <meta property="og:url" content="api/multiplied.core.html" />
 <meta property="og:site_name" content="multiplied" />
 <meta property="og:description" content="Subpackages: multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()., multiplied.core.templat..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="_images/social_previews/summary_api_multiplied.core_ac458fc6.png" />
+<meta property="og:image:alt" content="Subpackages: multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()., multiplied.core.templat..." />
 <meta name="description" content="Subpackages: multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()., multiplied.core.templat..." />
+<meta name="twitter:card" content="summary_large_image" />
 
     <title>multiplied.core package &#8212; multiplied</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -20,7 +25,7 @@
     </style>
   </noscript>
   
-    <script defer src="../_static/documentation_options.js?v=6c02275b"></script>
+    <script defer src="../_static/documentation_options.js?v=c87aa342"></script>
     <script defer src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../_static/scripts/breeze.js?v=88787f40"></script>
@@ -241,8 +246,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="multiplied.core.algorithm.Algorithm.auto_resolve_stage">
 <span class="sig-name descname"><span class="pre">auto_resolve_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.auto_resolve_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.algorithm.Algorithm.auto_resolve_stage" title="Link to this definition">#</a></dt>
-<dd><p>Automatically resolve pattern using the previous stage and creates
-a new algorithm stage.</p>
+<dd><p>Automatically creates new algorithm stage to reduce the previous stage.</p>
 <dl class="simple">
 <dt>Options:</dt><dd><p>recursive: Recursively resolve until no partial products remain</p>
 </dd>
@@ -642,21 +646,22 @@ Returns template “slices” and resulting slice. Target row unaffected</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">alg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.algorithm.Algorithm" title="multiplied.core.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#shallow_truth_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.shallow_truth_table" title="Link to this definition">#</a></dt>
-<dd><p>Return Generator of logical AND matrices for a given set of operands a, b.
-Generated operands should be in the form tuple(a, b).</p>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#shallow_truth_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.shallow_truth_table" title="Link to this definition">#</a></dt>
+<dd><p>Return Generator of partial product matrices for all operand tuples</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="multiplied.core.truth.trim">
-<span class="sig-prename descclassname"><span class="pre">multiplied.core.truth.</span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span>
+<dt class="sig sig-object py" id="multiplied.core.truth.truth_dataframe">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.truth.</span></span><span class="sig-name descname"><span class="pre">truth_dataframe</span></span><span class="sig-paren">(</span>
 
 <dl>
-<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">alg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.algorithm.Algorithm" title="multiplied.core.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#trim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.trim" title="Link to this definition">#</a></dt>
-<dd><p>Trim empty rows from a matrix</p>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Return a pandas DataFrame of all stages of an algorithm for a given
+set of operands a, b.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -668,9 +673,11 @@ Generated operands should be in the form tuple(a, b).</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">range_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_scope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_scope" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_scope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_scope" title="Link to this definition">#</a></dt>
 <dd><p>A generator based on the domain and range of a desired truth table.</p>
-<p>Yeilds tuple: (operand_a, operand_b)</p>
+<p><a href="#id1"><span class="problematic" id="id2">Domain_</span></a>: A tuple of integers representing the range of input values.
+<a href="#id3"><span class="problematic" id="id4">Range_</span></a>: A tuple of integers representing the range of output values.</p>
+<p>Yields tuple: (operand_a, operand_b)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -682,7 +689,7 @@ Generated operands should be in the form tuple(a, b).</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">alg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#multiplied.core.algorithm.Algorithm" title="multiplied.core.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_table" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_table" title="Link to this definition">#</a></dt>
 <dd><p>A generator which yields all stages of an algorithm for a given
 set of operands a, b.</p>
 </dd></dl>
@@ -766,7 +773,7 @@ set of operands a, b.</p>
 </li>
 <li><a class="reference internal" href="#module-multiplied.core.truth">multiplied​.core​.truth module</a><ul>
 <li><a class="reference internal" href="#multiplied.core.truth.shallow_truth_table"><code class="docutils literal notranslate"><span class="pre">shallow_​truth_​table()</span></code></a></li>
-<li><a class="reference internal" href="#multiplied.core.truth.trim"><code class="docutils literal notranslate"><span class="pre">trim()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.truth.truth_dataframe"><code class="docutils literal notranslate"><span class="pre">truth_​dataframe()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.truth.truth_scope"><code class="docutils literal notranslate"><span class="pre">truth_​scope()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.truth.truth_table"><code class="docutils literal notranslate"><span class="pre">truth_​table()</span></code></a></li>
 </ul>

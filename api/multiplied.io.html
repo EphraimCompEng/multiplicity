@@ -9,7 +9,12 @@
 <meta property="og:url" content="api/multiplied.io.html" />
 <meta property="og:site_name" content="multiplied" />
 <meta property="og:description" content="Submodules: multiplied.io.lazy_json module: multiplied.io.parquet module: Module contents:" />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="_images/social_previews/summary_api_multiplied.io_565f9028.png" />
+<meta property="og:image:alt" content="Submodules: multiplied.io.lazy_json module: multiplied.io.parquet module: Module contents:" />
 <meta name="description" content="Submodules: multiplied.io.lazy_json module: multiplied.io.parquet module: Module contents:" />
+<meta name="twitter:card" content="summary_large_image" />
 
     <title>multiplied.io package &#8212; multiplied</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -20,7 +25,7 @@
     </style>
   </noscript>
   
-    <script defer src="../_static/documentation_options.js?v=6c02275b"></script>
+    <script defer src="../_static/documentation_options.js?v=c87aa342"></script>
     <script defer src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script defer src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer src="../_static/scripts/breeze.js?v=88787f40"></script>
@@ -181,21 +186,56 @@
 <section id="module-multiplied.io.lazy_json">
 <span id="multiplied-io-lazy-json-module"></span><h2>multiplied.io.lazy_json module<a class="headerlink" href="#module-multiplied.io.lazy_json" title="Link to this heading">#</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="multiplied.io.lazy_json.export_algorithm">
+<span class="sig-prename descclassname"><span class="pre">multiplied.io.lazy_json.</span></span><span class="sig-name descname"><span class="pre">export_algorithm</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multiplied.core.html#multiplied.core.algorithm.Algorithm" title="multiplied.core.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/io/lazy_json.html#export_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.io.lazy_json.export_algorithm" title="Link to this definition">#</a></dt>
+<dd><p>Export multiplied algorithm to JSON file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.io.lazy_json.import_algorithm">
+<span class="sig-prename descclassname"><span class="pre">multiplied.io.lazy_json.</span></span><span class="sig-name descname"><span class="pre">import_algorithm</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="multiplied.core.html#multiplied.core.algorithm.Algorithm" title="multiplied.core.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></span><a class="reference internal" href="../_modules/multiplied/io/lazy_json.html#import_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.io.lazy_json.import_algorithm" title="Link to this definition">#</a></dt>
+<dd><p>Import multiplied algorithm from JSON file</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="multiplied.io.lazy_json.json_pretty_store">
 <span class="sig-prename descclassname"><span class="pre">multiplied.io.lazy_json.</span></span><span class="sig-name descname"><span class="pre">json_pretty_store</span></span><span class="sig-paren">(</span>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">gen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/io/lazy_json.html#json_pretty_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.io.lazy_json.json_pretty_store" title="Link to this definition">#</a></dt>
 <dd><p>Format objects produced by generator then send to JSON file</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.io.lazy_json.validate_path">
+<span class="sig-prename descclassname"><span class="pre">multiplied.io.lazy_json.</span></span><span class="sig-name descname"><span class="pre">validate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/io/lazy_json.html#validate_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.io.lazy_json.validate_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-multiplied.io.parquet">
 <span id="multiplied-io-parquet-module"></span><h2>multiplied.io.parquet module<a class="headerlink" href="#module-multiplied.io.parquet" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.io.parquet.export_parquet">
+<span class="sig-prename descclassname"><span class="pre">multiplied.io.parquet.</span></span><span class="sig-name descname"><span class="pre">export_parquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/io/parquet.html#export_parquet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.io.parquet.export_parquet" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-multiplied.io">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-multiplied.io" title="Link to this heading">#</a></h2>
@@ -219,10 +259,16 @@
   <p>On this page</p><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-multiplied.io.lazy_json">multiplied​.io​.lazy_​json module</a><ul>
+<li><a class="reference internal" href="#multiplied.io.lazy_json.export_algorithm"><code class="docutils literal notranslate"><span class="pre">export_​algorithm()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.io.lazy_json.import_algorithm"><code class="docutils literal notranslate"><span class="pre">import_​algorithm()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.io.lazy_json.json_pretty_store"><code class="docutils literal notranslate"><span class="pre">json_​pretty_​store()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.io.lazy_json.validate_path"><code class="docutils literal notranslate"><span class="pre">validate_​path()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-multiplied.io.parquet">multiplied​.io​.parquet module</a></li>
+<li><a class="reference internal" href="#module-multiplied.io.parquet">multiplied​.io​.parquet module</a><ul>
+<li><a class="reference internal" href="#multiplied.io.parquet.export_parquet"><code class="docutils literal notranslate"><span class="pre">export_​parquet()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-multiplied.io">Module contents</a></li>
 </ul></nav>
   
