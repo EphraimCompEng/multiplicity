@@ -115,15 +115,11 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
 
     ])
 
-
-
-
     dtype_map = {c: 'int8' for c in col}
 
     data     = []
     pretty   = []
     operands = []
-
     for a, b in scope:
         entry        = {}
         output       = alg.exec(a=a, b=b)

@@ -83,8 +83,11 @@ from .io.lazy_json import (
     json_pretty_store,
 )
 
-# from .io.parquet import()
-#
+from .io.parquet import(
+    export_parquet,
+    import_parquet,
+)
+
 
 
 # -- External -------------------------------------------------------
@@ -159,5 +162,7 @@ __all__ = [
     'export_algorithm',
     'import_algorithm',
     'json_pretty_store',
+    'export_parquet',
+    'import_parquet',
     'MP_VERSION',
 ]
