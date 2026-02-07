@@ -5,6 +5,7 @@
 from pprint import pprint
 import multiplied as mp
 import pandas as pd
+from multiprocessing import Pool
 from collections.abc import Generator
 
 
@@ -17,7 +18,8 @@ simplification, etc., before applying multiprocessing and beyond.
 """
 
 
-def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator[tuple]:
+def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
+) -> Generator[tuple]:
     """
     A generator based on the domain and range of a desired truth table.
 
@@ -48,16 +50,18 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]) -> Generator[tu
         raise ValueError("Minimum output value greater than maximum input value.")
 
 
-    valid_domain = set()
-    # x could be set by value cl
+    # TODO: Wrap logic into a multiprocessing pool
     x = min_in
     while x <= max_in:
-        for y in range(min_in, max_in + 1):
-            if min_out <= x*y <= max_out:
-                valid_domain.add((x, y))
-
+        lower_bound = min_out//x if min_out//x > min_in else min_in
+        upper_bound = max_out//x if max_out//x < max_in else max_in
+        for y in range(lower_bound, upper_bound):
+            if min_out <= (k := x*y) <= max_out:
+                yield (x, y)
+            if max_out < k:
+                break
         x += 1
-    return (i for i in sorted(valid_domain))
+
 
 
 
@@ -126,7 +130,7 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
         pretty_entry = []
         operands.append((a, b, a*b))
         for stage, matrix in output.items():
-            pretty_entry.append(str(matrix).split('\n'))
+            pretty_entry.append(str(matrix).split('\n')[:-1])
             for r, row in enumerate(matrix):
                 for b, bit in enumerate(row):
                     entry[
@@ -135,7 +139,10 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
         data.append(entry)
         pretty.append(pretty_entry)
 
-    ind     = pd.DataFrame(operands, columns=['a', 'b', 'output'])
-    table   = pd.DataFrame(data, columns=col).astype(dtype_map)
-    end_col = pd.DataFrame(pretty, columns=[f"ppm_s{i}" for i in range(bits)])
-    return pd.concat([ind, table, end_col], axis=1)
+    table = pd.DataFrame(data, columns=col).astype(dtype_map)
+
+    operand_columns = pd.DataFrame(operands, columns=['a', 'b', 'output'])
+    ppm_s_columns   = [f"ppm_s{i}" for i in range(len(alg.algorithm)+1)]
+    pretty_columns  = pd.DataFrame(pretty, columns=ppm_s_columns, dtype='str')
+
+    return pd.concat([operand_columns, table, pretty_columns], axis=1)
