@@ -118,7 +118,6 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
     if not isinstance(alg, Algorithm):
         raise TypeError(f"Expected Algorithm instance got {type(alg)}")
 
-    from itertools import tee
     # -- old plan ---------------------------------------------------
     # columns:: index | a | b | ppm_0 | ppm_1 | ... | ppm_s0 | ppm_s1 | ...
     # ppm = partial product matrix, _<index> = row , _s<index> = formatted row
@@ -130,8 +129,11 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
     # 0     | 0 | 5 | 0  | 0  | ... | 0  | 0  | 0  | ... | 0  | ... |'000...'|'000...'| ...
 
 
-
+    # -- duplicate generators for each pool -------------------------
+    from itertools import tee
     scope1, scope2, scope3 = tee(scope, 3)
+
+    # Uses every available core
     with Pool() as pool:
         operands = pool.starmap(_dataframe_operand_worker, scope1)
         pretty   = pool.starmap(_dataframe_pretty_worker, ((a, b, alg) for a, b in scope2))
