@@ -49,9 +49,9 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
     pf = ParquetFile(path)
     first = next(pf.iter_batches(batch_size = 1))
     row = pa.Table.from_batches([first]).to_pandas()
-    pd.set_option('display.max_columns', None)
+    # pd.set_option('display.max_columns', None)
 
-    print(row)
+    # print(row)
 
     # Multiplied datasets will always include formatted string columns
     # with the rightmost columns dedicated to formatted strings.
@@ -65,7 +65,7 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
 
     # lists[str] converted to str by pandas, find length of first entry
     bits = row.loc[0]['ppm_s0'][2:].index("'") >> 1
-    print(total_stages,  bits)
+    # print(total_stages,  bits)
     # --------------------------------------------------------------- #
 
     # loop through stages and push to DataFrame
@@ -83,7 +83,7 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
 
     # Initialize DataFrame with stages as columns
     df = pd.read_parquet(path, columns=columns)
-    print(df)
+    # print(df)
     return df
 
 
