@@ -2,6 +2,7 @@
 # Classes to Represent And Manage Nested Lists #
 ################################################
 
+from copy import deepcopy
 import multiplied as mp
 from typing import Any, Iterator
 
@@ -83,8 +84,8 @@ class Matrix:
     def __init__(self, source: list[Any] | int, *,
         a: int=0,
         b: int=0,
-        x_checksum=[], # Add handling if supplied
-        y_checksum=[], # Add handling if supplied
+        # x_checksum=[], # Add handling if supplied
+        # y_checksum=[], # Add handling if supplied
     ) -> None:
         # -- sanity check -------------------------------------------
         if isinstance(source, int):
@@ -98,32 +99,32 @@ class Matrix:
         else:
             raise TypeError(f"Expected integer or nested list, got {type(source)}")
 
+        self.matrix = source
 
         # -- process custom matrix ----------------------------------
-        row_len  = self.bits << 1
-        x_checksum = [0] * row_len
-        y_checksum = [0] * self.bits
-        # ! needs refactor
-        for i, row in enumerate(source):
-            if not isinstance(row, (list, Slice)):
-                raise ValueError("Invalid input. Expected list or slice.")
-            if row_len != len(row):
-                raise ValueError("Inconsistent rows. Matrix must be 2m * m")
-            ch = 0
-            while ch < row_len:
-                if ch == row_len or row[ch] == '0' or row[ch] == '1':
-                    for x in range(ch, row_len):
-                        if row[x] == '_':
-                            break
-                        x_checksum[x] = 1
-                    y_checksum[i]
-                    break
-                else:
-                    ch += 1
+        # row_len  = self.bits << 1
+        # x_checksum = [0] * row_len
+        # y_checksum = [0] * self.bits
+        # # ! needs refactor
+        # for i, row in enumerate(source):
+        #     if not isinstance(row, (list, Slice)):
+        #         raise ValueError("Invalid input. Expected list or slice.")
+        #     if row_len != len(row):
+        #         raise ValueError("Inconsistent rows. Matrix must be 2m * m")
+        #     ch = 0
+        #     while ch < row_len:
+        #         if ch == row_len or row[ch] == '0' or row[ch] == '1':
+        #             for x in range(ch, row_len):
+        #                 if row[x] == '_':
+        #                     break
+        #                 x_checksum[x] = 1
+        #             y_checksum[i]
+        #             break
+        #         else:
+        #             ch += 1
 
-            self.matrix = source
-            self.x_checksum = x_checksum
-            self.y_checksum = y_checksum
+            # self.x_checksum = x_checksum
+            # self.y_checksum = y_checksum
         return None
 
     def __zero_matrix(self, bits: int) -> None:
@@ -150,8 +151,8 @@ class Matrix:
         # -- catch multiply by zero ---------------------------------
         if operand_a == 0 or operand_b == 0:
             self.__zero_matrix(bits)
-            self.y_checksum = [0]*bits
-            self.x_checksum = [0]*(bits*2)
+            # self.y_checksum = [0]*bits
+            # self.x_checksum = [0]*(bits*2)
             return None
 
 
@@ -159,21 +160,21 @@ class Matrix:
         # convert to binary, removing '0b' and padding with zeros
         a = bin(operand_a)[2:].zfill(bits)
         b = bin(operand_b)[2:].zfill(bits)
-        y_checksum = [0]*bits
-        x_checksum = [0]*(bits*2)
+        # y_checksum = [0]*bits
+        # x_checksum = [0]*(bits*2)
         matrix   = []
         for i in range(bits-1, -1, -1):
             if b[i] == '0':
                 matrix.append(["_"]*(i+1) + ['0']*(bits) + ["_"]*(bits-i-1))
             elif b[i] == '1':
                 matrix.append(["_"]*(i+1) + list(a) + ["_"]*(bits-i-1))
-                y_checksum[i] = 1
-                for j, bit in enumerate(list(a)):
-                    x_checksum[i+j] = 1
+                # y_checksum[i] = 1
+                # for j, bit in enumerate(list(a)):
+                    # x_checksum[i+j] = 1
 
         self.matrix     = matrix
-        self.y_checksum = y_checksum
-        self.x_checksum = x_checksum
+        # self.y_checksum = y_checksum
+        # self.x_checksum = x_checksum
         return None
 
     def __checksum(self) -> None:
@@ -241,18 +242,18 @@ class Matrix:
         # -- row-wise mapping ---------------------------------------
 
         if rmap := map_.rmap:
-            matrix = Matrix(self.bits).matrix # TODO make this modify in-place
+            # matrix = deepcopy(self.matrix) # TODO make this modify in-place
             for i in range(self.bits):
                 # convert signed hex to 2s complement if -ve
                 if ((val := int(rmap[i], 16)) & 128):
                     val = (~val + 1) & 255 # 2s complement
-                matrix[i]     = ["_"] * (self.bits*2)
-                matrix[i-val] = self.matrix[i]
+                # matrix[i]     = ["_"] * (self.bits*2)
+                self.matrix[i-val], self.matrix[i] = self.matrix[i], self.matrix[i-val]
 
                 # deprecate checksum in favor of coordinates
-                self.y_checksum[i]     = 0
-                self.y_checksum[i-val] = 1
-            self.matrix = matrix
+                # self.y_checksum[i]     = 0
+                # self.y_checksum[i-val] = 1
+            # self.matrix = matrix
 
             return None
 
