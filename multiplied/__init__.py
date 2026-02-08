@@ -86,7 +86,14 @@ from .io.parquet import(
     import_parquet,
 )
 
+# -- Analysis -------------------------------------------------------
 
+from .analysis.extract import (
+    pq_extract_bits,
+    pq_extract_stages,
+    pq_extract_formatted_all,
+    pq_extract_formatted_stages,
+)
 
 # -- External -------------------------------------------------------
 
@@ -160,5 +167,9 @@ __all__ = [
     'json_pretty_store',
     'export_parquet',
     'import_parquet',
+    'pq_extract_bits',
+    'pq_extract_stages',
+    'pq_extract_formatted_all',
+    'pq_extract_formatted_stages',
     'MP_VERSION',
 ]
