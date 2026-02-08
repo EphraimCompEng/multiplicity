@@ -2,8 +2,9 @@
 # Generate Multiplier Truth Table #
 ###################################
 
-from pprint import pprint
-import multiplied as mp
+
+from functools import cache
+from multiplied import Algorithm, Matrix
 import pandas as pd
 from multiprocessing import Pool
 from collections.abc import Generator
@@ -49,8 +50,6 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
     if min_out > max_in:
         raise ValueError("Minimum output value greater than maximum input value.")
 
-
-    # TODO: Wrap logic into a multiprocessing pool
     x = min_in
     while x <= max_in:
         lower_bound = min_out//x if min_out//x > min_in else min_in
@@ -64,18 +63,15 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
 
 
 
-
-
-
-def shallow_truth_table(scope: Generator[tuple], alg: mp.Algorithm
-) -> Generator[mp.Matrix]:
+def shallow_truth_table(scope: Generator[tuple], alg: Algorithm
+) -> Generator[Matrix]:
     """
     Return Generator of partial product matrices for all operand tuples
     """
 
-    return (mp.Matrix(alg.bits, a=a, b=b) for a, b in scope)
+    return (Matrix(alg.bits, a=a, b=b) for a, b in scope)
 
-def truth_table(scope: Generator, alg: mp.Algorithm
+def truth_table(scope: Generator, alg: Algorithm
 ) -> Generator[dict]:
     """
     A generator which yields all stages of an algorithm for a given
@@ -83,13 +79,35 @@ def truth_table(scope: Generator, alg: mp.Algorithm
     """
     if not isinstance(scope, Generator):
         raise TypeError("Scope must be a generator.")
-    if not isinstance(alg, mp.Algorithm):
+    if not isinstance(alg, Algorithm):
         raise TypeError(f"Expected Algorithm instance got {type(alg)}")
 
     for a, b in scope:
         yield alg.exec(a=a, b=b)
 
-def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
+
+
+def _dataframe_operand_worker(a: int, b: int) -> tuple:
+    return (a, b, a*b)
+
+def _dataframe_pretty_worker(a: int, b: int , alg: Algorithm) -> list:
+    pretty = []
+    for matrix in alg.exec(a=a, b=b).values():
+        pretty.append(str(matrix).split('\n')[:-1])
+    return pretty
+
+def _dataframe_entry_worker(a: int, b: int , alg: Algorithm) -> dict:
+    entry = {}
+    for stage, matrix in alg.exec(a=a, b=b).items():
+        for r, row in enumerate(matrix):
+            for b, bit in enumerate(row[::-1]):
+                entry[
+                    (f"stage_{stage}",f"ppm_{r}",f"b{b}")
+                ] = 0 if bit in ['_', '0'] else 1
+    return entry
+
+@cache
+def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
 ) -> pd.DataFrame:
     """
     Return a pandas DataFrame of all stages of an algorithm for a given
@@ -97,9 +115,10 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
     """
     if not isinstance(scope, Generator):
         raise TypeError("Scope must be a generator.")
-    if not isinstance(alg, mp.Algorithm):
+    if not isinstance(alg, Algorithm):
         raise TypeError(f"Expected Algorithm instance got {type(alg)}")
 
+    from itertools import tee
     # -- old plan ---------------------------------------------------
     # columns:: index | a | b | ppm_0 | ppm_1 | ... | ppm_s0 | ppm_s1 | ...
     # ppm = partial product matrix, _<index> = row , _s<index> = formatted row
@@ -111,38 +130,30 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: mp.Algorithm
     # 0     | 0 | 5 | 0  | 0  | ... | 0  | 0  | 0  | ... | 0  | ... |'000...'|'000...'| ...
 
 
-    bits = alg.bits
+
+    scope1, scope2, scope3 = tee(scope, 3)
+    with Pool() as pool:
+        operands = pool.starmap(_dataframe_operand_worker, scope1)
+        pretty   = pool.starmap(_dataframe_pretty_worker, ((a, b, alg) for a, b in scope2))
+        data     = pool.starmap(_dataframe_entry_worker, ((a, b, alg) for a, b in scope3))
+        pool.close()
+        pool.join()
+
     col = pd.MultiIndex.from_product([
         [f"stage_{i}" for i in alg.algorithm],
-        [f"ppm_{i}" for i in range(bits)],
-        [f"b{i}" for i in range(bits << 1)]
+        [f"ppm_{i}" for i in range(alg.bits)],
+        [f"b{i}" for i in range((alg.bits << 1)-1, -1, -1)]
 
     ])
 
-    dtype_map = {c: 'int8' for c in col}
+    # col.dtype('int8')
+    # dtype_map = {c: 'int8' for c in col}
 
-    data     = []
-    pretty   = []
-    operands = []
-    for a, b in scope:
-        entry        = {}
-        output       = alg.exec(a=a, b=b)
-        pretty_entry = []
-        operands.append((a, b, a*b))
-        for stage, matrix in output.items():
-            pretty_entry.append(str(matrix).split('\n')[:-1])
-            for r, row in enumerate(matrix):
-                for b, bit in enumerate(row):
-                    entry[
-                        (f"stage_{stage}",f"ppm_{r}",f"b{b}")
-                    ] = 0 if bit in ['_', '0'] else 1
-        data.append(entry)
-        pretty.append(pretty_entry)
-
-    table = pd.DataFrame(data, columns=col).astype(dtype_map)
-
-    operand_columns = pd.DataFrame(operands, columns=['a', 'b', 'output'])
     ppm_s_columns   = [f"ppm_s{i}" for i in range(len(alg.algorithm)+1)]
+
+
+    operand_columns = pd.DataFrame(operands, columns=['a', 'b', 'output'], dtype='int32')
     pretty_columns  = pd.DataFrame(pretty, columns=ppm_s_columns, dtype='str')
+    table           = pd.DataFrame(data, columns=col).astype('int8')
 
     return pd.concat([operand_columns, table, pretty_columns], axis=1)
