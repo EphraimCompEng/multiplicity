@@ -88,12 +88,24 @@ from .io.parquet import(
 
 # -- Analysis -------------------------------------------------------
 
+# from .analysis.context import ()
+
 from .analysis.extract import (
     pq_extract_bits,
     pq_extract_stages,
     pq_extract_formatted_all,
     pq_extract_formatted_stages,
 )
+
+
+from .analysis.heatmap import (
+    df_global_heatmap,
+    df_stage_heatmap,
+    df_stage_bound_heatmap,
+)
+
+# from .analysis.search import ()
+
 
 # -- External -------------------------------------------------------
 
@@ -171,5 +183,8 @@ __all__ = [
     'pq_extract_stages',
     'pq_extract_formatted_all',
     'pq_extract_formatted_stages',
+    'df_global_heatmap',
+    'df_stage_heatmap',
+    'df_stage_bound_heatmap',
     'MP_VERSION',
 ]
