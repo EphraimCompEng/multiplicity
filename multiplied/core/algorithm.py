@@ -116,18 +116,16 @@ class Algorithm():
         # - currently every stage of every matrix reduction needs to resolve
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
-        template      = deepcopy(self.algorithm[self.state]['template'])
-
-        # ! template.template & .result must precalculate this within their objects
-        units, bounds = collect_template_units(template)
-        # Using dict for now as i'm too scared to rely on lists staying in order
-        results       = {}
+        bounds: dict = self.algorithm[self.state]['template'].bounds
 
         # -- reduce -------------------------------------------------
-        n = self.bits << 1
-        for ch, unit in units.items():
+        n         = self.bits << 1
+        results   = {}
+        chars = list(bounds.keys())
+        chars.remove('_')
+        for ch in  chars:
             base_index = bounds[ch][0][1]
-            match sum(unit.checksum):
+            match bounds[ch][-1][1] - bounds[ch][0][1] +1: # row height
                 case 1: # NOOP
                     output = [copy(self.matrix[base_index][0])]
 
@@ -216,16 +214,21 @@ class Algorithm():
                         except IndexError:
                             continue
                 case _:
-                    raise ValueError(f"Unsupported unit type:\n{mp.pretty(unit)}")
+                    raise ValueError(f"Unsupported unit type, len={bounds[ch][-1][1] - bounds[ch][0][1]}")
 
             # -- build unit into matrix -----------------------------
             # mp.mprint(output)
-            unit_result = [['_']*(self.bits << 1) for _ in range(base_index)]
+            unit_result = [[]]*self.bits
+            i = 0
+            while i < base_index:
+                unit_result[i] = ['_']*n
+                i += 1
             for row in output:
-                unit_result.append(row)
-            for _ in range(base_index+len(output), self.bits):
-                unit_result.append(['_']*(self.bits << 1))
-
+                unit_result[i] = row
+                i += 1
+            while i < self.bits:
+                unit_result[i] = ['_']*n
+                i += 1
             results[ch] = mp.Matrix(unit_result)
 
 
@@ -316,7 +319,7 @@ class Algorithm():
         # getattr for matrix, template and map to peek algorithm
         return self.matrix
 
-    def exec(self, *, a=0, b=0) -> dict[int, mp.Matrix]:
+    def exec(self, a: int, b: int) -> dict[int, mp.Matrix]:
         """
         Run entire algorithm with a single set of inputs then reset internal state.
         Returns list of results from all stages of the algorithm
@@ -330,10 +333,9 @@ class Algorithm():
         truth = {0: self.matrix}
         self.state = 0
         for n in range(len(self.algorithm)):
-            # mp.mprint(self.algorithm[n]['template'].template)
-            # mp.mprint(self.matrix)
             self.__reduce()
             truth[n+1] = deepcopy(self.matrix)
+
         self.state = 0
         return truth
 
@@ -400,7 +402,7 @@ def collect_template_units(
         raise TypeError(f"Expected type Template, Matrix or Map got {type(source)}")
 
     from .utils.char import chartff
-    bounds   = mp.find_bounding_box(source)
+    bounds   = source.bounds
     allchars = list(bounds.keys())
     allchars.remove('_')
 

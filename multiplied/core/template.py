@@ -235,10 +235,9 @@ class Template:
             if matrix is None:
                 matrix = mp.Matrix(self.bits)
             self.build_from_pattern(self.pattern, matrix)
-            return None
 
         # -- template handling ---------------------------------------
-        if (
+        elif (
             isinstance(source, list) and
             all([isinstance(i, list) for i in source]
             )
@@ -246,7 +245,11 @@ class Template:
             self.template = source
             self.pattern  = []
             self.__checksum()
-            return None
+
+        else:
+            raise TypeError
+        self.bounds = self.find_bounding_box()
+        return None
 
 
 
@@ -332,6 +335,122 @@ class Template:
         return None
 
 
+    # ! currently not generalised:
+    #  > detect type of transition then use appropriate function
+    #
+    #  > or just detect empty, '_', characters as the boundary
+    #       > This option means figuring out the correct key to use
+    def find_bounding_box(self) -> dict[str, list[tuple[int, int]]]:
+        """
+        Returns dictionary of arithmetic unit and coordinates for their boundaries.
+
+        Note: key='_' represents bounds for empty character slots
+
+        Parameters:
+        - matrix: nested list of m-bits, defined as 2d array of 2m * m
+        - transit: Function to return bool for a given boundary transition
+        """
+
+        matrix = self.template
+        rows   = self.bits
+        items  = self.bits << 1
+        bounds = {}
+        x, y   = 0, 0
+        while y < rows:
+
+            # -- entry border -------------------------------------------
+            key = matrix[y][0].upper()
+            if key not in bounds:
+                bounds[key] = []
+            bounds[key].append((0, y))
+
+            # -- central range ------------------------------------------
+            while x < items-1:
+                curr = matrix[y][x].upper()
+                next = matrix[y][x+1].upper()
+                if (curr == next) and isalpha(curr):
+                    x += 1
+                    continue
+                if curr != next and (isalpha(curr) or isalpha(next)):
+                    if curr not in bounds:
+                        bounds[curr] = []
+                    bounds[curr].append((x, y))
+                    if next not in bounds:
+                        bounds[next] = []
+                    bounds[next].append((x+1, y))
+                    x += 1
+                    continue
+                x += 1
+
+            # -- exit border --------------------------------------------
+            key = matrix[y][x].upper()
+            if key not in bounds:
+                bounds[key] = []
+            bounds[key].append((x, y))
+
+            x  = 0
+            y += 1
+
+        return bounds
+
+    # TODO: implement x_checksum (current checksum is y_checksum)
+    # IDEA: implement x_signature and maybe y_signature:
+    # - A given signature will create a set for all member of an axis
+    # - Should help when error checking, though I don't see a use for y_signature
+    #
+    def collect_template_units(self) -> tuple[dict[str, list], dict[str, list[tuple[int,int]]]]:
+        """
+        Return dict of isolated arithmetic units and their bounding box.
+        """
+
+        from .utils.char import chartff
+        bounds   = self.find_bounding_box()
+        allchars = list(bounds.keys())
+        allchars.remove('_')
+
+
+        units = {}
+        for ch in allchars:
+            matrix = mp.empty_matrix(self.bits)
+            tff = chartff(ch) # toggle flip flop
+            next(tff) # sync to template case sensitivity
+            i = 0 # coordinate index
+            expected_y = None
+            while i < len(bounds[ch])-1:
+                # -- intra-row boundary -------------------------------------- #
+                # bound[list_of_points][coord_i][y-axis]
+                # "if 2 < points have the same y for a given unit"
+                if 2 < sum([p[1] == bounds[ch][i][1] for p in bounds[ch]]):
+                    raise ValueError(
+                        f"Multiple arithmetic units found for unit '{ch}'")
+                # ------------------------------------------------------------ #
+                start = bounds[ch][i]
+                end = bounds[ch][i+1]
+                if start[1] != end[1]:
+                    raise ValueError(
+                        f"Bounding box error for unit '{ch}' "
+                        f"Points:{start}, {end}, error:  {start[1]} != {end[1]}"
+                    )
+                # -- traverse row ---------------------------------------
+                next(tff) # sync to template case sensitivity
+                for x in range(start[0], end[0]+1):
+                    matrix[start[1]][x] = next(tff)
+
+
+                # -- inter-row boundary test --------------------------------- #
+                if expected_y is not None and expected_y != start[1]:
+                    raise ValueError(
+                        f"Arithmetic unit '{ch}' spans multiple rows. "
+                        f"Expected row {expected_y}, got row {start[1]}")
+                expected_y = start[1]+1
+                # ------------------------------------------------------------ #
+
+
+                i += 2
+            units[ch] = matrix
+        return (units, bounds)
+
+
 
     # To be used in complex template results
     def merge(self, templates: list[Any]) -> None:
@@ -394,72 +513,6 @@ def build_noop_template(self, pattern: Pattern, *, dadda=False) -> None:
     """
     Create template for zeroed matrix using pattern
     """
-
-# ! currently not generalised:
-#  > detect type of transition then use appropriate function
-#
-#  > or just detect empty, '_', characters as the boundary
-#       > This option means figuring out the correct key to use
-def find_bounding_box(source: Template
-    ) -> dict[str, list[tuple[int, int]]]:
-    """
-    Returns dictionary of arithmetic unit and coordinates for their boundaries.
-
-    Note: key='_' represents bounds for empty character slots
-
-    Parameters:
-    - matrix: nested list of m-bits, defined as 2d array of 2m * m
-    - transit: Function to return bool for a given boundary transition
-    """
-    if isinstance(source, Template):
-        matrix = source.template
-    else:
-        raise TypeError("Matrix must be a list")
-    if not all(isinstance(row, list) for row in matrix):
-        raise TypeError(f"Matrix must be a list of lists got {type(matrix)}")
-    if (rows := len(matrix)) == (items := len(matrix[0])) >> 1:
-        mp.validate_bitwidth(rows)
-    else:
-        raise ValueError("Matrix dimensions are not valid")
-
-    bounds = {}
-    x, y   = 0, 0
-    while y < rows:
-
-        # -- entry border -------------------------------------------
-        key = matrix[y][0].upper()
-        if key not in bounds:
-            bounds[key] = []
-        bounds[key].append((0, y))
-
-        # -- central range ------------------------------------------
-        while x < items-1:
-            curr = matrix[y][x].upper()
-            next = matrix[y][x+1].upper()
-            if (curr == next) and isalpha(curr):
-                x += 1
-                continue
-            if curr != next and (isalpha(curr) or isalpha(next)):
-                if curr not in bounds:
-                    bounds[curr] = []
-                bounds[curr].append((x, y))
-                if next not in bounds:
-                    bounds[next] = []
-                bounds[next].append((x+1, y))
-                x += 1
-                continue
-            x += 1
-
-        # -- exit border --------------------------------------------
-        key = matrix[y][x].upper()
-        if key not in bounds:
-            bounds[key] = []
-        bounds[key].append((x, y))
-
-        x  = 0
-        y += 1
-
-    return bounds
 
 
 """
