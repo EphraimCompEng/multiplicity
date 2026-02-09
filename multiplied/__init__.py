@@ -100,6 +100,7 @@ from .analysis.extract import (
 
 from .analysis.heatmap import (
     df_global_heatmap,
+    df_global_3d_heatmap,
     df_stage_heatmap,
     df_stage_bound_heatmap,
 )
@@ -184,6 +185,7 @@ __all__ = [
     'pq_extract_formatted_all',
     'pq_extract_formatted_stages',
     'df_global_heatmap',
+    'df_global_3d_heatmap',
     'df_stage_heatmap',
     'df_stage_bound_heatmap',
     'MP_VERSION',

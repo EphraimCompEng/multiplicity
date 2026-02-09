@@ -73,9 +73,95 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
 
 # -- sources --
 # https://matplotlib.org/stable/gallery/mplot3d/index.html
-def df_global_3d_heatmap(path: str, df: pd.DataFrame, stages: list[int]) -> None:
-    """Export 3d plot with heatmap for each stage stacked along the z-axis"""
-    ...
+def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
+    """Export 3d plot with heatmap for each stage stacked along the x-axis"""
+
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("df must be a pandas DataFrame")
+    if not isinstance(title, str):
+        raise TypeError(f"title must be a string got {type(title)}")
+    if not isinstance(path, str):
+        raise TypeError(f"path must be a string got {type(path)}")
+
+    # sum all columns
+    # cast to nested list
+    # cast nested list to .im_show
+    # Use columns as hints to generate axis labels
+    # plt.savefig('filename.png')
+
+    # print(df)
+    df_ = df.sum(axis=0)
+    pd.set_option('display.max_rows', None)
+    hint = str(df_.index[-1])[2:-2].split("', '")
+
+    total_stages = int(hint[0].split('_')[-1]) + 1
+    bits         = int(hint[1].split('_')[-1]) + 1
+    x_spacing    = 2.0
+    alpha        = 0.7
+
+
+
+    arr_list = []
+    for s in range(total_stages):
+        ppm = []
+        for p in range(bits):
+            row = [0]*(bits << 1)
+            for b in range(bits << 1):
+                row[b] = df_.loc[f"('stage_{s}', 'ppm_{p}', 'b{b}')"]
+            ppm.append(row[::-1])
+        arr_list.append(ppm)
+
+    print(type(arr_list), total_stages)
+    print(arr_list)
+    stages = np.stack(arr_list)
+    vmin, vmax = stages.min(), stages.max()
+    stages_norm = (stages - vmin) / (vmax - vmin)
+
+    fig = plt.figure(figsize=(16,9), dpi=200)
+    ax  = fig.add_subplot(projection='3d')
+    ax.set_box_aspect(aspect = (5,3,1))
+
+
+    cmap = plt.get_cmap('magma_r')
+    for i in range(total_stages):
+        x_plane           = np.full_like(stages[i], i*x_spacing)
+        y_plane, z_plane  = np.meshgrid(range(bits << 1), range(bits-1, -1, -1), indexing='xy')
+        print(stages_norm[i])
+        print(x_plane.shape, y_plane.shape, z_plane.shape)
+        facecolors = cmap(stages_norm[i])
+        surf = ax.plot_surface(x_plane, y_plane, z_plane,
+                               rstride=1, cstride=1,
+                               facecolors=facecolors,
+                               shade=False,
+                               linewidth=0,
+                               antialiased=False,
+                               alpha=alpha)
+
+
+        # optional faint grid to aid depth perception
+        ax.plot_wireframe(x_plane, y_plane, z_plane + 0.001, color='k', linewidth=0.3, alpha=0.2)
+
+
+    ax.set_xticks(range(-1, total_stages*2-1, 2),[f"stage_{i}" for i in range(total_stages)])
+    ax.set_yticks(range(bits << 1), np.arange((bits << 1)-1, -1, -1))
+
+
+    ax.set_ylabel('bits')
+    ax.set_zlabel('Partial Product', va='bottom')
+    ax.set_xlim(-x_spacing, (total_stages - 1) * x_spacing + x_spacing)
+    ax.set_ylim(0, (bits << 1) - 1)
+    ax.set_zlim(0, bits - 1)
+    ax.set_title('Vertical stacked heatmaps (X axis)')
+
+    # mappable = plt.cm.ScalarMappable(cmap=cmap)
+    # mappable.set_array(np.linspace(vmin, vmax, 256))
+    # plt.colorbar(mappable, ax=ax, shrink=0.6)
+
+    plt.tight_layout()
+    plt.savefig(path)
+
+
+
 
 
 def df_stage_heatmap(path: str, df: pd.DataFrame, stages: list[int]) -> None:
