@@ -13,8 +13,8 @@ v0.5
 
 Updates:
 
-    - Generate non-zero 8-bit wallace-tree truth table (`19953dd`_)
-    - Export Algorith to .json (`32d2e90`_)
+    - Generated Complete 8-bit Wallace-Tree truth table (`19953dd`_)
+    - Export Algorithm to .json (`32d2e90`_)
     - Import and Export to .parquet (`b449ab3`_)
     - Simple Frequency Analysis (`28b088d`_)
     - Export Analysis Results As Heatmap (`28b088d`_)
@@ -23,6 +23,7 @@ Updates:
 Looking forward:
 
     [Main Focus]
+
     - Saturation
     - Expand Analysis Tools
     - Adopt Numpy Docstring Style
@@ -30,6 +31,7 @@ Looking forward:
 
 
     [ Ongoing ]
+
     - Continued development of the API reference site
     - Map Object Coordinate Refactor
     - Adopt Pytest
@@ -37,7 +39,7 @@ Looking forward:
     - 16-bit Algorithm Support
 
 
-See full changelog [here](https://github.com/EphraimCompEng/multiplied/commits/v0.5.0).
+    See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.5.0>`_.
 
 .. _19953dd:
     https://github.com/EphraimCompEng/multiplied/pull/69/commits/19953dd1b88f85e44110b273012cfb5f4778ccbc
@@ -82,7 +84,7 @@ Looking forward:
     - Simple User Guide
     - Adopt Pytest
 
-See full changelog [here](https://github.com/EphraimCompEng/multiplied/commits/v0.4.0).
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.4.0>`_.
 
 .. _f728829:
     https://github.com/EphraimCompEng/multiplied/commit/f728829ecdbab0a96fdd6e191595bdfd8f521e98
