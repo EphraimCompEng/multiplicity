@@ -5,6 +5,104 @@ Changelog
 =========
 
 
+v0.5
+=====
+
+`v0.5.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.5.0>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates:
+
+    - Generated Complete 8-bit Wallace-Tree truth table (`19953dd`_)
+    - Export Algorithm to .json (`32d2e90`_)
+    - Import and Export to .parquet (`b449ab3`_)
+    - Simple Frequency Analysis (`28b088d`_)
+    - Export Analysis Results As Heatmap (`28b088d`_)
+
+
+Looking forward:
+
+    [Main Focus]
+
+    - Saturation
+    - Expand Analysis Tools
+    - Adopt Numpy Docstring Style
+    - Simple User Guide
+
+
+    [ Ongoing ]
+
+    - Continued development of the API reference site
+    - Map Object Coordinate Refactor
+    - Adopt Pytest
+    - Data Structure Optimisation
+    - 16-bit Algorithm Support
+
+
+    See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.5.0>`_.
+
+.. _19953dd:
+    https://github.com/EphraimCompEng/multiplied/pull/69/commits/19953dd1b88f85e44110b273012cfb5f4778ccbc
+
+.. _32d2e90:
+    https://github.com/EphraimCompEng/multiplied/pull/69/commits/32d2e90b16500cc2fcecdd5eb47cabb070fa80db
+
+.. _b449ab3:
+    https://github.com/EphraimCompEng/multiplied/commit/b449ab35b2720d14e39fc1b9402cd6d3028abee6
+
+.. _28b088d:
+    https://github.com/EphraimCompEng/multiplied/pull/69/commits/28b088d891647bb9dedd52d38cbdb9dd4b49ed75
+
+
+
+v0.4
+=====
+
+`v0.4.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.4.0>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates:
+
+    - Applying Algorithms to operands (`f728829`_)
+    - Expanded Map class to complex maps (`77b2b7e`_)
+    - Added complex map generation (`923e85d`_)
+    - Added bounding box for efficient arithmetic unit isolation (`3a0a0f6`_)
+    - Initial implementaton of checksums (`d0ea73e`_)
+
+
+Looking forward:
+
+    [Main Focus]
+
+    - Truth table generation via algorithm(s)
+    - Export to .parquet files
+
+    [ Ongoing ]
+
+    - Simple Analysis
+    - Continued development of the API reference site
+    - Simple User Guide
+    - Adopt Pytest
+
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.4.0>`_.
+
+.. _f728829:
+    https://github.com/EphraimCompEng/multiplied/commit/f728829ecdbab0a96fdd6e191595bdfd8f521e98
+
+.. _77b2b7e:
+    https://github.com/EphraimCompEng/multiplied/commit/77b2b7e564c1791559dc605b9b02d2a58263dec0
+
+.. _923e85d:
+    https://github.com/EphraimCompEng/multiplied/commit/923e85d90c3fff55ac168dc6f95d813cd656c2ce
+
+.. _3a0a0f6:
+    https://github.com/EphraimCompEng/multiplied/commit/3a0a0f62d0e70a18d1694f7ae9f6c99923603a58
+
+.. _d0ea73e:
+    https://github.com/EphraimCompEng/multiplied/commit/d0ea73e11a55db8308dbe594ef0b067390d8c3ae
+
+
+
 v0.3
 =====
 
