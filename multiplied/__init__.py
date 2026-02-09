@@ -32,13 +32,11 @@ from .core.template import (
     build_csa,
     build_adder,
     resolve_pattern,
-    find_bounding_box,
     build_empty_slice,
 )
 
 from .core.algorithm import (
     Algorithm,
-    collect_template_units,
     collect_arithmetic_units,
 )
 
@@ -83,8 +81,30 @@ from .io.lazy_json import (
     json_pretty_store,
 )
 
-# from .io.parquet import()
-#
+from .io.parquet import(
+    export_parquet,
+    import_parquet,
+)
+
+# -- Analysis -------------------------------------------------------
+
+# from .analysis.context import ()
+
+from .analysis.extract import (
+    pq_extract_bits,
+    pq_extract_stages,
+    pq_extract_formatted_all,
+    pq_extract_formatted_stages,
+)
+
+
+from .analysis.heatmap import (
+    df_global_heatmap,
+    df_stage_heatmap,
+    df_stage_bound_heatmap,
+)
+
+# from .analysis.search import ()
 
 
 # -- External -------------------------------------------------------
@@ -131,9 +151,7 @@ __all__ = [
     'Algorithm',
     'empty_rows',
     'empty_matrix',
-    'find_bounding_box',
     'matrix_merge',
-    'collect_template_units',
     'collect_arithmetic_units',
     'build_dadda_map',
     'empty_map',
@@ -159,5 +177,14 @@ __all__ = [
     'export_algorithm',
     'import_algorithm',
     'json_pretty_store',
+    'export_parquet',
+    'import_parquet',
+    'pq_extract_bits',
+    'pq_extract_stages',
+    'pq_extract_formatted_all',
+    'pq_extract_formatted_stages',
+    'df_global_heatmap',
+    'df_stage_heatmap',
+    'df_stage_bound_heatmap',
     'MP_VERSION',
 ]

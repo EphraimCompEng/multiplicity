@@ -29,8 +29,8 @@ def test_exec(a: int, b: int) -> None:
     m, p, alg = gen_resources(8, a=a, b=b)
     alg.auto_resolve_stage()
     # print(alg)
-    print(alg.exec(a=a, b=b))
-    results = (alg.exec(a=a, b=b))
+    print(alg.exec(a, b))
+    results = (alg.exec(a, b))
     for k, i in results.items():
         print('result: ', k)
         print(i)
@@ -140,7 +140,7 @@ def test_algorithm_reuse_8(a: int, b:int) -> None:
 
     a=15
     b=15
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
     print(int("".join(alg.matrix.matrix[0]), 2))
@@ -148,7 +148,7 @@ def test_algorithm_reuse_8(a: int, b:int) -> None:
 
     a=255
     b=255
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
         # mp.mprint(v['pseudo'])
@@ -157,7 +157,7 @@ def test_algorithm_reuse_8(a: int, b:int) -> None:
 
     a=69
     b=255
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
         # mp.mprint(v['pseudo'])
@@ -172,7 +172,7 @@ def test_algorithm_reuse_4(a: int, b:int) -> None:
 
     a=15
     b=15
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
     print(int("".join(alg.matrix.matrix[0]), 2))
@@ -180,7 +180,7 @@ def test_algorithm_reuse_4(a: int, b:int) -> None:
 
     a=2
     b=9
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
         # mp.mprint(v['pseudo'])
@@ -189,7 +189,7 @@ def test_algorithm_reuse_4(a: int, b:int) -> None:
 
     a=15
     b=13
-    output = alg.exec(a=a, b=b)
+    output = alg.exec(a, b)
     for k, v in output.items():
         print(v)
         # mp.mprint(v['pseudo'])
@@ -204,7 +204,7 @@ def test_exec_docs() -> None:
     alg.auto_resolve_stage()
     a=42
     b=255
-    for m in alg.exec(a=a, b=b).values():
+    for m in alg.exec(a, b).values():
         print(m)
 
     # convert result to decimal

@@ -1,6 +1,6 @@
 [project]
 name = "multiplied"
-version = "0.4.1"
+version = "0.5.0"
 description = "A powerful tool to build, test, and analyse multiplier designs."
 readme = "README.md"
 license = "AGPL-3.0-or-later"
@@ -9,6 +9,7 @@ requires-python = ">=3.13"
 dependencies = [
     "matplotlib>=3.10.8",
     "pandas>=3.0.0",
+    "pyarrow>=23.0.0",
     "toml>=0.10.2",
 ]
 

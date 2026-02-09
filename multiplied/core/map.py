@@ -79,6 +79,7 @@ def build_dadda_map(bits: int) -> Map:
     """
     mp.validate_bitwidth(bits)
 
+    # TODO: Use hoist() to generate dadda maps
     # -- Repulsive - Design algorithm for 16-bit+ ------------------------------ #
     dadda_map = {                                                                #
         4: [                                                                     #

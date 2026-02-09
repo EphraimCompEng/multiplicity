@@ -1,60 +1,41 @@
 <!DOCTYPE html>
-
 <html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta property="og:title" content="Changelog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="changelog.html" />
 <meta property="og:site_name" content="multiplied" />
-<meta property="og:description" content="v0.3: v0.3.3: Updates: Automatic algorithm generation via patterns, Implemented reduction via arithmetic units. Work continues for merging results, Added groundwork for complex template isolation a..." />
-<meta name="description" content="v0.3: v0.3.3: Updates: Automatic algorithm generation via patterns, Implemented reduction via arithmetic units. Work continues for merging results, Added groundwork for complex template isolation a..." />
-
-    <title>Changelog &#8212; multiplied</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=4f85987d" />
-  <noscript>
-    <style>
-      .bz-js-only { display: none !important; }
-    </style>
-  </noscript>
+<meta property="og:description" content="v0.5: v0.5.0: Updates: Generated Complete 8-bit Wallace-Tree truth table ( 19953dd), Export Algorithm to .json ( 32d2e90), Import and Export to .parquet ( b449ab3), Simple Frequency Analysis ( 28b0..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="_images/social_previews/summary_changelog_67824867.png" />
+<meta property="og:image:alt" content="v0.5: v0.5.0: Updates: Generated Complete 8-bit Wallace-Tree truth table ( 19953dd), Export Algorithm to .json ( 32d2e90), Import and Export to .parquet ( b449ab3), Simple Frequency Analysis ( 28b0..." />
+<meta name="description" content="v0.5: v0.5.0: Updates: Generated Complete 8-bit Wallace-Tree truth table ( 19953dd), Export Algorithm to .json ( 32d2e90), Import and Export to .parquet ( b449ab3), Simple Frequency Analysis ( 28b0..." />
+<meta name="twitter:card" content="summary_large_image" />
+<title>Changelog - multiplied</title><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="API Reference" href="reference.html"><link rel="prev" title="User Guide" href="guide.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=edf4ceec" /><script defer="defer" src="_static/scripts/breeze.js?v=af6c55ec"></script></head>
+<body>
   
-    <script defer src="_static/documentation_options.js?v=6c02275b"></script>
-    <script defer src="_static/doctools.js?v=fd6eb6e6"></script>
-    <script defer src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script defer src="_static/scripts/breeze.js?v=88787f40"></script>
-  <script data-cfasync="false">
-    const mode = localStorage.getItem("breeze-mode") || "auto";
-    document.documentElement.dataset.mode = mode;
-    if (mode === "auto") {
-      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-      document.documentElement.dataset.theme = prefers;
-    } else {
-      document.documentElement.dataset.theme = mode;
-    }
-  </script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="reference.html" />
-    <link rel="prev" title="User Guide" href="guide.html" /><meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
-  </head><body>
   
-  <div class="bz-skip-to-content">
-    <a href="#bz-main-content">Skip to main content</a>
-  </div><header class="bz-header-main">
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
   <div class="bz-header-start"><a class="bz-header-brand" href="index.html"><span>multiplied</span>
 </a>
   </div>
-  <div class="bz-header-end"><div class="bz-search-button">
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
   <a
     href="search.html#q"
     aria-label="Search the docs"
     data-tooltip="Search the docs"
   >
     <svg
-      class="sized"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 -1 24 24"
@@ -86,12 +67,9 @@
   for="bz-sidebar-primary"
   role="button"
   tabindex="0"
+  aria-label="Toggle site navigation"
 >
-  <svg
-    class="sized muted"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path
       fill="none"
       stroke="currentColor"
@@ -119,7 +97,8 @@
     </button>
     <ul role="menu" aria-hidden="true"></ul>
   </div>
-</nav><hr class="bz-header-separator"><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
   
   
     <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
@@ -141,12 +120,9 @@
   for="bz-sidebar-secondary"
   role="button"
   tabindex="0"
+  aria-label="Toggle table of contents"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    class="sized muted"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path
       fill="none"
       stroke="currentColor"
@@ -159,10 +135,77 @@
 </label></header><article class="bz-article-main" role="main">
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="v0-5">
+<h2>v0.5<a class="headerlink" href="#v0-5" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.5.0">v0.5.0</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Updates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Generated Complete 8-bit Wallace-Tree truth table (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/pull/69/commits/19953dd1b88f85e44110b273012cfb5f4778ccbc">19953dd</a>)</p></li>
+<li><p>Export Algorithm to .json (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/pull/69/commits/32d2e90b16500cc2fcecdd5eb47cabb070fa80db">32d2e90</a>)</p></li>
+<li><p>Import and Export to .parquet (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/b449ab35b2720d14e39fc1b9402cd6d3028abee6">b449ab3</a>)</p></li>
+<li><p>Simple Frequency Analysis (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/pull/69/commits/28b088d891647bb9dedd52d38cbdb9dd4b49ed75">28b088d</a>)</p></li>
+<li><p>Export Analysis Results As Heatmap (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/pull/69/commits/28b088d891647bb9dedd52d38cbdb9dd4b49ed75">28b088d</a>)</p></li>
+</ul>
+</div></blockquote>
+<p>Looking forward:</p>
+<blockquote>
+<div><p>[Main Focus]</p>
+<ul class="simple">
+<li><p>Saturation</p></li>
+<li><p>Expand Analysis Tools</p></li>
+<li><p>Adopt Numpy Docstring Style</p></li>
+<li><p>Simple User Guide</p></li>
+</ul>
+<p>[ Ongoing ]</p>
+<ul class="simple">
+<li><p>Continued development of the API reference site</p></li>
+<li><p>Map Object Coordinate Refactor</p></li>
+<li><p>Adopt Pytest</p></li>
+<li><p>Data Structure Optimisation</p></li>
+<li><p>16-bit Algorithm Support</p></li>
+</ul>
+<p>See full changelog <a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commits/v0.5.0">here</a>.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="v0-4">
+<h2>v0.4<a class="headerlink" href="#v0-4" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.4.0">v0.4.0</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Updates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Applying Algorithms to operands (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/f728829ecdbab0a96fdd6e191595bdfd8f521e98">f728829</a>)</p></li>
+<li><p>Expanded Map class to complex maps (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/77b2b7e564c1791559dc605b9b02d2a58263dec0">77b2b7e</a>)</p></li>
+<li><p>Added complex map generation (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/923e85d90c3fff55ac168dc6f95d813cd656c2ce">923e85d</a>)</p></li>
+<li><p>Added bounding box for efficient arithmetic unit isolation (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/3a0a0f62d0e70a18d1694f7ae9f6c99923603a58">3a0a0f6</a>)</p></li>
+<li><p>Initial implementaton of checksums (<a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commit/d0ea73e11a55db8308dbe594ef0b067390d8c3ae">d0ea73e</a>)</p></li>
+</ul>
+</div></blockquote>
+<p>Looking forward:</p>
+<blockquote>
+<div><p>[Main Focus]</p>
+<ul class="simple">
+<li><p>Truth table generation via algorithm(s)</p></li>
+<li><p>Export to .parquet files</p></li>
+</ul>
+<p>[ Ongoing ]</p>
+<ul class="simple">
+<li><p>Simple Analysis</p></li>
+<li><p>Continued development of the API reference site</p></li>
+<li><p>Simple User Guide</p></li>
+<li><p>Adopt Pytest</p></li>
+</ul>
+</div></blockquote>
+<p>See full changelog <a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commits/v0.4.0">here</a>.</p>
+</section>
+</section>
 <section id="v0-3">
 <h2>v0.3<a class="headerlink" href="#v0-3" title="Link to this heading">#</a></h2>
-<section id="id1">
-<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.3">v0.3.3</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.3">v0.3.3</a><a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Updates:</p>
 <blockquote>
 <div><ul class="simple">
@@ -193,8 +236,8 @@
 </div></blockquote>
 <p>See full changelog <a class="reference external" href="https://github.com/EphraimCompEng/multiplied/commits/v0.3.3">here</a>.</p>
 </section>
-<section id="id2">
-<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.0">v0.3.0</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id6">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.3.0">v0.3.0</a><a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>Updates:</p>
 <blockquote>
 <div><ul class="simple">
@@ -227,8 +270,8 @@
 </section>
 <section id="v0-2">
 <h2>v0.2<a class="headerlink" href="#v0-2" title="Link to this heading">#</a></h2>
-<section id="id5">
-<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.2.0">v0.2.0</a><a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.2.0">v0.2.0</a><a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>Updates:</p>
 <blockquote>
 <div><ul class="simple">
@@ -257,8 +300,8 @@
 </section>
 <section id="v0-1">
 <h2>v0.1<a class="headerlink" href="#v0-1" title="Link to this heading">#</a></h2>
-<section id="id6">
-<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.1">v0.1.1</a><a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="id10">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.1">v0.1.1</a><a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>This patch is focused on documentation and testing the api reference site locally</p>
 <p>Updates:</p>
 <blockquote>
@@ -271,8 +314,8 @@
 </ul>
 </div></blockquote>
 </section>
-<section id="id7">
-<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.0">v0.1.0</a><a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id11">
+<h3><a class="reference external" href="https://github.com/EphraimCompEng/multiplied/releases/tag/v0.1.0">v0.1.0</a><a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <p>This release is a complete refactor of the original script, widening it’s scope and turning it into a library.</p>
 <p>Added:</p>
 <blockquote>
@@ -308,18 +351,26 @@
   
     <nav class="bz-sidebar-toc" aria-label="Table of contents">
   <p>On this page</p><ul>
+<li><a class="reference internal" href="#v0-5">v0​.5</a><ul>
+<li><a class="reference internal" href="#id1">v0​.5​.0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-4">v0​.4</a><ul>
+<li><a class="reference internal" href="#id2">v0​.4​.0</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#v0-3">v0​.3</a><ul>
-<li><a class="reference internal" href="#id1">v0​.3​.3</a></li>
-<li><a class="reference internal" href="#id2">v0​.3​.0</a></li>
+<li><a class="reference internal" href="#id4">v0​.3​.3</a></li>
+<li><a class="reference internal" href="#id6">v0​.3​.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-2">v0​.2</a><ul>
-<li><a class="reference internal" href="#id5">v0​.2​.0</a></li>
+<li><a class="reference internal" href="#id9">v0​.2​.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#v0-1">v0​.1</a><ul>
-<li><a class="reference internal" href="#id6">v0​.1​.1</a></li>
-<li><a class="reference internal" href="#id7">v0​.1​.0</a></li>
+<li><a class="reference internal" href="#id10">v0​.1​.1</a></li>
+<li><a class="reference internal" href="#id11">v0​.1​.0</a></li>
 </ul>
 </li>
 </ul></nav>
@@ -340,15 +391,20 @@
     href="https://github.com/EphraimCompEng/multiplied"
     aria-label="EphraimCompEng/multiplied repository"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
-    <span>EphraimCompEng/multiplied</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 25"
+      title="EphraimCompEng/multiplied"
+    >
+      EphraimCompEng/multiplied
+    </span>
     <div class="bz-repo-stats-row">
-      <span class="bz-repo-stats-item">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
         <span data-stat="stars">-</span>
       </span>
-      <span class="bz-repo-stats-item">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
         <span data-stat="forks">-</span>
       </span>
     </div>
@@ -359,7 +415,7 @@
     <div class="bz-edit-this-page">
   <a href="https://github.com/EphraimCompEng/multiplied/edit/main/changelog.rst">
     Edit this page
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06Z"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06Z"></path></svg>
   </a>
 </div>
   
@@ -370,22 +426,21 @@
   </div>
 <footer class="bz-footer">
   <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Ephraim M.</p><p>
-    Made with
     
-    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
     
-    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
   </p>
 </div>
 </footer><a href="#" class="bz-back-to-top">
-    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
     </svg>
     <span>Back to top</span>
   </a>
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
-  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
-  </body>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="_static/documentation_options.js?v=1dd76d02"></script><script src="_static/doctools.js?v=fd6eb6e6"></script><script src="_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>

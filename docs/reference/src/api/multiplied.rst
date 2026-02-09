@@ -9,7 +9,6 @@ Subpackages
 
    multiplied.analysis
    multiplied.core
-   multiplied.datasets
    multiplied.io
    multiplied.tests
 
