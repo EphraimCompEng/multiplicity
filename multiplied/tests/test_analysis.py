@@ -13,9 +13,10 @@ def test_pq_extract_stages() -> None:
     print(path)
     df = mp.pq_extract_stages(str(path))
     # print(df.head())
-    path2 = Path(__file__).parent.parent.parent / 'examples/outputs/test.png'
+    path2 = Path(__file__).parent.parent.parent / 'examples/outputs/example_8b_wallace_heatmap.svg'
     print(path2)
-    mp.df_global_heatmap(str(path2), df)
+    title = "8-Bit Wallace-Tree Truth Table Represented As Heatmap"
+    mp.df_global_heatmap(str(path2), title, df)
 
 def test_pq_extract_formatted_all() -> None:
     ...
