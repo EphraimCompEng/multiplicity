@@ -4,6 +4,14 @@ multiplied.analysis package
 Submodules
 ----------
 
+multiplied.analysis.context module
+----------------------------------
+
+.. automodule:: multiplied.analysis.context
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 multiplied.analysis.extract module
 ----------------------------------
 
@@ -12,18 +20,18 @@ multiplied.analysis.extract module
    :show-inheritance:
    :undoc-members:
 
-multiplied.analysis.search module
----------------------------------
+multiplied.analysis.heatmap module
+----------------------------------
 
-.. automodule:: multiplied.analysis.search
+.. automodule:: multiplied.analysis.heatmap
    :members:
    :show-inheritance:
    :undoc-members:
 
-multiplied.analysis.track module
---------------------------------
+multiplied.analysis.search module
+---------------------------------
 
-.. automodule:: multiplied.analysis.track
+.. automodule:: multiplied.analysis.search
    :members:
    :show-inheritance:
    :undoc-members:

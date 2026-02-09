@@ -24,8 +24,8 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
     """
     A generator based on the domain and range of a desired truth table.
 
-    Domain_: A tuple of integers representing the range of input values.
-    Range_: A tuple of integers representing the range of output values.
+    Domain: A tuple of integers representing the range of input values.
+    Range: A tuple of integers representing the range of output values.
 
     Yields tuple: (operand_a, operand_b)
     """

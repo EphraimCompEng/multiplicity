@@ -8,3 +8,4 @@
 # [Compiled source]
 *.py[ocd]
 dist/
+build/

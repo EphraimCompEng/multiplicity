@@ -12,6 +12,22 @@ multiplied.tests.test\_algorithm module
    :show-inheritance:
    :undoc-members:
 
+multiplied.tests.test\_analysis module
+--------------------------------------
+
+.. automodule:: multiplied.tests.test_analysis
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+multiplied.tests.test\_io module
+--------------------------------
+
+.. automodule:: multiplied.tests.test_io
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 multiplied.tests.test\_maps module
 ----------------------------------
 
