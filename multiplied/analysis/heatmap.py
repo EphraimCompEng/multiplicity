@@ -1,8 +1,8 @@
 import pandas as pd
 import pyarrow as pa
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import numpy as np
 
 # -- sources --
 # https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html
@@ -31,7 +31,6 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     bits         = int(hint[1].split('_')[-1]) + 1
 
 
-    mini_heatmaps = []
 
     arr = None
     for s in range(total_stages):
