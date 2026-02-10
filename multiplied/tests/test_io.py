@@ -29,17 +29,31 @@ def test_export_algorithm() -> None:
 #     mp.import_algorithm(path)
 #
 
+
 @cache
 def test_export_parquet_4() -> None:
     from pathlib import Path
-    scope = mp.truth_scope((1, 15), (1, 255))
+    import time
+
+    start_t = time.perf_counter()
     alg = mp.Algorithm(mp.Matrix(4))
     alg.auto_resolve_stage()
-    # print(alg)
+    scope = mp.truth_scope((1, 15), (1, 255))
     df = mp.truth_dataframe(scope, alg)
+    end_t = time.perf_counter()
+    pd.set_option('display.max_columns', None)
     print(df.head())
     print(df.info())
-
+    print(f"{end_t - start_t:.6f} seconds")
+    path = Path(__file__).parent.parent.parent / 'examples/datasets/example_4b_mult_truthtable.parquet'
+    print(path)
+    start_t = time.perf_counter()
+    df.to_parquet(path)
+    end_t = time.perf_counter()
+    print(f"{end_t - start_t:.6f} seconds")
+    # df1 = pd.read_parquet(path)
+    # row = df1.loc[600]
+    # print(", ".join(f"{v}" for k, v in row.items()))
 
 @cache
 def test_export_parquet_8() -> None:
@@ -72,8 +86,8 @@ def test_export_parquet_8() -> None:
 def main() -> None:
     # import cProfile
     # import pstats
-    # test_export_parquet_4()
-    test_export_parquet_8()
+    test_export_parquet_4()
+    # test_export_parquet_8()
     # test = cProfile.Profile()
     # test.enable()
     # test_export_parquet_8()
