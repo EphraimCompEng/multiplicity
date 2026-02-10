@@ -142,16 +142,15 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
         pool.join()
 
     col = pd.MultiIndex.from_product([
-        [f"stage_{i}" for i in alg.algorithm],
+        [f"stage_{i}" for i in range(len(alg) + 1)],
         [f"ppm_{i}" for i in range(alg.bits)],
         [f"b{i}" for i in range((alg.bits << 1)-1, -1, -1)]
-
     ])
 
     # col.dtype('int8')
     # dtype_map = {c: 'int8' for c in col}
 
-    ppm_s_columns   = [f"ppm_s{i}" for i in range(len(alg.algorithm)+1)]
+    ppm_s_columns   = [f"ppm_s{i}" for i in range(len(alg) + 1)]
 
 
     operand_columns = pd.DataFrame(operands, columns=['a', 'b', 'output'], dtype='int32')
