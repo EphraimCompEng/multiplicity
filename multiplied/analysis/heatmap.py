@@ -23,7 +23,7 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     # plt.savefig('filename.png')
 
     # print(df)
-    df_ = df.sum(axis=0)
+    df_ = df.sum(axis=0) # Create heatmap for each stage
     pd.set_option('display.max_rows', None)
     hint = str(df_.index[-1])[2:-2].split("', '")
 
@@ -44,7 +44,7 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
         if arr is None:
             arr = np.array(ppm)
             continue
-        arr += np.array(ppm)
+        arr += np.array(ppm) # Unify all heatmaps
 
     print(arr)
     if arr is None:
@@ -60,7 +60,7 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
         for j in range((bits << 1)-1, -1, -1):
             text = ax.text(j, i, arr[i, j], ha="center", va="center", color="w")
 
-    ax.set_title(title)
+    ax.set_title(title, pad=50)
     fig.tight_layout()
     plt.colorbar(im, shrink=0.7)
     plt.savefig(path)
@@ -89,8 +89,8 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     # Use columns as hints to generate axis labels
     # plt.savefig('filename.png')
 
-    # print(df)
-    df_ = df.sum(axis=0)
+
+    df_ = df.sum(axis=0) # Create heatmap for each stage
     pd.set_option('display.max_rows', None)
     hint = str(df_.index[-1])[2:-2].split("', '")
 
@@ -98,7 +98,6 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     bits         = int(hint[1].split('_')[-1]) + 1
     x_spacing    = 2.0
     alpha        = 0.7
-
 
 
     arr_list = []
@@ -111,23 +110,28 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
             ppm.append(row[::-1])
         arr_list.append(ppm)
 
-    print(type(arr_list), total_stages)
+    # print(arr_list)
     print(arr_list)
     stages = np.stack(arr_list)
+    print(stages.shape)
     vmin, vmax = stages.min(), stages.max()
     stages_norm = (stages - vmin) / (vmax - vmin)
+    _, nx, ny = stages_norm.shape
+
+    print(stages_norm.shape)
 
     fig = plt.figure(figsize=(16,9), dpi=200)
-    ax  = fig.add_subplot(projection='3d')
-    ax.set_box_aspect(aspect = (5,3,1))
+    ax  = fig.add_subplot(111, projection='3d')
+
+
 
 
     cmap = plt.get_cmap('magma_r')
     for i in range(total_stages):
-        x_plane           = np.full_like(stages[i], i*x_spacing)
-        y_plane, z_plane  = np.meshgrid(range(bits << 1), range(bits-1, -1, -1), indexing='xy')
-        print(stages_norm[i])
-        print(x_plane.shape, y_plane.shape, z_plane.shape)
+        x_plane           = np.full_like(stages[i], i*x_spacing, shape=[nx+1, ny+1])
+        y_plane, z_plane  = np.meshgrid(np.arange((bits << 1) +1) , np.arange(bits, -1, -1), indexing='xy')
+        # print(stages_norm[i])
+        # print(x_plane.shape, y_plane.shape, z_plane.shape)
         facecolors = cmap(stages_norm[i])
         surf = ax.plot_surface(x_plane, y_plane, z_plane,
                                rstride=1, cstride=1,
@@ -136,30 +140,37 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
                                linewidth=0,
                                antialiased=False,
                                alpha=alpha)
-
+        surf.set_clip_on(False)
 
         # optional faint grid to aid depth perception
-        ax.plot_wireframe(x_plane, y_plane, z_plane + 0.001, color='k', linewidth=0.3, alpha=0.2)
+        ax.plot_wireframe(x_plane, y_plane, z_plane + 0.001, color='k', linewidth=0.3, alpha=0.2).set_clip_on(False)
 
 
-    ax.set_xticks(range(-1, total_stages*2-1, 2),[f"stage_{i}" for i in range(total_stages)])
-    ax.set_yticks(range(bits << 1), np.arange((bits << 1)-1, -1, -1))
+
+    ax.set_xticks(np.arange(-1, total_stages*2-1, 2) ,[f"stage_{i}" for i in range(total_stages)])
+    # yticks = [(bits << 1)-1] + [None] * ((bits << 1)-2) + [0]
+
+    ax.set_yticks(np.arange(bits << 1)+1, np.arange((bits << 1)-1, -1, -1))
+
+    ax.set_zticks(np.arange(bits), labels=[f'ppm_{i}' for i in range(bits-1, -1, -1)])
 
 
     ax.set_ylabel('bits')
     ax.set_zlabel('Partial Product', va='bottom')
     ax.set_xlim(-x_spacing, (total_stages - 1) * x_spacing + x_spacing)
-    ax.set_ylim(0, (bits << 1) - 1)
-    ax.set_zlim(0, bits - 1)
-    ax.set_title('Vertical stacked heatmaps (X axis)')
+    ax.set_ylim(-0.5, (bits << 1)+0.5)
+    ax.set_zlim(-0.5, bits)
+    ax.set_title(title, pad=50)
 
-    # mappable = plt.cm.ScalarMappable(cmap=cmap)
-    # mappable.set_array(np.linspace(vmin, vmax, 256))
-    # plt.colorbar(mappable, ax=ax, shrink=0.6)
 
-    plt.tight_layout()
+
+    mappable = plt.cm.ScalarMappable(cmap=cmap)
+    mappable.set_array(np.linspace(vmin, vmax, 256))
+    plt.colorbar(mappable, ax=ax, aspect=40, shrink=0.6, pad=0.2, location='bottom')
+
+    ax.set_clip_on(False)
+    ax.set_box_aspect((5,3,1), zoom=2)
     plt.savefig(path)
-
 
 
 
