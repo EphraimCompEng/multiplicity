@@ -54,6 +54,7 @@ from .core.utils.char import (
     chargen,
     chartff,
     allchars,
+    to_int_matrix,
 )
 
 
@@ -172,6 +173,7 @@ __all__ = [
     'chargen',
     'chartff',
     'allchars',
+    'to_int_matrix',
     'pretty',
     'mprint',
     'validate_bitwidth',
