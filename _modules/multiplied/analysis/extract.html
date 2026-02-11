@@ -195,7 +195,7 @@
     <span class="c1"># This is not optimal at all -- problem for future me ----------- #</span>
     <span class="c1"># TODO: manage metadata for .parquet &lt;&gt; DataFrame</span>
     <span class="c1"># trim and extract integer</span>
-    <span class="n">total_stages</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">final_ppm_s_column</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">total_stages</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">final_ppm_s_column</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="c1"># lists[str] converted to str by pandas, find length of first entry</span>
     <span class="n">bits</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ppm_s0&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
@@ -315,5 +315,5 @@
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=1dd76d02"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>

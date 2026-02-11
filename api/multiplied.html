@@ -296,7 +296,10 @@
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_auto_resolve_single_4"><code class="docutils literal notranslate"><span class="pre">test_auto_resolve_single_4()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_err_duplicate_units"><code class="docutils literal notranslate"><span class="pre">test_err_duplicate_units()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_exec"><code class="docutils literal notranslate"><span class="pre">test_exec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_exec_dadda"><code class="docutils literal notranslate"><span class="pre">test_exec_dadda()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_exec_dadda_saturation"><code class="docutils literal notranslate"><span class="pre">test_exec_dadda_saturation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_exec_docs"><code class="docutils literal notranslate"><span class="pre">test_exec_docs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_exec_saturation"><code class="docutils literal notranslate"><span class="pre">test_exec_saturation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_isolate_arithmetic_units"><code class="docutils literal notranslate"><span class="pre">test_isolate_arithmetic_units()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_manual_population_8"><code class="docutils literal notranslate"><span class="pre">test_manual_population_8()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_algorithm.test_step"><code class="docutils literal notranslate"><span class="pre">test_step()</span></code></a></li>
@@ -304,6 +307,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="multiplied.tests.html#module-multiplied.tests.test_analysis">multiplied.tests.test_analysis module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.test_df_global_3d_heatmap"><code class="docutils literal notranslate"><span class="pre">test_df_global_3d_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.test_df_global_heatmap"><code class="docutils literal notranslate"><span class="pre">test_df_global_heatmap()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.test_pq_extract_bits"><code class="docutils literal notranslate"><span class="pre">test_pq_extract_bits()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.test_pq_extract_formatted_all"><code class="docutils literal notranslate"><span class="pre">test_pq_extract_formatted_all()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.tests.html#multiplied.tests.test_analysis.test_pq_extract_formatted_stages"><code class="docutils literal notranslate"><span class="pre">test_pq_extract_formatted_stages()</span></code></a></li>
@@ -374,9 +379,26 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-multiplied" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="multiplied.Algorithm">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multiplied.core.html#multiplied.core.matrix.Matrix" title="multiplied.core.matrix.Matrix"><span class="pre">Matrix</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.Algorithm" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dadda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.Algorithm" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Manages and sequences operations via a series of stages defined by templates and maps.</p>
+<section id="parameters">
+<h3>parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>matrix<span class="classifier">mp.Matrix</span></dt><dd><p>The matrix to be multiplied.</p>
+</dd>
+</dl>
+<p>…</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="multiplied.Algorithm.auto_resolve_stage">
 <span class="sig-name descname"><span class="pre">auto_resolve_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.auto_resolve_stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.Algorithm.auto_resolve_stage" title="Link to this definition">#</a></dt>
@@ -408,6 +430,7 @@ Returns list of results from all stages of the algorithm</p>
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="multiplied.core.html#multiplied.core.template.Template" title="multiplied.core.template.Template"><span class="pre">Template</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="multiplied.core.html#multiplied.core.template.Pattern" title="multiplied.core.template.Pattern"><span class="pre">Pattern</span></a></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">map_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dadda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/core/algorithm.html#Algorithm.push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.Algorithm.push" title="Link to this definition">#</a></dt>
@@ -439,6 +462,7 @@ result to represent output matrix</p>
 <dd><p>Execute the next stage of the algorithm and update internal matrix</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -689,6 +713,22 @@ Variable length determined by source slice.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="multiplied.df_global_3d_heatmap">
+<span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">df_global_3d_heatmap</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_3d_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.df_global_3d_heatmap" title="Link to this definition">#</a></dt>
+<dd><p>Export 3d plot with heatmap for each stage stacked along the x-axis</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="multiplied.df_global_heatmap">
 <span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">df_global_heatmap</span></span><span class="sig-paren">(</span>
 
@@ -696,6 +736,8 @@ Variable length determined by source slice.</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.df_global_heatmap" title="Link to this definition">#</a></dt>
@@ -941,6 +983,12 @@ Variable length determined by source slice.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="multiplied.to_int_matrix">
+<span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">to_int_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/char.html#to_int_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.to_int_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Converts a matrix of characters to a matrix of integers.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="multiplied.truth_dataframe">
 <span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">truth_dataframe</span></span><span class="sig-paren">(</span>
 
@@ -1042,6 +1090,7 @@ set of operands a, b.</p>
 <li><a class="reference internal" href="#multiplied.chargen"><code class="docutils literal notranslate"><span class="pre">chargen()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.chartff"><code class="docutils literal notranslate"><span class="pre">chartff()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.collect_arithmetic_units"><code class="docutils literal notranslate"><span class="pre">collect_​arithmetic_​units()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.df_global_3d_heatmap"><code class="docutils literal notranslate"><span class="pre">df_​global_​3d_​heatmap()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.df_global_heatmap"><code class="docutils literal notranslate"><span class="pre">df_​global_​heatmap()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.df_stage_bound_heatmap"><code class="docutils literal notranslate"><span class="pre">df_​stage_​bound_​heatmap()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.df_stage_heatmap"><code class="docutils literal notranslate"><span class="pre">df_​stage_​heatmap()</span></code></a></li>
@@ -1066,6 +1115,7 @@ set of operands a, b.</p>
 <li><a class="reference internal" href="#multiplied.pretty"><code class="docutils literal notranslate"><span class="pre">pretty()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.resolve_pattern"><code class="docutils literal notranslate"><span class="pre">resolve_​pattern()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.shallow_truth_table"><code class="docutils literal notranslate"><span class="pre">shallow_​truth_​table()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.to_int_matrix"><code class="docutils literal notranslate"><span class="pre">to_​int_​matrix()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.truth_dataframe"><code class="docutils literal notranslate"><span class="pre">truth_​dataframe()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.truth_scope"><code class="docutils literal notranslate"><span class="pre">truth_​scope()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.truth_table"><code class="docutils literal notranslate"><span class="pre">truth_​table()</span></code></a></li>
@@ -1141,5 +1191,5 @@ set of operands a, b.</p>
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=1dd76d02"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=8fa8b3e9"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>

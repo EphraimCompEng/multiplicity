@@ -132,21 +132,47 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 
+<span class="c1"># -- TODO: sanity checks --------------------------------------------</span>
+<span class="c1">#</span>
+<span class="c1"># - Use setattr to block changes to self.matrix if state != 0, suggest self.reset().</span>
+<span class="c1">#   Actually, this also applies to all attributes</span>
 <div class="viewcode-block" id="Algorithm">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Algorithm</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Manages and sequences operations via a series of stages defined by templates and maps.</span>
+
+<span class="sd">    parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : mp.Matrix</span>
+<span class="sd">        The matrix to be multiplied.</span>
+
+<span class="sd">    ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected Matrix, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span>     <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>    <span class="o">=</span> <span class="n">matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">len</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span><span class="o">*</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="n">Any</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saturation</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dadda</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">mp</span><span class="o">.</span><span class="n">validate_bitwidth</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dadda</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected dadda: bool, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dadda</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">saturation</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected saturation: bool, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">saturation</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected Matrix, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span>       <span class="o">=</span> <span class="n">bits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dadda</span>      <span class="o">=</span> <span class="n">dadda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span>      <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span>  <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dadda</span><span class="p">:</span>
+            <span class="n">hoist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span> <span class="o">=</span> <span class="n">saturation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__clamp_bitwidth</span><span class="p">()</span>
 
         <span class="c1"># -- TODO: update this when anything is modified ------------</span>
         <span class="c1"># create update() function</span>
@@ -154,9 +180,10 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
+
 <div class="viewcode-block" id="Algorithm.push">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.Algorithm.push">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span> <span class="o">|</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">map_</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Template</span> <span class="o">|</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">map_</span><span class="p">:</span> <span class="n">Any</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dadda</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populates stage of an algorithm based on template. Generates pseudo</span>
@@ -193,7 +220,11 @@
         <span class="n">result</span>      <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
         <span class="n">stage_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">map_</span> <span class="ow">and</span> <span class="n">result</span><span class="p">:</span>
-            <span class="n">map_</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dadda</span><span class="p">:</span>
+                <span class="n">res_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="n">map_</span> <span class="o">=</span> <span class="n">hoist</span><span class="p">(</span><span class="n">res_copy</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">map_</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">resolve_rmap</span><span class="p">()</span>
             <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="n">map_</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">apply_map</span><span class="p">(</span><span class="n">map_</span><span class="p">)</span>
@@ -207,6 +238,21 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">__clamp_bitwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saturates matrix if current matrix has carried past original bitwidth</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">boundary</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">as_int</span>   <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">to_int_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">test</span>     <span class="o">=</span> <span class="p">[</span><span class="n">boundary</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">as_int</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+            <span class="c1"># flood bits within boundary</span>
+            <span class="n">saturated_value</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">saturated_value</span> <span class="o">+</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()</span>
     <span class="c1"># - Maybe use bounds to create x_checksum within __reduce()&#39;s unit collection</span>
@@ -248,7 +294,6 @@
         <span class="c1">#   conflicts dynamically before merging vs doing so once via the</span>
         <span class="c1">#   resultant template</span>
         <span class="n">bounds</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">][</span><span class="s1">&#39;template&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span>
-
         <span class="c1"># -- reduce -------------------------------------------------</span>
         <span class="n">n</span>         <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
         <span class="n">results</span>   <span class="o">=</span> <span class="p">{}</span>
@@ -269,9 +314,9 @@
 
                     <span class="c1"># -- skip empty rows ----------------------------</span>
                     <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="c1"># print(ch, operand_a, operand_b, base_index)</span>
                     <span class="k">while</span> <span class="n">operand_a</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span> <span class="ow">and</span> <span class="n">operand_b</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
                         <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+
 
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                         <span class="c1"># -- row checksum ---------------------------</span>
@@ -295,7 +340,6 @@
                     <span class="n">int_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">operand_a</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">bits_</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
                     <span class="n">int_b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">operand_b</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">bits_</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
 
-                    <span class="c1"># print(bits_+cout, f&quot;{int_a+int_b:0{bits_+cout}b}&quot;)</span>
                     <span class="n">output</span>     <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">start</span><span class="o">-</span><span class="n">cout</span><span class="p">)]</span>
                     <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">int_a</span><span class="o">+</span><span class="n">int_b</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="n">bits_</span><span class="o">+</span><span class="n">cout</span><span class="si">}</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">bits_</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
@@ -317,6 +361,8 @@
                         <span class="n">operand_c</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span>
                     <span class="p">):</span>
                         <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
 
                     <span class="c1"># -- sum columns -------------------------------</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -348,7 +394,6 @@
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported unit type, len=</span><span class="si">{</span><span class="n">bounds</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">bounds</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># -- build unit into matrix -----------------------------</span>
-            <span class="c1"># mp.mprint(output)</span>
             <span class="n">unit_result</span> <span class="o">=</span> <span class="p">[[]]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span>
             <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">base_index</span><span class="p">:</span>
@@ -423,14 +468,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pseudo</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="n">stage</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">])</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">resolve_pattern</span><span class="p">(</span><span class="n">pseudo</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="n">pseudo</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="n">pseudo</span><span class="p">),</span> <span class="n">dadda</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dadda</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">recursive</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="c1"># -- main loop ----------------------------------------------</span>
         <span class="n">stage</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">-</span><span class="mi">1</span> <span class="o">&gt;</span> <span class="n">mp</span><span class="o">.</span><span class="n">empty_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="n">stage</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">]):</span>
-            <span class="k">if</span> <span class="mi">50</span> <span class="o">&lt;</span> <span class="n">stage</span><span class="p">:</span>
+            <span class="k">if</span> <span class="mi">10</span> <span class="o">&lt;</span> <span class="n">stage</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Maximum stage limit reached&#39;</span><span class="p">)</span>
             <span class="c1"># Stage generation</span>
             <span class="n">pseudo</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">[</span><span class="n">stage</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;pseudo&#39;</span><span class="p">])</span>
@@ -449,7 +494,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the next stage of the algorithm and update internal matrix</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__reduce</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__clamp_bitwidth</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__reduce</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># getattr for matrix, template and map to peek algorithm</span>
@@ -469,10 +516,17 @@
         <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">)}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dadda</span><span class="p">:</span>
+            <span class="n">hoist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+
         <span class="n">truth</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__reduce</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__clamp_bitwidth</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)):</span>
+                    <span class="n">truth</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+                <span class="k">break</span>
             <span class="n">truth</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
@@ -637,7 +691,7 @@
 
     <span class="n">bits</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">bits</span>
     <span class="k">if</span> <span class="n">checksum</span> <span class="o">==</span> <span class="p">[]:</span>
-        <span class="n">checksum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">bits</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">bits</span>
 
 
     <span class="n">y_start</span> <span class="o">=</span> <span class="n">checksum</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -744,5 +798,5 @@
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=1dd76d02"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>
