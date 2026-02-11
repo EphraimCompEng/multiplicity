@@ -5,6 +5,53 @@ Changelog
 =========
 
 
+v0.6
+=====
+
+`v0.6.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.0>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates:
+
+    - Implement 3D Heatmap (`f7a9a62`_)
+    - Implement Dadda-Tree (`6e2b8c8`_)
+    - Implement Saturation (`00242fb`_)
+    - Streamline Algorithm instantiation (`c420f07`_)
+
+Looking forward:
+
+    [Main Focus]
+
+    - Adopt Numpy Docstring Style
+    - Automation / CI/CD
+    - Simple User Guide
+
+
+    [ Ongoing ]
+
+    - Continued development of the API reference site
+    - Map Object Coordinate Refactor
+    - Adopt Pytest
+    - Data Structure Optimisation
+    - 16-bit Algorithm Support
+
+.. _f7a9a62:
+    https://github.com/EphraimCompEng/multiplied/commit/f7a9a629815d0a668461bb514a566bbb191c097f
+
+.. _6e2b8c8:
+    https://github.com/EphraimCompEng/multiplied/commit/6e2b8c85edc5605550b53aa5c39609d31401e736
+
+.. _00242fb:
+    https://github.com/EphraimCompEng/multiplied/commit/00242fb7ba9a7c7d12f8d9631620580026851491
+
+.. _c420f07:
+    https://github.com/EphraimCompEng/multiplied/commit/c420f07f6a1f3b022ee527fe470f6c2c1007548a
+
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.0>`_.
+
+
+
+
 v0.5
 =====
 
@@ -39,7 +86,7 @@ Looking forward:
     - 16-bit Algorithm Support
 
 
-    See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.5.0>`_.
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.5.0>`_.
 
 .. _19953dd:
     https://github.com/EphraimCompEng/multiplied/pull/69/commits/19953dd1b88f85e44110b273012cfb5f4778ccbc
