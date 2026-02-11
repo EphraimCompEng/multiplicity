@@ -9,7 +9,7 @@
       ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
       : m;
   })();
-  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=edf4ceec" /><script defer="defer" src="../../../_static/scripts/breeze.js?v=af6c55ec"></script></head>
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=b3a7ba9a" /><script defer="defer" src="../../../_static/scripts/breeze.js?v=af6c55ec"></script></head>
 <body>
   
   
@@ -262,7 +262,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Build a wallace tree for a bitwidth of self.bits</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">bits</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">bits</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
             <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;_&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">bits</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">row</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
@@ -461,6 +461,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build an empty 2d array for a given bitwidth</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">validate_bitwidth</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
     <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
         <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;_&quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">bits</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
@@ -488,13 +489,16 @@
         <span class="c1"># new error message needed</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Source must contain the same number of matrices as bounds&quot;</span><span class="p">)</span>
 
+
     <span class="n">bits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bits</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">empty_matrix</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">unit</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
 
         <span class="c1"># new bounding box covering whole result</span>
-        <span class="n">box_left</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">box_right</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">box_left</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">])</span>
+        <span class="n">box_right</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">])</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="n">unit</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
 
@@ -586,5 +590,5 @@
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=1dd76d02"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>

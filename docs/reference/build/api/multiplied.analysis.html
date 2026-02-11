@@ -13,7 +13,7 @@
 <meta property="og:image:alt" content="Submodules: multiplied.analysis.context module: This module will exclusively provide contexts to open multiple files in batches, providing a unified interface to track across multiple .parquet trut..." />
 <meta name="description" content="Submodules: multiplied.analysis.context module: This module will exclusively provide contexts to open multiple files in batches, providing a unified interface to track across multiple .parquet trut..." />
 <meta name="twitter:card" content="summary_large_image" />
-<title>multiplied.analysis package - multiplied</title><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><script data-cfasync="false">(function(){
+<title>multiplied.analysis package - multiplied</title><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="multiplied.core package" href="multiplied.core.html"><link rel="prev" title="API Reference" href="../reference.html"><script data-cfasync="false">(function(){
     const m = localStorage.getItem("breeze-mode") || "auto";
     const d = document.documentElement.dataset;
     d.mode = m;
@@ -21,7 +21,7 @@
       ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
       : m;
   })();
-  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=edf4ceec" /><script defer="defer" src="../_static/scripts/breeze.js?v=af6c55ec"></script></head>
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=b3a7ba9a" /><script defer="defer" src="../_static/scripts/breeze.js?v=af6c55ec"></script></head>
 <body>
   
   
@@ -79,7 +79,7 @@
       d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
     />
   </svg>
-</label><ul><li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li><li class="toctree-l1"><a class="reference internal" href="../start.html">Get Started</a></li><li class="toctree-l1"><a class="reference internal" href="../guide.html">User Guide</a></li><li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li><li class="toctree-l1"><a class="reference internal" href="../reference.html">API Reference</a></li><li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li></ul><div class="bz-dropdown">
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li><li class="toctree-l1"><a class="reference internal" href="../start.html">Get Started</a></li><li class="toctree-l1"><a class="reference internal" href="../guide.html">User Guide</a></li><li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li><li class="toctree-l1 current"><a class="reference internal" href="../reference.html">API Reference</a></li><li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li></ul><div class="bz-dropdown">
     <button aria-haspopup="true" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g
@@ -109,7 +109,6 @@
 <li class="toctree-l2"><a class="reference internal" href="multiplied.core.utils.html">multiplied.core.utils package</a></li>
 </ul></details></li>
 <li class="toctree-l1"><a class="reference internal" href="multiplied.io.html">multiplied.io package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="multiplied.tests.html">multiplied.tests package</a></li>
 </ul>
 </nav>
   
@@ -125,6 +124,8 @@
           <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
         </svg>
       </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../reference.html">API Reference</a>
     </li><li class="bz-breadcrumbs-current">
       <span>multiplied.analysis package</span>
     </li>
@@ -226,12 +227,14 @@ accommodate other analysis functions.</p>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">stages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_3d_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.analysis.heatmap.df_global_3d_heatmap" title="Link to this definition">#</a></dt>
-<dd><p>Export 3d plot with heatmap for each stage stacked along the z-axis</p>
+<dd><p>Export 3d plot with heatmap for each stage stacked along the x-axis</p>
 </dd></dl>
 
 <dl class="py function">
@@ -242,6 +245,8 @@ accommodate other analysis functions.</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.analysis.heatmap.df_global_heatmap" title="Link to this definition">#</a></dt>
@@ -313,7 +318,11 @@ accommodate other analysis functions.</p>
 </article><footer class="bz-article-footer">
   
   
-    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="../reference.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">API Reference</span></a><a class="bz-related-pages-next" href="multiplied.core.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">multiplied.core package</span>
+  </a></nav>
   
 
 </footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
@@ -413,5 +422,5 @@ accommodate other analysis functions.</p>
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=1dd76d02"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=8fa8b3e9"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>
