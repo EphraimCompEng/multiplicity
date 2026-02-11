@@ -69,3 +69,21 @@ def allchars(matrix: list[list[str]], *, hash = []) -> set[str]:
         chars = set(ch for row in subset for ch in row)
         chars.remove('_')
         return set(ch.upper() for ch in chars)
+
+def to_int_matrix(matrix: list[list[str]]) -> list[int]:
+    """
+    Converts a matrix of characters to a matrix of integers.
+    """
+    if not isinstance(matrix, list) or not all([isinstance(row, list) for row in matrix]):
+        raise TypeError("Input must be type list[list[char]]")
+
+    output = [0]*len(matrix)
+    valid_chars = {'0', '_', '1'}
+    for i, row in enumerate(matrix):
+        tmp_row = ['']*len(matrix[0])
+        for j, ch in enumerate(row):
+            if ch not in valid_chars:
+                raise ValueError(f"Expected {valid_chars}, got '{ch}' in row {i}")
+            tmp_row[j] = '0' if ch in ['_', '0'] else '1'
+        output[i] = int(''.join(tmp_row), 2)
+    return output

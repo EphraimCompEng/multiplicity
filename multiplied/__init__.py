@@ -54,6 +54,7 @@ from .core.utils.char import (
     chargen,
     chartff,
     allchars,
+    to_int_matrix,
 )
 
 
@@ -100,6 +101,7 @@ from .analysis.extract import (
 
 from .analysis.heatmap import (
     df_global_heatmap,
+    df_global_3d_heatmap,
     df_stage_heatmap,
     df_stage_bound_heatmap,
 )
@@ -171,6 +173,7 @@ __all__ = [
     'chargen',
     'chartff',
     'allchars',
+    'to_int_matrix',
     'pretty',
     'mprint',
     'validate_bitwidth',
@@ -184,6 +187,7 @@ __all__ = [
     'pq_extract_formatted_all',
     'pq_extract_formatted_stages',
     'df_global_heatmap',
+    'df_global_3d_heatmap',
     'df_stage_heatmap',
     'df_stage_bound_heatmap',
     'MP_VERSION',

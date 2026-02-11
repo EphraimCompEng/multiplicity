@@ -61,7 +61,7 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
     # This is not optimal at all -- problem for future me ----------- #
     # TODO: manage metadata for .parquet <> DataFrame
     # trim and extract integer
-    total_stages = int(final_ppm_s_column.split('_')[1][1:])
+    total_stages = int(final_ppm_s_column.split('_')[1][1:]) + 1
 
     # lists[str] converted to str by pandas, find length of first entry
     bits = row.loc[0]['ppm_s0'][2:].index("'") >> 1

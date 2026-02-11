@@ -12,7 +12,7 @@ def gen_resources(bits: int, *, a=0, b=0
             p = mp.Pattern(['a','a','a','b','b','b','c','c'])
         case _:
             raise ValueError(f"Unsupported number of bits: {bits}")
-    alg = mp.Algorithm(m)
+    alg = mp.Algorithm(bits)
     return m, p, alg
 
 def test_step() -> None:
@@ -20,8 +20,8 @@ def test_step() -> None:
     alg.push(p)
     print(alg.matrix)
     alg.step()
-    print(alg.matrix.x_checksum)
-    print(alg.matrix.y_checksum)
+    # print(alg.matrix.x_checksum)
+    # print(alg.matrix.y_checksum)
     print(alg.matrix)
     # print(alg)
 
@@ -38,9 +38,8 @@ def test_exec(a: int, b: int) -> None:
 
 
 def test_auto_resolve_single_4() -> None:
-    m = mp.Matrix(4)
     p = mp.Pattern(['a','a','b','b'])
-    alg = mp.Algorithm(m)
+    alg = mp.Algorithm(4)
     alg.push(p)
     print(alg)
     # alg.auto_resolve_pattern(p, m)
@@ -50,9 +49,8 @@ def test_auto_resolve_single_4() -> None:
 
 
 def test_manual_population_8() -> None:
-    m = mp.Matrix(8)
     p = mp.Pattern(['a','a','b','b','c','c','d','d'])
-    alg = mp.Algorithm(m)
+    alg = mp.Algorithm(8)
     alg.push(p)
     print(alg)
     # alg.auto_resolve_pattern(p, m)
@@ -73,22 +71,22 @@ def test_auto_resolve_recursive_full_8() -> None:
     alg2.auto_resolve_stage()
     print(alg2)
     print(m)
-    print(m.y_checksum)
-    print(m.x_checksum)
+    # print(m.y_checksum)
+    # print(m.x_checksum)
 
 
 def test_isolate_arithmetic_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','c']), matrix=mp.Matrix(4))
-    isolated_units, bounds = mp.collect_template_units(template)
+    isolated_units, bounds = template.collect_template_units()
     print(template)
     print(isolated_units)
-    for k, v in isolated_units.items():
-        print(v.checksum)
+    # for k, v in isolated_units.items():
+    #     print(v.checksum) # <- broken
 
 def test_err_duplicate_units() -> None:
     template = mp.Template(mp.Pattern(['a','a','b','b','c','c','d','d']), matrix=mp.Matrix(8))
     try:
-        isolated_units, bounds = mp.collect_template_units(template)
+        isolated_units, bounds = template.collect_template_units()
     except SyntaxError:
         pass
 
@@ -115,7 +113,7 @@ def test_err_duplicate_units() -> None:
 
     print(template)
     # bounds   = mp.find_bounding_box(template)
-    isolated_units = mp.collect_template_units(template)
+    isolated_units = template.collect_template_units()
     # try:
     #     isolated_units = mp.isolate_arithmetic_units(template)
     # except SyntaxError:
@@ -123,7 +121,7 @@ def test_err_duplicate_units() -> None:
     #     isolated_units = []
 
 
-    for b in mp.find_bounding_box(template).items():
+    for b in template.find_bounding_box().items():
         print(b)
 
 
@@ -197,9 +195,8 @@ def test_algorithm_reuse_4(a: int, b:int) -> None:
     print(a*b)
 
 def test_exec_docs() -> None:
-    m = mp.Matrix(8)
     p = mp.Pattern(['a','a','b','b','c','c','d','d'])
-    alg = mp.Algorithm(m)
+    alg = mp.Algorithm(8)
     alg.push(p)
     alg.auto_resolve_stage()
     a=42
@@ -212,8 +209,55 @@ def test_exec_docs() -> None:
     print(a*b)
 
 
+def test_exec_saturation() -> None:
+    alg = mp.Algorithm(8, saturation=True)
+    alg.auto_resolve_stage()
+    a=2
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print(int("".join(alg.matrix.matrix[0]), 2), '<- saturated')
+    print(a*b, '<- unsaturated')
+
+def test_exec_dadda() -> None:
+    alg = mp.Algorithm(8, dadda=True)
+    alg.auto_resolve_stage()
+    a=27
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print()
+    print(int("".join(alg.matrix.matrix[0]), 2))
+    print(a*b)
+
+
+def test_exec_dadda_saturation() -> None:
+    alg = mp.Algorithm(8, saturation=True, dadda=True)
+    alg.auto_resolve_stage()
+    a=2
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print()
+    print(int("".join(alg.matrix.matrix[0]), 2), '<- saturated')
+    print(a*b, '<- unsaturated')
+
+
+
+
+
+
 def main():
     test_exec_docs()
+    test_exec_saturation()
+    test_exec_dadda()
+    test_exec_dadda_saturation()
     # test_step()
     # test_exec(15, 15)
     # test_exec(255, 255)

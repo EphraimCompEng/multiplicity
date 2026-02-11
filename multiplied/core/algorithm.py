@@ -6,19 +6,45 @@ from copy import deepcopy
 from typing import Any, Iterable
 import multiplied as mp
 
+# -- TODO: sanity checks --------------------------------------------
+#
+# - Use setattr to block changes to self.matrix if state != 0, suggest self.reset().
+#   Actually, this also applies to all attributes
 class Algorithm():
     """
     Manages and sequences operations via a series of stages defined by templates and maps.
+
+    parameters
+    ----------
+    matrix : mp.Matrix
+        The matrix to be multiplied.
+
+    ...
     """
 
-    def __init__(self, matrix: mp.Matrix) -> None:
-        if not isinstance(matrix, mp.Matrix):
-            raise TypeError(f"Expected Matrix, got {type(matrix)}")
-        self.bits      = len(matrix)
-        self.state     = 0
-        self.matrix    = matrix
-        self.algorithm = {}
-        self.len       = len(self.algorithm)
+    def __init__(self, bits: int,*, matrix: Any=None, saturation: bool=False, dadda=False) -> None:
+
+        mp.validate_bitwidth(bits)
+        if not isinstance(dadda, bool):
+            raise TypeError(f"Expected dadda: bool, got {type(dadda)}")
+        if not isinstance(saturation, bool):
+            raise TypeError(f"Expected saturation: bool, got {type(saturation)}")
+        if matrix is not None:
+            if not isinstance(matrix, mp.Matrix):
+                raise TypeError(f"Expected Matrix, got {type(matrix)}")
+            self.matrix = matrix
+        else:
+            self.matrix = mp.Matrix(bits)
+
+        self.bits       = bits
+        self.dadda      = dadda
+        self.state      = 0
+        self.algorithm  = {}
+        if self.dadda:
+            hoist(self.matrix)
+        self.saturation = saturation
+        if self.saturation:
+            self.__clamp_bitwidth()
 
         # -- TODO: update this when anything is modified ------------
         # create update() function
@@ -26,7 +52,8 @@ class Algorithm():
         return None
 
 
-    def push(self, source: mp.Template | mp.Pattern, map_: Any = None
+
+    def push(self, source: mp.Template | mp.Pattern, map_: Any=None, dadda=False
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -63,7 +90,11 @@ class Algorithm():
         result      = mp.Matrix(template.result)
         stage_index = len(self.algorithm)
         if not map_ and result:
-            map_ = result.resolve_rmap()
+            if dadda:
+                res_copy = deepcopy(result)
+                map_ = hoist(res_copy)
+            else:
+                map_ = result.resolve_rmap()
             result.apply_map(map_)
         else:
             result.apply_map(map_)
@@ -76,6 +107,21 @@ class Algorithm():
         self.algorithm[stage_index] = stage
         return None
 
+    def __clamp_bitwidth(self) -> bool:
+        """
+        Saturates matrix if current matrix has carried past original bitwidth
+        """
+        boundary = (2**self.bits)-1
+        as_int   = mp.to_int_matrix(self.matrix.matrix)
+        test     = [boundary < i for i in as_int]
+
+        if any(test):
+            # flood bits within boundary
+            saturated_value = [['0']*self.bits + ['1']*self.bits]
+            self.matrix = mp.Matrix(saturated_value + mp.empty_matrix(self.bits)[1:])
+            return True
+        else:
+            return False
 
     # ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()
     # - Maybe use bounds to create x_checksum within __reduce()'s unit collection
@@ -117,7 +163,6 @@ class Algorithm():
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
         bounds: dict = self.algorithm[self.state]['template'].bounds
-
         # -- reduce -------------------------------------------------
         n         = self.bits << 1
         results   = {}
@@ -138,9 +183,9 @@ class Algorithm():
 
                     # -- skip empty rows ----------------------------
                     start = 0
-                    # print(ch, operand_a, operand_b, base_index)
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
+
 
                     for i in range(start, n):
                         # -- row checksum ---------------------------
@@ -164,7 +209,6 @@ class Algorithm():
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
 
-                    # print(bits_+cout, f"{int_a+int_b:0{bits_+cout}b}")
                     output     = [['_']*(start-cout)]
                     output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
                     output[0] += ['_']*(n-bits_-start)
@@ -186,6 +230,8 @@ class Algorithm():
                         operand_c[start] == '_'
                     ):
                         start += 1
+
+
 
                     # -- sum columns -------------------------------
                     for i in range(start, n):
@@ -217,7 +263,6 @@ class Algorithm():
                     raise ValueError(f"Unsupported unit type, len={bounds[ch][-1][1] - bounds[ch][0][1]}")
 
             # -- build unit into matrix -----------------------------
-            # mp.mprint(output)
             unit_result = [[]]*self.bits
             i = 0
             while i < base_index:
@@ -290,14 +335,14 @@ class Algorithm():
         else:
             pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
-        self.push(mp.Template(pattern, matrix=pseudo))
+        self.push(mp.Template(pattern, matrix=pseudo), dadda=self.dadda)
         if not recursive:
             return None
 
         # -- main loop ----------------------------------------------
         stage = len(self.algorithm)
         while self.bits-1 > mp.empty_rows(self.algorithm[stage-1]['pseudo']):
-            if 50 < stage:
+            if 10 < stage:
                 raise IndexError('Maximum stage limit reached')
             # Stage generation
             pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
@@ -313,7 +358,9 @@ class Algorithm():
         """
         Execute the next stage of the algorithm and update internal matrix
         """
-        self.__reduce()
+        if self.saturation:
+            self.__clamp_bitwidth()
+            self.__reduce()
         self.state += 1
 
         # getattr for matrix, template and map to peek algorithm
@@ -330,10 +377,17 @@ class Algorithm():
         if a == 0 or b == 0:
             return {0: mp.Matrix(self.bits)}
         self.matrix = mp.Matrix(self.bits, a=a, b=b)
+        if self.dadda:
+            hoist(self.matrix)
+
         truth = {0: self.matrix}
         self.state = 0
         for n in range(len(self.algorithm)):
             self.__reduce()
+            if self.saturation and self.__clamp_bitwidth():
+                for i in range(n, len(self.algorithm)):
+                    truth[i+1] = deepcopy(self.matrix)
+                break
             truth[n+1] = deepcopy(self.matrix)
 
         self.state = 0
@@ -485,7 +539,7 @@ def hoist(source: mp.Matrix | mp.Template, *,
 
     bits = source.bits
     if checksum == []:
-        checksum = [0]*bits
+        checksum = [1]*bits
 
 
     y_start = checksum.index(1)
