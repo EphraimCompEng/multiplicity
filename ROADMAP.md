@@ -1,31 +1,20 @@
 # Roadmap
 
-## Algorithm
-
-Wallace Tree multipliers will be the first focus of the library, before moving
-onto [Dadda](https://en.wikipedia.org/wiki/Dadda_multiplier) and signed multipliers.
-
-Basic functionality; "simple templates", generate, analyse:
-
-- [x] 4-bit unsaturated multiplier [Built-in]
-- [x] 8-bit unsaturated multiplier [Built-in]
-- [ ] 4-bit saturated multiplier [Built-in]
-- [ ] 8-bit saturated multiplier [Built-in]
-
 ## IO
 
 - [x] Truth table generation -> json
 - [x] Algorithm -> json
 - [ ] json -> Algorithm
-- [ ] Implement I/O via [Parquet](https://parquet.apache.org/)
-- [ ] Truth table generation -> Parquet
+- [x] Implement I/O via [Parquet](https://parquet.apache.org/)
+- [x] Truth table generation -> Parquet
 
 ## Analysis
 
-- [ ] Basic analysis/visualisation of bit ranges
-- [ ] Apply analytical functions to all stages
-- [ ] Apply analytical functions to each stage
-- [ ] Heatmaps? plots? Advanced visualisation
+- [ ] Find analytical tools outside of heatmaps
+- [ ] Basic analysis/visualisation of regions (bounding box)
+- [x] Apply analytical functions to all stages
+- [x] Apply analytical functions to each stage
+- [x] Heatmaps? plots? Advanced visualisation
 
 ## Documentation
 
@@ -45,7 +34,7 @@ astronomical. The program must be robust enough to deal with this efficiently
 before tackling:
 
 - [ ] Testing suite - Pytest
-- [ ] Multiprocessing support to handle higher bit-widths
+- [x] Multiprocessing support to handle higher bit-widths
 - [ ] 16-bit unsaturated multiplier
 - [ ] 16-bit saturated multiplier
 - [ ] Refactor code to use bytes/bytearray to prepare for rust integration
@@ -58,7 +47,7 @@ before tackling:
 Supported algoithms:
 
 - [x] [Wallace Tree](https://en.wikipedia.org/wiki/Wallace_tree)
-- [ ] [Dadda multiplier](https://en.wikipedia.org/wiki/Dadda_multiplier)
+- [x] [Dadda multiplier](https://en.wikipedia.org/wiki/Dadda_multiplier)
 - [ ] [Baugh–Wooley algorithm](https://www.researchgate.net/figure/llustration-of-an-8-bit-Baugh-Wooley-multiplication_fig2_224349123)
 - [ ] [Booths Multiplication Algorithm](https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm)
 
@@ -73,6 +62,18 @@ Once the library is stable and optimised:
 - [ ] 64-bit ?
 
 ## Implemented
+
+### *Algorithm*
+
+Wallace Tree multipliers will be the first focus of the library, before moving
+onto [Dadda](https://en.wikipedia.org/wiki/Dadda_multiplier) and signed multipliers.
+
+Basic functionality; "simple templates", generate, analyse:
+
+- [x] 4-bit unsaturated multiplier [Built-in]
+- [x] 8-bit unsaturated multiplier [Built-in]
+- [x] 4-bit saturated multiplier [Built-in]
+- [x] 8-bit saturated multiplier [Built-in]
 
 ### *Structures*
 
