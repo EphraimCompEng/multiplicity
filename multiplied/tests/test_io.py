@@ -13,7 +13,7 @@ def gen_resources(bits: int, *, a=0, b=0
             p = mp.Pattern(['a','a','a','b','b','b','c','c'])
         case _:
             raise ValueError(f"Unsupported number of bits: {bits}")
-    alg = mp.Algorithm(m)
+    alg = mp.Algorithm(bits)
     return m, p, alg
 
 def test_export_algorithm() -> None:
@@ -36,7 +36,7 @@ def test_export_parquet_4() -> None:
     import time
 
     start_t = time.perf_counter()
-    alg = mp.Algorithm(mp.Matrix(4))
+    alg = mp.Algorithm(4)
     alg.auto_resolve_stage()
     scope = mp.truth_scope((1, 15), (1, 255))
     df = mp.truth_dataframe(scope, alg)
@@ -61,7 +61,7 @@ def test_export_parquet_8() -> None:
     import time
 
     start_t = time.perf_counter()
-    alg = mp.Algorithm(mp.Matrix(8))
+    alg = mp.Algorithm(8)
     alg.auto_resolve_stage()
     scope = mp.truth_scope((1, 255), (1, 65535))
     df = mp.truth_dataframe(scope, alg)

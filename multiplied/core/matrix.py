@@ -131,7 +131,7 @@ class Matrix:
         """
         Build a wallace tree for a bitwidth of self.bits
         """
-        row = [0]*bits
+        row = ['0']*bits
         matrix = []
         for i in range(bits):
             matrix.append(["_"]*(bits-i) + row + ["_"]*i)

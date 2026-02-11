@@ -6,19 +6,36 @@ from copy import deepcopy
 from typing import Any, Iterable
 import multiplied as mp
 
+# -- TODO: sanity checks --------------------------------------------
+#
+# - Use setattr to block changes to self.matrix if state != 0, suggest self.reset().
+#   Actually, this also applies to all attributes
 class Algorithm():
     """
     Manages and sequences operations via a series of stages defined by templates and maps.
+
+    parameters
+    ----------
+    matrix : mp.Matrix
+        The matrix to be multiplied.
+
+    ...
     """
 
-    def __init__(self, matrix: mp.Matrix) -> None:
-        if not isinstance(matrix, mp.Matrix):
-            raise TypeError(f"Expected Matrix, got {type(matrix)}")
-        self.bits      = len(matrix)
-        self.state     = 0
-        self.matrix    = matrix
-        self.algorithm = {}
-        self.len       = len(self.algorithm)
+    def __init__(self, bits: int,*, matrix: Any=None, saturation: bool=False) -> None:
+
+        mp.validate_bitwidth(bits)
+        if matrix is not None:
+            if not isinstance(matrix, mp.Matrix):
+                raise TypeError(f"Expected Matrix, got {type(matrix)}")
+            self.matrix = matrix
+        else:
+            self.matrix = mp.Matrix(bits)
+
+        self.bits       = bits
+        self.state      = 0
+        self.algorithm  = {}
+        self.saturation = saturation
 
         # -- TODO: update this when anything is modified ------------
         # create update() function
@@ -117,7 +134,7 @@ class Algorithm():
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
         bounds: dict = self.algorithm[self.state]['template'].bounds
-
+        print(self.matrix)
         # -- reduce -------------------------------------------------
         n         = self.bits << 1
         results   = {}
@@ -135,6 +152,8 @@ class Algorithm():
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
+                    print(operand_a)
+                    print(operand_b)
 
                     # -- skip empty rows ----------------------------
                     start = 0
