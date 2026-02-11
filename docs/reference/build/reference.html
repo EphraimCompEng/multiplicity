@@ -6,14 +6,14 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="reference.html" />
 <meta property="og:site_name" content="multiplied" />
-<meta property="og:description" content="multiplied.core package- Subpackages- multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()...." />
+<meta property="og:description" content="multiplied.analysis package- Submodules, multiplied.analysis.context module, multiplied.analysis.extract module- pq_extract_bits(), pq_extract_formatted_all(), pq_extract_formatted_stages(), pq_ext..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="_images/social_previews/summary_reference_cbe3219a.png" />
-<meta property="og:image:alt" content="multiplied.core package- Subpackages- multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()...." />
-<meta name="description" content="multiplied.core package- Subpackages- multiplied.core.templates package- Submodules, multiplied.core.templates.adder module- build_16b_adder_slice(), build_4b_adder_slice(), build_8b_adder_slice()...." />
+<meta property="og:image" content="_images/social_previews/summary_reference_d8ff341e.png" />
+<meta property="og:image:alt" content="multiplied.analysis package- Submodules, multiplied.analysis.context module, multiplied.analysis.extract module- pq_extract_bits(), pq_extract_formatted_all(), pq_extract_formatted_stages(), pq_ext..." />
+<meta name="description" content="multiplied.analysis package- Submodules, multiplied.analysis.context module, multiplied.analysis.extract module- pq_extract_bits(), pq_extract_formatted_all(), pq_extract_formatted_stages(), pq_ext..." />
 <meta name="twitter:card" content="summary_large_image" />
-<title>API Reference - multiplied</title><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="multiplied.core package" href="api/multiplied.core.html"><link rel="prev" title="Changelog" href="changelog.html"><script data-cfasync="false">(function(){
+<title>API Reference - multiplied</title><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="multiplied.analysis package" href="api/multiplied.analysis.html"><link rel="prev" title="Changelog" href="changelog.html"><script data-cfasync="false">(function(){
     const m = localStorage.getItem("breeze-mode") || "auto";
     const d = document.documentElement.dataset;
     d.mode = m;
@@ -21,7 +21,7 @@
       ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
       : m;
   })();
-  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=edf4ceec" /><script defer="defer" src="_static/scripts/breeze.js?v=af6c55ec"></script></head>
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=b3a7ba9a" /><script defer="defer" src="_static/scripts/breeze.js?v=af6c55ec"></script></head>
 <body>
   
   
@@ -102,6 +102,7 @@
   
   
     <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul>
+<li class="toctree-l1"><a class="reference internal" href="api/multiplied.analysis.html">multiplied.analysis package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/multiplied.core.html">multiplied.core package</a>
 <details><summary aria-label="Toggle submenu"></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/multiplied.core.templates.html">multiplied.core.templates package</a></li>
@@ -151,6 +152,32 @@
 <span id="id1"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="api/multiplied.analysis.html">multiplied.analysis package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#module-multiplied.analysis.context">multiplied.analysis.context module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#module-multiplied.analysis.extract">multiplied.analysis.extract module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.extract.pq_extract_bits"><code class="docutils literal notranslate"><span class="pre">pq_extract_bits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.extract.pq_extract_formatted_all"><code class="docutils literal notranslate"><span class="pre">pq_extract_formatted_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.extract.pq_extract_formatted_stages"><code class="docutils literal notranslate"><span class="pre">pq_extract_formatted_stages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.extract.pq_extract_stages"><code class="docutils literal notranslate"><span class="pre">pq_extract_stages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.extract.validate_path"><code class="docutils literal notranslate"><span class="pre">validate_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#module-multiplied.analysis.heatmap">multiplied.analysis.heatmap module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.heatmap.df_global_3d_heatmap"><code class="docutils literal notranslate"><span class="pre">df_global_3d_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.heatmap.df_global_heatmap"><code class="docutils literal notranslate"><span class="pre">df_global_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.heatmap.df_stage_bound_heatmap"><code class="docutils literal notranslate"><span class="pre">df_stage_bound_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.heatmap.df_stage_heatmap"><code class="docutils literal notranslate"><span class="pre">df_stage_heatmap()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#module-multiplied.analysis.search">multiplied.analysis.search module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.search.df_early_bitwidth_cout"><code class="docutils literal notranslate"><span class="pre">df_early_bitwidth_cout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/multiplied.analysis.html#multiplied.analysis.search.df_late_bitwidth_cout"><code class="docutils literal notranslate"><span class="pre">df_late_bitwidth_cout()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/multiplied.analysis.html#module-multiplied.analysis">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/multiplied.core.html">multiplied.core package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/multiplied.core.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/multiplied.core.templates.html">multiplied.core.templates package</a><ul>
@@ -187,6 +214,7 @@
 <li class="toctree-l5"><a class="reference internal" href="api/multiplied.core.utils.html#multiplied.core.utils.char.allchars"><code class="docutils literal notranslate"><span class="pre">allchars()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="api/multiplied.core.utils.html#multiplied.core.utils.char.chargen"><code class="docutils literal notranslate"><span class="pre">chargen()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="api/multiplied.core.utils.html#multiplied.core.utils.char.chartff"><code class="docutils literal notranslate"><span class="pre">chartff()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api/multiplied.core.utils.html#multiplied.core.utils.char.to_int_matrix"><code class="docutils literal notranslate"><span class="pre">to_int_matrix()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="api/multiplied.core.utils.html#module-multiplied.core.utils.pretty">multiplied.core.utils.pretty module</a><ul>
@@ -292,9 +320,9 @@
   
   
     <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="changelog.html" rel="prev">
-    <span>Previous</span><span class="bz-related-pages-title">Changelog</span></a><a class="bz-related-pages-next" href="api/multiplied.core.html" rel="next">
+    <span>Previous</span><span class="bz-related-pages-title">Changelog</span></a><a class="bz-related-pages-next" href="api/multiplied.analysis.html" rel="next">
     <span>Next</span>
-    <span class="bz-related-pages-title">multiplied.core package</span>
+    <span class="bz-related-pages-title">multiplied.analysis package</span>
   </a></nav>
   
 
@@ -370,5 +398,5 @@
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="_static/documentation_options.js?v=1dd76d02"></script><script src="_static/doctools.js?v=fd6eb6e6"></script><script src="_static/sphinx_highlight.js?v=6ffebe34"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="_static/documentation_options.js?v=8fa8b3e9"></script><script src="_static/doctools.js?v=fd6eb6e6"></script><script src="_static/sphinx_highlight.js?v=6ffebe34"></script></body>
 </html>
