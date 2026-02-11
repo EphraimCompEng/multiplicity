@@ -22,9 +22,13 @@ class Algorithm():
     ...
     """
 
-    def __init__(self, bits: int,*, matrix: Any=None, saturation: bool=False) -> None:
+    def __init__(self, bits: int,*, matrix: Any=None, saturation: bool=False, dadda=False) -> None:
 
         mp.validate_bitwidth(bits)
+        if not isinstance(dadda, bool):
+            raise TypeError(f"Expected dadda: bool, got {type(dadda)}")
+        if not isinstance(saturation, bool):
+            raise TypeError(f"Expected saturation: bool, got {type(saturation)}")
         if matrix is not None:
             if not isinstance(matrix, mp.Matrix):
                 raise TypeError(f"Expected Matrix, got {type(matrix)}")
@@ -33,8 +37,11 @@ class Algorithm():
             self.matrix = mp.Matrix(bits)
 
         self.bits       = bits
+        self.dadda      = dadda
         self.state      = 0
         self.algorithm  = {}
+        if self.dadda:
+            hoist(self.matrix)
         self.saturation = saturation
         if self.saturation:
             self.__clamp_bitwidth()
@@ -46,7 +53,7 @@ class Algorithm():
 
 
 
-    def push(self, source: mp.Template | mp.Pattern, map_: Any = None
+    def push(self, source: mp.Template | mp.Pattern, map_: Any=None, dadda=False
     ) -> None:
         """
         Populates stage of an algorithm based on template. Generates pseudo
@@ -83,7 +90,11 @@ class Algorithm():
         result      = mp.Matrix(template.result)
         stage_index = len(self.algorithm)
         if not map_ and result:
-            map_ = result.resolve_rmap()
+            if dadda:
+                res_copy = deepcopy(result)
+                map_ = hoist(res_copy)
+            else:
+                map_ = result.resolve_rmap()
             result.apply_map(map_)
         else:
             result.apply_map(map_)
@@ -152,7 +163,6 @@ class Algorithm():
         #   conflicts dynamically before merging vs doing so once via the
         #   resultant template
         bounds: dict = self.algorithm[self.state]['template'].bounds
-        print(self.matrix)
         # -- reduce -------------------------------------------------
         n         = self.bits << 1
         results   = {}
@@ -170,14 +180,12 @@ class Algorithm():
                     operand_a = copy(self.matrix[base_index][0])
                     operand_b = copy(self.matrix[base_index+1][0])
                     checksum  = [False] * n
-                    print(operand_a)
-                    print(operand_b)
 
                     # -- skip empty rows ----------------------------
                     start = 0
-                    # print(ch, operand_a, operand_b, base_index)
                     while operand_a[start] == '_' and operand_b[start] == '_':
                         start += 1
+
 
                     for i in range(start, n):
                         # -- row checksum ---------------------------
@@ -201,7 +209,6 @@ class Algorithm():
                     int_a = int("".join(operand_a[start:start+bits_]), 2)
                     int_b = int("".join(operand_b[start:start+bits_]), 2)
 
-                    # print(bits_+cout, f"{int_a+int_b:0{bits_+cout}b}")
                     output     = [['_']*(start-cout)]
                     output[0] += list(f"{int_a+int_b:0{bits_+cout}b}")
                     output[0] += ['_']*(n-bits_-start)
@@ -223,6 +230,8 @@ class Algorithm():
                         operand_c[start] == '_'
                     ):
                         start += 1
+
+
 
                     # -- sum columns -------------------------------
                     for i in range(start, n):
@@ -254,7 +263,6 @@ class Algorithm():
                     raise ValueError(f"Unsupported unit type, len={bounds[ch][-1][1] - bounds[ch][0][1]}")
 
             # -- build unit into matrix -----------------------------
-            # mp.mprint(output)
             unit_result = [[]]*self.bits
             i = 0
             while i < base_index:
@@ -327,14 +335,14 @@ class Algorithm():
         else:
             pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
         pattern = mp.resolve_pattern(pseudo)
-        self.push(mp.Template(pattern, matrix=pseudo))
+        self.push(mp.Template(pattern, matrix=pseudo), dadda=self.dadda)
         if not recursive:
             return None
 
         # -- main loop ----------------------------------------------
         stage = len(self.algorithm)
         while self.bits-1 > mp.empty_rows(self.algorithm[stage-1]['pseudo']):
-            if 50 < stage:
+            if 10 < stage:
                 raise IndexError('Maximum stage limit reached')
             # Stage generation
             pseudo = deepcopy(self.algorithm[stage-1]['pseudo'])
@@ -369,6 +377,9 @@ class Algorithm():
         if a == 0 or b == 0:
             return {0: mp.Matrix(self.bits)}
         self.matrix = mp.Matrix(self.bits, a=a, b=b)
+        if self.dadda:
+            hoist(self.matrix)
+
         truth = {0: self.matrix}
         self.state = 0
         for n in range(len(self.algorithm)):
@@ -528,7 +539,7 @@ def hoist(source: mp.Matrix | mp.Template, *,
 
     bits = source.bits
     if checksum == []:
-        checksum = [0]*bits
+        checksum = [1]*bits
 
 
     y_start = checksum.index(1)

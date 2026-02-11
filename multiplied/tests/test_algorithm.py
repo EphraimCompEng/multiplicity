@@ -221,9 +221,43 @@ def test_exec_saturation() -> None:
     print(int("".join(alg.matrix.matrix[0]), 2), '<- saturated')
     print(a*b, '<- unsaturated')
 
+def test_exec_dadda() -> None:
+    alg = mp.Algorithm(8, dadda=True)
+    alg.auto_resolve_stage()
+    a=27
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print()
+    print(int("".join(alg.matrix.matrix[0]), 2))
+    print(a*b)
+
+
+def test_exec_dadda_saturation() -> None:
+    alg = mp.Algorithm(8, saturation=True, dadda=True)
+    alg.auto_resolve_stage()
+    a=2
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print()
+    print(int("".join(alg.matrix.matrix[0]), 2), '<- saturated')
+    print(a*b, '<- unsaturated')
+
+
+
+
+
+
 def main():
     test_exec_docs()
     test_exec_saturation()
+    test_exec_dadda()
+    test_exec_dadda_saturation()
     # test_step()
     # test_exec(15, 15)
     # test_exec(255, 255)

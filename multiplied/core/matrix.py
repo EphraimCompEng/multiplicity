@@ -343,13 +343,16 @@ def matrix_merge(source: dict[str, Matrix],
         # new error message needed
         raise ValueError("Source must contain the same number of matrices as bounds")
 
+
     bits = list(source.values())[0].bits
     output = empty_matrix(bits)
     for unit, matrix in source.items():
+        if bounds[unit] == '_':
+            continue
 
         # new bounding box covering whole result
-        box_left = bounds[unit][-2][0]
-        box_right = bounds[unit][1][0]
+        box_left = min(i[0] for i in bounds[unit])
+        box_right = max(i[0] for i in bounds[unit])
         i = 0
         while i < len(bounds[unit])-1:
 
