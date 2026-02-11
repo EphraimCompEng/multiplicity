@@ -36,11 +36,14 @@ class Algorithm():
         self.state      = 0
         self.algorithm  = {}
         self.saturation = saturation
+        if self.saturation:
+            self.__clamp_bitwidth()
 
         # -- TODO: update this when anything is modified ------------
         # create update() function
         # add to each modifying class method
         return None
+
 
 
     def push(self, source: mp.Template | mp.Pattern, map_: Any = None
@@ -93,6 +96,21 @@ class Algorithm():
         self.algorithm[stage_index] = stage
         return None
 
+    def __clamp_bitwidth(self) -> bool:
+        """
+        Saturates matrix if current matrix has carried past original bitwidth
+        """
+        boundary = (2**self.bits)-1
+        as_int   = mp.to_int_matrix(self.matrix.matrix)
+        test     = [boundary < i for i in as_int]
+
+        if any(test):
+            # flood bits within boundary
+            saturated_value = [['0']*self.bits + ['1']*self.bits]
+            self.matrix = mp.Matrix(saturated_value + mp.empty_matrix(self.bits)[1:])
+            return True
+        else:
+            return False
 
     # ! Matrix.x_checksum is only useful in the context of Algorithm.__reduce()
     # - Maybe use bounds to create x_checksum within __reduce()'s unit collection
@@ -332,7 +350,9 @@ class Algorithm():
         """
         Execute the next stage of the algorithm and update internal matrix
         """
-        self.__reduce()
+        if self.saturation:
+            self.__clamp_bitwidth()
+            self.__reduce()
         self.state += 1
 
         # getattr for matrix, template and map to peek algorithm
@@ -353,6 +373,10 @@ class Algorithm():
         self.state = 0
         for n in range(len(self.algorithm)):
             self.__reduce()
+            if self.saturation and self.__clamp_bitwidth():
+                for i in range(n, len(self.algorithm)):
+                    truth[i+1] = deepcopy(self.matrix)
+                break
             truth[n+1] = deepcopy(self.matrix)
 
         self.state = 0

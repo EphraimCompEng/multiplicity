@@ -318,6 +318,7 @@ def empty_matrix(bits: int) -> list[list[str]]:
     """
     Build an empty 2d array for a given bitwidth
     """
+    mp.validate_bitwidth(bits)
     matrix = []
     for i in range(bits):
         matrix.append(["_"]*(bits*2))

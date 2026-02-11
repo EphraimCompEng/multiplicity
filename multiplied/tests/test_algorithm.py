@@ -209,19 +209,32 @@ def test_exec_docs() -> None:
     print(a*b)
 
 
+def test_exec_saturation() -> None:
+    alg = mp.Algorithm(8, saturation=True)
+    alg.auto_resolve_stage()
+    a=2
+    b=255
+    output = alg.exec(a, b)
+    for k, v in output.items():
+        print(v)
+        # mp.mprint(v['pseudo'])
+    print(int("".join(alg.matrix.matrix[0]), 2), '<- saturated')
+    print(a*b, '<- unsaturated')
+
 def main():
     test_exec_docs()
-    test_step()
-    test_exec(15, 15)
-    test_exec(255, 255)
-    test_exec(23, 17)
-    test_algorithm_reuse_8(255, 255)
-    test_algorithm_reuse_4(4, 7)
-    test_manual_population_8()
-    test_auto_resolve_recursive_full_8()
-    test_auto_resolve_recursive_full_4()
-    test_isolate_arithmetic_units()
-    test_err_duplicate_units()
+    test_exec_saturation()
+    # test_step()
+    # test_exec(15, 15)
+    # test_exec(255, 255)
+    # test_exec(23, 17)
+    # test_algorithm_reuse_8(255, 255)
+    # test_algorithm_reuse_4(4, 7)
+    # test_manual_population_8()
+    # test_auto_resolve_recursive_full_8()
+    # test_auto_resolve_recursive_full_4()
+    # test_isolate_arithmetic_units()
+    # test_err_duplicate_units()
     ...
 
 if __name__ == "__main__":
