@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-# -- sources --
-# https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html
-def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
+plt.style.use('dark_background')
+
+def df_global_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) -> None:
     """Export pyplot of global heatmap"""
 
     if not isinstance(df, pd.DataFrame):
@@ -52,6 +52,9 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
 
     fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
     im = ax.imshow(arr, cmap='magma_r')
+    if dark:
+        plt.style.use('dark_background')
+        im.set_cmap('magma')
 
     ax.set_xticks(range(bits << 1), labels=[f'b{i}' for i in range((bits << 1)-1, -1, -1)])
     ax.set_yticks(range(bits), labels=[f'ppm_{i}' for i in range(bits)])
@@ -77,9 +80,8 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     # for i in df_:
     #     print(i)
 
-# -- sources --
-# https://matplotlib.org/stable/gallery/mplot3d/index.html
-def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
+# plt.style.use('dark_background')
+def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) -> None:
     """Export 3d plot with heatmap for each stage stacked along the x-axis"""
 
     if not isinstance(df, pd.DataFrame):
@@ -123,7 +125,9 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame) -> None:
     fig       = plt.figure(figsize=(16,9), dpi=200)
     ax        = fig.add_subplot(111, projection='3d')
     cmap      = plt.get_cmap('magma_r')
-
+    if dark:
+        plt.style.use('dark_background')
+        cmap = plt.get_cmap('magma')
 
     # -- build 3d stacked heatmaps ----------------------------------
     for i in range(total_stages):
