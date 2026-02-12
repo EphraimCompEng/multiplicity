@@ -21,10 +21,9 @@ simplification, etc., before applying multiprocessing and beyond.
 
 def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
 ) -> Generator[tuple]:
-    """
-    A generator based on the domain and range of a desired truth table.
+    """Yields (a, b) from domain such that it's product (ab) lies within range
 
-    Domain: A tuple of integers representing the range of input values.
+    Domain: A tuple of integers representing the domain of input values.
     Range: A tuple of integers representing the range of output values.
 
     Yields tuple: (operand_a, operand_b)
@@ -61,6 +60,36 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
                 break
         x += 1
 
+
+def truth_scope_batch(domain_: tuple[int,int], range_: tuple[int,int], chunk_size: int
+) -> Generator[list[tuple]]:
+    """Yields list of tuples from domain such that it's product (ab) lies within range
+
+    Domain: A tuple of integers representing the domain of input values.
+    Range: A tuple of integers representing the range of output values.
+
+    Yields tuple: (operand_a, operand_b)
+    """
+
+    if not all([isinstance(d, int) for d in domain_]):
+        raise TypeError("Domain must be a tuple of integers.")
+    if not all([isinstance(r, int) for r in range_]):
+        raise TypeError("Range must be a tuple of integers.")
+
+    min_in, max_in = domain_
+    min_out, max_out = range_
+
+    # improve error messages
+    if min_in <= 0 or min_out <= 0:
+        raise ValueError("Minimum input and output values must be greater than zero.")
+    if min_in > max_in:
+        raise ValueError("Minimum input value greater than maximum input value.")
+    if min_out > max_out:
+        raise ValueError("Minimum output greater than maximum output value.")
+    if min_in > max_out:
+        raise ValueError("Minimum input value greater than maximum output value.")
+    if min_out > max_in:
+        raise ValueError("Minimum output value greater than maximum input value.")
 
 
 def shallow_truth_table(scope: Generator[tuple], alg: Algorithm

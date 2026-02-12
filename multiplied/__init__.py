@@ -1,8 +1,5 @@
 #!bin/python3
 
-from pathlib import Path
-import toml
-
 
 # -- core -----------------------------------------------------------
 
@@ -133,16 +130,6 @@ from .analysis.heatmap import (
 # )
 
 
-
-# -- pyproject.toml metadata ----------------------------------------
-
-
-with open(Path(__file__).parent.parent / "pyproject.toml", "r") as f:
-    MP_TOML = toml.loads(f.read())
-
-MP_VERSION = MP_TOML["project"]["version"]
-
-
 # -- __all__ --------------------------------------------------------
 
 __all__ = [
@@ -190,5 +177,4 @@ __all__ = [
     'df_global_3d_heatmap',
     'df_stage_heatmap',
     'df_stage_bound_heatmap',
-    'MP_VERSION',
 ]

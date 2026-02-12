@@ -261,6 +261,7 @@
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.html#multiplied.core.truth.shallow_truth_table"><code class="docutils literal notranslate"><span class="pre">shallow_truth_table()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.html#multiplied.core.truth.truth_dataframe"><code class="docutils literal notranslate"><span class="pre">truth_dataframe()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.html#multiplied.core.truth.truth_scope"><code class="docutils literal notranslate"><span class="pre">truth_scope()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="multiplied.core.html#multiplied.core.truth.truth_scope_batch"><code class="docutils literal notranslate"><span class="pre">truth_scope_batch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="multiplied.core.html#multiplied.core.truth.truth_table"><code class="docutils literal notranslate"><span class="pre">truth_table()</span></code></a></li>
 </ul>
 </li>
@@ -1012,8 +1013,8 @@ set of operands a, b.</p>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_scope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.truth_scope" title="Link to this definition">#</a></dt>
-<dd><p>A generator based on the domain and range of a desired truth table.</p>
-<p>Domain: A tuple of integers representing the range of input values.
+<dd><p>Yields (a, b) from domain such that it’s product (ab) lies within range</p>
+<p>Domain: A tuple of integers representing the domain of input values.
 Range: A tuple of integers representing the range of output values.</p>
 <p>Yields tuple: (operand_a, operand_b)</p>
 </dd></dl>
@@ -1035,7 +1036,18 @@ set of operands a, b.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="multiplied.validate_bitwidth">
 <span class="sig-prename descclassname"><span class="pre">multiplied.</span></span><span class="sig-name descname"><span class="pre">validate_bitwidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ValueError</span></span></span><a class="reference internal" href="../_modules/multiplied/core/utils/bool.html#validate_bitwidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.validate_bitwidth" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Raise ValueError if bitwidth is unsupported</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>bits : Bitwidth to validate</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None if bitwidth is supported, ValueError otherwise</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 </section>
 </section>

@@ -132,7 +132,7 @@
 <div class="viewcode-block" id="test_scope">
 <a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_truth.test_scope">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_scope</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">truth</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">truth_scope</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+    <span class="n">truth</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">truth_scope</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">65535</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1_000_000</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">truth</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
 
@@ -194,12 +194,12 @@
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../../api/multiplied.tests.html#multiplied.tests.test_truth.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">test_scope</span><span class="p">()</span>
-    <span class="n">test_shallow_generator4</span><span class="p">()</span>
-    <span class="n">test_shallow_generator8</span><span class="p">()</span>
-    <span class="n">test_truth_table</span><span class="p">()</span>
-    <span class="n">test_truth_dataframe</span><span class="p">()</span></div>
+    <span class="n">test_scope</span><span class="p">()</span></div>
 
+    <span class="c1"># test_shallow_generator4()</span>
+    <span class="c1"># test_shallow_generator8()</span>
+    <span class="c1"># test_truth_table()</span>
+    <span class="c1"># test_truth_dataframe()</span>
 
 
 

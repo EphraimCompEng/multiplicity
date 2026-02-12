@@ -663,8 +663,25 @@ set of operands a, b.</p>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_scope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_scope" title="Link to this definition">#</a></dt>
-<dd><p>A generator based on the domain and range of a desired truth table.</p>
-<p>Domain: A tuple of integers representing the range of input values.
+<dd><p>Yields (a, b) from domain such that it’s product (ab) lies within range</p>
+<p>Domain: A tuple of integers representing the domain of input values.
+Range: A tuple of integers representing the range of output values.</p>
+<p>Yields tuple: (operand_a, operand_b)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multiplied.core.truth.truth_scope_batch">
+<span class="sig-prename descclassname"><span class="pre">multiplied.core.truth.</span></span><span class="sig-name descname"><span class="pre">truth_scope_batch</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">domain_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">range_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/multiplied/core/truth.html#truth_scope_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.core.truth.truth_scope_batch" title="Link to this definition">#</a></dt>
+<dd><p>Yields list of tuples from domain such that it’s product (ab) lies within range</p>
+<p>Domain: A tuple of integers representing the domain of input values.
 Range: A tuple of integers representing the range of output values.</p>
 <p>Yields tuple: (operand_a, operand_b)</p>
 </dd></dl>
@@ -765,6 +782,7 @@ set of operands a, b.</p>
 <li><a class="reference internal" href="#multiplied.core.truth.shallow_truth_table"><code class="docutils literal notranslate"><span class="pre">shallow_​truth_​table()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.truth.truth_dataframe"><code class="docutils literal notranslate"><span class="pre">truth_​dataframe()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.truth.truth_scope"><code class="docutils literal notranslate"><span class="pre">truth_​scope()</span></code></a></li>
+<li><a class="reference internal" href="#multiplied.core.truth.truth_scope_batch"><code class="docutils literal notranslate"><span class="pre">truth_​scope_​batch()</span></code></a></li>
 <li><a class="reference internal" href="#multiplied.core.truth.truth_table"><code class="docutils literal notranslate"><span class="pre">truth_​table()</span></code></a></li>
 </ul>
 </li>
