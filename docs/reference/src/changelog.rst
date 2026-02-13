@@ -8,7 +8,7 @@ Changelog
 v0.6
 =====
 
-`v0.6.1 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.1>`_
+`v0.6.2 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.2>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Bug Fixes:
@@ -17,7 +17,7 @@ Bug Fixes:
     - Refactored / Harmonised Dataframe, Parquet Access (`ffc8963`_)
     - Dark plot background inconsistencies (`d95bbda`_)
 
-See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.1>`_.
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.2>`_.
 
 .. _09d2544:
     https://github.com/EphraimCompEng/multiplied/commit/09d254432cf6cd3ace877c493676986d5308b28b
@@ -55,6 +55,8 @@ Looking forward:
     - Data Structure Optimisation
     - 16-bit Algorithm Support
 
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.0>`_.
+
 .. _f7a9a62:
     https://github.com/EphraimCompEng/multiplied/commit/f7a9a629815d0a668461bb514a566bbb191c097f
 
@@ -67,7 +69,6 @@ Looking forward:
 .. _c420f07:
     https://github.com/EphraimCompEng/multiplied/commit/c420f07f6a1f3b022ee527fe470f6c2c1007548a
 
-See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.0>`_.
 
 
 
