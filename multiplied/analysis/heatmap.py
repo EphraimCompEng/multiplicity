@@ -1,3 +1,4 @@
+from copy import copy
 import pandas as pd
 import pyarrow as pa
 import numpy as np
@@ -16,31 +17,52 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) ->
     if not isinstance(path, str):
         raise TypeError(f"path must be a string got {type(path)}")
 
-    # sum all columns
-    # cast to nested list
-    # cast nested list to .im_show
-    # Use columns as hints to generate axis labels
-    # plt.savefig('filename.png')
 
-    # print(df)
-    df_ = df.sum(axis=0) # Create heatmap for each stage
+    rbi = 0
+    tsi = -1
+    print('----df----')
+    print(df.columns)
+    print(df.index)
+    print('----df----\n')
+    while df.columns[tsi][:5] != 'stage':
+        print(df.columns[tsi][:5])
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        tsi -= 1
+
+    while df.columns[rbi][:5] != 'stage':
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        rbi += 1
+
+    col = list(df.columns)[rbi:tsi+1] if tsi != -1 else list(df.columns)[rbi:]
+    df_ = df[col].sum(axis=0)
+
+    print('----df_----')
+    print(f"{df_.head()}\n...\n{df_.tail()}")
+    print(df_.index)
+    print(tsi, rbi, f"\n{col[:5]}\n...\n{col[-5:]}\n")
+    df_ = pd.DataFrame([df_.values], columns=col)
+    print(df_)
+    # df_ = pd.DataFrame(df_, columns=col[rbi:tsi]) # Create heatmap for each stage
     pd.set_option('display.max_rows', None)
-    hint = str(df_.index[-1])[2:-2].split("', '")
 
-    total_stages = int(hint[0].split('_')[-1]) + 1
-    bits         = int(hint[1].split('_')[-1]) + 1
+    print(df_.columns)
+    print('----df_----\n')
 
-    print(hint)
+    print('2d')
+    result_bits  = int(str(copy(df_.columns[0])).split('_')[-1]) + 1
+    total_stages = int(str(copy(df_.columns[-1])).split('_')[1]) + 1
+    print(result_bits, total_stages)
 
     arr = None
     for s in range(total_stages):
         ppm = []
-        for p in range(bits):
-            row = [0]*(bits << 1)
-            for b in range((bits << 1)-1, -1, -1):
-                row[b] = df_.loc[f"('stage_{s}', 'ppm_{p}', 'b{b}')"]
+        for p in range(result_bits >> 1):
+            row = [0]*(result_bits)
+            for b in range((result_bits)-1, -1, -1):
+                row[b] = df_.loc[:, f"stage_{s}_ppm_{p}_b_{b}"][0]
             ppm.append(row[::-1])
-        # mini_heatmaps.append(np.array(ppm))
         if arr is None:
             arr = np.array(ppm)
             continue
@@ -56,11 +78,11 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) ->
         plt.style.use('dark_background')
         im.set_cmap('magma')
 
-    ax.set_xticks(range(bits << 1), labels=[f'b{i}' for i in range((bits << 1)-1, -1, -1)])
-    ax.set_yticks(range(bits), labels=[f'ppm_{i}' for i in range(bits)])
+    ax.set_xticks(range(result_bits), labels=[f'b{i}' for i in range((result_bits)-1, -1, -1)])
+    ax.set_yticks(range(result_bits >> 1), labels=[f'ppm_{i}' for i in range(result_bits >> 1)])
 
-    for i in range(bits):
-        for j in range((bits << 1)-1, -1, -1):
+    for i in range(result_bits >> 1):
+        for j in range((result_bits)-1, -1, -1):
             text = ax.text(j, i, arr[i, j], ha="center", va="center", color="w")
 
     ax.set_title(title, pad=50)
@@ -74,11 +96,8 @@ def df_global_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) ->
     plt.colorbar(im, shrink=0.7)
     plt.savefig(path)
 
-    # print(df_)
-    # print(df_.index)
-    # print(mini_heatmaps)
-    # for i in df_:
-    #     print(i)
+    print('----\n2d heatmap done\n----')
+    return None
 
 # plt.style.use('dark_background')
 def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False) -> None:
@@ -93,31 +112,62 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False)
 
     # -- collect data, metadata -------------------------------------
 
-    df_  = df.sum(axis=0) # Create heatmap for each stage
-    hint = str(df_.index[-1])[2:-2].split("', '")
-    print(hint)
+    rbi = 0
+    tsi = -1
+    print('----df----')
+    print(df.columns)
+    print(df.index)
+    print('----df----\n')
+    while df.columns[tsi][:5] != 'stage':
+        print(df.columns[tsi][:5])
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        tsi -= 1
 
-    total_stages = int(hint[0].split('_')[-1]) + 1
-    bits         = int(hint[1].split('_')[-1]) + 1
+    while df.columns[rbi][:5] != 'stage':
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        rbi += 1
+
+    col = list(df.columns)[rbi:tsi+1] if tsi != -1 else list(df.columns)[rbi:]
+    df_ = df[col].sum(axis=0)
+
+    print('----df_----')
+    print(f"{df_.head()}\n...\n{df_.tail()}")
+    print(df_.index)
+    print(tsi, rbi, f"\n{col[:5]}\n...\n{col[-5:]}\n")
+    df_ = pd.DataFrame([df_.values], columns=col)
+    print(df_)
+    # df_ = pd.DataFrame(df_, columns=col[rbi:tsi]) # Create heatmap for each stage
+    pd.set_option('display.max_rows', None)
+
+    print(df_.columns)
+    print('----df_----\n')
+
+    print('3d')
+    result_bits  = int(str(copy(df_.columns[0])).split('_')[-1]) + 1
+    total_stages = int(str(copy(df_.columns[-1])).split('_')[1]) + 1
+    print(result_bits, total_stages)
 
     # -- build stage heatmaps ---------------------------------------
     arr_list = []
     for s in range(total_stages):
         ppm = []
-        for p in range(bits):
-            row = [0]*(bits << 1)
-            for b in range(bits << 1):
-                row[b] = df_.loc[f"('stage_{s}', 'ppm_{p}', 'b{b}')"]
+        for p in range(result_bits >> 1):
+            row = [0]*(result_bits)
+            for b in range(result_bits):
+                row[b] = df_.loc[:, f"stage_{s}_ppm_{p}_b_{b}"][0]
             ppm.append(row[::-1])
         arr_list.append(ppm)
 
 
     stages      = np.stack(arr_list)
+    print(stages.shape)
     vmin, vmax  = stages.min(), stages.max()
     stages_norm = (stages - vmin) / (vmax - vmin)
+    print(stages_norm.shape)
     _, nx, ny   = stages_norm.shape
 
-    print(stages_norm.shape)
 
     # -- plot setup -------------------------------------------------
     x_spacing = 2.0
@@ -133,7 +183,7 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False)
     for i in range(total_stages):
         x_plane           = np.full_like(stages[i], i*x_spacing, shape=[nx+1, ny+1])
         y_plane, z_plane  = np.meshgrid(
-            np.arange((bits << 1) +1), np.arange(bits, -1, -1), indexing='xy'
+            np.arange((result_bits) +1), np.arange(result_bits >> 1, -1, -1), indexing='xy'
         )
 
         facecolors = cmap(stages_norm[i])
@@ -158,16 +208,16 @@ def df_global_3d_heatmap(path: str, title: str, df: pd.DataFrame, *, dark=False)
 
     # -- axis values ------------------------------------------------
     ax.set_xticks(np.arange(-1, total_stages*2-1, 2) ,[f"stage_{i}" for i in range(total_stages)])
-    ax.set_yticks(np.arange(bits << 1)+1, np.arange((bits << 1)-1, -1, -1))
-    ax.set_zticks(np.arange(bits), labels=[f'ppm_{i}' for i in range(bits-1, -1, -1)])
+    ax.set_yticks(np.arange(result_bits)+1, np.arange((result_bits)-1, -1, -1))
+    ax.set_zticks(np.arange(result_bits >> 1), labels=[f'ppm_{i}' for i in range((result_bits >> 1)-1, -1, -1)])
 
 
     # -- titles -----------------------------------------------------
     ax.set_xlim(-x_spacing, (total_stages - 1) * x_spacing + x_spacing)
     ax.set_ylabel('bits')
     ax.set_zlabel('Partial Product', va='bottom')
-    ax.set_ylim(-0.5, (bits << 1)+0.5)
-    ax.set_zlim(-0.5, bits)
+    ax.set_ylim(-0.5, (result_bits)+0.5)
+    ax.set_zlim(-0.5, result_bits >> 1)
     ax.set_title(title, pad=70)
 
     # -- colour bar -------------------------------------------------
@@ -206,12 +256,22 @@ def df_stage_heatmap(path: str, df: pd.DataFrame, stages: list[int]) -> None:
 
     # print(df)
     df_ = df.sum(axis=0)
-    pd.set_option('display.max_rows', None)
-    hint = str(df_.index[-1])[2:-2].split("', '")
+    rbi = 0
+    tsi = -1
+    while df_.columns[tsi][:5] != 'stage':
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        tsi -= 1
 
-    total_stages = int(hint[0].split('_')[-1]) + 1
-    bits         = int(hint[1].split('_')[-1]) + 1
+    while df_.columns[rbi][:5] != 'stage':
+        if 15 < tsi:
+            raise IndexError("Unsupported DataFrame")
+        rbi += 1
 
+
+    print('boo')
+    bits  = (int(str(copy(df_.columns[rbi])).split('_')[-1]) + 1) >> 1
+    total_stages = int(str(copy(df_.columns[tsi])).split('_')[1]) + 1
 
     mini_heatmaps = []
 

@@ -51,7 +51,12 @@ def test_export_parquet_4() -> None:
     df.to_parquet(path)
     end_t = time.perf_counter()
     print(f"{end_t - start_t:.6f} seconds")
-    # df1 = pd.read_parquet(path)
+    df1 = pd.read_parquet(path)
+    print(df1)
+    df2 = mp.pq_extract_stages(str(path))
+    print(df2)
+    print(df2.columns)
+    print(df2.index)
     # row = df1.loc[600]
     # print(", ".join(f"{v}" for k, v in row.items()))
 
