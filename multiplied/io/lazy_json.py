@@ -11,9 +11,8 @@ def validate_path(path: str) -> None:
 
 # ! Need revisiting once loading and storing to .parquet established
 def json_pretty_store(gen: Generator, path: str) -> None:
-    """
-    Format objects produced by generator then send to JSON file
-    """
+    """Format objects produced by generator then send to JSON file"""
+
     validate_path(path)
     if not isinstance(gen, Generator):
         raise TypeError("gen must be a generator")
