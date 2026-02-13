@@ -3,7 +3,6 @@
 ###################################
 
 
-from functools import cache
 from multiplied import Algorithm, Matrix
 import pandas as pd
 from multiprocessing import Pool
@@ -61,35 +60,36 @@ def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
         x += 1
 
 
-def truth_scope_batch(domain_: tuple[int,int], range_: tuple[int,int], chunk_size: int
-) -> Generator[list[tuple]]:
-    """Yields list of tuples from domain such that it's product (ab) lies within range
+# def truth_scope_batch(domain_: tuple[int,int], range_: tuple[int,int], chunk_size: int
+# ) -> Generator[list[tuple]]:
+#     """Yields list of tuples from domain such that it's product (ab) lies within range
 
-    Domain: A tuple of integers representing the domain of input values.
-    Range: A tuple of integers representing the range of output values.
+#     Domain: A tuple of integers representing the domain of input values.
+#     Range: A tuple of integers representing the range of output values.
 
-    Yields tuple: (operand_a, operand_b)
-    """
+#     Yields tuple: (operand_a, operand_b)
+#     """
 
-    if not all([isinstance(d, int) for d in domain_]):
-        raise TypeError("Domain must be a tuple of integers.")
-    if not all([isinstance(r, int) for r in range_]):
-        raise TypeError("Range must be a tuple of integers.")
+#     if not all([isinstance(d, int) for d in domain_]):
+#         raise TypeError("Domain must be a tuple of integers.")
+#     if not all([isinstance(r, int) for r in range_]):
+#         raise TypeError("Range must be a tuple of integers.")
 
-    min_in, max_in = domain_
-    min_out, max_out = range_
+#     min_in, max_in = domain_
+#     min_out, max_out = range_
 
-    # improve error messages
-    if min_in <= 0 or min_out <= 0:
-        raise ValueError("Minimum input and output values must be greater than zero.")
-    if min_in > max_in:
-        raise ValueError("Minimum input value greater than maximum input value.")
-    if min_out > max_out:
-        raise ValueError("Minimum output greater than maximum output value.")
-    if min_in > max_out:
-        raise ValueError("Minimum input value greater than maximum output value.")
-    if min_out > max_in:
-        raise ValueError("Minimum output value greater than maximum input value.")
+#     # improve error messages
+#     if min_in <= 0 or min_out <= 0:
+#         raise ValueError("Minimum input and output values must be greater than zero.")
+#     if min_in > max_in:
+#         raise ValueError("Minimum input value greater than maximum input value.")
+#     if min_out > max_out:
+#         raise ValueError("Minimum output greater than maximum output value.")
+#     if min_in > max_out:
+#         raise ValueError("Minimum input value greater than maximum output value.")
+#     if min_out > max_in:
+#         raise ValueError("Minimum output value greater than maximum input value.")
+#     ...
 
 
 def shallow_truth_table(scope: Generator[tuple], alg: Algorithm
@@ -131,11 +131,10 @@ def _dataframe_entry_worker(a: int, b: int , alg: Algorithm) -> dict:
         for r, row in enumerate(matrix):
             for b, bit in enumerate(row[::-1]):
                 entry[
-                    (f"stage_{stage}",f"ppm_{r}",f"b{b}")
+                    f"stage_{stage}_ppm_{r}_b_{b}"
                 ] = 0 if bit in ['_', '0'] else 1
     return entry
 
-@cache
 def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
 ) -> pd.DataFrame:
     """
@@ -170,20 +169,19 @@ def truth_dataframe(scope: Generator[tuple[int, int]], alg: Algorithm
         pool.close()
         pool.join()
 
-    col = pd.MultiIndex.from_product([
-        [f"stage_{i}" for i in range(len(alg) + 1)],
-        [f"ppm_{i}" for i in range(alg.bits)],
-        [f"b{i}" for i in range((alg.bits << 1)-1, -1, -1)]
-    ])
-
-    # col.dtype('int8')
-    # dtype_map = {c: 'int8' for c in col}
-
-    ppm_s_columns   = [f"ppm_s{i}" for i in range(len(alg) + 1)]
+    col       = [''] * ((len(alg) + 1) * alg.bits * (alg.bits << 1))
+    ppm_s_col = [''] * (len(alg) + 1)
+    n = 0
+    for i in range(len(alg) + 1):
+        for j in range(alg.bits):
+            for k in range((alg.bits << 1)-1, -1, -1):
+                col[n] = f"stage_{i}_ppm_{j}_b_{k}"
+                n += 1
+        ppm_s_col[i] = f"ppm_s_{i}"
 
 
     operand_columns = pd.DataFrame(operands, columns=['a', 'b', 'output'], dtype='int32')
-    pretty_columns  = pd.DataFrame(pretty, columns=ppm_s_columns, dtype='str')
+    pretty_columns  = pd.DataFrame(pretty, columns=ppm_s_col, dtype='str')
     table           = pd.DataFrame(data, columns=col).astype('int8')
 
     return pd.concat([operand_columns, table, pretty_columns], axis=1)
