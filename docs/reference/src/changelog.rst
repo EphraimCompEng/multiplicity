@@ -14,11 +14,15 @@ v0.6
 Hotfix:
 
     - Moved pyproject.toml metadata extraction into conf.py (`09d2544`_)
+    - Refactord / Harmonised Dataframe, Parquet Access (`ffc8963`_)
 
 See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.1>`_.
 
 .. _09d2544:
     https://github.com/EphraimCompEng/multiplied/commit/09d254432cf6cd3ace877c493676986d5308b28b
+
+.. _ffc8963:
+    https://github.com/EphraimCompEng/multiplied/commit/ffc8963919f54d1934031b0b64354a9838dfd707
 
 `v0.6.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.0>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -129,7 +129,6 @@
 <span class="c1">###################################</span>
 
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cache</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">multiplied</span><span class="w"> </span><span class="kn">import</span> <span class="n">Algorithm</span><span class="p">,</span> <span class="n">Matrix</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pool</span>
@@ -190,38 +189,36 @@
 
 
 
-<div class="viewcode-block" id="truth_scope_batch">
-<a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.truth_scope_batch">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">truth_scope_batch</span><span class="p">(</span><span class="n">domain_</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">],</span> <span class="n">range_</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields list of tuples from domain such that it&#39;s product (ab) lies within range</span>
+<span class="c1"># def truth_scope_batch(domain_: tuple[int,int], range_: tuple[int,int], chunk_size: int</span>
+<span class="c1"># ) -&gt; Generator[list[tuple]]:</span>
+<span class="c1">#     &quot;&quot;&quot;Yields list of tuples from domain such that it&#39;s product (ab) lies within range</span>
 
-<span class="sd">    Domain: A tuple of integers representing the domain of input values.</span>
-<span class="sd">    Range: A tuple of integers representing the range of output values.</span>
+<span class="c1">#     Domain: A tuple of integers representing the domain of input values.</span>
+<span class="c1">#     Range: A tuple of integers representing the range of output values.</span>
 
-<span class="sd">    Yields tuple: (operand_a, operand_b)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#     Yields tuple: (operand_a, operand_b)</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">domain_</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Domain must be a tuple of integers.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">range_</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Range must be a tuple of integers.&quot;</span><span class="p">)</span>
+<span class="c1">#     if not all([isinstance(d, int) for d in domain_]):</span>
+<span class="c1">#         raise TypeError(&quot;Domain must be a tuple of integers.&quot;)</span>
+<span class="c1">#     if not all([isinstance(r, int) for r in range_]):</span>
+<span class="c1">#         raise TypeError(&quot;Range must be a tuple of integers.&quot;)</span>
 
-    <span class="n">min_in</span><span class="p">,</span> <span class="n">max_in</span> <span class="o">=</span> <span class="n">domain_</span>
-    <span class="n">min_out</span><span class="p">,</span> <span class="n">max_out</span> <span class="o">=</span> <span class="n">range_</span>
+<span class="c1">#     min_in, max_in = domain_</span>
+<span class="c1">#     min_out, max_out = range_</span>
 
-    <span class="c1"># improve error messages</span>
-    <span class="k">if</span> <span class="n">min_in</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">min_out</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum input and output values must be greater than zero.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">min_in</span> <span class="o">&gt;</span> <span class="n">max_in</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum input value greater than maximum input value.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">min_out</span> <span class="o">&gt;</span> <span class="n">max_out</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum output greater than maximum output value.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">min_in</span> <span class="o">&gt;</span> <span class="n">max_out</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum input value greater than maximum output value.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">min_out</span> <span class="o">&gt;</span> <span class="n">max_in</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum output value greater than maximum input value.&quot;</span><span class="p">)</span></div>
-
+<span class="c1">#     # improve error messages</span>
+<span class="c1">#     if min_in &lt;= 0 or min_out &lt;= 0:</span>
+<span class="c1">#         raise ValueError(&quot;Minimum input and output values must be greater than zero.&quot;)</span>
+<span class="c1">#     if min_in &gt; max_in:</span>
+<span class="c1">#         raise ValueError(&quot;Minimum input value greater than maximum input value.&quot;)</span>
+<span class="c1">#     if min_out &gt; max_out:</span>
+<span class="c1">#         raise ValueError(&quot;Minimum output greater than maximum output value.&quot;)</span>
+<span class="c1">#     if min_in &gt; max_out:</span>
+<span class="c1">#         raise ValueError(&quot;Minimum input value greater than maximum output value.&quot;)</span>
+<span class="c1">#     if min_out &gt; max_in:</span>
+<span class="c1">#         raise ValueError(&quot;Minimum output value greater than maximum input value.&quot;)</span>
+<span class="c1">#     ...</span>
 
 
 <div class="viewcode-block" id="shallow_truth_table">
@@ -269,13 +266,12 @@
         <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">bit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">entry</span><span class="p">[</span>
-                    <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stage_</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="sa">f</span><span class="s2">&quot;ppm_</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="sa">f</span><span class="s2">&quot;b</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;stage_</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">_ppm_</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">_b_</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">bit</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">entry</span>
 
 <div class="viewcode-block" id="truth_dataframe">
 <a class="viewcode-back" href="../../../api/multiplied.core.html#multiplied.truth_dataframe">[docs]</a>
-<span class="nd">@cache</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">truth_dataframe</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">alg</span><span class="p">:</span> <span class="n">Algorithm</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -310,20 +306,19 @@
         <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
-    <span class="n">col</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span>
-        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;stage_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)],</span>
-        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ppm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span><span class="p">)],</span>
-        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;b</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-    <span class="p">])</span>
-
-    <span class="c1"># col.dtype(&#39;int8&#39;)</span>
-    <span class="c1"># dtype_map = {c: &#39;int8&#39; for c in col}</span>
-
-    <span class="n">ppm_s_columns</span>   <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ppm_s</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">col</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">alg</span><span class="o">.</span><span class="n">bits</span> <span class="o">*</span> <span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ppm_s_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="n">alg</span><span class="o">.</span><span class="n">bits</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">col</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;stage_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_ppm_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">_b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ppm_s_col</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ppm_s_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
     <span class="n">operand_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">operands</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
-    <span class="n">pretty_columns</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pretty</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ppm_s_columns</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+    <span class="n">pretty_columns</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pretty</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ppm_s_col</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
     <span class="n">table</span>           <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int8&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">operand_columns</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">pretty_columns</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
