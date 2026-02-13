@@ -75,6 +75,8 @@ def build_adder(char: str, source_slice: mp.Slice
     tuple[Slice, Slice]
         The template "slices" for addition and the resulting slice.
 
+    Examples
+    --------
     >>> [slice-] || [adder-] || [result]
     >>> ___0000_ || ___aAaA_ || _aAaAaA_
     >>> __0000__ || __AaAa__ || ________

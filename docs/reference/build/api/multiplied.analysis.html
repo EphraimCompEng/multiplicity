@@ -211,22 +211,20 @@ accommodate other analysis functions.</p>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/extract.html#pq_extract_stages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.analysis.extract.pq_extract_stages" title="Link to this definition">#</a></dt>
 <dd><p>Return a DataFrame of specified stages from .parquet</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>path<span class="classifier">str</span></dt><dd><p>Path to Multiplied-generated .parquet file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to Multiplied-generated .parquet file</p></li>
+<li><p><strong>stages</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of stages to extract</p></li>
+</ul>
 </dd>
-<dt>stages<span class="classifier">list[int]</span></dt><dd><p>List of stages to extract</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A subset of the original .parquet table</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>pd.DataFrame</dt><dd><p>A subset of the original .parquet table</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 </section>
@@ -246,23 +244,19 @@ accommodate other analysis functions.</p>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_3d_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.analysis.heatmap.df_global_3d_heatmap" title="Link to this definition">#</a></dt>
 <dd><p>Export image of 3d plot with heatmap for each stage stacked along the x-axis</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>path<span class="classifier">str</span></dt><dd><p>Path to save the heatmap, ending with a chosen image format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to save the heatmap, ending with a chosen image format.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title of the heatmap.</p></li>
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame containing the data to be plotted. All available columns are used.</p></li>
+<li><p><strong>dark</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use a dark theme for the plot, by default False.</p></li>
+</ul>
 </dd>
-<dt>title<span class="classifier">str</span></dt><dd><p>Title of the heatmap.</p>
-</dd>
-<dt>df<span class="classifier">pd.DataFrame</span></dt><dd><p>DataFrame containing the data to be plotted. All available columns are used.</p>
-</dd>
-<dt>dark<span class="classifier">bool, optional</span></dt><dd><p>Whether to use a dark theme for the plot, by default False.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
-</section>
-<section id="id2">
-<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<p>None</p>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -279,23 +273,19 @@ accommodate other analysis functions.</p>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/multiplied/analysis/heatmap.html#df_global_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multiplied.analysis.heatmap.df_global_heatmap" title="Link to this definition">#</a></dt>
 <dd><p>Export image of pyplot of global heatmap</p>
-<section id="id3">
-<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>path<span class="classifier">str</span></dt><dd><p>Path to save the heatmap, ending with a chosen image format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to save the heatmap, ending with a chosen image format.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title of the heatmap.</p></li>
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame containing the data to be plotted. All available columns are used.</p></li>
+<li><p><strong>dark</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use a dark theme for the plot, by default False.</p></li>
+</ul>
 </dd>
-<dt>title<span class="classifier">str</span></dt><dd><p>Title of the heatmap.</p>
-</dd>
-<dt>df<span class="classifier">pd.DataFrame</span></dt><dd><p>DataFrame containing the data to be plotted. All available columns are used.</p>
-</dd>
-<dt>dark<span class="classifier">bool, optional</span></dt><dd><p>Whether to use a dark theme for the plot, by default False.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
-</section>
-<section id="id4">
-<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
-<p>None</p>
-</section>
 </dd></dl>
 
 <dl class="py function">

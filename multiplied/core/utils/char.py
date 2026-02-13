@@ -92,7 +92,7 @@ def allchars(matrix: list[list[str]], *, hash: list[int | bool] = []) -> set[str
 
     See Also
     --------
-    `Multiplied.Matrix` : Multiplied 2D Matrix Object
+    Matrix : Multiplied 2D Matrix Object
 
     Examples
     --------

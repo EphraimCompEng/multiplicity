@@ -50,7 +50,6 @@ def pretty_dict(listy_dict: Any) -> str:
     >>>  1: [[a, _, _],[_, b, _],[_, _, c]],
     >>>  2: [[x, y, z],[x, y, z],[x, y, z]]}
     0:{
-
     1__
     _2_
     __3
