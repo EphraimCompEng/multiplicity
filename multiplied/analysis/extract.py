@@ -2,6 +2,7 @@
 # Extract Columns From Multiplied Parquets #
 ############################################
 
+from copy import copy
 import pandas as pd
 import pyarrow as pa
 
@@ -43,7 +44,7 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
     # Documentation is getting really annoying to find so the following is
     # just an attempt to get things to work
 
-    # -- find algorithm length from first row -----------------------
+    # -- row[0] without loading entire file -------------------------
     validate_path(path)
     from pyarrow.parquet import ParquetFile
     pf = ParquetFile(path)
@@ -56,15 +57,14 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
     # Multiplied datasets will always include formatted string columns
     # with the rightmost columns dedicated to formatted strings.
     # Hence the rightmost column is the final formatted string column
-    final_ppm_s_column = row.columns[-1]
 
     # This is not optimal at all -- problem for future me ----------- #
     # TODO: manage metadata for .parquet <> DataFrame
     # trim and extract integer
-    total_stages = int(final_ppm_s_column.split('_')[1][1:]) + 1
+    total_stages = int(copy(row.columns[-1]).split('_')[-1]) + 1
+    bits         = (int(str(copy(row.columns[3])).split('_')[-1]) + 1) >> 1
 
-    # lists[str] converted to str by pandas, find length of first entry
-    bits = row.loc[0]['ppm_s0'][2:].index("'") >> 1
+
     # print(total_stages,  bits)
     # --------------------------------------------------------------- #
 
@@ -79,7 +79,7 @@ def pq_extract_stages(path: str, *, stages: list[str]=[]) -> pd.DataFrame:
             for b in range((bits << 1)-1, -1, -1):
                 # TODO: flatten columns to strings since they're converted anyway
                 # e.g: 'stage_0_ppm_4_b_3'
-                columns.append(str((s, f"ppm_{p}" , f"b{b}")))
+                columns.append(str((f"{s}_ppm_{p}_b_{b}")))
 
     # Initialize DataFrame with stages as columns
     df = pd.read_parquet(path, columns=columns)

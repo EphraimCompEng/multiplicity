@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def test_scope() -> None:
-    truth = mp.truth_scope((1, 20), (1, 30))
+    truth = mp.truth_scope((1, 65535), (1, 1_000_000))
     for t in truth:
         print(t)
 
@@ -52,10 +52,10 @@ def test_truth_dataframe() -> None:
 
 def main() -> None:
     test_scope()
-    test_shallow_generator4()
-    test_shallow_generator8()
-    test_truth_table()
-    test_truth_dataframe()
+    # test_shallow_generator4()
+    # test_shallow_generator8()
+    # test_truth_table()
+    # test_truth_dataframe()
 
 
 

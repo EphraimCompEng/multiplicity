@@ -8,6 +8,26 @@ Changelog
 v0.6
 =====
 
+`v0.6.1 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.1>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bug Fixes:
+
+    - Moved pyproject.toml metadata extraction into conf.py (`09d2544`_)
+    - Refactored / Harmonised Dataframe, Parquet Access (`ffc8963`_)
+    - Dark plot background inconsistencies (`d95bbda`_)
+
+See full changelog `here <https://github.com/EphraimCompEng/multiplied/commits/v0.6.1>`_.
+
+.. _09d2544:
+    https://github.com/EphraimCompEng/multiplied/commit/09d254432cf6cd3ace877c493676986d5308b28b
+
+.. _ffc8963:
+    https://github.com/EphraimCompEng/multiplied/commit/ffc8963919f54d1934031b0b64354a9838dfd707
+
+.. _d95bbda:
+    https://github.com/EphraimCompEng/multiplied/commit/d95bbda239ef04ee959091dd7fe0339777ab003d
+
 `v0.6.0 <https://github.com/EphraimCompEng/multiplied/releases/tag/v0.6.0>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

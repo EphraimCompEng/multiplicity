@@ -4,9 +4,21 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 import os
 import sys
+import toml
+from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 print(sys.path)
 import multiplied as mp
+
+
+# -- pyproject.toml metadata ----------------------------------------
+
+path = Path(__file__).parents[3]
+with open(path / "pyproject.toml", "r") as f:
+    MP_TOML = toml.loads(f.read())
+
+MP_VERSION = MP_TOML["project"]["version"]
+
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -15,7 +27,7 @@ project   = 'multiplied'
 copyright = '2025, Ephraim M.'
 author    = 'Ephraim M.'
 github    = 'https://github.com/EphraimCompEng/multiplied'
-release   = mp.MP_VERSION
+release   = MP_VERSION
 stable    = 'v' + ".".join(release.split('.')[:2])
 
 # -- General configuration ---------------------------------------------------
@@ -29,7 +41,7 @@ extensions = [
     'sphinx.ext.extlinks',
 ]
 
-templates_path = ['_templates', ]
+templates_path = ['_templates']
 exclude_patterns = ['multiplied.tests.rst']
 
 
