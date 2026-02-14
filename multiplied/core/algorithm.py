@@ -603,11 +603,12 @@ def hoist(source: mp.Matrix | mp.Template, *,
 
     bits = source.bits
     if checksum == []:
-        checksum = [1]*bits
+        checksum = [0]*bits
 
-
-    y_start = checksum.index(1)
-    y_end   = 8-checksum[::-1].index(1) if 1 in checksum else bits
+    # -- update when checksum reimplemented ------------------------- #
+    y_start = 0                                                       #
+    y_end   = bits                                                    #
+    # --------------------------------------------------------------- #
     map_    = mp.empty_matrix(bits)
 
     for y in range(y_start, y_end):

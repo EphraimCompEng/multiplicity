@@ -19,7 +19,7 @@ simplification, etc., before applying multiprocessing and beyond.
 
 
 def truth_scope(domain_: tuple[int,int], range_: tuple[int,int]
-) -> Generator[tuple]:
+) -> Generator[tuple[int,int]]:
     """Yields (a, b) from domain such that it's product (ab) lies within range
 
     Parameters
